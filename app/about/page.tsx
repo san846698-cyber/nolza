@@ -85,8 +85,8 @@ function AboutKo() {
 
       <p style={{ marginTop: 24 }}>
         문의:{" "}
-        <a href="mailto:hello@nolza.fun" style={a}>
-          hello@nolza.fun
+        <a href="mailto:studio4any@gmail.com" style={a}>
+          studio4any@gmail.com
         </a>
       </p>
     </article>
@@ -143,8 +143,8 @@ function AboutEn() {
 
       <p style={{ marginTop: 24 }}>
         Contact:{" "}
-        <a href="mailto:hello@nolza.fun" style={a}>
-          hello@nolza.fun
+        <a href="mailto:studio4any@gmail.com" style={a}>
+          studio4any@gmail.com
         </a>
       </p>
     </article>

@@ -91,8 +91,8 @@ function TermsKo() {
       <h2 style={h2}>6. 문의</h2>
       <p>
         문의:{" "}
-        <a href="mailto:hello@nolza.fun" style={a}>
-          hello@nolza.fun
+        <a href="mailto:studio4any@gmail.com" style={a}>
+          studio4any@gmail.com
         </a>
       </p>
     </article>
@@ -143,8 +143,8 @@ function TermsEn() {
       <h2 style={h2}>6. Contact</h2>
       <p>
         Contact:{" "}
-        <a href="mailto:hello@nolza.fun" style={a}>
-          hello@nolza.fun
+        <a href="mailto:studio4any@gmail.com" style={a}>
+          studio4any@gmail.com
         </a>
       </p>
     </article>

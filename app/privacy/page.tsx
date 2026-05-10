@@ -134,8 +134,8 @@ function PrivacyKo() {
       <h2 style={h2}>8. 문의</h2>
       <p>
         개인정보 처리에 관한 문의는{" "}
-        <a href="mailto:hello@nolza.fun" style={a}>
-          hello@nolza.fun
+        <a href="mailto:studio4any@gmail.com" style={a}>
+          studio4any@gmail.com
         </a>
         으로 보내주세요.
       </p>
@@ -235,8 +235,8 @@ function PrivacyEn() {
       <h2 style={h2}>8. Contact</h2>
       <p>
         For privacy-related inquiries, contact{" "}
-        <a href="mailto:hello@nolza.fun" style={a}>
-          hello@nolza.fun
+        <a href="mailto:studio4any@gmail.com" style={a}>
+          studio4any@gmail.com
         </a>
         .
       </p>

@@ -39,7 +39,7 @@ export function HomeFooter() {
         <Link href="/terms" style={linkStyle}>
           {locale === "ko" ? "약관" : "Terms"}
         </Link>
-        <a href="mailto:hello@nolza.fun" style={linkStyle}>
+        <a href="mailto:studio4any@gmail.com" style={linkStyle}>
           Contact
         </a>
       </div>
