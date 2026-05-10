@@ -75,7 +75,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "";
+  const adsenseClient =
+    process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "ca-pub-3027162336323004";
   return (
     <html
       lang="ko"
