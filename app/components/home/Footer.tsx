@@ -1,11 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
 import { T } from "@/lib/games-home";
 
 export function HomeFooter() {
   const { locale } = useLocale();
   const tx = T[locale];
+
+  const linkStyle = {
+    color: "var(--home-muted)",
+    textDecoration: "none",
+  } as const;
 
   return (
     <footer
@@ -23,11 +29,17 @@ export function HomeFooter() {
       }}
     >
       <div>{tx.footer_made}</div>
-      <div style={{ display: "flex", gap: 22 }}>
-        <a
-          href="mailto:hello@nolza.fun"
-          style={{ color: "var(--home-muted)", textDecoration: "none" }}
-        >
+      <div style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
+        <Link href="/about" style={linkStyle}>
+          {locale === "ko" ? "소개" : "About"}
+        </Link>
+        <Link href="/privacy" style={linkStyle}>
+          {locale === "ko" ? "개인정보" : "Privacy"}
+        </Link>
+        <Link href="/terms" style={linkStyle}>
+          {locale === "ko" ? "약관" : "Terms"}
+        </Link>
+        <a href="mailto:hello@nolza.fun" style={linkStyle}>
           Contact
         </a>
       </div>
