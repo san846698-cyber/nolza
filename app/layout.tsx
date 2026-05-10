@@ -8,7 +8,6 @@ import {
   Gaegu,
   Fraunces,
 } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import LocaleToggle from "./components/LocaleToggle";
 
@@ -82,17 +81,24 @@ export default function RootLayout({
       lang="ko"
       className={`${notoSans.variable} ${notoSerif.variable} ${jetBrains.variable} ${inter.variable} ${caveat.variable} ${gaegu.variable} ${fraunces.variable}`}
     >
-      <body className="font-sans antialiased">
-        <LocaleToggle />
-        {children}
+      <head>
         {adsenseClient && !adsenseClient.startsWith("ca-pub-XXX") && (
-          <Script
+          // AdSense verification + ad-serving script must be a real <script> in <head>.
+          // next/script only injects a preload hint here, which the AdSense crawler ignores.
+          <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
             crossOrigin="anonymous"
-            strategy="afterInteractive"
           />
         )}
+        <meta
+          name="google-adsense-account"
+          content={adsenseClient}
+        />
+      </head>
+      <body className="font-sans antialiased">
+        <LocaleToggle />
+        {children}
       </body>
     </html>
   );
