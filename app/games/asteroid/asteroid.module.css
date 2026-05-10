@@ -1,0 +1,920 @@
+/* Asteroid impact game — dark cosmic theme */
+
+.shell {
+  --ast-bg: #0B0F1A;
+  --ast-bg-soft: #11172A;
+  --ast-panel: #161D33;
+  --ast-ink: #F0F0FF;
+  --ast-ink-soft: #A8B0CC;
+  --ast-ink-faded: #6E7491;
+  --ast-line: rgba(240, 240, 255, 0.12);
+  --ast-line-strong: rgba(240, 240, 255, 0.28);
+  --ast-accent: #FFD166;
+  --ast-danger: #FF7A3D;
+  --ast-cyan: #5DD9FF;
+  background: var(--ast-bg);
+  color: var(--ast-ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+.topbar {
+  flex: 0 0 auto;
+  border-bottom: 1px solid var(--ast-line);
+  background: rgba(11, 15, 26, 0.85);
+  backdrop-filter: blur(8px);
+}
+.topbar__inner {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.topbar__brand {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ast-ink-soft);
+  letter-spacing: 0.05em;
+}
+.topbar__brand small {
+  display: block;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--ast-ink-faded);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.topbar__back {
+  font-size: 12px;
+  color: var(--ast-ink-faded);
+  text-decoration: none;
+}
+.topbar__back:hover {
+  color: var(--ast-accent);
+}
+
+/* Main layout: sidebar + map */
+.layout {
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+}
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  background: var(--ast-bg-soft);
+  border-right: 1px solid var(--ast-line);
+  padding: 20px 22px 32px;
+  overflow-y: auto;
+}
+@media (max-width: 900px) {
+  .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--ast-line);
+    max-height: 56vh;
+  }
+}
+
+.sectionTitle {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ast-ink-faded);
+  margin: 18px 0 10px;
+}
+.sectionTitle:first-child {
+  margin-top: 0;
+}
+
+/* Search */
+.searchRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.searchInput {
+  flex: 1;
+  background: var(--ast-bg);
+  border: 1px solid var(--ast-line);
+  color: var(--ast-ink);
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+}
+.searchInput:focus {
+  border-color: var(--ast-accent);
+}
+.searchInput::placeholder {
+  color: var(--ast-ink-faded);
+}
+.searchBtn {
+  background: var(--ast-bg);
+  border: 1px solid var(--ast-line);
+  color: var(--ast-ink-soft);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.searchBtn:hover {
+  border-color: var(--ast-accent);
+  color: var(--ast-accent);
+}
+
+.locateBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--ast-line-strong);
+  color: var(--ast-ink-soft);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.locateBtn:hover {
+  border-color: var(--ast-accent);
+  color: var(--ast-accent);
+}
+
+/* ─── Composition carousel — rotating asteroid visual ─── */
+.compStage {
+  display: grid;
+  grid-template-columns: 36px 1fr 36px;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0 8px;
+}
+.compChevron {
+  background: transparent;
+  border: 1px solid var(--ast-line);
+  color: var(--ast-ink-soft);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  font-family: var(--font-fraunces), serif;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.compChevron:hover {
+  border-color: var(--ast-accent);
+  color: var(--ast-accent);
+}
+.compChevron:active {
+  transform: scale(0.95);
+}
+
+.compDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+.asteroidScene {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: asteroidFloat 5s ease-in-out infinite;
+}
+.asteroidPhoto {
+  position: relative;
+  width: 92%;
+  height: 92%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.6));
+  animation: asteroidPhotoIn 0.5s ease-out;
+  /* Soft circular vignette so cropped edges and black backgrounds blend
+     into the panel naturally — no hard rectangle borders */
+  mask-image: radial-gradient(circle at 50% 50%, #000 58%, rgba(0,0,0,0.85) 72%, transparent 92%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, rgba(0,0,0,0.85) 72%, transparent 92%);
+}
+.asteroidPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Black space around asteroid photos blends into the dark panel via screen blend */
+  mix-blend-mode: screen;
+  filter: saturate(1.08) contrast(1.06);
+}
+@keyframes asteroidPhotoIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.asteroidGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle,
+    var(--c-glow) 0%,
+    var(--c-glow) 18%,
+    transparent 65%
+  );
+  opacity: 0.55;
+  filter: blur(24px);
+  z-index: 1;
+  animation: asteroidGlowPulse 4.5s ease-in-out infinite;
+}
+@keyframes asteroidGlowPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.96); }
+  50%      { opacity: 0.65; transform: scale(1.04); }
+}
+.asteroidStars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 14% 22%, rgba(255,255,255,0.85), transparent),
+    radial-gradient(1.4px 1.4px at 78% 18%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 28% 86%, rgba(255,255,255,0.65), transparent),
+    radial-gradient(1.4px 1.4px at 86% 72%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1.2px 1.2px at 60% 8%, rgba(255,255,255,0.55), transparent),
+    radial-gradient(1.8px 1.8px at 8% 56%, rgba(255,255,255,0.4), transparent);
+  z-index: 0;
+  opacity: 0.7;
+}
+
+@keyframes asteroidSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes asteroidFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+.compName {
+  margin-top: 14px;
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ast-accent);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+.compBody {
+  margin-top: 3px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  color: var(--ast-ink-soft);
+  text-align: center;
+}
+.compMeta {
+  margin-top: 4px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ast-ink-faded);
+}
+
+.compDots {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.compDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ast-line-strong);
+  transition: background 0.2s, width 0.25s;
+}
+.compDotActive {
+  background: var(--ast-accent);
+  width: 20px;
+  border-radius: 3px;
+}
+
+/* Per-composition palette (drives gradients + glow) */
+.comp--iron {
+  --c-light: #E0E2EA;
+  --c-mid: #6E7691;
+  --c-dark: #2C3145;
+  --c-shadow: #16182A;
+  --c-glow: #A8C8FF;
+}
+.comp--stone {
+  --c-light: #EAD5A8;
+  --c-mid: #8E7656;
+  --c-dark: #4A3A28;
+  --c-shadow: #2A1F12;
+  --c-glow: #FFC894;
+}
+.comp--carbon {
+  --c-light: #6E6E72;
+  --c-mid: #2A2A30;
+  --c-dark: #0F0F14;
+  --c-shadow: #000000;
+  --c-glow: #C266FF;
+}
+.comp--gold {
+  --c-light: #FFE89A;
+  --c-mid: #D8A23C;
+  --c-dark: #6E4710;
+  --c-shadow: #3A2208;
+  --c-glow: #FFD166;
+}
+.comp--comet {
+  --c-light: #F0F8FF;
+  --c-mid: #80B4E8;
+  --c-dark: #2C5680;
+  --c-shadow: #142A48;
+  --c-glow: #5DD9FF;
+}
+
+/* Slider */
+.sliderGroup {
+  margin: 12px 0 10px;
+}
+.sliderHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+  color: var(--ast-ink-soft);
+  margin-bottom: 6px;
+}
+.sliderHead strong {
+  color: var(--ast-accent);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-fraunces), serif;
+  font-size: 14px;
+}
+.slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: var(--ast-line-strong);
+  border-radius: 2px;
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ast-accent);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.18);
+}
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ast-accent);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.18);
+}
+
+/* Big launch button */
+.launchBtn {
+  margin-top: 24px;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--ast-danger), #FF4A3D);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 122, 61, 0.3);
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+.launchBtn:hover {
+  box-shadow: 0 8px 28px rgba(255, 122, 61, 0.45);
+}
+.launchBtn:active {
+  transform: translateY(1px);
+}
+.launchBtn:disabled {
+  background: var(--ast-bg);
+  border: 1px solid var(--ast-line);
+  color: var(--ast-ink-faded);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.resetBtn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid var(--ast-line);
+  color: var(--ast-ink-soft);
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.resetBtn:hover {
+  border-color: var(--ast-accent);
+  color: var(--ast-accent);
+}
+
+/* Map area */
+.mapWrap {
+  position: relative;
+  background: #0B0F1A;
+  overflow: hidden;
+  height: 100%;
+  min-height: 0;
+}
+.mapWrap :global(.leaflet-container),
+.mapWrap :global(.leaflet-container .leaflet-pane),
+.mapWrap :global(.leaflet-tile-pane) {
+  background: #0B0F1A !important;
+}
+
+/* Map empty state hint */
+.mapHint {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(11, 15, 26, 0.85);
+  border: 1px solid var(--ast-line);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--ast-ink-soft);
+  z-index: 500;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+/* ─── Section-tint overlay (sits above map tiles, below result panel) ─── */
+.tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 410; /* above leaflet tiles (200) and overlays (400), below result panel (500) */
+  background: transparent;
+  transition: background 0.7s ease;
+  mix-blend-mode: multiply;
+}
+.tintCrater {
+  background: rgba(60, 35, 20, 0.18);
+}
+.tintFireball {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 90, 30, 0.0) 0%,
+    rgba(255, 90, 30, 0.32) 60%,
+    rgba(255, 60, 20, 0.5) 100%
+  );
+  mix-blend-mode: multiply;
+}
+.tintThermal {
+  background: rgba(255, 170, 60, 0.22);
+}
+.tintShock {
+  background: rgba(255, 209, 102, 0.18);
+}
+.tintShockLight {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(93, 217, 255, 0.0) 0%,
+    rgba(93, 217, 255, 0.28) 70%,
+    rgba(40, 110, 200, 0.48) 100%
+  );
+  mix-blend-mode: screen;
+}
+.tintWind {
+  background: rgba(155, 138, 255, 0.22);
+  mix-blend-mode: screen;
+}
+.tintQuake {
+  background: rgba(194, 90, 78, 0.18);
+}
+
+/* ─── Result narrative panel — scroll-driven story like Neal.fun ─── */
+.narrative {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 400px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: rgba(11, 15, 26, 0.94);
+  border: 1px solid var(--ast-line-strong);
+  border-radius: 12px;
+  z-index: 500;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ast-line-strong) transparent;
+}
+.narrative::-webkit-scrollbar { width: 6px; }
+.narrative::-webkit-scrollbar-track { background: transparent; }
+.narrative::-webkit-scrollbar-thumb {
+  background: var(--ast-line-strong);
+  border-radius: 3px;
+}
+@media (max-width: 900px) {
+  .narrative {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    margin: 12px;
+    max-height: none;
+    border-radius: 10px;
+  }
+}
+
+/* Hero (first section) — yield */
+.heroSection {
+  padding: 36px 28px 32px;
+  text-align: center;
+  border-bottom: 1px solid var(--ast-line);
+  position: relative;
+}
+.heroKicker {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--ast-ink-faded);
+}
+.heroYield {
+  margin-top: 14px;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(34px, 4.8vw, 52px);
+  line-height: 1.0;
+  color: var(--ast-accent);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.heroHiroshima {
+  margin-top: 10px;
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ast-cyan);
+  letter-spacing: 0.04em;
+}
+.scrollHint {
+  margin-top: 22px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ast-ink-faded);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+.scrollHint span:last-child {
+  display: inline-block;
+  animation: scrollHintBounce 1.6s ease-in-out infinite;
+}
+@keyframes scrollHintBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(3px); opacity: 1; }
+}
+
+.airburstNote {
+  margin: 18px 24px 0;
+  padding: 12px 14px;
+  background: rgba(93, 217, 255, 0.08);
+  border: 1px solid rgba(93, 217, 255, 0.4);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--ast-cyan);
+  line-height: 1.55;
+  font-family: var(--font-noto-sans-kr), var(--font-inter), sans-serif;
+}
+
+/* Each effect = one tall section */
+.section {
+  padding: 36px 28px 40px;
+  border-top: 1px solid var(--ast-line);
+  position: relative;
+  min-height: 220px;
+}
+.section:first-of-type { border-top: none; }
+
+.sectionSwatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.sectionKicker {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ast-ink-faded);
+}
+.sectionEmoji {
+  font-size: 32px;
+  margin-bottom: 14px;
+  display: block;
+  line-height: 1;
+}
+.sectionHuge {
+  margin-top: 10px;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  font-size: clamp(28px, 3.4vw, 38px);
+  line-height: 1.05;
+  color: var(--ast-ink);
+  letter-spacing: -0.015em;
+}
+.sectionHugeUnit {
+  font-style: italic;
+  color: var(--ast-accent);
+  font-variant-numeric: tabular-nums;
+}
+.sectionBody {
+  margin-top: 14px;
+  font-family: var(--font-noto-sans-kr), var(--font-inter), sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ast-ink-soft);
+}
+.sectionBody em {
+  color: var(--ast-accent);
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Final CTA section */
+.finalSection {
+  padding: 36px 28px 36px;
+  border-top: 1px solid var(--ast-line);
+  text-align: center;
+}
+.finalKicker {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ast-ink-faded);
+  margin-bottom: 18px;
+}
+.finalBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.shareBtn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid var(--ast-line-strong);
+  color: var(--ast-ink-soft);
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font-fraunces), serif;
+  letter-spacing: 0.06em;
+}
+.shareBtn:hover {
+  border-color: var(--ast-accent);
+  color: var(--ast-accent);
+}
+.shareBtn--primary {
+  background: var(--ast-accent);
+  color: #0B0F1A;
+  border-color: var(--ast-accent);
+  font-weight: 700;
+}
+.shareBtn--primary:hover {
+  background: #FFE39B;
+  color: #0B0F1A;
+}
+
+/* Search results dropdown */
+.searchResults {
+  margin-top: 4px;
+  background: var(--ast-bg);
+  border: 1px solid var(--ast-line);
+  border-radius: 6px;
+  overflow: hidden;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.searchItem {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--ast-ink-soft);
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--ast-line);
+}
+.searchItem:last-child {
+  border-bottom: none;
+}
+.searchItem:hover {
+  background: rgba(255, 209, 102, 0.06);
+  color: var(--ast-accent);
+}
+
+/* Loading state */
+.mapLoading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ast-ink-faded);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--ast-bg);
+}
+
+/* ─── Impact animation overlay ───
+   Uses --target-x / --target-y CSS vars (set inline) to position pixel-perfect
+   on the map container. Animation runs 2.4s total. */
+
+.impactStage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 600;
+  overflow: hidden;
+}
+
+/* Asteroid streak — comes from off-screen at the entry angle and lands on target.
+   Distance traveled = ~120% of viewport diagonal so it's visible regardless of zoom. */
+.streakWrap {
+  position: absolute;
+  left: var(--target-x);
+  top: var(--target-y);
+  width: 0;
+  height: 0;
+  transform: rotate(calc(0deg - var(--entry-angle) - 90deg));
+  /* The wrap rotates so children that animate along +X go at the correct entry angle */
+}
+
+@keyframes streakIn {
+  0% {
+    transform: translate(80vmax, 0) scaleX(1);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  85% {
+    transform: translate(0, 0) scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) scaleX(0);
+    opacity: 0;
+  }
+}
+
+@keyframes streakRockIn {
+  0% {
+    transform: translate(80vmax, 0) scale(1.2);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  92% {
+    transform: translate(0, 0) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Glowing trail */
+.streak {
+  position: absolute;
+  width: 80vmax;
+  height: 5px;
+  right: 0;
+  top: -2.5px;
+  background: linear-gradient(
+    to left,
+    rgba(255, 224, 150, 1) 0%,
+    rgba(255, 180, 70, 0.95) 8%,
+    rgba(255, 140, 50, 0.7) 30%,
+    rgba(255, 100, 50, 0) 100%
+  );
+  filter: blur(1.5px) drop-shadow(0 0 8px rgba(255, 180, 70, 0.9));
+  transform-origin: 100% center;
+  animation: streakIn 0.85s cubic-bezier(0.4, 0, 0.7, 0.4) forwards;
+}
+
+/* The rock itself — small but bright */
+.streakRock {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: -7px;
+  top: -7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #FFD166 30%, #FF7A3D 70%, #8A3010 100%);
+  box-shadow:
+    0 0 18px rgba(255, 209, 102, 0.95),
+    0 0 36px rgba(255, 122, 61, 0.8),
+    0 0 60px rgba(255, 122, 61, 0.5);
+  animation: streakRockIn 0.85s cubic-bezier(0.4, 0, 0.7, 0.4) forwards;
+}
+
+/* Flash at impact (begins at 0.85s, the moment the rock arrives) */
+@keyframes impactFlashAnim {
+  0%, 80% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+  82% { opacity: 1; transform: translate(-50%, -50%) scale(0.4); }
+  92% { opacity: 1; transform: translate(-50%, -50%) scale(2); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(4); }
+}
+
+.impactFlash {
+  position: absolute;
+  left: var(--target-x);
+  top: var(--target-y);
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 224, 150, 0.95) 18%,
+    rgba(255, 122, 61, 0.6) 45%,
+    rgba(255, 75, 40, 0) 75%
+  );
+  filter: blur(2px);
+  animation: impactFlashAnim 1.5s ease-out forwards;
+}
+
+/* Shockwaves — three rings expanding outward at slightly different speeds */
+@keyframes shockwave {
+  0%, 85% { opacity: 0; transform: translate(-50%, -50%) scale(0); border-width: 6px; }
+  88% { opacity: 0.95; transform: translate(-50%, -50%) scale(0.1); border-width: 6px; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(20); border-width: 1px; }
+}
+
+.shockRing {
+  position: absolute;
+  left: var(--target-x);
+  top: var(--target-y);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 209, 102, 0.85);
+  box-shadow: 0 0 24px rgba(255, 209, 102, 0.6);
+}
+.shockRing1 {
+  animation: shockwave 1.6s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+.shockRing2 {
+  border-color: rgba(255, 122, 61, 0.7);
+  animation: shockwave 1.9s cubic-bezier(0.2, 0.8, 0.4, 1) 0.05s forwards;
+}
+.shockRing3 {
+  border-color: rgba(255, 255, 255, 0.5);
+  animation: shockwave 2.2s cubic-bezier(0.2, 0.8, 0.4, 1) 0.12s forwards;
+}

@@ -1,0 +1,457 @@
+/* Auction game — museum catalog aesthetic.
+   Tokens are scoped to .shell so the rest of the site theme is untouched. */
+
+.shell {
+  --auc-bg: #F4EBD8;
+  --auc-paper: #FAF3E0;
+  --auc-paper-deep: #F0E5C8;
+  --auc-ink: #2B1F12;
+  --auc-ink-soft: #5C4A33;
+  --auc-ink-faded: #8A7558;
+  --auc-gold: #B08B3E;
+  --auc-gold-deep: #8A6A29;
+  --auc-line: rgba(43, 31, 18, 0.18);
+  --auc-line-strong: rgba(43, 31, 18, 0.42);
+  background: var(--auc-bg);
+  color: var(--auc-ink);
+  min-height: 100vh;
+  padding-bottom: 6rem;
+}
+
+.shell a {
+  color: inherit;
+}
+
+/* Top header strip */
+.topbar {
+  border-bottom: 1px solid var(--auc-line);
+}
+.topbar__inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--auc-ink-soft);
+  letter-spacing: 0.04em;
+}
+.topbar__back:hover {
+  color: var(--auc-gold-deep);
+}
+
+/* Main column */
+.col {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 24px 20px 0;
+}
+@media (min-width: 768px) {
+  .col {
+    padding: 32px 32px 0;
+  }
+}
+
+/* ─────── Eyebrow / kicker ─────── */
+.kicker {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--auc-ink-faded);
+}
+
+/* ─────── Display heading ─────── */
+.display {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  color: var(--auc-ink);
+}
+.displayItalic {
+  font-style: italic;
+}
+
+/* ─────── Body text ─────── */
+.body {
+  font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--auc-ink);
+}
+@media (min-width: 768px) {
+  .body {
+    font-size: 18px;
+  }
+}
+
+.caption {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--auc-ink-faded);
+}
+
+/* ─────── Card (the lot sheet) ─────── */
+.card {
+  background: var(--auc-paper);
+  border: 1px solid var(--auc-line-strong);
+  box-shadow: 0 4px 28px rgba(43, 31, 18, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ─────── Image frame ─────── */
+.frame {
+  position: relative;
+  background: var(--auc-paper-deep);
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  overflow: hidden;
+  /* double border: outer hairline + inner gold via inset shadow */
+  box-shadow:
+    inset 0 0 0 1px var(--auc-gold),
+    inset 0 0 0 8px var(--auc-paper),
+    inset 0 0 0 9px var(--auc-line);
+}
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.frame__emoji {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  color: var(--auc-gold-deep);
+  opacity: 0.8;
+}
+@media (min-width: 768px) {
+  .frame__emoji {
+    font-size: 72px;
+  }
+}
+.frame__corner {
+  position: absolute;
+  bottom: 14px;
+  right: 18px;
+  font-size: 18px;
+  color: var(--auc-gold);
+  background: rgba(250, 243, 224, 0.85);
+  padding: 4px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--auc-line);
+}
+
+/* ─────── Divider with center diamond ─────── */
+.divider {
+  position: relative;
+  margin: 28px 0;
+  border-top: 1px dashed var(--auc-line-strong);
+  text-align: center;
+}
+.divider::after {
+  content: "◇";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--auc-paper);
+  padding: 0 14px;
+  color: var(--auc-gold);
+  font-size: 14px;
+}
+
+/* When divider sits on the page bg (not inside a card) */
+.divider--bg::after {
+  background: var(--auc-bg);
+}
+
+/* ─────── Lot meta row ─────── */
+.lotMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--auc-ink-soft);
+  letter-spacing: 0.04em;
+}
+.lotMeta__center {
+  color: var(--auc-gold);
+  font-style: normal;
+  font-size: 12px;
+}
+
+/* ─────── Input ─────── */
+.input {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border: none;
+  border-bottom: 2px solid var(--auc-gold);
+  padding: 10px 0;
+  background: transparent;
+}
+.input__currency {
+  font-family: var(--font-fraunces), serif;
+  font-size: 28px;
+  color: var(--auc-gold-deep);
+}
+.input__field {
+  flex: 1;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--auc-ink);
+  background: transparent;
+  border: none;
+  outline: none;
+  font-variant-numeric: tabular-nums;
+}
+.input__field::placeholder {
+  color: var(--auc-ink-faded);
+  font-style: italic;
+  font-weight: 400;
+}
+.input__unit {
+  font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
+  font-size: 16px;
+  color: var(--auc-ink-soft);
+}
+
+/* ─────── Button ─────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 24px;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  border: 1px solid var(--auc-gold-deep);
+  background: var(--auc-gold);
+  color: #FAF3E0;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn:hover {
+  background: var(--auc-gold-deep);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  background: transparent;
+  color: var(--auc-ink-faded);
+  border-color: var(--auc-line);
+  cursor: not-allowed;
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--auc-ink);
+  border: 1px solid var(--auc-line-strong);
+}
+.btnGhost:hover {
+  background: var(--auc-paper);
+  color: var(--auc-gold-deep);
+}
+
+/* ─────── Stats grid (reveal) ─────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--auc-line);
+}
+@media (max-width: 540px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stats > :last-child {
+    grid-column: span 2;
+    border-top: 1px solid var(--auc-line);
+  }
+}
+.stats__cell {
+  padding: 18px 16px;
+  text-align: center;
+  border-left: 1px solid var(--auc-line);
+}
+.stats__cell:first-child {
+  border-left: none;
+}
+.stats__label {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--auc-ink-faded);
+}
+.stats__value {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--auc-ink);
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.stats__value--gold {
+  color: var(--auc-gold-deep);
+}
+.stats__sub {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--auc-ink-soft);
+  margin-top: 2px;
+}
+
+/* ─────── Hammer counter ─────── */
+.hammer {
+  text-align: center;
+  padding: 36px 24px 20px;
+}
+.hammer__label {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--auc-ink-faded);
+}
+.hammer__value {
+  margin-top: 12px;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  font-size: clamp(44px, 9vw, 88px);
+  line-height: 1;
+  color: var(--auc-gold-deep);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.hammer__house {
+  margin-top: 14px;
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--auc-ink-soft);
+  letter-spacing: 0.04em;
+}
+
+/* ─────── Placard (reveal story) ─────── */
+.placard {
+  border-top: 1px solid var(--auc-line);
+  padding: 26px 28px;
+}
+.placard__source {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--auc-gold-deep);
+  border-bottom: 1px solid var(--auc-gold);
+}
+
+/* ─────── Round indicator (top-right) ─────── */
+.round {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  color: var(--auc-ink-soft);
+}
+.round__num {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--auc-ink);
+}
+
+/* ─────── Summary ─────── */
+.summary__total {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  font-size: clamp(64px, 14vw, 120px);
+  line-height: 1;
+  color: var(--auc-ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.summary__total small {
+  color: var(--auc-ink-faded);
+  font-size: 0.35em;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.summary__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--auc-line);
+  font-family: var(--font-fraunces), serif;
+}
+.summary__row:first-child {
+  border-top: 1px solid var(--auc-line-strong);
+}
+.summary__rowMeta {
+  font-style: italic;
+  font-size: 11px;
+  color: var(--auc-ink-faded);
+  letter-spacing: 0.04em;
+}
+.summary__rowTitle {
+  margin-top: 2px;
+  font-weight: 700;
+  font-size: 15px;
+}
+.summary__rowSub {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--auc-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.summary__rowScore {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--auc-ink);
+  font-variant-numeric: tabular-nums;
+}
+.summary__rowScore--gold {
+  color: var(--auc-gold-deep);
+}
+
+/* ─────── Fade animation for round transitions ─────── */
+@keyframes aucFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fadeIn {
+  animation: aucFade 0.5s ease-out;
+}
+
+/* Hide AdMobileSticky overlap by giving the page extra bottom padding (already on .shell). */

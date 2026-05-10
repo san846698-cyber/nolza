@@ -1,0 +1,131 @@
+// 21 objects spanning hydrogen → Milky Way galaxy. Each maps to a Twemoji
+// codepoint so the entire scale journey uses one consistent illustration set
+// (Twitter's CC BY 4.0 emoji art, downloaded into /public/twemoji/).
+//
+// We trade some fine-grained science items (antibody, sperm, sand grain,
+// observable universe) for visual consistency — the user explicitly chose
+// "polished, consistent, free" over "comprehensive but mixed quality".
+
+export type Measure = "TALL" | "WIDE" | "DIAMETER" | "ACROSS";
+
+export type ScaleObj = {
+  /** Real-world size in metres — drives all relative sizing. */
+  m: number;
+  size: string;
+  measure: Measure;
+  name: string;
+  en: string;
+  desc: string;
+  descEn: string;
+  /** Twemoji codepoint (lowercase hex, no variation selector). The runtime
+   *  resolves it to /twemoji/{emoji}.svg. */
+  emoji: string;
+};
+
+export const SCALE_OBJECTS: ScaleObj[] = [
+  { m: 1e-10,    size: "0.1 nm",       measure: "DIAMETER",
+    name: "수소 원자",         en: "Hydrogen Atom",
+    desc: "우주에서 가장 흔한 원소. 우주의 75%가 수소.",
+    descEn: "The most abundant element in the universe — 75% of all matter.",
+    emoji: "269b" },
+  { m: 2e-9,     size: "2 nm",         measure: "WIDE",
+    name: "DNA 이중나선",       en: "DNA Double Helix",
+    desc: "당신의 모든 정보를 담은 분자 사다리.",
+    descEn: "The molecular ladder that holds every bit of you.",
+    emoji: "1f9ec" },
+  { m: 1e-7,     size: "100 nm",       measure: "DIAMETER",
+    name: "바이러스",           en: "Virus",
+    desc: "이 크기 하나가 세계를 멈췄습니다 (SARS-CoV-2).",
+    descEn: "This tiny thing brought the world to a halt (SARS-CoV-2).",
+    emoji: "1f9a0" },
+  { m: 8e-6,     size: "8 μm",         measure: "DIAMETER",
+    name: "적혈구",             en: "Red Blood Cell",
+    desc: "산소를 운반하는, 핵이 없는 인체의 도넛.",
+    descEn: "Your body's oxygen-carrying donut — the only human cell with no nucleus.",
+    emoji: "1fa78" },
+  { m: 1.2e-4,   size: "120 μm",       measure: "DIAMETER",
+    name: "난자",               en: "Ovum (Egg Cell)",
+    desc: "사람 몸에서 가장 큰 세포 — 맨눈으로 겨우 보입니다.",
+    descEn: "The largest cell in the human body — just barely visible.",
+    emoji: "1f95a" },
+  { m: 3e-3,     size: "3 mm",         measure: "TALL",
+    name: "개미",               en: "Ant",
+    desc: "몸무게의 50배를 들어 올립니다.",
+    descEn: "Lifts 50 times its own body weight.",
+    emoji: "1f41c" },
+  { m: 1.5e-2,   size: "1.5 cm",       measure: "TALL",
+    name: "꿀벌",               en: "Honeybee",
+    desc: "꿀벌이 사라지면 인류 식량의 1/3이 사라집니다.",
+    descEn: "Lose bees and a third of the human food supply goes too.",
+    emoji: "1f41d" },
+  { m: 9e-2,     size: "9 cm",         measure: "TALL",
+    name: "생쥐",               en: "House Mouse",
+    desc: "자기 몸길이만큼 점프할 수 있습니다.",
+    descEn: "Can jump nearly its own body length.",
+    emoji: "1f401" },
+  { m: 0.45,     size: "45 cm",        measure: "TALL",
+    name: "고양이",             en: "House Cat",
+    desc: "발 착지에 거의 항상 성공하는 작은 사냥꾼.",
+    descEn: "A small hunter that almost always lands on its feet.",
+    emoji: "1f408" },
+  { m: 1.7,      size: "1.7 m",        measure: "TALL",
+    name: "사람",               en: "Adult Human",
+    desc: "당신은 지금 여기 있습니다.",
+    descEn: "You are right around here.",
+    emoji: "1f9cd" },
+  { m: 3.3,      size: "3.3 m",        measure: "TALL",
+    name: "아프리카 코끼리",   en: "African Elephant",
+    desc: "지상에서 가장 큰 동물. 거울 속 자기를 알아봅니다.",
+    descEn: "The largest land animal — and one that recognises itself in a mirror.",
+    emoji: "1f418" },
+  { m: 12,       size: "12 m",         measure: "WIDE",
+    name: "버스",               en: "City Bus",
+    desc: "약 60명을 한 번에 태웁니다.",
+    descEn: "Carries about 60 people at a time.",
+    emoji: "1f68c" },
+  { m: 30,       size: "30 m",         measure: "WIDE",
+    name: "대왕고래",           en: "Blue Whale",
+    desc: "지구 역사상 가장 큰 동물. 심장이 자동차만 합니다.",
+    descEn: "The largest animal that ever lived — heart the size of a car.",
+    emoji: "1f40b" },
+  { m: 93,       size: "93 m",         measure: "TALL",
+    name: "자유의 여신상",     en: "Statue of Liberty",
+    desc: "1886년부터 뉴욕항을 지키고 있습니다.",
+    descEn: "Has stood in New York Harbor since 1886.",
+    emoji: "1f5fd" },
+  { m: 330,      size: "330 m",        measure: "TALL",
+    name: "에펠탑",             en: "Eiffel Tower",
+    desc: "처음엔 흉물이라 철거 예정이었습니다.",
+    descEn: "Originally meant to be torn down — Parisians thought it was an eyesore.",
+    emoji: "1f5fc" },
+  { m: 828,      size: "828 m",        measure: "TALL",
+    name: "부르즈 할리파",     en: "Burj Khalifa",
+    desc: "엘리베이터 타고 꼭대기까지 1분.",
+    descEn: "It takes a full minute to ride to the top.",
+    emoji: "1f3e2" },
+  { m: 8849,     size: "8,849 m",      measure: "TALL",
+    name: "에베레스트",         en: "Mount Everest",
+    desc: "지구에서 가장 높은 곳. 등반 사망률 4%.",
+    descEn: "The highest place on Earth. 4% of climbers die trying.",
+    emoji: "1f3d4" },
+  { m: 3.4742e6, size: "3,474 km",     measure: "DIAMETER",
+    name: "달",                 en: "The Moon",
+    desc: "지구의 유일한 자연 위성. 빛이 1.3초.",
+    descEn: "Earth's only natural satellite — 1.3 light-seconds away.",
+    emoji: "1f315" },
+  { m: 1.2742e7, size: "12,742 km",    measure: "DIAMETER",
+    name: "지구",               en: "Earth",
+    desc: "우리가 아는 유일한 생명의 고향.",
+    descEn: "The only home for life we know of.",
+    emoji: "1f30d" },
+  { m: 1.39e9,   size: "1,390,000 km", measure: "DIAMETER",
+    name: "태양",               en: "The Sun",
+    desc: "지구 130만 개를 담을 수 있는 핵융합로.",
+    descEn: "A fusion reactor that could hold 1.3 million Earths.",
+    emoji: "2600" },
+  { m: 9.461e20, size: "10만 광년",    measure: "ACROSS",
+    name: "우리 은하",          en: "Milky Way Galaxy",
+    desc: "별 약 2,000억 개. 태양은 2억 3천만 년에 한 바퀴 돕니다.",
+    descEn: "Around 200 billion stars. The Sun orbits its centre every 230 million years.",
+    emoji: "1f30c" },
+];

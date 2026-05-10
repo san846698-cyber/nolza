@@ -1,0 +1,642 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0d0d0d;
+  --card: #141414;
+  --border: #222222;
+  --accent: #FF3B30;
+}
+
+html, body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Home page design tokens — scoped to [data-home] so dark game pages keep
+   their existing --bg/--card/--accent variables.
+   ========================================================================== */
+[data-home] {
+  --home-bg: #F4EFE4;
+  --home-bg-soft: #EDE7D8;
+  --home-paper: #FBF7EE;
+  --home-ink: #14110E;
+  --home-ink-2: #2A2520;
+  --home-muted: #6B6258;
+  --home-hairline: rgba(20,17,14,0.12);
+  --home-hairline-strong: rgba(20,17,14,0.28);
+  --home-injoo: #B2102B;
+  --home-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--home-bg);
+  color: var(--home-ink);
+}
+
+@keyframes nolzaTickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.home-ticker-scroll {
+  animation: nolzaTickerScroll 90s linear infinite;
+}
+.home-ticker-track:hover .home-ticker-scroll {
+  animation-play-state: paused;
+}
+.home-ticker-link {
+  text-decoration: none;
+  transition: color 0.25s var(--home-easing);
+}
+.home-ticker-link:hover {
+  color: var(--home-injoo) !important;
+}
+
+[data-home] a:focus-visible,
+[data-home] button:focus-visible {
+  outline: 2px solid var(--home-injoo);
+  outline-offset: 3px;
+}
+
+@keyframes nolzaHeroFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.home-hero-meta {
+  animation: nolzaHeroFade 0.6s var(--home-easing) both;
+}
+
+@keyframes nolzaShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.home-fallback-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+  animation: nolzaShimmer 6s linear infinite;
+  pointer-events: none;
+}
+
+.home-grain {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0.04; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ==========================================================================
+   Game shell — shared chrome that wraps every /games/* route.
+   Light theme by default; dark games swap the strip palette so the chrome
+   does not visually clash with their canvas.
+   ========================================================================== */
+[data-game-shell="light"] {
+  --shell-bg: #F4EFE4;
+  --shell-paper: #FBF7EE;
+  --shell-ink: #14110E;
+  --shell-ink-2: #2A2520;
+  --shell-muted: #6B6258;
+  --shell-hairline: rgba(20,17,14,0.12);
+  --shell-hairline-strong: rgba(20,17,14,0.28);
+  --shell-injoo: #B2102B;
+  background: var(--shell-bg);
+  color: var(--shell-ink);
+}
+[data-game-shell="dark"] {
+  --shell-bg: #0E0C0A;
+  --shell-paper: #1A1612;
+  --shell-ink: #F0E8D8;
+  --shell-ink-2: #C9BEA8;
+  --shell-muted: #8A7F6E;
+  --shell-hairline: rgba(240,232,216,0.12);
+  --shell-hairline-strong: rgba(240,232,216,0.25);
+  --shell-injoo: #E5C76B;
+  background: var(--shell-bg);
+  color: var(--shell-ink);
+}
+
+.game-shell-bar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: color-mix(in srgb, var(--shell-bg) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--shell-hairline);
+}
+.game-shell-bar__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 72px;
+  padding: 14px clamp(20px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(14px, 2vw, 28px);
+}
+.game-shell-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--shell-ink);
+  white-space: nowrap;
+}
+.game-shell-brand__name {
+  font-family: var(--font-noto-serif-kr), serif;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+.game-shell-brand__dot {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--shell-muted);
+}
+.game-shell-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  overflow: hidden;
+}
+.game-shell-meta__no {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 19px;
+  color: var(--shell-injoo);
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+.game-shell-meta__sep {
+  width: 22px;
+  height: 1px;
+  background: var(--shell-hairline-strong);
+  flex-shrink: 0;
+}
+.game-shell-meta__title {
+  font-family: var(--font-noto-serif-kr), serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--shell-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.game-shell-meta__section {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--shell-muted);
+  white-space: nowrap;
+}
+.game-shell-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.game-shell-back {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--shell-ink-2);
+  text-decoration: none;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+.game-shell-back:hover {
+  border-color: var(--shell-hairline-strong);
+  color: var(--shell-ink);
+}
+.game-shell-toggle {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 8px 16px;
+  border: 1px solid var(--shell-hairline-strong);
+  background: transparent;
+  color: var(--shell-ink);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+.game-shell-toggle:hover {
+  background: color-mix(in srgb, var(--shell-ink) 6%, transparent);
+}
+
+@media (max-width: 640px) {
+  .game-shell-bar__inner { min-height: 64px; padding: 10px 16px; }
+  .game-shell-brand__name { font-size: 20px; }
+  .game-shell-brand__dot { font-size: 14px; }
+  .game-shell-meta__section { display: none; }
+  .game-shell-meta__title { font-size: 14px; }
+  .game-shell-meta__no { font-size: 16px; }
+  .game-shell-back { display: none; }
+  .game-shell-toggle { padding: 7px 12px; font-size: 12px; }
+}
+
+/* === Page entry === */
+@keyframes pageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.page-in { animation: pageIn 0.3s ease-out; }
+
+/* === Fade in (with subtle lift) === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.5s ease-out both; }
+
+/* Staggered children */
+.stagger > * { opacity: 0; animation: fadeIn 0.5s ease-out forwards; }
+.stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger > *:nth-child(2) { animation-delay: 0.15s; }
+.stagger > *:nth-child(3) { animation-delay: 0.25s; }
+.stagger > *:nth-child(4) { animation-delay: 0.35s; }
+.stagger > *:nth-child(5) { animation-delay: 0.45s; }
+.stagger > *:nth-child(6) { animation-delay: 0.55s; }
+.stagger > *:nth-child(7) { animation-delay: 0.65s; }
+.stagger > *:nth-child(8) { animation-delay: 0.75s; }
+.stagger > *:nth-child(9) { animation-delay: 0.85s; }
+
+/* === Pulse border (cards) === */
+@keyframes pulseBorder {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.5);
+    border-color: #FF3B30;
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 59, 48, 0);
+    border-color: #ff6b63;
+  }
+}
+.card-hover { transition: transform 0.2s ease, border-color 0.2s ease; }
+.card-hover:hover {
+  animation: pulseBorder 1.4s ease-in-out infinite;
+  border-color: #FF3B30 !important;
+  transform: translateY(-3px);
+}
+
+/* === Progress fill === */
+.progress-fill { transition: width 0.3s ease-out; }
+
+/* === Palette slide (password palettes) === */
+@keyframes paletteSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.palette-enter { animation: paletteSlide 0.3s ease-out; }
+
+/* === Confetti === */
+@keyframes confettiFall {
+  to { transform: translateY(110vh) rotate(1080deg); opacity: 0; }
+}
+.confetti-piece {
+  position: absolute;
+  top: -24px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+
+/* === Bubble (deep game) === */
+@keyframes bubbleRise {
+  from { transform: translateY(0); opacity: 0.7; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+.bubble {
+  position: absolute;
+  bottom: -40px;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  animation: bubbleRise linear infinite;
+}
+
+/* === Stars (life game) === */
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 9999px;
+  animation: starTwinkle 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* === Terminal cursor === */
+@keyframes cursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.cursor-blink::after {
+  content: "▊";
+  margin-left: 2px;
+  animation: cursorBlink 1s step-end infinite;
+  color: #00ff88;
+}
+
+/* === Pop (button click) === */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.pop { animation: pop 0.3s ease-out; }
+
+/* === Red flash === */
+@keyframes redFlash {
+  0% { opacity: 0; }
+  20% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+.red-flash {
+  position: fixed;
+  inset: 0;
+  background: #FF3B30;
+  pointer-events: none;
+  animation: redFlash 0.6s ease-out forwards;
+  z-index: 60;
+}
+
+/* === Number bump === */
+@keyframes numberBump {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.number-bump { animation: numberBump 0.18s ease-out; }
+
+/* === Silence quick flash (any input = reset) === */
+@keyframes silenceFlashKeyframe {
+  0% { opacity: 0.32; }
+  100% { opacity: 0; }
+}
+.silence-flash {
+  position: fixed;
+  inset: 0;
+  background: #FF3B30;
+  pointer-events: none;
+  animation: silenceFlashKeyframe 0.25s ease-out forwards;
+  z-index: 100;
+}
+
+/* === Ahmolla shake (depth 20+) === */
+@keyframes ahmollaShake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25% { transform: translateX(-3px) rotate(-0.5deg); }
+  75% { transform: translateX(3px) rotate(0.5deg); }
+}
+.ahmolla-shake { animation: ahmollaShake 0.35s ease-in-out infinite; }
+
+/* === Ahmolla decision flash → fade to result === */
+@keyframes ahmollaResultBg {
+  0% { background-color: #FF3B30; }
+  60% { background-color: #FFD9D6; }
+  100% { background-color: #fafafa; }
+}
+.ahmolla-result-bg {
+  animation: ahmollaResultBg 1s ease-out forwards;
+}
+
+/* === Ppalli fail flash === */
+@keyframes ppalliFailFlash {
+  0% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+.ppalli-fail-flash {
+  position: fixed;
+  inset: 0;
+  background: #FF3B30;
+  pointer-events: none;
+  animation: ppalliFailFlash 0.6s ease-out forwards;
+  z-index: 100;
+}
+
+/* === AdSense mobile sticky 공간 확보 ===
+   실제 AdSense 클라이언트 ID가 설정되어 광고가 렌더될 때만 하단 60px를 비워두도록
+   <body>에 data-ads="on"을 붙여 활성화한다. 미설정 상태에서는 광고가 렌더되지 않으므로
+   불필요한 빈 공간을 만들지 않는다. */
+@media (max-width: 767px) {
+  body[data-ads="on"] {
+    padding-bottom: 60px;
+  }
+  body[data-ads="on"] [data-mobile-ad-lift="24"] {
+    bottom: 84px !important;
+  }
+  body[data-ads="on"] [data-mobile-ad-lift="16"] {
+    bottom: 76px !important;
+  }
+  body[data-ads="on"] [data-mobile-ad-lift="20"] {
+    bottom: 80px !important;
+  }
+}
+
+/* === Butterfly: rain, storm, fade ins === */
+@keyframes butterflyRain {
+  from { transform: translateY(-20vh); opacity: 0; }
+  10% { opacity: 1; }
+  to { transform: translateY(110vh); opacity: 0.8; }
+}
+.butterfly-raindrop {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(180, 200, 255, 0.7));
+  animation: butterflyRain linear infinite;
+  pointer-events: none;
+}
+@keyframes butterflyStormShake {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-3px, -2px) rotate(-0.4deg); }
+  40% { transform: translate(3px, 1px) rotate(0.4deg); }
+  60% { transform: translate(-2px, 2px) rotate(-0.3deg); }
+  80% { transform: translate(2px, -1px) rotate(0.3deg); }
+}
+.butterfly-storm {
+  animation: butterflyStormShake 0.18s linear infinite;
+}
+@keyframes butterflyFlap {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(0.7); }
+}
+.butterfly-flap {
+  animation: butterflyFlap 0.4s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes butterflyLightning {
+  0%, 100% { opacity: 0; }
+  10%, 15% { opacity: 0.85; }
+}
+.butterfly-lightning {
+  position: absolute;
+  inset: 0;
+  background: white;
+  pointer-events: none;
+  animation: butterflyLightning 4s ease-out infinite;
+}
+@keyframes butterflyDriftLeft {
+  from { transform: translateX(-50px); opacity: 0.2; }
+  to { transform: translateX(50px); opacity: 0.5; }
+}
+.butterfly-wind {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  animation: butterflyDriftLeft 2s ease-in-out infinite alternate;
+}
+
+/* === Dilemma trolley animation === */
+@keyframes trolleyWheelSpin {
+  to { transform: rotate(360deg); }
+}
+.trolley-wheel { animation: trolleyWheelSpin 0.4s linear infinite; transform-origin: center; }
+
+@keyframes dilemmaPersonFall {
+  0% { transform: translateY(0) rotate(0); opacity: 1; }
+  100% { transform: translateY(40px) rotate(80deg); opacity: 0.4; }
+}
+.dilemma-fall { animation: dilemmaPersonFall 0.6s ease-in forwards; }
+
+@keyframes dilemmaSketchIn {
+  0% { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+  100% { stroke-dasharray: 1000; stroke-dashoffset: 0; }
+}
+.dilemma-sketch-in {
+  animation: dilemmaSketchIn 1.2s ease-out forwards;
+}
+
+@keyframes dilemmaWobble {
+  0%, 100% { transform: rotate(-0.5deg); }
+  50% { transform: rotate(0.5deg); }
+}
+.dilemma-wobble {
+  display: inline-block;
+  animation: dilemmaWobble 4s ease-in-out infinite;
+}
+
+@keyframes dilemmaScalesTip {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(var(--tip, 12deg)); }
+}
+.dilemma-scales-tip {
+  animation: dilemmaScalesTip 1.2s ease-out forwards;
+  transform-origin: center;
+}
+
+/* === Resonance wave glow === */
+@keyframes resonanceGlow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(100, 200, 255, 0.4)); }
+  50% { filter: drop-shadow(0 0 18px rgba(100, 200, 255, 0.8)); }
+}
+.resonance-active { animation: resonanceGlow 1.5s ease-in-out infinite; }
+
+/* === Ppalli grandfather body shake (stage 3+) === */
+@keyframes ppalliBodyShake1 {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(-1.5px, -0.5px) rotate(-0.6deg); }
+  75% { transform: translate(1.5px, 0.5px) rotate(0.6deg); }
+}
+.ppalli-body-shake-1 {
+  animation: ppalliBodyShake1 0.3s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes ppalliBodyShake2 {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(-3px, -1px) rotate(-1.5deg); }
+  75% { transform: translate(3px, 1px) rotate(1.5deg); }
+}
+.ppalli-body-shake-2 {
+  animation: ppalliBodyShake2 0.18s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes ppalliBodyShake3 {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-4px, -2px) rotate(-2deg); }
+  40% { transform: translate(3px, 1px) rotate(2deg); }
+  60% { transform: translate(-3px, 2px) rotate(-1.5deg); }
+  80% { transform: translate(4px, -1px) rotate(1.5deg); }
+}
+.ppalli-body-shake-3 {
+  animation: ppalliBodyShake3 0.12s linear infinite;
+  transform-origin: center;
+}
+
+/* === Back arrow (top-left, all game pages) === */
+.back-arrow {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 50;
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-size: 24px;
+  line-height: 1;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+.back-arrow:hover {
+  background: rgba(0, 0, 0, 0.08);
+  transform: translateX(-3px);
+}
+.back-arrow.dark {
+  color: rgba(255, 255, 255, 0.7);
+}
+.back-arrow.dark:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* === Button press (apply to any clickable element) === */
+.btn-press {
+  transition: transform 0.1s ease;
+}
+.btn-press:active {
+  transform: scale(0.95);
+}
+
+/* === Page entry — slightly stronger lift === */
+@keyframes pageInLift {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-in {
+  animation: pageInLift 0.35s cubic-bezier(0.22, 0.9, 0.35, 1) both;
+}
+
+/* === Share button (bottom-right floating) === */
+.share-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 50;
+  display: inline-flex;
+  height: 52px;
+  width: 52px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-size: 22px;
+  background: #FF3B30;
+  color: white;
+  box-shadow: 0 8px 24px rgba(255, 59, 48, 0.35);
+  transition: transform 0.15s ease;
+}
+.share-fab:hover { transform: scale(1.06); }

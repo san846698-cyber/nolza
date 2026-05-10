@@ -1,0 +1,23 @@
+﻿
+> nolza-fun@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3399
+- Network:       http://26.162.27.211:3399
+✓ Ready in 627ms
+node.exe : ⨯ Another next dev server is already running.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (⨯ Another next ...lready running.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+- Local:        http://localhost:3000
+- PID:          26572
+- Dir:          C:\Users\san84\nolza
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 26572 /F to stop it.
+[?25h
