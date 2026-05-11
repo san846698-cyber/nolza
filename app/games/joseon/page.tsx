@@ -280,6 +280,13 @@ export default function JoseonPage(): ReactElement {
   transform-origin: top center;
   overflow: hidden;
 }
+.j-ornament { width: 64px; height: 64px; }
+@media (max-width: 640px) {
+  .j-ornament { width: 40px; height: 40px; opacity: 0.55 !important; }
+}
+@media (max-width: 380px) {
+  .j-ornament { display: none; }
+}
 .j-ink {
   opacity: 0;
   animation: inkBloom 0.7s ease-out forwards;
@@ -402,9 +409,8 @@ function CornerOrnament({ position }: { position: "tl" | "tr" | "bl" | "br" }): 
   return (
     <svg
       aria-hidden
-      width="64"
-      height="64"
       viewBox="0 0 64 64"
+      className="j-ornament"
       style={{ position: "fixed", zIndex: 20, opacity: 0.85, ...map[position] }}
     >
       <path d="M 4 4 L 60 4 L 60 12 L 12 12 L 12 60 L 4 60 Z" fill={DANCHEONG_RED} />
@@ -968,7 +974,7 @@ function ResultView({
             boxShadow: `inset 0 0 0 4px ${HANJI}, inset 0 0 0 5px ${DANCHEONG_RED}`,
           }}
         >
-          <div style={{ fontSize: 52, marginBottom: 6 }}>{cls.emoji}</div>
+          <div style={{ fontSize: "clamp(40px, 12vw, 52px)", marginBottom: 6 }}>{cls.emoji}</div>
           <div
             style={{
               fontFamily: SERIF,
@@ -984,7 +990,7 @@ function ResultView({
           <div
             style={{
               fontFamily: SERIF,
-              fontSize: 44,
+              fontSize: "clamp(30px, 9vw, 44px)",
               fontWeight: 800,
               color: INK,
               letterSpacing: "0.05em",

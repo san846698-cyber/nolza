@@ -10,6 +10,57 @@ export type Lang = "ko" | "en";
 export type CatId = "play" | "self" | "sim" | "world";
 export type FontKind = "serif" | "sans" | "mono";
 
+// Tile-level personality. `paper` is the default fallback for any game
+// whose `skin` is undefined, so migration can be incremental.
+export type Skin =
+  | "paper"
+  | "block"
+  | "hand"
+  | "pixel"
+  | "mono"
+  | "sticker";
+
+export type Tone = 1 | 2 | 3 | 4 | 5;
+
+export interface Category {
+  id: CatId;
+  labelKo: string;
+  labelEn: string;
+  subKo: string;
+  subEn: string;
+}
+
+export const CATEGORIES: Category[] = [
+  {
+    id: "play",
+    labelKo: "도전",
+    labelEn: "Challenge",
+    subKo: "손맛으로 도전하세요 — 반응, 타이밍, 정확도.",
+    subEn: "Reflex, timing, precision. Your hand decides.",
+  },
+  {
+    id: "self",
+    labelKo: "진단",
+    labelEn: "Know Yourself",
+    subKo: '결과가 "당신은 X" 형태인 자기 진단들.',
+    subEn: 'Tests that end with "You are…"',
+  },
+  {
+    id: "sim",
+    labelKo: "시뮬",
+    labelEn: "Live It",
+    subKo: "가상의 시나리오를 직접 살아보는 체험.",
+    subEn: "Step into a scenario and live it out.",
+  },
+  {
+    id: "world",
+    labelKo: "탐험",
+    labelEn: "Explore",
+    subKo: "세상의 규모와 역사, 데이터로 보기.",
+    subEn: "The shape of the world — at scale.",
+  },
+];
+
 export interface Palette {
   bg: string;
   paper: string;
@@ -35,6 +86,10 @@ export interface Game {
   palette: Palette;
   font: FontKind;
   thumb?: string;
+  // New tile-level fields (optional during migration; default `paper`).
+  skin?: Skin;
+  tone?: Tone;
+  art?: string;
 }
 
 export const T: Record<Lang, {
@@ -255,54 +310,63 @@ export const GAMES: Game[] = [
     ko: { title: "반응속도", sub: "초록불이 켜지면 — 지금!", kicker: "Reaction time" },
     en: { title: "Reaction Speed", sub: "Tap the second it turns green", kicker: "Reaction time" },
     palette: P.forest, font: "mono", thumb: "/thumbnails/react.png",
+    skin: "pixel", art: "react",
   },
   {
     id: "timesense", href: "/games/timesense", cat: "play", no: "02",
     ko: { title: "시간 감각", sub: "10초 — 눈을 감고 맞춰보세요", kicker: "시간의 무게" },
     en: { title: "Time Sense", sub: "Close your eyes. Stop at 10s.", kicker: "Internal clock" },
     palette: P.paperBlue, font: "serif", thumb: "/thumbnails/timesense.png",
+    skin: "mono",
   },
   {
     id: "circle", href: "/games/circle", cat: "play", no: "03",
     ko: { title: "완벽한 원 그리기", sub: "한 번에 그릴수록 인생도 둥글어진다", kicker: "손맛 정확도" },
     en: { title: "Draw a Perfect Circle", sub: "One stroke, one chance", kicker: "Precision by hand" },
     palette: P.paperBlue, font: "serif", thumb: "/thumbnails/circle.png",
+    skin: "hand", tone: 2,
   },
   {
     id: "silence", href: "/games/silence", cat: "play", no: "04",
     ko: { title: "SILENCE", sub: "아무것도 하지 마세요", kicker: "5분 침묵 챌린지" },
     en: { title: "SILENCE.", sub: "Do absolutely nothing", kicker: "5-minute silence challenge" },
     palette: P.void, font: "sans", thumb: "/thumbnails/silence.png",
+    skin: "mono",
   },
   {
     id: "ppalli", href: "/games/ppalli", cat: "play", no: "05",
     ko: { title: "빨리빨리", sub: "할아버지가 재촉합니다", kicker: "한국식 속도전" },
     en: { title: "Ppalli-ppalli", sub: "Grandpa is impatient", kicker: "Korean velocity" },
     palette: P.tape, font: "sans", thumb: "/thumbnails/ppalli.png",
+    skin: "block", tone: 3,
   },
   {
     id: "password", href: "/games/password", cat: "play", no: "06",
     ko: { title: "한국판 비밀번호 게임", sub: "규칙은 점점 이상해진다", kicker: "조건의 미로" },
     en: { title: "Korean Password Game", sub: "Rules get weirder by the rule", kicker: "A maze of conditions" },
     palette: P.tape, font: "mono", thumb: "/thumbnails/password.png",
+    skin: "pixel",
   },
   {
     id: "traffic", href: "/games/traffic", cat: "play", no: "07",
     ko: { title: "교통 지옥", sub: "빨간 차를 꺼내줘", kicker: "슬라이딩 블록 퍼즐 15레벨" },
     en: { title: "Traffic Hell", sub: "Get the red car out", kicker: "15 sliding-block puzzles" },
-    palette: P.ijyDark, font: "mono",
+    palette: P.ijyDark, font: "mono", thumb: "/thumbnails/traffic.png",
+    skin: "block", tone: 1,
   },
   {
     id: "highnote", href: "/games/highnote", cat: "play", no: "08",
     ko: { title: "고음 챌린지", sub: "당신은 어디까지 올라가나요", kicker: "마이크 ON" },
     en: { title: "High Note Challenge", sub: "How high can you really go?", kicker: "Mic on" },
     palette: P.emberDark, font: "sans", thumb: "/thumbnails/highnote.jpg",
+    skin: "block", tone: 5,
   },
   {
     id: "aqua-fishing", href: "/games/aqua-fishing", cat: "play", no: "09",
     ko: { title: "심해 낚시", sub: "수면부터 심연까지 50종", kicker: "캐스팅 & 릴링" },
     en: { title: "Aqua Fishing", sub: "50 species from surface to abyss", kicker: "Cast & reel" },
-    palette: P.deepSea, font: "sans",
+    palette: P.deepSea, font: "sans", thumb: "/thumbnails/aqua-fishing.png",
+    skin: "sticker",
   },
 
   // §02 진단 — 결과가 "당신은 X" 형태인 자기 진단.
@@ -311,78 +375,84 @@ export const GAMES: Game[] = [
     ko: { title: "KBTI", sub: "한국식 성격 유형", kicker: "MBTI의 한국어 버전" },
     en: { title: "KBTI", sub: "A Korean personality test", kicker: "MBTI, but Korean" },
     palette: P.tape, font: "sans", thumb: "/thumbnails/kbti.jpg",
+    skin: "block", tone: 2, art: "kbti",
   },
   {
     id: "mbti-depth", href: "/games/mbti-depth", cat: "self", no: "11",
     ko: { title: "MBTI 심층 분석", sub: "당신의 MBTI, 더 깊이", kicker: "4지표 × 4단계 = 256가지" },
     en: { title: "Deep MBTI Analysis", sub: "Your MBTI, but make it specific", kicker: "4 axes × 4 levels = 256 results" },
     palette: P.ink, font: "serif", thumb: "/thumbnails/mbti-depth.jpg",
+    skin: "paper",
   },
   {
     id: "attachment", href: "/games/attachment", cat: "self", no: "12",
     ko: { title: "애착 유형 테스트", sub: "나는 왜 이렇게 사랑할까", kicker: "16문항 진단" },
     en: { title: "Attachment Style", sub: "Why do I love this way?", kicker: "16-item test" },
     palette: P.thread, font: "serif", thumb: "/thumbnails/attachment.jpg",
+    skin: "hand", tone: 3,
   },
   {
     id: "dilemma", href: "/games/dilemma", cat: "self", no: "13",
     ko: { title: "도덕적 딜레마", sub: "당신이라면 어떻게", kicker: "윤리적 질문" },
     en: { title: "Moral Dilemma", sub: "What would you do?", kicker: "Ethical questions" },
     palette: P.ink, font: "serif", thumb: "/thumbnails/dilemma.png",
+    skin: "sticker",
   },
   {
     id: "average", href: "/games/average", cat: "self", no: "14",
     ko: { title: "평균이 되어라", sub: "튀지 말고, 너무 처지지도 말고", kicker: "한국식 평균값" },
     en: { title: "Be Average", sub: "Don't stand out, don't fall behind", kicker: "The Korean mean" },
     palette: P.paper, font: "sans", thumb: "/thumbnails/average.png",
+    skin: "paper",
   },
   {
     id: "nunchi", href: "/games/nunchi", cat: "self", no: "15",
     ko: { title: "눈치 측정기", sub: "공기를 읽는 한국인의 감각", kicker: "사회적 센서" },
     en: { title: "Nunchi-meter", sub: "The Korean art of reading the room", kicker: "Social radar" },
     palette: P.paper, font: "sans", thumb: "/thumbnails/nunchi.png",
+    skin: "hand", tone: 1,
   },
   {
     id: "ahmolla", href: "/games/ahmolla", cat: "self", no: "16",
     ko: { title: "아 몰라", sub: "고민이 깊어지면, 결국 그냥…", kicker: "결정 회피" },
     en: { title: "Ah, Whatever", sub: "When thinking fails, choose chaos", kicker: "Decision fatigue" },
     palette: P.thread, font: "sans", thumb: "/thumbnails/ahmolla.png",
+    skin: "block", tone: 3,
   },
   {
     id: "saju", href: "/games/saju", cat: "self", no: "17",
     ko: { title: "사주 풀이", sub: "당신의 여덟 글자", kicker: "명리학 입문" },
     en: { title: "Saju Reading", sub: "Your eight characters", kicker: "Eastern astrology" },
     palette: P.saju, font: "serif", thumb: "/thumbnails/saju.jpg",
+    skin: "sticker",
   },
   {
     id: "kdrama-couple", href: "/games/kdrama-couple", cat: "self", no: "18",
     ko: { title: "K드라마 커플", sub: "나의 운명적 케미는", kicker: "서사 매칭 테스트" },
     en: { title: "Your K-Drama Couple", sub: "What's your fated trope?", kicker: "Narrative matchmaker" },
-    palette: P.rosegold, font: "serif", thumb: "/thumbnails/kdrama-couple.jpg",
+    palette: P.rosegold, font: "serif", thumb: "/thumbnails/kdrama-couple.png",
+    skin: "hand", tone: 3,
   },
   {
     id: "joseon-couple", href: "/games/joseon-couple", cat: "self", no: "19",
     ko: { title: "조선시대 커플", sub: "그 시절, 나의 인연", kicker: "전통 인연 매칭" },
     en: { title: "Joseon Couple", sub: "Your destined match, 500 years ago", kicker: "Joseon matchmaker" },
     palette: P.thread, font: "serif", thumb: "/thumbnails/joseon-couple.jpg",
+    skin: "paper",
   },
   {
     id: "friend-match", href: "/games/friend-match", cat: "self", no: "20",
     ko: { title: "우리 사이, 하늘이 정해놨다", sub: "두 사람의 생년월일로 보는 궁합", kicker: "사주 기반 친구 궁합" },
     en: { title: "Written in the Stars", sub: "Saju compatibility for two birth years", kicker: "Friend-match reading" },
-    palette: P.saju, font: "serif", thumb: "/thumbnails/saju.jpg",
-  },
-  {
-    id: "bias", href: "/games/bias", cat: "self", no: "21",
-    ko: { title: "K팝 바이어스 토너먼트", sub: "최애를 가려보세요", kicker: "32강 → 결승" },
-    en: { title: "K-Pop Bias Tournament", sub: "Crown your ultimate bias", kicker: "Round of 32 to finals" },
-    palette: P.drama, font: "sans", thumb: "/thumbnails/kpop.png",
+    palette: P.saju, font: "serif", thumb: "/thumbnails/friend-match.png",
+    skin: "sticker",
   },
   {
     id: "battle-what-if", href: "/games/battle-what-if", cat: "self", no: "22",
     ko: { title: "전쟁의 갈림길", sub: "한니발이라면 어떻게 했을까", kicker: "지휘 성향 진단" },
     en: { title: "Crossroads of War", sub: "What would Hannibal have done?", kicker: "Command-style assessment" },
     palette: P.war, font: "serif", thumb: "/thumbnails/battle-what-if.jpg",
+    skin: "block", tone: 4,
   },
 
   // §03 시뮬 — 가상 시나리오를 살아보는 체험형.
@@ -391,30 +461,35 @@ export const GAMES: Game[] = [
     ko: { title: "이재용 돈 다 써봐", sub: "재벌 총수의 하루", kicker: "재벌 시뮬레이터" },
     en: { title: "Spend Lee Jae-yong's Money", sub: "A day as a chaebol heir", kicker: "Chaebol simulator" },
     palette: P.ijyDark, font: "serif", thumb: "/thumbnails/ijy.png",
+    skin: "block", tone: 1, art: "ijy",
   },
   {
     id: "salary-melt", href: "/games/salary-melt", cat: "sim", no: "24",
     ko: { title: "월급 실시간 소멸", sub: "카드값 → 월세 → 0원", kicker: "한국인의 25일" },
     en: { title: "Salary, Melting", sub: "Watch your paycheck vanish", kicker: "25 days of a Korean" },
     palette: P.receipt, font: "mono", thumb: "/thumbnails/salary.png",
+    skin: "mono",
   },
   {
     id: "joseon", href: "/games/joseon", cat: "sim", no: "25",
     ko: { title: "조선시대 나라면", sub: "양반? 상민? 노비?", kicker: "신분제 시뮬" },
     en: { title: "If I Lived in Joseon", sub: "Yangban, commoner, or slave?", kicker: "Class-system sim" },
     palette: P.paperGold, font: "serif", thumb: "/thumbnails/joseon.jpg",
+    skin: "paper",
   },
   {
     id: "asteroid", href: "/games/asteroid", cat: "sim", no: "26",
     ko: { title: "소행성 발사대", sub: "지구를 망쳐보자", kicker: "내 동네에 떨어뜨리면" },
     en: { title: "Asteroid Launcher", sub: "Ruin the Earth", kicker: "What if it hit your hometown?" },
     palette: P.cosmos, font: "sans", thumb: "/thumbnails/asteroid.jpg",
+    skin: "pixel",
   },
   {
     id: "gambling", href: "/games/gambling", cat: "sim", no: "27",
     ko: { title: "도박 심리학", sub: "이길 것 같은 그 느낌의 정체", kicker: "왜 우리는 베팅하는가" },
     en: { title: "Psychology of Gambling", sub: "The feeling of 'I'll win this time'", kicker: "Why we bet" },
     palette: P.ink, font: "serif", thumb: "/thumbnails/gambling.jpg",
+    skin: "block", tone: 3,
   },
 
   // §04 탐험 — 세상의 데이터/역사/규모를 시각화.
@@ -423,41 +498,48 @@ export const GAMES: Game[] = [
     ko: { title: "마리아나 해구", sub: "11,034m 아래로", kicker: "심해 스크롤" },
     en: { title: "Mariana Trench", sub: "11,034 m straight down", kicker: "A deep-sea scroll" },
     palette: P.deepSea, font: "sans", thumb: "/thumbnails/deep.png",
+    skin: "pixel",
   },
   {
     id: "scale", href: "/games/scale", cat: "world", no: "29",
     ko: { title: "크기 비교", sub: "개미부터 우주까지", kicker: "스케일의 우주" },
     en: { title: "Scale of Things", sub: "From an ant to the universe", kicker: "A cosmic ruler" },
     palette: P.cosmos, font: "mono", thumb: "/thumbnails/scale.png",
+    skin: "mono", art: "scale",
   },
   {
     id: "timeline", href: "/games/timeline", cat: "world", no: "30",
     ko: { title: "세계사 타임라인", sub: "수메르부터 오늘까지", kicker: "한 줄로 본 인류사" },
     en: { title: "World History Timeline", sub: "Sumer to today", kicker: "Humanity, on one line" },
     palette: P.emberDark, font: "serif", thumb: "/thumbnails/timeline.jpg",
+    skin: "sticker",
   },
   {
     id: "probability", href: "/games/probability", cat: "world", no: "31",
     ko: { title: "확률 체험기", sub: "1%가 얼마나 자주 일어나는지", kicker: "직감과 진실" },
     en: { title: "Probability Lab", sub: "How often is 1%, really?", kicker: "Gut vs. math" },
     palette: P.paperBlue, font: "mono", thumb: "/thumbnails/probability.jpg",
+    skin: "pixel",
   },
   {
     id: "auction", href: "/games/auction", cat: "world", no: "32",
     ko: { title: "유물 감정사", sub: "역사의 가격을 맞혀라", kicker: "공룡 화석부터 아인슈타인 편지까지" },
     en: { title: "The Appraiser", sub: "Guess what history sold for", kicker: "From T-rex bones to Einstein's letters" },
     palette: P.paperGold, font: "serif", thumb: "/thumbnails/auction.jpg",
+    skin: "paper", art: "auction",
   },
   {
     id: "rewind", href: "/games/rewind", cat: "world", no: "33",
     ko: { title: "한국말 되감기", sub: "문장을 시간 속으로 되감아 보세요", kicker: "1447년까지" },
     en: { title: "Korean Rewind", sub: "Rewind a sentence through Korean history", kicker: "All the way to 1447" },
     palette: P.paperGold, font: "serif", thumb: "/thumbnails/rewind.jpg",
+    skin: "hand", tone: 2, art: "rewind",
   },
   {
     id: "korean-name", href: "/games/korean-name", cat: "world", no: "34",
     ko: { title: "한국 이름 생성기", sub: "당신만의 한글 이름", kicker: "이름의 의미" },
     en: { title: "Korean Name Generator", sub: "Your own name in Hangul", kicker: "What names mean" },
     palette: P.paperGold, font: "sans", thumb: "/thumbnails/korean-name.jpg",
+    skin: "hand", tone: 1,
   },
 ];

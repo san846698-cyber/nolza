@@ -7,6 +7,7 @@ import {
   Caveat,
   Gaegu,
   Fraunces,
+  Press_Start_2P,
 } from "next/font/google";
 import "./globals.css";
 import LocaleToggle from "./components/LocaleToggle";
@@ -61,6 +62,13 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
+const pressStart = Press_Start_2P({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-press-start",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://nolza.fun",
@@ -79,7 +87,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${notoSans.variable} ${notoSerif.variable} ${jetBrains.variable} ${inter.variable} ${caveat.variable} ${gaegu.variable} ${fraunces.variable}`}
+      className={`${notoSans.variable} ${notoSerif.variable} ${jetBrains.variable} ${inter.variable} ${caveat.variable} ${gaegu.variable} ${fraunces.variable} ${pressStart.variable}`}
     >
       <head>
         {adsenseClient && !adsenseClient.startsWith("ca-pub-XXX") && (

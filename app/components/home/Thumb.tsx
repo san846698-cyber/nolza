@@ -1,188 +1,76 @@
-"use client";
+import type { Game, Skin } from "@/lib/games-home";
+import ScaleMotif from "./motifs/Scale";
+import AuctionMotif from "./motifs/Auction";
+import RewindMotif from "./motifs/Rewind";
+import ReactMotif from "./motifs/React";
+import KbtiMotif from "./motifs/Kbti";
+import IjyMotif from "./motifs/Ijy";
 
-import { useState } from "react";
-import type { Palette } from "@/lib/games-home";
+const REGISTRY: Record<string, React.FC<{ skin: Skin }>> = {
+  scale: ScaleMotif,
+  auction: AuctionMotif,
+  rewind: RewindMotif,
+  react: ReactMotif,
+  kbti: KbtiMotif,
+  ijy: IjyMotif,
+};
 
-interface ThumbProps {
-  src?: string;
-  alt: string;
-  palette: Palette;
-  no: string;
-  kicker?: string;
-}
-
-export function Thumb({ src, alt, palette, no, kicker }: ThumbProps) {
-  const [errored, setErrored] = useState(false);
-
-  if (src && !errored) {
+export default function Thumb({ game, skin }: { game: Game; skin: Skin }) {
+  if (game.thumb) {
     return (
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: palette.bg,
-        }}
-      >
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          decoding="async"
-          onError={() => setErrored(true)}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
-          }}
-        />
-      </div>
+      <img
+        src={game.thumb}
+        alt=""
+        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+      />
     );
   }
+  const Motif = game.art ? REGISTRY[game.art] : undefined;
+  if (Motif) return <Motif skin={skin} />;
+  return <DefaultMark skin={skin} />;
+}
 
-  // Editorial fallback — abstract diagram in palette colors.
-  // Uses a fine grid + arc + kicker so cards without thumbnails still feel
-  // designed instead of empty.
-  return (
-    <div
-      className="home-fallback-shimmer"
-      style={{
-        position: "absolute",
-        inset: 0,
-        background: `linear-gradient(140deg, ${palette.bg} 0%, ${palette.paper} 100%)`,
-        overflow: "hidden",
-      }}
-    >
-      {/* fine grid */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `linear-gradient(${palette.line} 1px, transparent 1px), linear-gradient(90deg, ${palette.line} 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-          opacity: 0.45,
-        }}
-      />
-
-      {/* large arc */}
-      <svg
-        aria-hidden
-        viewBox="0 0 200 200"
-        preserveAspectRatio="none"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        <circle
-          cx="160"
-          cy="40"
-          r="120"
-          fill="none"
-          stroke={palette.accent}
-          strokeWidth="0.6"
-          opacity="0.55"
-        />
-        <circle
-          cx="160"
-          cy="40"
-          r="80"
-          fill="none"
-          stroke={palette.accent}
-          strokeWidth="0.6"
-          opacity="0.35"
-        />
-        <line
-          x1="0"
-          y1="160"
-          x2="200"
-          y2="60"
-          stroke={palette.accent}
-          strokeWidth="0.4"
-          opacity="0.4"
-        />
+function DefaultMark({ skin }: { skin: Skin }) {
+  if (skin === "pixel") {
+    return (
+      <svg viewBox="0 0 10 10" className="w-full h-full" shapeRendering="crispEdges">
+        <rect x="3" y="3" width="4" height="4" fill="var(--skin-pixel-accent)" />
       </svg>
-
-      {/* corner inset frame */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 14,
-          borderTop: `1px solid ${palette.line}`,
-          borderLeft: `1px solid ${palette.line}`,
-        }}
-      />
-
-      {/* kicker text — rotated, low-key */}
-      {kicker && (
-        <span
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: 18,
-            transform: "rotate(-90deg) translate(50%, -50%)",
-            transformOrigin: "top left",
-            fontFamily: "var(--font-inter), sans-serif",
-            fontSize: 9,
-            letterSpacing: "0.35em",
-            textTransform: "uppercase",
-            color: palette.sub,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {kicker}
-        </span>
-      )}
-
-      {/* large italic numeral, offset to the right so it feels composed */}
-      <span
-        style={{
-          position: "absolute",
-          right: 22,
-          bottom: 14,
-          fontFamily: "var(--font-fraunces), serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: 96,
-          lineHeight: 1,
-          color: palette.accent,
-          opacity: 0.92,
-          letterSpacing: "-0.04em",
-        }}
+    );
+  }
+  if (skin === "hand") {
+    return (
+      <svg
+        viewBox="0 0 100 100"
+        className="w-full h-full"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        fill="none"
+        strokeLinecap="round"
       >
-        {no}
-      </span>
-
-      {/* tick marks bottom */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          left: 18,
-          right: 18,
-          bottom: 14,
-          height: 6,
-          display: "flex",
-          alignItems: "flex-end",
-          gap: 4,
-          opacity: 0.45,
-        }}
-      >
-        {Array.from({ length: 24 }).map((_, i) => (
-          <span
-            key={i}
-            style={{
-              flex: 1,
-              height: i % 4 === 0 ? 6 : 3,
-              background: palette.sub,
-            }}
-          />
-        ))}
-      </div>
-    </div>
+        <path d="M20 50 Q 50 10, 80 50 T 20 50" />
+      </svg>
+    );
+  }
+  if (skin === "block") {
+    return (
+      <svg viewBox="0 0 100 100" className="w-full h-full">
+        <rect x="28" y="28" width="44" height="44" fill="currentColor" opacity="0.85" />
+      </svg>
+    );
+  }
+  if (skin === "mono") {
+    return (
+      <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeWidth="1.2">
+        <line x1="20" y1="42" x2="80" y2="42" strokeDasharray="3 4" />
+        <line x1="20" y1="50" x2="80" y2="50" strokeDasharray="3 4" />
+        <line x1="20" y1="58" x2="60" y2="58" strokeDasharray="3 4" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 100 100" className="w-full h-full">
+      <circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" strokeWidth="1.2" />
+    </svg>
   );
 }

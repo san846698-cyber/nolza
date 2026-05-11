@@ -699,10 +699,10 @@ export default function AhmollaGame() {
   /* Ahmolla button style — grows with depth (no fixed positioning; wrapped in fixed wrapper) */
   const ahmollaStyle: React.CSSProperties = ahmollaHuge
     ? {
-        width: "50vw",
+        width: "min(50vw, calc(100vw - 48px))",
         maxWidth: 600,
-        padding: "32px 40px",
-        fontSize: 28,
+        padding: "clamp(20px, 5vw, 32px) clamp(24px, 6vw, 40px)",
+        fontSize: "clamp(20px, 5.5vw, 28px)",
         fontWeight: 800,
         borderRadius: 9999,
         background: "#FF3B30",
@@ -710,6 +710,7 @@ export default function AhmollaGame() {
         border: "none",
         cursor: "pointer",
         boxShadow: "0 12px 36px rgba(255, 59, 48, 0.4)",
+        whiteSpace: "nowrap",
       }
     : {
         padding: `${Math.min(10 + depth * 0.4, 22)}px ${Math.min(20 + depth * 0.8, 40)}px`,
@@ -722,6 +723,7 @@ export default function AhmollaGame() {
         cursor: "pointer",
         boxShadow: "0 6px 20px rgba(255, 59, 48, 0.35)",
         transition: "padding 0.2s ease, font-size 0.2s ease",
+        maxWidth: "calc(100vw - 48px)",
       };
 
   /* ── INTRO phase ── */
@@ -928,8 +930,8 @@ export default function AhmollaGame() {
         className="tabular-nums"
         style={{
           position: "fixed",
-          left: 72,
-          top: 28,
+          left: "max(64px, env(safe-area-inset-left, 0px) + 56px)",
+          top: 24,
           fontSize: 13,
           color: "#aaa",
           letterSpacing: "0.15em",
@@ -976,9 +978,9 @@ export default function AhmollaGame() {
         ) : (
           <div className="text-center w-full" key={current.id}>
             <h1
-              className="fade-in"
+              className="fade-in mobile-wrap"
               style={{
-                fontSize: 28,
+                fontSize: "clamp(20px, 5.5vw, 28px)",
                 fontWeight: 600,
                 lineHeight: 1.5,
                 color: "#1a1a1a",
@@ -1002,9 +1004,11 @@ export default function AhmollaGame() {
                     background: "white",
                     border: "1px solid #e5e5e5",
                     color: "#1a1a1a",
-                    padding: "18px 16px",
-                    fontSize: 16,
+                    padding: "18px 14px",
+                    fontSize: "clamp(13px, 3.8vw, 16px)",
                     fontWeight: 500,
+                    wordBreak: "keep-all",
+                    overflowWrap: "anywhere",
                     cursor: "pointer",
                     boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
                     transform: `translate(${optOffsets[i].x}px, ${optOffsets[i].y}px)`,
@@ -1038,7 +1042,7 @@ export default function AhmollaGame() {
           className="fade-in"
           style={{
             marginBottom: 10,
-            maxWidth: 320,
+            maxWidth: "min(320px, calc(100vw - 48px))",
             textAlign: "right",
             fontSize: 14,
             color: "#FF3B30",

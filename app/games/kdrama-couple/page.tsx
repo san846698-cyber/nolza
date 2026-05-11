@@ -44,15 +44,19 @@ type GeneratedName = {
   pronunciation: string;
 };
 
+type Loc = "ko" | "en";
+type Bi = { ko: string; en: string };
+
 type DialogueLine = { who: 1 | 2; text: string };
+type DialogueLineBi = { who: 1 | 2; text: Bi };
 
 type Genre = {
   key: string;
-  name: string;
+  name: Bi;
   emoji: string;
-  meeting: (a: string, b: string) => string;
-  signatureScene: (a: string, b: string) => string;
-  lines: (a: string, b: string) => DialogueLine[];
+  meeting: (a: string, b: string, loc: Loc) => string;
+  signatureScene: (a: string, b: string, loc: Loc) => string;
+  lines: (a: string, b: string, loc: Loc) => DialogueLine[];
 };
 
 /* ============================================================================
@@ -201,26 +205,46 @@ function makeKoreanName(input: string, gender: Gender): GeneratedName {
    Drama content — long stories, signature scenes, lines, by genre
    ============================================================================ */
 
-const DRAMA_TITLE_SUFFIXES = [
-  "봄날",
-  "어느 날",
-  "우리 사이",
-  "그 여름",
-  "첫사랑",
-  "운명처럼",
-  "별이 되어",
-  "사랑한 기억",
-  "두 번의 설렘",
-  "당신이었으면",
+const DRAMA_TITLE_SUFFIXES: Bi[] = [
+  { ko: "봄날",         en: "Spring Day" },
+  { ko: "어느 날",       en: "One Day" },
+  { ko: "우리 사이",     en: "What We Are" },
+  { ko: "그 여름",       en: "That Summer" },
+  { ko: "첫사랑",        en: "First Love" },
+  { ko: "운명처럼",      en: "As If by Fate" },
+  { ko: "별이 되어",     en: "Becoming a Star" },
+  { ko: "사랑한 기억",   en: "A Memory of Loving" },
+  { ko: "두 번의 설렘",  en: "Two Heartbeats" },
+  { ko: "당신이었으면",  en: "If It Were You" },
 ];
 
 const GENRES: Genre[] = [
-  /* ── 재벌 로맨스 ───────────────────────────────────────────────────── */
+  /* ── 재벌 로맨스 / Chaebol Romance ───────────────────────────────── */
   {
     key: "chaebol",
-    name: "재벌 로맨스",
+    name: { ko: "재벌 로맨스", en: "Chaebol Romance" },
     emoji: "👔",
-    meeting: (a, b) => `${a}은 한일그룹 회장의 외아들.
+    meeting: (a, b, loc) => loc === "en"
+      ? `${a} was the only son of the Hanil Group chairman.
+He had everything—except clarity about his own heart.
+
+That afternoon he ditched the schedule his secretary had locked in
+and slipped into a quiet alley café.
+
+"One Americano, please."
+"Yes, just a moment…"
+
+${b} was carrying the tray when she stumbled.
+Hot coffee soaked his shirt.
+
+"Oh god—I'm so sorry, sir!"
+She'd gone pale, hands trembling around a stack of napkins.
+${a} learned, for the first time, that hands could shake like this.
+
+"…It's fine."
+
+Why did saying that make his pulse pick up?`
+      : `${a}은 한일그룹 회장의 외아들.
 모든 게 다 가진 그였지만,
 오직 하나, 자기 마음만은 알 수 없었다.
 
@@ -243,7 +267,20 @@ ${a}은 처음으로 사람의 손이
 
 그 한마디가 어색해서
 이상하게 심장이 빨라졌다.`,
-    signatureScene: (a, b) => `비 오는 날 밤.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `A rainy night.
+${a} appeared with an absurdly expensive umbrella.
+
+"Why are you here?"
+"…Don't like the rain."
+
+She knew.
+He didn't dislike rain.
+He disliked her getting wet.
+
+That night, beneath his umbrella,
+the distance between them quietly closed.`
+      : `비 오는 날 밤.
 ${a}은 고급 우산을 들고 나타났다.
 
 "왜 여기 있어요?"
@@ -255,19 +292,46 @@ ${b}는 알고 있었다.
 
 그날 밤 ${a}의 우산 아래
 두 사람의 거리가 좁혀졌다.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 1, text: "I don't know what I can give you, but I want to be near you." },
+      { who: 2, text: "Other than money?" },
+      { who: 1, text: "…Yes. Other than money." },
+    ] : [
       { who: 1, text: "내가 뭘 해줄 수 있을지 몰라도, 네 곁에 있고 싶어." },
       { who: 2, text: "돈 말고요?" },
       { who: 1, text: "…응, 돈 말고." },
     ],
   },
 
-  /* ── 학원 로맨스 ───────────────────────────────────────────────────── */
+  /* ── 학원 로맨스 / High School Romance ──────────────────────────── */
   {
     key: "school",
-    name: "학원 로맨스",
+    name: { ko: "학원 로맨스", en: "High School Romance" },
     emoji: "🎒",
-    meeting: (a, b) => `${a}이 서울로 전학 온 첫날.
+    meeting: (a, b, loc) => loc === "en"
+      ? `${a}'s first day after transferring to Seoul.
+When the door of Class 3-7 swung open,
+every pair of eyes turned to him.
+
+"…Hi. Please take care of me."
+
+The teacher pointed to the empty seat.
+By terrible luck, it was beside ${b}—
+the school's most famously prickly student.
+
+As ${a} pulled out the chair,
+${b} said, ice-cold:
+
+"That's where I put my bag."
+
+The room went silent.
+${a} paused, then smiled small.
+
+"Then we'll share. I'll just sit beside you."
+
+It was the first time
+${b} had ever lost her words to anyone.`
+      : `${a}이 서울로 전학 온 첫날.
 3학년 7반 교실 문을 열었을 때
 모두의 시선이 ${a}에게 향했다.
 
@@ -289,7 +353,24 @@ ${a}은 멈칫했다가, 작게 웃었다.
 
 ${b}가 처음으로 누군가에게
 말문이 막힌 순간이었다.`,
-    signatureScene: (a, b) => `수능 100일 전.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `100 days before the college entrance exam.
+${b} was alone in the classroom, working through problems.
+The door eased open.
+
+"Hey—wanna grab snacks?"
+${a} walked in holding two pieces of bread.
+
+"I have to study."
+"Then let's eat while we study."
+
+${a} sat next to her,
+broke off pieces of his bread to feed her.
+Wordless, they worked through the same book.
+
+100 days passed. They graduated.
+${b} would never forget the taste of that bread.`
+      : `수능 100일 전.
 교실에 혼자 남아 문제를 풀던 ${b}.
 문이 살짝 열렸다.
 
@@ -305,7 +386,12 @@ ${b}의 빵을 한 입씩 떼어 줬다.
 
 100일이 지나도, 졸업해도,
 ${b}는 그 빵 맛을 잊지 못했다.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 1, text: "After graduation, we won't see each other much, will we?" },
+      { who: 2, text: "Yeah." },
+      { who: 1, text: "…What if we go to the same university?" },
+      { who: 2, text: "…I'll have to study twice as hard. Because of you." },
+    ] : [
       { who: 1, text: "졸업하면 우리 다시 못 보겠지?" },
       { who: 2, text: "그러게." },
       { who: 1, text: "…같은 대학 가면 어때?" },
@@ -313,12 +399,36 @@ ${b}는 그 빵 맛을 잊지 못했다.`,
     ],
   },
 
-  /* ── 직장 로맨스 ───────────────────────────────────────────────────── */
+  /* ── 직장 로맨스 / Office Romance ───────────────────────────────── */
   {
     key: "office",
-    name: "직장 로맨스",
+    name: { ko: "직장 로맨스", en: "Office Romance" },
     emoji: "💼",
-    meeting: (a, b) => `${a}은 입사 3년차 평사원.
+    meeting: (a, b, loc) => loc === "en"
+      ? `${a} was a 3rd-year staffer.
+A new team lead was starting today.
+She didn't know who, yet.
+
+The conference room door opened
+and ${b} walked in. Cold gaze, sharp suit.
+
+"Hello, everyone. I'm ${b}, your new lead."
+
+${a} froze.
+The man from last night's bar—
+the one she'd sat next to,
+the one she'd called "our company's terrible new lead" with—
+that man.
+
+${b} saw her too.
+His expression flickered.
+
+After the meeting, ${a} approached.
+"…About last night—"
+"Let's pretend that didn't happen."
+
+The era of overtime began that day.`
+      : `${a}은 입사 3년차 평사원.
 오늘부터 새 팀장이 온다고 했다.
 그게 누군지는 아직 몰랐다.
 
@@ -340,7 +450,25 @@ ${b}도 ${a}을 보고
 "기억 안 나는 걸로 합시다."
 
 그날부터 ${a}의 야근이 시작됐다.`,
-    signatureScene: (a, b) => `송년회 회식 날.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `End-of-year company dinner.
+${b} drank too much.
+
+${a} silently propped him up,
+put him in a taxi.
+The next morning at work, ${b} didn't know:
+
+${a} had followed the cab to his door,
+sat in her car outside until 6 a.m.,
+making sure he got in safely.
+
+"Team lead, did you make it home okay?"
+"…Yes."
+"What about you?"
+"…Same."
+
+A lie. ${a} hadn't slept a wink.`
+      : `송년회 회식 날.
 ${b}가 너무 많이 마셨다.
 
 ${a}은 묵묵히 ${b}를 부축해
@@ -357,7 +485,12 @@ ${a}이 자기 집 앞까지 따라가서
 "…저도요."
 
 거짓말. ${a}은 한숨도 못 잤다.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 2, text: "I'm quitting this company." },
+      { who: 1, text: "…" },
+      { who: 2, text: "Why aren't you saying anything?" },
+      { who: 1, text: "…Don't go." },
+    ] : [
       { who: 2, text: "저 이 회사 그만둘 거예요." },
       { who: 1, text: "…" },
       { who: 2, text: "왜 아무 말도 안 해요?" },
@@ -365,12 +498,37 @@ ${a}이 자기 집 앞까지 따라가서
     ],
   },
 
-  /* ── 운명적 재회 ───────────────────────────────────────────────────── */
+  /* ── 운명적 재회 / Fated Reunion ──────────────────────────────────── */
   {
     key: "reunion",
-    name: "운명적 재회",
+    name: { ko: "운명적 재회", en: "Fated Reunion" },
     emoji: "🌙",
-    meeting: (a, b) => `10년 전 봄.
+    meeting: (a, b, loc) => loc === "en"
+      ? `Spring, ten years ago.
+${a} had told ${b}, last:
+"I'm sorry. Let's just be apart for a little while."
+That "little while" became ten years.
+
+${a} had just landed from a business trip.
+Wheeling his bag through the airport, he stepped into a café—
+through the glass, someone sat with a laptop open.
+
+His heart stopped.
+That profile, exactly as it was ten years ago.
+It was ${b}.
+
+She started to stand. Their eyes met.
+She froze too.
+Neither could speak.
+
+"…Have you been well?"
+${a} got the words out first.
+${b} paused, then smiled faintly.
+"And you?"
+
+Ten years had passed.
+With one sentence, it felt like yesterday.`
+      : `10년 전 봄.
 ${a}은 ${b}에게 마지막으로 말했다.
 "미안해. 잠깐만 떨어져 있자."
 그 '잠깐'은 10년이 됐다.
@@ -394,7 +552,24 @@ ${b}는 잠시 말이 없다가, 옅게 웃었다.
 
 10년이 지났는데
 한 마디면 어제 같았다.`,
-    signatureScene: (a, b) => `우연히 같은 영화관, 같은 영화.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `By chance, the same theater, the same film.
+Dim seats, side by side.
+${a} and ${b}.
+
+Five minutes in,
+${b} began to cry quietly.
+It was the same film
+they had once watched together, ten years ago.
+
+${a} said nothing.
+He simply pressed a handkerchief
+into her hand.
+
+When the credits rolled,
+${b} held the handkerchief
+and his hand together.`
+      : `우연히 같은 영화관, 같은 영화.
 어두운 객석, 옆자리.
 ${a}과 ${b}.
 
@@ -410,18 +585,51 @@ ${a}은 아무 말도 안 했다.
 엔딩 크레딧이 올라갈 때,
 ${b}는 ${a}의 손에
 손수건과 함께 자신의 손을 함께 쥐었다.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 1, text: "Ten years and we're still doing this?" },
+      { who: 2, text: "I don't know either. That's what scares me." },
+    ] : [
       { who: 1, text: "10년이 지났는데 왜 아직도 이러는 거야." },
       { who: 2, text: "저도 몰라요. 그러니까 더 무서워요." },
     ],
   },
 
-  /* ── 판타지 로맨스 ─────────────────────────────────────────────────── */
+  /* ── 판타지 로맨스 / Fantasy Romance ────────────────────────────── */
   {
     key: "fantasy",
-    name: "판타지 로맨스",
+    name: { ko: "판타지 로맨스", en: "Fantasy Romance" },
     emoji: "✨",
-    meeting: (a, b) => `${a}은 천 년을 살아온 구미호였다.
+    meeting: (a, b, loc) => loc === "en"
+      ? `${a} was a thousand-year-old gumiho.
+He passed for human among humans,
+but never opened his heart to anyone.
+
+For a thousand years, every human he loved
+had left him first.
+
+But ${b} was different.
+
+The night they met, beneath a streetlamp,
+${b} held an umbrella over him.
+"You'll catch a cold in this rain."
+
+${a} smiled.
+"I don't catch colds."
+"…Why not? You're human, aren't you?"
+
+For one second, his eyes flashed gold.
+${b} did not step back.
+Instead she slowly reached up
+and touched his cheek.
+
+"Oh… you really aren't human, are you."
+"…You're not afraid?"
+"No. You look sad."
+
+After a thousand years, ${a} learned:
+being seen by someone
+could feel this warm.`
+      : `${a}은 천 년을 살아온 구미호였다.
 인간들 사이에서 평범한 척 살았지만
 누구에게도 마음을 열지 않았다.
 
@@ -450,7 +658,27 @@ ${a}의 뺨을 만졌다.
 천 년 만에 ${a}은 알았다.
 누군가 자신을 알아봐 주는 게
 이렇게 따뜻한 일이라는 걸.`,
-    signatureScene: (a, b) => `보름달이 뜬 밤.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `A full moon night.
+The night his secret broke open.
+
+The villagers came after him.
+"A monster! Catch it!"
+
+${a} ran.
+Mountains. The edge of a cliff.
+
+${b} chased after, gasping,
+and stepped between him and them.
+
+"Move. You'll get hurt."
+"I won't."
+"…Do you want to die?"
+"Losing you scares me more than dying does."
+
+For the first time in a thousand years,
+gold tears fell from his eyes.`
+      : `보름달이 뜬 밤.
 ${a}의 정체가 들켜버린 날.
 
 마을 사람들은 ${a}을 쫓아왔다.
@@ -469,7 +697,12 @@ ${a} 앞을 막아섰다.
 
 ${a}의 금색 눈에서
 처음으로 눈물이 떨어졌다.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 1, text: "In a hundred years, you'll be gone." },
+      { who: 2, text: "Then I'll love you more, while I'm here." },
+      { who: 1, text: "…I'll be the one left alone." },
+      { who: 2, text: "Then live on the memory." },
+    ] : [
       { who: 1, text: "100년 후엔 당신이 없을 텐데." },
       { who: 2, text: "그래서 더 많이 사랑해 두려고요." },
       { who: 1, text: "…나만 남게 될 거예요." },
@@ -477,12 +710,32 @@ ${a}의 금색 눈에서
     ],
   },
 
-  /* ── 시간여행 로맨스 ───────────────────────────────────────────────── */
+  /* ── 시간여행 로맨스 / Time-Travel Romance ──────────────────────── */
   {
     key: "timetravel",
-    name: "시간여행 로맨스",
+    name: { ko: "시간여행 로맨스", en: "Time-Travel Romance" },
     emoji: "⏰",
-    meeting: (a, b) => `2045년. ${a}은 실수로
+    meeting: (a, b, loc) => loc === "en"
+      ? `2045. ${a} pressed the wrong button
+on the time machine.
+
+He landed in Seoul, 2025.
+Lost in unfamiliar streets,
+the first person to speak to him was ${b}.
+
+"Are you alright? You look really lost."
+
+${a} couldn't say a word.
+This was the face he had looked at, every day,
+in a photograph—twenty years from now.
+
+"…Are you ${b}, by any chance?"
+"How did you know?"
+
+Now ${a} had two choices:
+go back to the future,
+or stay.`
+      : `2045년. ${a}은 실수로
 타임머신의 버튼을 눌렀다.
 
 도착한 곳은 2025년 서울.
@@ -501,7 +754,24 @@ ${a}은 아무 말도 할 수 없었다.
 이제 ${a}에게는 두 가지 선택이 남았다.
 미래로 돌아가거나.
 여기 남거나.`,
-    signatureScene: (a, b) => `${a}이 미래로 돌아가야 하는 날.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `The day ${a} had to return.
+
+"You won't remember.
+ Not us, not this time."
+"It's okay."
+"Why?"
+"…As long as you're happy."
+
+The machine flared white and was gone.
+${b} stood alone in the empty alley.
+
+Twenty years later,
+a stranger stood in front of him.
+
+"…Have we met?"
+It was ${a}. Memory wiped clean.`
+      : `${a}이 미래로 돌아가야 하는 날.
 
 "기억 못 하게 될 거예요.
  우리가 만난 것도, 이 시간도."
@@ -517,19 +787,48 @@ ${b}는 텅 빈 골목에 혼자 남겨졌다.
 
 "저… 혹시 저 알아요?"
 ${a}이었다. 기억을 잃은 채로.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 1, text: "I know I shouldn't change the past. I just wanted to keep you safe." },
+      { who: 2, text: "Idiot." },
+      { who: 1, text: "Yeah." },
+    ] : [
       { who: 1, text: "과거를 바꾸면 안 된다는 거 알아. 그래도 당신만큼은 지키고 싶었어." },
       { who: 2, text: "바보." },
       { who: 1, text: "응." },
     ],
   },
 
-  /* ── 의사 로맨스 ───────────────────────────────────────────────────── */
+  /* ── 의사 로맨스 / Hospital Romance ─────────────────────────────── */
   {
     key: "doctor",
-    name: "의사 로맨스",
+    name: { ko: "의사 로맨스", en: "Hospital Romance" },
     emoji: "🏥",
-    meeting: (a, b) => `새벽 3시.
+    meeting: (a, b, loc) => loc === "en"
+      ? `3 a.m.
+A patient was wheeled into the ER.
+
+${a} was on call.
+Awake for fifteen hours,
+but in this moment she could not waver.
+
+"Cardiac arrest! Starting CPR!"
+
+The new nurse on his first shift, ${b},
+assisted right beside her.
+His hands shook, but his hands were precise.
+
+After a long fight, the patient lived.
+
+Outside the OR, both leaned silently against the wall.
+${a} spoke first.
+
+"…You did well today."
+"It was you. The doctor did everything."
+"Then we did it together."
+
+${b} laughed for the first time, the tension breaking.
+${a} would remember that laugh for a long time.`
+      : `새벽 3시.
 응급실에 환자가 실려 들어왔다.
 
 ${a}은 당직 의사.
@@ -554,7 +853,24 @@ ${a}이 먼저 입을 열었다.
 ${b}는 그 말에 처음으로
 긴장이 풀려서 웃었다.
 ${a}은 그 웃음을 오래 기억하게 될 거였다.`,
-    signatureScene: (a, b) => `${a}이 큰 수술을 앞둔 날.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `The day of a major operation.
+A five-hour surgery.
+
+As always, ${b} brought ${a} a cup of water
+outside the OR.
+
+"…Relax."
+"…Was it that obvious?"
+"Your hands don't usually shake."
+
+${a} looked at him a moment.
+"…After surgery—want to grab ramen?"
+"That's sudden."
+"It's a place I can only go to if surgery goes right."
+
+Five hours later, they were at the ramen shop.`
+      : `${a}이 큰 수술을 앞둔 날.
 5시간짜리 대수술.
 
 ${b}는 평소처럼 수술실 앞에서
@@ -570,7 +886,12 @@ ${a}은 잠시 ${b}를 봤다.
 "무사히 끝나야 갈 수 있는 곳이라서."
 
 5시간 뒤, 두 사람은 라면집에 있었다.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 1, text: "You're not a patient, right?" },
+      { who: 2, text: "Why?" },
+      { who: 1, text: "Feeling this for a patient costs me my license." },
+      { who: 2, text: "…Then lose it." },
+    ] : [
       { who: 1, text: "당신, 환자 아니죠?" },
       { who: 2, text: "왜요?" },
       { who: 1, text: "환자한테 이런 마음 가지면 제 면허 박탈이라." },
@@ -578,12 +899,40 @@ ${a}은 잠시 ${b}를 봤다.
     ],
   },
 
-  /* ── 형사 로맨스 ───────────────────────────────────────────────────── */
+  /* ── 형사 로맨스 / Detective Romance ────────────────────────────── */
   {
     key: "detective",
-    name: "형사 로맨스",
+    name: { ko: "형사 로맨스", en: "Detective Romance" },
     emoji: "🔍",
-    meeting: (a, b) => `${a}은 강력반 형사 5년차.
+    meeting: (a, b, loc) => loc === "en"
+      ? `${a} was a 5-year detective in violent crimes.
+The suspect tonight
+was a complete unknown.
+
+At the end of an alley, beneath a streetlamp,
+${a} came face to face with him.
+${b}.
+
+"Don't move. Hands up."
+
+${b} slowly raised his hands.
+But his face was too calm.
+The eyes were too clean for a suspect.
+
+"You… look suspicious."
+"Detective, you look more suspicious."
+"…What?"
+"Pulling a gun on a stranger
+ in an alley at midnight—is that normal?"
+
+In that moment ${a} understood.
+This man was not the real culprit.
+He was carrying someone else's frame.
+
+From that night,
+${a} decided to protect
+this strange, suspect man.`
+      : `${a}은 강력반 형사 5년차.
 오늘 잡으러 온 용의자는
 신원 미상의 정체불명 인물이었다.
 
@@ -610,7 +959,24 @@ ${b}는 천천히 손을 들었다.
 그리고 그날부터 ${a}은
 이 이상한 용의자를
 지키기로 마음먹었다.`,
-    signatureScene: (a, b) => `진짜 범인을 잡으러 가는 날.
+    signatureScene: (a, b, loc) => loc === "en"
+      ? `The day they were going after the real killer.
+${a} tried to leave ${b} somewhere safe.
+
+"Stay here. I'll come back when it's over."
+"I'm coming with you."
+"No."
+"Why?"
+"…Because I'm afraid of losing you."
+
+${b} reached out and held him.
+"Then we go together.
+ If you go alone and die, how am I supposed to live."
+
+For the first time, ${a} let himself be held—
+not as a detective,
+but as a person.`
+      : `진짜 범인을 잡으러 가는 날.
 ${a}은 ${b}를 안전한 곳에 두려 했다.
 
 "여기 있어. 끝나면 데리러 올게."
@@ -626,7 +992,12 @@ ${a}은 ${b}를 안전한 곳에 두려 했다.
 ${a}은 처음으로
 형사로서가 아니라
 한 사람으로서 ${b}에게 안겼다.`,
-    lines: () => [
+    lines: (_a, _b, loc) => loc === "en" ? [
+      { who: 1, text: "When this case is over, I'm turning in my badge." },
+      { who: 2, text: "Why?" },
+      { who: 1, text: "I can't do this work and stand beside you." },
+      { who: 2, text: "…Do I get a say in who stands beside me?" },
+    ] : [
       { who: 1, text: "이번 사건 끝나면 사표 낼 거야." },
       { who: 2, text: "왜요?" },
       { who: 1, text: "이런 일 하면서 당신 옆에 있으면 안 될 것 같아서." },
@@ -639,52 +1010,81 @@ ${a}은 처음으로
    Chemistry pool — pick 3 by seed
    ============================================================================ */
 
-const CHEMISTRY_POOL: string[] = [
-  "한 명이 차갑고 한 명이 따뜻한 정반대 케미예요. 🧊🔥",
-  "둘 다 감정 표현이 서툴러서 눈빛으로 대화하는 커플이에요. 👀",
-  "티격태격하지만 위기 앞에서 항상 서로를 선택하는 사이예요. ⚡",
-  "한 명이 먼저 좋아하고 다른 한 명이 나중에 깨닫는 구조예요. 💭",
-  "어릴 때부터 알던 소꿉친구가 연인이 되는 케미예요. 🧸",
-  "운명처럼 계속 마주치는 붉은 실로 연결된 두 사람이에요. 🔴",
+const CHEMISTRY_POOL: Bi[] = [
+  { ko: "한 명이 차갑고 한 명이 따뜻한 정반대 케미예요. 🧊🔥",
+    en: "One cold, one warm — total opposites attracting. 🧊🔥" },
+  { ko: "둘 다 감정 표현이 서툴러서 눈빛으로 대화하는 커플이에요. 👀",
+    en: "Both bad at expressing feelings, so they speak with their eyes. 👀" },
+  { ko: "티격태격하지만 위기 앞에서 항상 서로를 선택하는 사이예요. ⚡",
+    en: "They bicker constantly, but choose each other every time it counts. ⚡" },
+  { ko: "한 명이 먼저 좋아하고 다른 한 명이 나중에 깨닫는 구조예요. 💭",
+    en: "One falls first; the other realizes much later. 💭" },
+  { ko: "어릴 때부터 알던 소꿉친구가 연인이 되는 케미예요. 🧸",
+    en: "Childhood friends slowly turning into lovers. 🧸" },
+  { ko: "운명처럼 계속 마주치는 붉은 실로 연결된 두 사람이에요. 🔴",
+    en: "Two people tied by an invisible red string — fate keeps colliding them. 🔴" },
 ];
 
 /* ============================================================================
    Supporting characters (3 fixed roles, names interpolated)
    ============================================================================ */
 
-function buildSupporting(a: string, b: string): { role: string; desc: string }[] {
-  return [
-    {
-      role: `${a}의 절친`,
-      desc: "두 사람의 사랑을 누구보다 먼저 알아채는 촉 100단 친구",
-    },
-    {
-      role: `${b}의 전 연인`,
-      desc: "가장 결정적인 순간에 나타나 위기를 만드는 캐릭터",
-    },
-    {
-      role: "둘을 이어주는 조력자",
-      desc: "우연인 척 두 사람을 계속 같은 장소에 데려다 놓는 운명의 설계자",
-    },
-  ];
+function buildSupporting(a: string, b: string, loc: Loc): { role: string; desc: string }[] {
+  return loc === "en"
+    ? [
+        {
+          role: `${a}'s best friend`,
+          desc: "Sees the romance coming long before either lead does — a sixth-sense sidekick.",
+        },
+        {
+          role: `${b}'s ex`,
+          desc: "Reappears at the worst possible moment, igniting the season's biggest crisis.",
+        },
+        {
+          role: "The matchmaker",
+          desc: "Keeps engineering 'coincidences' that put the two of them in the same room.",
+        },
+      ]
+    : [
+        {
+          role: `${a}의 절친`,
+          desc: "두 사람의 사랑을 누구보다 먼저 알아채는 촉 100단 친구",
+        },
+        {
+          role: `${b}의 전 연인`,
+          desc: "가장 결정적인 순간에 나타나 위기를 만드는 캐릭터",
+        },
+        {
+          role: "둘을 이어주는 조력자",
+          desc: "우연인 척 두 사람을 계속 같은 장소에 데려다 놓는 운명의 설계자",
+        },
+      ];
 }
 
 /* ============================================================================
    Endings & OST
    ============================================================================ */
 
-const ENDINGS = [
-  { emoji: "🌸", name: "해피엔딩",   line: "두 사람은 결국 함께했다" },
-  { emoji: "🌧",  name: "새드엔딩",   line: "아름다웠기에 더 아팠다" },
-  { emoji: "🌅", name: "열린결말",   line: "그게 끝이 아니었다" },
-  { emoji: "📺", name: "시즌2 예정", line: "이야기는 계속된다" },
+const ENDINGS: { emoji: string; name: Bi; line: Bi }[] = [
+  { emoji: "🌸",
+    name: { ko: "해피엔딩",   en: "Happy Ending" },
+    line: { ko: "두 사람은 결국 함께했다", en: "In the end, they were together." } },
+  { emoji: "🌧",
+    name: { ko: "새드엔딩",   en: "Sad Ending" },
+    line: { ko: "아름다웠기에 더 아팠다", en: "It was beautiful — which made it hurt more." } },
+  { emoji: "🌅",
+    name: { ko: "열린결말",   en: "Open Ending" },
+    line: { ko: "그게 끝이 아니었다", en: "That wasn't quite the end." } },
+  { emoji: "📺",
+    name: { ko: "시즌2 예정", en: "Season 2 Coming" },
+    line: { ko: "이야기는 계속된다", en: "The story continues." } },
 ];
 
-const OST_MOODS = [
-  { emoji: "🎹", name: "잔잔한 피아노 발라드" },
-  { emoji: "🎵", name: "신나는 청춘 OST" },
-  { emoji: "🎻", name: "애절한 현악 선율" },
-  { emoji: "🎸", name: "설레는 어쿠스틱 기타" },
+const OST_MOODS: { emoji: string; name: Bi }[] = [
+  { emoji: "🎹", name: { ko: "잔잔한 피아노 발라드", en: "A quiet piano ballad" } },
+  { emoji: "🎵", name: { ko: "신나는 청춘 OST",       en: "A bright youth-anthem OST" } },
+  { emoji: "🎻", name: { ko: "애절한 현악 선율",      en: "A yearning string melody" } },
+  { emoji: "🎸", name: { ko: "설레는 어쿠스틱 기타",  en: "A heart-fluttering acoustic guitar" } },
 ];
 
 /* ============================================================================
@@ -700,14 +1100,15 @@ type CoupleResult = {
   compatibility: number;
   hearts: string;
   genre: Genre;
+  genreName: string;
   meeting: string;
   signatureScene: string;
   lines: DialogueLine[];
   chemistry: string[];
   supporting: { role: string; desc: string }[];
   nickname: string;
-  ending: (typeof ENDINGS)[number];
-  ost: (typeof OST_MOODS)[number];
+  ending: { emoji: string; name: string; line: string };
+  ost: { emoji: string; name: string };
 };
 
 function buildHearts(score: number): string {
@@ -716,14 +1117,25 @@ function buildHearts(score: number): string {
   return "💕💕💕🤍🤍";
 }
 
-function buildNickname(a: string, b: string): string {
+function buildNickname(a: string, b: string, loc: Loc): string {
   const a1 = a.trim().slice(0, 1);
   const b1 = b.trim().slice(0, 1);
-  if (!a1 || !b1) return "우리 커플";
-  return `${a1}${b1} 커플`;
+  if (!a1 || !b1) return loc === "en" ? "Our Couple" : "우리 커플";
+  return loc === "en" ? `${a1}${b1} Couple` : `${a1}${b1} 커플`;
 }
 
-function buildResult(name1: string, name2: string): CoupleResult {
+function buildTitle(a: string, b: string, suffix: Bi, loc: Loc): string {
+  return loc === "en" ? `${a} & ${b}: ${suffix.en}` : `${a}과 ${b}의 ${suffix.ko}`;
+}
+
+function nameForStory(n: GeneratedName, loc: Loc): string {
+  // In English mode, prefer the romanization for narrative readability
+  // (falls back to the Korean display when input was already Hangul).
+  if (loc === "en") return n.pronunciation || n.display;
+  return n.display;
+}
+
+function buildResult(name1: string, name2: string, loc: Loc): CoupleResult {
   const seed = name1 + "|" + name2;
   const gender1 = detectGender(name1);
   const gender2 = detectGender(name2);
@@ -731,12 +1143,16 @@ function buildResult(name1: string, name2: string): CoupleResult {
   const ko2 = makeKoreanName(name2, gender2);
 
   const titleSuffix = DRAMA_TITLE_SUFFIXES[seededIndex(seed, "title", DRAMA_TITLE_SUFFIXES.length)];
-  const title = `${ko1.display}과 ${ko2.display}의 ${titleSuffix}`;
+  const a = nameForStory(ko1, loc);
+  const b = nameForStory(ko2, loc);
+  const title = buildTitle(a, b, titleSuffix, loc);
 
   const compatibility = 70 + (hashStr(seed + ":compat") % 30);
   const hearts = buildHearts(compatibility);
 
   const genre = GENRES[seededIndex(seed, "genre", GENRES.length)];
+  const ending = ENDINGS[seededIndex(seed, "ending", ENDINGS.length)];
+  const ost = OST_MOODS[seededIndex(seed, "ost", OST_MOODS.length)];
 
   return {
     name1Korean: ko1,
@@ -747,14 +1163,15 @@ function buildResult(name1: string, name2: string): CoupleResult {
     compatibility,
     hearts,
     genre,
-    meeting: genre.meeting(ko1.display, ko2.display),
-    signatureScene: genre.signatureScene(ko1.display, ko2.display),
-    lines: genre.lines(ko1.display, ko2.display),
-    chemistry: pickN(CHEMISTRY_POOL, seed, "chem", 3),
-    supporting: buildSupporting(ko1.display, ko2.display),
-    nickname: buildNickname(ko1.display, ko2.display),
-    ending: ENDINGS[seededIndex(seed, "ending", ENDINGS.length)],
-    ost: OST_MOODS[seededIndex(seed, "ost", OST_MOODS.length)],
+    genreName: genre.name[loc],
+    meeting: genre.meeting(a, b, loc),
+    signatureScene: genre.signatureScene(a, b, loc),
+    lines: genre.lines(a, b, loc),
+    chemistry: pickN(CHEMISTRY_POOL, seed, "chem", 3).map((c) => c[loc]),
+    supporting: buildSupporting(a, b, loc),
+    nickname: buildNickname(a, b, loc),
+    ending: { emoji: ending.emoji, name: ending.name[loc], line: ending.line[loc] },
+    ost: { emoji: ost.emoji, name: ost.name[loc] },
   };
 }
 
@@ -765,7 +1182,7 @@ function buildResult(name1: string, name2: string): CoupleResult {
 type Phase = "input" | "result";
 
 export default function KdramaCouplePage(): ReactElement {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [phase, setPhase] = useState<Phase>("input");
   const [name1, setName1] = useState("");
   const [name2, setName2] = useState("");
@@ -776,8 +1193,8 @@ export default function KdramaCouplePage(): ReactElement {
 
   const result = useMemo<CoupleResult | null>(() => {
     if (!submitted1 || !submitted2) return null;
-    return buildResult(submitted1, submitted2);
-  }, [submitted1, submitted2]);
+    return buildResult(submitted1, submitted2, locale);
+  }, [submitted1, submitted2, locale]);
 
   useEffect(() => {
     requestAnimationFrame(() => {
@@ -1414,7 +1831,7 @@ function ResultView({
           }}
         >
           <span aria-hidden>{result.genre.emoji}</span>
-          <span>{result.genre.name}</span>
+          <span>{result.genreName}</span>
         </div>
 
         {/* Compatibility — film score style */}
@@ -1711,6 +2128,8 @@ function SectionDivider({
   en: string;
   stagger: () => React.CSSProperties;
 }): ReactElement {
+  const { locale } = useLocale();
+  const label = locale === "ko" ? title : (en || title);
   return (
     <div
       className="kdc-reveal"
@@ -1734,7 +2153,7 @@ function SectionDivider({
           whiteSpace: "nowrap",
         }}
       >
-        {en || title}
+        {label}
       </div>
       <div style={{ flex: 1, height: 1, background: ROSE_FAINT }} />
     </div>

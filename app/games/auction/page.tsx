@@ -72,7 +72,7 @@ function gradeFor(total: number, t: (ko: string, en: string) => string) {
 }
 
 export default function AuctionGame() {
-  const { locale, t } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const [phase, setPhase] = useState<Phase>("intro");
   const [rounds, setRounds] = useState<AuctionItem[]>([]);
   const [roundIdx, setRoundIdx] = useState(0);
@@ -171,21 +171,31 @@ export default function AuctionGame() {
           <Link href="/" className={s.topbar__back}>
             ← {t("놀자.fun", "Nolza.fun")}
           </Link>
-          <div style={{ fontStyle: "normal", letterSpacing: "0.28em", fontSize: 11, textTransform: "uppercase" }}>
+          <div className={s.topbar__title}>
             {t("경매장", "The Auction House")}
           </div>
-          {phase === "guessing" || phase === "reveal" ? (
-            <div className={s.round}>
-              <span className={s.round__num}>{String(roundIdx + 1).padStart(2, "0")}</span>
-              <span> / {String(ROUNDS_PER_SESSION).padStart(2, "0")}</span>
-            </div>
-          ) : (
-            <div className={s.round}>
-              {best > 0
-                ? t(`최고 ${best}/500`, `Best ${best}/500`)
-                : t("5 라운드", "5 lots")}
-            </div>
-          )}
+          <div className={s.topbar__right}>
+            {phase === "guessing" || phase === "reveal" ? (
+              <div className={s.round}>
+                <span className={s.round__num}>{String(roundIdx + 1).padStart(2, "0")}</span>
+                <span> / {String(ROUNDS_PER_SESSION).padStart(2, "0")}</span>
+              </div>
+            ) : (
+              <div className={s.round}>
+                {best > 0
+                  ? t(`최고 ${best}/500`, `Best ${best}/500`)
+                  : t("5 라운드", "5 lots")}
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
+              aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
+              className={s.topbar__toggle}
+            >
+              {locale === "ko" ? "한 / EN" : "EN / 한"}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -376,7 +386,7 @@ function GuessView({
           <span className={s.frame__corner}>{item.emoji}</span>
         </div>
 
-        <div style={{ padding: "20px 28px 28px" }}>
+        <div className={s.cardBody}>
           <div className={s.caption} style={{ marginBottom: 14 }}>
             {item.image.credit}
           </div>

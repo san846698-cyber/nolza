@@ -2,12 +2,27 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { FISH_DATABASE } from './fishData';
-import { spawnFish, drawFish } from './fish_logic';
+import { spawnFish, drawFish, isBigCreature, BIG_CREATURE_TYPES } from './fish_logic';
 import { useLocale } from '@/hooks/useLocale';
 
 let audioCtx: AudioContext | null = null;
 let bgmGain: GainNode | null = null;
 let bgmActive = false;
+
+// Cleanly tear down all audio so leaving the route doesn't keep the BGM
+// (ocean noise + ambient piano + delay tail) playing across the rest of
+// the site. Closing the AudioContext immediately silences every node
+// scheduled inside it; the `bgmActive` flag breaks the playAmbientNote
+// self-scheduling chain.
+const stopAllAudio = () => {
+    bgmActive = false;
+    bgmGain = null;
+    const ctx = audioCtx;
+    audioCtx = null;
+    if (ctx) {
+        try { ctx.close(); } catch { /* ignore */ }
+    }
+};
 
 const startBGM = () => {
     if (!audioCtx) return;
@@ -287,14 +302,35 @@ const playSound = (type: string) => {
     }
 };
 
+type AquaInput =
+  | { kind: 'down'; key: 'left' | 'right' | 'space' }
+  | { kind: 'up'; key: 'left' | 'right' | 'space' }
+  | { kind: 'tap'; key: 'space' | 'shop' | 'enc' | 'shop1' | 'shop2' | 'shop3' };
+const sendInput = (detail: AquaInput) => {
+  try {
+    window.dispatchEvent(new CustomEvent<AquaInput>('aqua-fishing:input', { detail }));
+  } catch { /* ignore */ }
+};
+
 export default function AquaFishingGame() {
   const { locale, t } = useLocale();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [showEncyclopedia, setShowEncyclopedia] = useState(false);
   const [caughtData, setCaughtData] = useState<Record<string, number>>({});
   const [selectedFish, setSelectedFish] = useState<string | null>(null);
+  const [isTouch, setIsTouch] = useState(false);
+  const [shopVisible, setShopVisible] = useState(false);
   const localeRef = useRef(locale);
   useEffect(() => { localeRef.current = locale; }, [locale]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(hover: none) and (pointer: coarse)');
+    const update = () => setIsTouch(mq.matches);
+    update();
+    mq.addEventListener?.('change', update);
+    return () => mq.removeEventListener?.('change', update);
+  }, []);
 
   // Canvas-side i18n helper. The game loop closure uses localeRef so it
   // reflects locale changes without re-running the effect.
@@ -560,6 +596,8 @@ export default function AquaFishingGame() {
 
     const sonars: {y: number, radius: number}[] = [];
     let sonarTimer = 0;
+    let bigCreatureTimer = 0;
+    const BIG_CREATURE_INTERVAL = 180;
 
     const getWave = (x: number, t: number) => {
       const w1 = Math.sin(x * 0.005 + t * 2) * 15;
@@ -610,6 +648,17 @@ export default function AquaFishingGame() {
           weatherTimer = 40 + Math.random() * 40;
       }
       weatherIntensity += (targetWeatherIntensity - weatherIntensity) * dt * 0.2;
+
+      // Big creature guarantee: ensure whale/shark appears at least every 3 minutes
+      bigCreatureTimer += dt;
+      const hasBigCreature = fishes.some(f => isBigCreature(f.type)) || (hook.fish && isBigCreature(hook.fish.type));
+      if (hasBigCreature) {
+        bigCreatureTimer = 0;
+      } else if (bigCreatureTimer >= BIG_CREATURE_INTERVAL) {
+        const forced = BIG_CREATURE_TYPES[Math.floor(Math.random() * BIG_CREATURE_TYPES.length)];
+        fishes.push(spawnFish(3, boat.x, window.innerWidth, forced));
+        bigCreatureTimer = 0;
+      }
 
       // Sonar Logic
       sonarTimer -= dt;
@@ -1746,17 +1795,73 @@ export default function AquaFishingGame() {
 
     animationFrameId = requestAnimationFrame(gameLoop);
 
+    // Bridge between on-screen mobile buttons and the keyboard-based input
+    // model. The buttons dispatch `aqua-fishing:input` events instead of
+    // synthetic keyboard events, so they cannot leak to the rest of the page.
+    type AquaInput =
+      | { kind: 'down'; key: 'left' | 'right' | 'space' }
+      | { kind: 'up'; key: 'left' | 'right' | 'space' }
+      | { kind: 'tap'; key: 'space' | 'shop' | 'enc' | 'shop1' | 'shop2' | 'shop3' };
+    const handleAquaInput = (e: Event) => {
+      const detail = (e as CustomEvent<AquaInput>).detail;
+      if (!detail) return;
+      if (detail.kind === 'down') {
+        if (detail.key === 'left') keys.A = true;
+        else if (detail.key === 'right') keys.D = true;
+        else if (detail.key === 'space') {
+          if (!keys.Space) keys.spaceTaps++;
+          keys.Space = true;
+        }
+      } else if (detail.kind === 'up') {
+        if (detail.key === 'left') keys.A = false;
+        else if (detail.key === 'right') keys.D = false;
+        else if (detail.key === 'space') keys.Space = false;
+      } else if (detail.kind === 'tap') {
+        if (detail.key === 'space') {
+          keys.spaceTaps++;
+        } else if (detail.key === 'shop') {
+          shopOpen = !shopOpen;
+          playSound('shop_open');
+        } else if (detail.key === 'enc') {
+          window.dispatchEvent(new CustomEvent('toggle-enc'));
+          playSound('shop_open');
+        } else if (shopOpen) {
+          if (detail.key === 'shop1') attemptUpgrade('drop');
+          else if (detail.key === 'shop2') attemptUpgrade('depth');
+          else if (detail.key === 'shop3') attemptUpgrade('sonar');
+        }
+      }
+    };
+    window.addEventListener('aqua-fishing:input', handleAquaInput);
+
     return () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('aqua-fishing:input', handleAquaInput);
       cancelAnimationFrame(animationFrameId);
+      stopAllAudio();
     };
   }, []);
 
   return (
-    <div className="w-full overflow-hidden bg-black flex items-center justify-center relative" style={{ height: "100vh" }}>
-      <canvas ref={canvasRef} className="block w-full h-full" />
+    <div
+      className="w-full overflow-hidden bg-black flex items-center justify-center relative"
+      style={{ height: "100dvh", touchAction: "none", overscrollBehavior: "contain" }}
+    >
+      <canvas ref={canvasRef} className="block w-full h-full" style={{ touchAction: "none" }} />
+
+      {isTouch && !showEncyclopedia && (
+        <MobileControls
+          t={t}
+          shopVisible={shopVisible}
+          onToggleShop={() => {
+            setShopVisible((v) => !v);
+            sendInput({ kind: "tap", key: "shop" });
+          }}
+          onToggleEnc={() => sendInput({ kind: "tap", key: "enc" })}
+        />
+      )}
       
       {showEncyclopedia && (
          <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-4 sm:p-6 z-50">
@@ -1910,5 +2015,201 @@ export default function AquaFishingGame() {
          </div>
       )}
     </div>
+  );
+}
+
+/* ─────────────── Mobile on-screen controls ───────────────
+   Replaces keyboard input (A/D steer · Space reel · B shop · E encyclopedia)
+   with touch buttons. Each button dispatches `aqua-fishing:input` events that
+   the game loop's effect listens for and translates into the same `keys`
+   state mutations the keyboard handler does. */
+function MobileControls({
+  t,
+  shopVisible,
+  onToggleShop,
+  onToggleEnc,
+}: {
+  t: (ko: string, en: string) => string;
+  shopVisible: boolean;
+  onToggleShop: () => void;
+  onToggleEnc: () => void;
+}) {
+  // Hold-to-steer button: press-and-hold dispatches `down`, release dispatches `up`.
+  const HoldButton = ({
+    label,
+    onDown,
+    onUp,
+    ariaLabel,
+    style,
+  }: {
+    label: React.ReactNode;
+    onDown: () => void;
+    onUp: () => void;
+    ariaLabel: string;
+    style?: React.CSSProperties;
+  }) => (
+    <button
+      type="button"
+      aria-label={ariaLabel}
+      onPointerDown={(e) => {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        onDown();
+      }}
+      onPointerUp={onUp}
+      onPointerCancel={onUp}
+      onPointerLeave={onUp}
+      onContextMenu={(e) => e.preventDefault()}
+      style={{
+        width: 64,
+        height: 64,
+        borderRadius: 999,
+        border: "2px solid rgba(255,255,255,0.35)",
+        background: "rgba(15,23,42,0.55)",
+        backdropFilter: "blur(8px)",
+        color: "white",
+        fontSize: 26,
+        fontWeight: 800,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTapHighlightColor: "transparent",
+        touchAction: "none",
+        ...style,
+      }}
+    >
+      {label}
+    </button>
+  );
+
+  const ChipButton = ({
+    onClick,
+    children,
+    style,
+  }: {
+    onClick: () => void;
+    children: React.ReactNode;
+    style?: React.CSSProperties;
+  }) => (
+    <button
+      type="button"
+      onPointerDown={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+      onContextMenu={(e) => e.preventDefault()}
+      style={{
+        padding: "8px 14px",
+        borderRadius: 999,
+        border: "1px solid rgba(255,255,255,0.3)",
+        background: "rgba(15,23,42,0.55)",
+        backdropFilter: "blur(8px)",
+        color: "white",
+        fontSize: 13,
+        fontWeight: 700,
+        letterSpacing: "0.05em",
+        userSelect: "none",
+        WebkitTapHighlightColor: "transparent",
+        touchAction: "none",
+        ...style,
+      }}
+    >
+      {children}
+    </button>
+  );
+
+  return (
+    <>
+      {/* Top-right chips: shop · encyclopedia */}
+      <div
+        style={{
+          position: "absolute",
+          top: "max(12px, env(safe-area-inset-top, 0px))",
+          right: 12,
+          display: "flex",
+          gap: 8,
+          zIndex: 40,
+        }}
+      >
+        <ChipButton onClick={onToggleShop}>
+          {t("상점", "Shop")}
+        </ChipButton>
+        <ChipButton onClick={onToggleEnc}>
+          {t("도감", "Dex")}
+        </ChipButton>
+      </div>
+
+      {/* Shop upgrade chips — only visible while shop is open */}
+      {shopVisible && (
+        <div
+          style={{
+            position: "absolute",
+            top: "max(64px, calc(env(safe-area-inset-top, 0px) + 64px))",
+            right: 12,
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
+            zIndex: 40,
+          }}
+        >
+          <ChipButton onClick={() => sendInput({ kind: "tap", key: "shop1" })}>
+            1 · {t("드롭", "Drop")}
+          </ChipButton>
+          <ChipButton onClick={() => sendInput({ kind: "tap", key: "shop2" })}>
+            2 · {t("수심", "Depth")}
+          </ChipButton>
+          <ChipButton onClick={() => sendInput({ kind: "tap", key: "shop3" })}>
+            3 · {t("소나", "Sonar")}
+          </ChipButton>
+        </div>
+      )}
+
+      {/* Bottom: steering pad on left, reel button on right */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: "max(16px, env(safe-area-inset-bottom, 0px))",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          padding: "0 20px",
+          zIndex: 40,
+          pointerEvents: "none",
+        }}
+      >
+        <div style={{ display: "flex", gap: 12, pointerEvents: "auto" }}>
+          <HoldButton
+            ariaLabel={t("왼쪽", "Left")}
+            label="◀"
+            onDown={() => sendInput({ kind: "down", key: "left" })}
+            onUp={() => sendInput({ kind: "up", key: "left" })}
+          />
+          <HoldButton
+            ariaLabel={t("오른쪽", "Right")}
+            label="▶"
+            onDown={() => sendInput({ kind: "down", key: "right" })}
+            onUp={() => sendInput({ kind: "up", key: "right" })}
+          />
+        </div>
+        <div style={{ pointerEvents: "auto" }}>
+          <HoldButton
+            ariaLabel={t("낚시", "Reel")}
+            label={<span style={{ fontSize: 22 }}>🎣</span>}
+            onDown={() => sendInput({ kind: "down", key: "space" })}
+            onUp={() => sendInput({ kind: "up", key: "space" })}
+            style={{
+              width: 84,
+              height: 84,
+              background: "rgba(220,38,38,0.85)",
+              border: "2px solid rgba(255,255,255,0.55)",
+              boxShadow: "0 8px 24px rgba(220,38,38,0.4)",
+            }}
+          />
+        </div>
+      </div>
+    </>
   );
 }

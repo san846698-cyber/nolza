@@ -5,6 +5,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
 import { AdBottom } from "@/app/components/Ads";
+import { ShareCard } from "@/app/components/ShareCard";
 import {
   PAIR_COPY,
   type PairCopy,
@@ -575,7 +576,30 @@ function ResultView({
   ];
 
   return (
-    <>
+    <ShareCard
+      filename={`nolza-friend-match-${a.name}x${b.name}`}
+      locale={locale}
+      buttonLabel={{ ko: "결과 이미지 저장", en: "Save result image" }}
+      backgroundColor={C.bg}
+      buttonStyle={{
+        padding: "13px 24px",
+        borderRadius: 999,
+        border: `1px solid ${C.gold}`,
+        background: "transparent",
+        color: C.gold,
+        fontWeight: 700,
+        fontSize: 14,
+        cursor: "pointer",
+        fontFamily: FONT_SANS,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        minHeight: 44,
+      }}
+    >
+      {({ cardRef }) => (
+        <>
+        <div ref={cardRef} style={{ background: C.bg, paddingBottom: 8 }}>
       {/* 상단 — 두 이름 + 종합 점수 */}
       <section style={{ textAlign: "center", margin: "8px 0 32px" }}>
         <div
@@ -733,6 +757,7 @@ function ResultView({
         </div>
       </section>
 
+        </div>
       {/* 액션 버튼 */}
       <div
         style={{
@@ -797,7 +822,9 @@ function ResultView({
           }
         }
       `}</style>
-    </>
+        </>
+      )}
+    </ShareCard>
   );
 }
 

@@ -7,20 +7,35 @@ export type SimpleLocale = "ko" | "en";
 const STORAGE_KEY = "nolza_locale";
 const LOCALE_CHANGE_EVENT = "nolza:locale-change";
 
+// Default-language policy: the site is Korean-first. A saved choice in
+// localStorage wins. Otherwise we only switch to English when the browser
+// clearly prefers English (navigator.language / navigator.languages starts
+// with "en"). Every other locale — including the Korean default and any
+// other regional language — falls back to Korean so the site reads in its
+// primary language by default.
 function detect(): SimpleLocale {
-  if (typeof window === "undefined") return "en";
+  if (typeof window === "undefined") return "ko";
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === "ko" || stored === "en") return stored;
   } catch {
     /* ignore */
   }
-  const lang = (navigator.language || "en").slice(0, 2).toLowerCase();
-  return lang === "ko" ? "ko" : "en";
+  const langs: string[] = [];
+  if (typeof navigator !== "undefined") {
+    if (Array.isArray(navigator.languages)) langs.push(...navigator.languages);
+    if (navigator.language) langs.push(navigator.language);
+  }
+  for (const raw of langs) {
+    const code = (raw || "").slice(0, 2).toLowerCase();
+    if (code === "ko") return "ko";
+    if (code === "en") return "en";
+  }
+  return "ko";
 }
 
 export function useLocale() {
-  const [locale, setLocaleState] = useState<SimpleLocale>("en");
+  const [locale, setLocaleState] = useState<SimpleLocale>("ko");
 
   useEffect(() => {
     setLocaleState(detect());

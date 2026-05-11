@@ -30,6 +30,10 @@ const DARK_GAME_IDS = new Set([
 // (Games here either render their own topbar, or want full-bleed canvas.)
 const MINIMAL_HEADER_GAME_IDS = new Set(["aqua-fishing", "traffic", "friend-match"]);
 
+// Games that render a fully bespoke header (back + locale toggle) themselves —
+// the shared layout chrome is suppressed entirely so we don't show a duplicate header.
+const NO_LAYOUT_CHROME_GAME_IDS = new Set(["auction"]);
+
 export default function GamesLayout({
   children,
 }: {
@@ -42,6 +46,15 @@ export default function GamesLayout({
   const game = GAMES.find((g) => g.id === id);
   const isDark = DARK_GAME_IDS.has(id);
   const isMinimal = MINIMAL_HEADER_GAME_IDS.has(id);
+  const isNoChrome = NO_LAYOUT_CHROME_GAME_IDS.has(id);
+
+  if (isNoChrome) {
+    return (
+      <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100vh" }}>
+        {children}
+      </div>
+    );
+  }
   const tx = T[locale];
 
   const fallbackTitle = id
@@ -52,34 +65,57 @@ export default function GamesLayout({
     : "놀자";
 
   if (isMinimal) {
+    const floatingBtnBase: React.CSSProperties = {
+      position: "fixed",
+      zIndex: 70,
+      height: 40,
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 999,
+      background: "rgba(15, 23, 42, 0.65)",
+      color: "#f8fafc",
+      lineHeight: 1,
+      textDecoration: "none",
+      border: "1px solid rgba(248, 250, 252, 0.2)",
+      backdropFilter: "blur(6px)",
+      WebkitBackdropFilter: "blur(6px)",
+      cursor: "pointer",
+      fontFamily: "var(--font-inter), sans-serif",
+    };
     return (
       <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100vh" }}>
         <Link
           href="/"
           aria-label={locale === "ko" ? "모든 놀이로" : "All plays"}
           style={{
-            position: "fixed",
+            ...floatingBtnBase,
             top: 12,
             left: 12,
-            zIndex: 70,
             width: 40,
-            height: 40,
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 999,
-            background: "rgba(15, 23, 42, 0.65)",
-            color: "#f8fafc",
             fontSize: 22,
-            lineHeight: 1,
-            textDecoration: "none",
-            border: "1px solid rgba(248, 250, 252, 0.2)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
           }}
         >
           ←
         </Link>
+        <button
+          type="button"
+          onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
+          aria-label={
+            locale === "ko" ? "Switch to English" : "한국어로 전환"
+          }
+          style={{
+            ...floatingBtnBase,
+            top: 12,
+            left: 60,
+            padding: "0 12px",
+            fontSize: 12,
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+          }}
+        >
+          {locale === "ko" ? "한 / EN" : "EN / 한"}
+        </button>
         {children}
       </div>
     );

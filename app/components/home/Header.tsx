@@ -2,104 +2,37 @@
 
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
-import { T } from "@/lib/games-home";
 
 export function HomeHeader() {
-  const { locale, setLocale } = useLocale();
-  const tx = T[locale];
+  const { locale, setLocale, t } = useLocale();
+  const toggle = () => setLocale(locale === "ko" ? "en" : "ko");
 
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        background: "color-mix(in srgb, var(--home-bg) 88%, transparent)",
-        backdropFilter: "saturate(140%) blur(12px)",
-        WebkitBackdropFilter: "saturate(140%) blur(12px)",
-        borderBottom: "1px solid var(--home-hairline)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1440,
-          margin: "0 auto",
-          padding: "14px clamp(20px, 4vw, 56px)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 20,
-        }}
-      >
+    <header className="bg-home-bg border-b border-dashed border-home-hairline">
+      <div className="mx-auto max-w-col px-4 sm:px-6 py-5 sm:py-7 flex items-end justify-between gap-4 min-h-[80px]">
         <Link
-          href="/"
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            textDecoration: "none",
-            color: "var(--home-ink)",
-          }}
+          href="#top"
+          className="inline-flex items-baseline gap-1 leading-none no-underline"
         >
-          <span
-            style={{
-              fontFamily: "var(--font-noto-serif-kr), serif",
-              fontWeight: 700,
-              fontSize: 26,
-              letterSpacing: "-0.02em",
-            }}
-          >
+          <span className="font-serif font-bold text-[40px] sm:text-[56px] tracking-[-0.04em] text-home-ink">
             놀자
           </span>
-          <span
-            style={{
-              fontFamily: "var(--font-fraunces), serif",
-              fontStyle: "italic",
-              fontWeight: 300,
-              fontSize: 18,
-              color: "var(--home-muted)",
-            }}
-          >
+          <span className="font-fraunces italic font-light text-[20px] sm:text-[26px] text-home-injoo tracking-tight">
             .fun
           </span>
         </Link>
 
-        <nav
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 28,
-            fontFamily: "var(--font-inter), sans-serif",
-            fontSize: 13,
-          }}
-        >
-          <Link href="/" style={{ color: "var(--home-ink-2)", textDecoration: "none" }}>
-            {tx.nav.games}
-          </Link>
-          <a
-            href="#about"
-            style={{ color: "var(--home-ink-2)", textDecoration: "none" }}
-          >
-            {tx.nav.about}
-          </a>
-        </nav>
-
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="flex items-center gap-3 shrink-0 pb-1.5">
+          <span className="hidden sm:inline font-fraunces italic font-light text-[15px] text-home-ink-2 leading-tight">
+            {t("심심할 때 클릭하는 곳", "stuff to click when bored")}
+          </span>
           <button
             type="button"
-            onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
-            aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
-            style={{
-              fontFamily: "var(--font-inter), sans-serif",
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              padding: "7px 12px",
-              border: "1px solid var(--home-hairline-strong)",
-              background: "transparent",
-              color: "var(--home-ink)",
-              cursor: "pointer",
-            }}
+            onClick={toggle}
+            aria-label={
+              locale === "ko" ? "Switch to English" : "한국어로 전환"
+            }
+            className="font-inter text-[11px] font-semibold tracking-[0.1em] px-3 py-2 border border-home-hairline-strong bg-transparent text-home-ink hover:bg-[rgba(20,17,14,0.04)] transition-colors whitespace-nowrap"
           >
             {locale === "ko" ? "한 / EN" : "EN / 한"}
           </button>
@@ -108,3 +41,5 @@ export function HomeHeader() {
     </header>
   );
 }
+
+export default HomeHeader;

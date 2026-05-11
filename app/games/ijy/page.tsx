@@ -220,9 +220,8 @@ function ItemThumb({ item }: { item: Item }) {
   const showImage = item.image && !errored;
   return (
     <div
+      className="ijy-thumb"
       style={{
-        width: 80,
-        height: 80,
         flexShrink: 0,
         borderRadius: 12,
         background: COLOR.card,
@@ -248,7 +247,7 @@ function ItemThumb({ item }: { item: Item }) {
           }}
         />
       ) : (
-        <span style={{ fontSize: 40, lineHeight: 1 }} aria-hidden>
+        <span className="ijy-thumb-emoji" aria-hidden style={{ lineHeight: 1 }}>
           {item.emoji}
         </span>
       )}
@@ -337,6 +336,54 @@ export default function IjyGame() {
       className="min-h-screen page-in"
       style={{ backgroundColor: COLOR.bg, color: COLOR.ink }}
     >
+      <style>{`
+        .ijy-ad-wrap { padding: 24px 32px 0; }
+        .ijy-shell { padding: 20px 24px 60px; }
+        .ijy-breadcrumb { font-size: 16px; letter-spacing: 0.32em; }
+        .ijy-hero { margin-top: 80px; margin-bottom: 32px; }
+        .ijy-hero-label { font-size: 16px; letter-spacing: 0.24em; margin-bottom: 22px; }
+        .ijy-hero-number { gap: 18px; }
+        .ijy-hero-value { font-size: clamp(72px, 14vw, 168px); }
+        .ijy-hero-unit { font-size: clamp(34px, 5.5vw, 64px); }
+        .ijy-hero-reaction { margin-top: 32px; font-size: 19px; }
+        .ijy-tabs { margin-top: 64px; }
+        .ijy-thumb { width: 80px; height: 80px; }
+        .ijy-thumb-emoji { font-size: 40px; }
+        .ijy-row { gap: 16px; min-height: 96px; padding: 12px 0; }
+        .ijy-row-name { font-size: 16px; }
+        .ijy-row-price { font-size: 15px; }
+        .ijy-qty-btn { width: 44px; height: 44px; font-size: 22px; }
+        .ijy-qty-count { min-width: 44px; font-size: 17px; }
+        .ijy-row-controls { gap: 8px; }
+
+        @media (max-width: 640px) {
+          .ijy-ad-wrap { padding: 16px 12px 0; }
+          .ijy-shell { padding: 12px 14px 96px; }
+          .ijy-breadcrumb { font-size: 13px; letter-spacing: 0.2em; }
+          .ijy-hero { margin-top: 36px; margin-bottom: 24px; }
+          .ijy-hero-label { font-size: 13px; letter-spacing: 0.2em; margin-bottom: 14px; }
+          .ijy-hero-number { gap: 10px; }
+          .ijy-hero-value { font-size: clamp(56px, 16vw, 96px); }
+          .ijy-hero-unit { font-size: clamp(26px, 7vw, 40px); }
+          .ijy-hero-reaction { margin-top: 20px; font-size: 15px; }
+          .ijy-tabs { margin-top: 36px; }
+          .ijy-thumb { width: 60px; height: 60px; border-radius: 10px; }
+          .ijy-thumb-emoji { font-size: 28px; }
+          .ijy-row { gap: 12px; min-height: 80px; padding: 10px 0; }
+          .ijy-row-name { font-size: 15px; }
+          .ijy-row-price { font-size: 13px; }
+          .ijy-qty-btn { width: 38px; height: 38px; font-size: 20px; }
+          .ijy-qty-count { min-width: 32px; font-size: 15px; }
+          .ijy-row-controls { gap: 4px; }
+        }
+
+        @media (min-width: 641px) and (max-width: 900px) {
+          .ijy-shell { padding: 16px 20px 80px; }
+          .ijy-hero { margin-top: 56px; }
+          .ijy-hero-value { font-size: clamp(72px, 12vw, 128px); }
+          .ijy-hero-unit { font-size: clamp(32px, 5vw, 52px); }
+        }
+      `}</style>
       {/* Top thin progress bar */}
       <div
         className="fixed left-0 right-0 top-0 z-30"
@@ -348,18 +395,16 @@ export default function IjyGame() {
         />
       </div>
 
-      <div className="mx-auto" style={{ maxWidth: 1000, padding: "24px 32px 0" }}>
+      <div className="ijy-ad-wrap mx-auto" style={{ maxWidth: 1000 }}>
         <AdTop />
       </div>
 
-      <div className="mx-auto" style={{ maxWidth: 760, padding: "20px 24px 60px" }}>
+      <div className="ijy-shell mx-auto" style={{ maxWidth: 760 }}>
         {/* Tiny breadcrumb */}
         <div
-          className="text-center"
+          className="ijy-breadcrumb text-center"
           style={{
-            fontSize: 16,
             color: COLOR.muted,
-            letterSpacing: "0.32em",
             fontWeight: 500,
             opacity: 0.6,
           }}
@@ -368,13 +413,11 @@ export default function IjyGame() {
         </div>
 
         {/* Big balance — dominant top hero so the scale of 30조 lands. */}
-        <div className="text-center" style={{ marginTop: 80, marginBottom: 32 }}>
+        <div className="ijy-hero text-center">
           <div
+            className="ijy-hero-label"
             style={{
-              fontSize: 16,
               color: COLOR.muted,
-              letterSpacing: "0.24em",
-              marginBottom: 22,
               textTransform: "uppercase",
               fontWeight: 600,
             }}
@@ -383,7 +426,7 @@ export default function IjyGame() {
           </div>
           <div
             key={bumpKey}
-            className="number-bump tabular-nums"
+            className="ijy-hero-number number-bump tabular-nums"
             style={{
               fontWeight: 800,
               lineHeight: 0.95,
@@ -393,16 +436,13 @@ export default function IjyGame() {
               display: "flex",
               alignItems: "baseline",
               justifyContent: "center",
-              gap: 18,
               flexWrap: "wrap",
             }}
           >
-            <span style={{ fontSize: "clamp(96px, 14vw, 168px)" }}>
-              {balance.value}
-            </span>
+            <span className="ijy-hero-value">{balance.value}</span>
             <span
+              className="ijy-hero-unit"
               style={{
-                fontSize: "clamp(40px, 5.5vw, 64px)",
                 fontWeight: 700,
                 color: COLOR.accent,
                 letterSpacing: 0,
@@ -412,9 +452,8 @@ export default function IjyGame() {
             </span>
           </div>
           <div
+            className="ijy-hero-reaction"
             style={{
-              marginTop: 32,
-              fontSize: 19,
               color: COLOR.muted,
               letterSpacing: "0.02em",
             }}
@@ -425,10 +464,10 @@ export default function IjyGame() {
 
         {/* Category tabs */}
         <div
+          className="ijy-tabs"
           role="tablist"
           aria-label={t("카테고리", "Categories")}
           style={{
-            marginTop: 64,
             display: "flex",
             flexWrap: "wrap",
             gap: 8,
@@ -492,28 +531,33 @@ export default function IjyGame() {
             return (
               <div
                 key={item.id}
+                className="ijy-row"
                 onMouseEnter={() => setHovered(item.id)}
                 onMouseLeave={() => setHovered((h) => (h === item.id ? null : h))}
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 16,
-                  minHeight: 96,
-                  paddingTop: 12,
-                  paddingBottom: 12,
                   borderBottom: `1px solid ${COLOR.hairline}`,
                   position: "relative",
                 }}
               >
                 <ItemThumb item={item} />
 
-                <div className="flex flex-1 items-baseline justify-between gap-4 min-w-0">
+                <div
+                  className="flex flex-1 flex-col min-w-0"
+                  style={{ gap: 4 }}
+                  onClick={() => {
+                    if (tipText) setHovered((h) => (h === item.id ? null : item.id));
+                  }}
+                >
                   <span
-                    className="truncate"
+                    className="ijy-row-name"
                     style={{
-                      fontSize: 19,
                       fontWeight: 500,
                       color: count > 0 ? COLOR.ink : COLOR.ink2,
+                      lineHeight: 1.3,
+                      wordBreak: "keep-all",
+                      overflowWrap: "anywhere",
                     }}
                   >
                     {itemName}
@@ -522,7 +566,7 @@ export default function IjyGame() {
                         aria-hidden
                         style={{
                           marginLeft: 8,
-                          fontSize: 13,
+                          fontSize: 12,
                           color: COLOR.muted,
                           letterSpacing: "0.1em",
                         }}
@@ -532,28 +576,25 @@ export default function IjyGame() {
                     )}
                   </span>
                   <span
-                    className="tabular-nums whitespace-nowrap"
-                    style={{ fontSize: 17, color: COLOR.muted }}
+                    className="ijy-row-price tabular-nums whitespace-nowrap"
+                    style={{ color: COLOR.muted }}
                   >
                     {formatPrice(item.price, locale)}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="ijy-row-controls flex items-center shrink-0">
                   <button
                     type="button"
                     onClick={() => remove(item)}
                     disabled={decDisabled}
                     aria-label={t("감소", "Decrease")}
-                    className="btn-press"
+                    className="ijy-qty-btn btn-press"
                     style={{
-                      width: 44,
-                      height: 44,
                       borderRadius: "50%",
                       border: "none",
                       background: decDisabled ? COLOR.disabled : COLOR.buttonBg,
                       color: COLOR.buttonText,
-                      fontSize: 22,
                       fontWeight: 500,
                       lineHeight: 1,
                       cursor: decDisabled ? "not-allowed" : "pointer",
@@ -563,10 +604,8 @@ export default function IjyGame() {
                     −
                   </button>
                   <span
-                    className="tabular-nums text-center"
+                    className="ijy-qty-count tabular-nums text-center"
                     style={{
-                      minWidth: 44,
-                      fontSize: 17,
                       fontWeight: 600,
                       color: count > 0 ? COLOR.accent : COLOR.disabled,
                     }}
@@ -578,10 +617,8 @@ export default function IjyGame() {
                     onClick={() => add(item)}
                     disabled={cantAfford}
                     aria-label={t("증가", "Increase")}
-                    className="btn-press"
+                    className="ijy-qty-btn btn-press"
                     style={{
-                      width: 44,
-                      height: 44,
                       borderRadius: "50%",
                       border: "none",
                       background: cantAfford
@@ -590,7 +627,6 @@ export default function IjyGame() {
                         ? COLOR.accent
                         : COLOR.buttonBg,
                       color: COLOR.buttonText,
-                      fontSize: 22,
                       fontWeight: 500,
                       lineHeight: 1,
                       cursor: cantAfford ? "not-allowed" : "pointer",
@@ -629,7 +665,7 @@ export default function IjyGame() {
           style={{
             position: "fixed",
             left: "50%",
-            bottom: "10vh",
+            bottom: "calc(env(safe-area-inset-bottom, 0px) + 96px)",
             transform: "translateX(-50%)",
             zIndex: 80,
             background: COLOR.ink,

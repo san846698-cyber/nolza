@@ -12,24 +12,170 @@
 html, body {
   -webkit-font-smoothing: antialiased;
 }
+/* Prevent a single overflowing child from forcing horizontal scroll on
+   mobile. `clip` (vs hidden) avoids creating a scroll container so
+   position: sticky on the game shell keeps working. */
+body {
+  overflow-x: clip;
+}
+
+/* ==========================================================================
+   Mobile / tablet baseline (applies to ALL routes, including /games/*).
+   Goal: prevent the most common mobile failures (overflow, tiny tap targets,
+   iOS input zoom, hover-only UI on touch) without redesigning each page.
+   ========================================================================== */
+
+/* iOS Safari zooms when an <input>/<select>/<textarea> font-size is < 16px.
+   Force a 16px minimum on touch-friendly viewports. */
+@media (max-width: 768px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* Buttons/links acting as buttons should meet ~44px tap-target on touch
+   devices. Skip when the element has its own size class (h-*, w-*, size-*)
+   by relying on min-* which Tailwind utilities can still override. */
+@media (hover: none) and (pointer: coarse) {
+  button:not(:disabled),
+  a[role="button"],
+  [role="button"] {
+    min-height: 40px;
+  }
+}
+
+/* Hover-only affordances (decorative scale/translate/color shifts) are
+   pointless on touch and sometimes get stuck. Neutralize the common ones
+   when there is no fine pointer. */
+@media (hover: none) {
+  .card-hover:hover {
+    animation: none !important;
+    transform: none !important;
+  }
+  .back-arrow:hover {
+    background: transparent;
+    transform: none;
+  }
+  .share-fab:hover {
+    transform: none;
+  }
+}
+
+/* Bottom FABs / fixed overlays must clear the iOS home indicator and the
+   mobile sticky ad slot. Pair with body[data-ads="on"] rules already below. */
+.share-fab,
+.back-arrow {
+  bottom: max(24px, env(safe-area-inset-bottom, 0px) + 16px);
+}
+@media (max-width: 767px) {
+  body[data-ads="on"] .share-fab {
+    bottom: max(84px, env(safe-area-inset-bottom, 0px) + 76px);
+  }
+  .back-arrow {
+    top: max(16px, env(safe-area-inset-top, 0px) + 8px);
+    left: 12px;
+    height: 40px;
+    width: 40px;
+    font-size: 22px;
+  }
+}
+
+/* Long unbroken Korean/English strings should wrap on phones rather than
+   forcing horizontal scroll. Opt-in helper for content that has been
+   reviewed; not applied globally so we don't disrupt prose. */
+.mobile-wrap {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* Common image patterns: never let a raw <img> blow out its parent. */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Heading defaults — keep large hero text from pinning at 64–96px on a
+   360px screen. Pages that need an exact size should set their own. */
+@media (max-width: 640px) {
+  h1 { font-size: clamp(28px, 8vw, 40px); }
+  h2 { font-size: clamp(22px, 6.5vw, 32px); }
+}
+
+/* Modal/dialog safe-area — most overlays in this app are role="dialog"
+   or use .modal/.overlay class names. */
+[role="dialog"],
+.modal-content,
+.overlay-content {
+  padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+}
+
+/* Tab strips that overflow horizontally should be scrollable, not clipped. */
+.tab-strip-scroll {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-strip-scroll::-webkit-scrollbar { display: none; }
+.tab-strip-scroll > * { flex-shrink: 0; }
 
 /* ==========================================================================
    Home page design tokens — scoped to [data-home] so dark game pages keep
    their existing --bg/--card/--accent variables.
    ========================================================================== */
 [data-home] {
+  /* base paper palette — kept from previous design */
   --home-bg: #F4EFE4;
   --home-bg-soft: #EDE7D8;
   --home-paper: #FBF7EE;
   --home-ink: #14110E;
   --home-ink-2: #2A2520;
   --home-muted: #6B6258;
-  --home-hairline: rgba(20,17,14,0.12);
-  --home-hairline-strong: rgba(20,17,14,0.28);
+  --home-hairline: rgba(20,17,14,0.10);
+  --home-hairline-strong: rgba(20,17,14,0.22);
   --home-injoo: #B2102B;
   --home-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* category-section background tones (subtle HSL shift off --home-bg) */
+  --cat-play:  #F4EEDC;
+  --cat-self:  #E8EFE6;
+  --cat-sim:   #F5E8DC;
+  --cat-world: #ECE6EF;
+
+  /* tile skins — per-tile personality variants */
+  --skin-block-1: #FFD93D;
+  --skin-block-2: #6BCB77;
+  --skin-block-3: #FF6B6B;
+  --skin-block-4: #4D96FF;
+  --skin-block-5: #C780FA;
+  --skin-hand-1: #FFF4E0;
+  --skin-hand-2: #E6F2FF;
+  --skin-hand-3: #FFE6E6;
+  --skin-pixel-bg: #1A1A2E;
+  --skin-pixel-fg: #E8E8E8;
+  --skin-pixel-accent: #FFD93D;
+  --skin-sticker-bg: #FFFFFF;
+  --skin-mono-bg: #F8F4E9;
+
   background: var(--home-bg);
   color: var(--home-ink);
+}
+
+/* Section background tinting — drop data-cat on each <section> */
+[data-home] section[data-cat="play"]  { background: var(--cat-play); }
+[data-home] section[data-cat="self"]  { background: var(--cat-self); }
+[data-home] section[data-cat="sim"]   { background: var(--cat-sim); }
+[data-home] section[data-cat="world"] { background: var(--cat-world); }
+[data-home] section[data-cat]         { transition: background 0.4s var(--home-easing); }
+
+/* Subtle paper grain over the whole homepage */
+[data-home]::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  opacity: 0.05; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
 @keyframes nolzaTickerScroll {

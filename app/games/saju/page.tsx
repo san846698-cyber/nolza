@@ -11,6 +11,7 @@ import {
   type ReactElement,
 } from "react";
 import { AdMobileSticky } from "../../components/Ads";
+import { ShareCard } from "../../components/ShareCard";
 import { useLocale } from "@/hooks/useLocale";
 
 /* ============================================================================
@@ -519,64 +520,64 @@ const HEALTH_BY_DOMINANT: Record<ElementKey, string> = {
   수: "신장과 방광에 주의하소. 수기가 강하면 비뇨기 계통과 허리에 무리가 가기 쉽소. 차가운 음식과 과음이 가장 큰 적입니다. 짠맛(미역, 다시마)과 따뜻한 물이 약입니다.",
 };
 
-const YEARLY_2025_BY_ZODIAC: Record<string, { overall: string; goodMonths: string; badMonths: string }> = {
+const YEARLY_BY_ZODIAC: Record<string, { overall: string; goodMonths: string; badMonths: string }> = {
   쥐: {
-    overall: "2025년은 변화의 흐름이 강한 해이외다. 작년의 답답함이 풀리고 새로운 기회가 열리니, 망설이지 말고 결단해야 하오. 인간관계에서 큰 인연이 들어옵니다.",
+    overall: "올해는 변화의 흐름이 강한 해이외다. 작년의 답답함이 풀리고 새로운 기회가 열리니, 망설이지 말고 결단해야 하오. 인간관계에서 큰 인연이 들어옵니다.",
     goodMonths: "3월, 6월, 11월",
     badMonths: "5월, 9월",
   },
   소: {
-    overall: "2025년은 안정 위에 한 발 더 나가는 해이외다. 그동안 쌓아온 것이 결실로 보이기 시작하니 인내가 보상받습니다. 다만 큰 결단은 하반기로 미루는 게 좋습니다.",
+    overall: "올해는 안정 위에 한 발 더 나가는 해이외다. 그동안 쌓아온 것이 결실로 보이기 시작하니 인내가 보상받습니다. 다만 큰 결단은 하반기로 미루는 게 좋습니다.",
     goodMonths: "4월, 8월, 12월",
     badMonths: "2월, 7월",
   },
   호랑이: {
-    overall: "2025년은 도약의 해이외다. 지난 2년의 정체가 풀리고 본격적으로 자기 자리를 만들어가는 시기입니다. 단, 너무 빨리 가다 무리할 수 있으니 페이스 조절이 필요하오.",
+    overall: "올해는 도약의 해이외다. 지난 2년의 정체가 풀리고 본격적으로 자기 자리를 만들어가는 시기입니다. 단, 너무 빨리 가다 무리할 수 있으니 페이스 조절이 필요하오.",
     goodMonths: "5월, 9월, 12월",
     badMonths: "3월, 7월",
   },
   토끼: {
-    overall: "2025년은 부드럽지만 분명한 성장의 해이외다. 큰 변동보다 작은 결정들이 쌓여 의미있는 변화를 만듭니다. 사랑과 인연에 좋은 시기입니다.",
+    overall: "올해는 부드럽지만 분명한 성장의 해이외다. 큰 변동보다 작은 결정들이 쌓여 의미있는 변화를 만듭니다. 사랑과 인연에 좋은 시기입니다.",
     goodMonths: "4월, 7월, 10월",
     badMonths: "1월, 8월",
   },
   용: {
-    overall: "2025년은 큰 그림을 그릴 해이외다. 지금 시작하는 일이 5년 후 큰 결실이 됩니다. 다만 화려함을 좇다 실속을 놓칠 수 있으니 두 번 점검하소.",
+    overall: "올해는 큰 그림을 그릴 해이외다. 지금 시작하는 일이 5년 후 큰 결실이 됩니다. 다만 화려함을 좇다 실속을 놓칠 수 있으니 두 번 점검하소.",
     goodMonths: "3월, 6월, 11월",
     badMonths: "5월, 10월",
   },
   뱀: {
-    overall: "2025년은 깊이 들어가는 해이외다. 표면이 아닌 본질을 다루는 시기, 지금까지의 경험이 응축되어 직관이 더욱 선명해집니다.",
+    overall: "올해는 깊이 들어가는 해이외다. 표면이 아닌 본질을 다루는 시기, 지금까지의 경험이 응축되어 직관이 더욱 선명해집니다.",
     goodMonths: "5월, 8월, 11월",
     badMonths: "2월, 6월",
   },
   말: {
-    overall: "2025년은 멈추지 말고 달릴 해이외다. 한곳에 묶이면 답답해지니 변화를 두려워하지 말고 새 무대로 나가야 합니다.",
+    overall: "올해는 멈추지 말고 달릴 해이외다. 한곳에 묶이면 답답해지니 변화를 두려워하지 말고 새 무대로 나가야 합니다.",
     goodMonths: "4월, 7월, 10월",
     badMonths: "1월, 9월",
   },
   양: {
-    overall: "2025년은 자기 작품을 만드는 해이외다. 창의력과 감수성이 돋보이는 시기, 예술·창작 관련 운이 강하게 들어옵니다.",
+    overall: "올해는 자기 작품을 만드는 해이외다. 창의력과 감수성이 돋보이는 시기, 예술·창작 관련 운이 강하게 들어옵니다.",
     goodMonths: "5월, 9월, 12월",
     badMonths: "3월, 8월",
   },
   원숭이: {
-    overall: "2025년은 재치가 통하는 해이외다. 어려운 상황에서 길을 찾는 능력이 빛나며, 인간관계에서 새로운 기회가 열립니다.",
+    overall: "올해는 재치가 통하는 해이외다. 어려운 상황에서 길을 찾는 능력이 빛나며, 인간관계에서 새로운 기회가 열립니다.",
     goodMonths: "3월, 7월, 11월",
     badMonths: "5월, 10월",
   },
   닭: {
-    overall: "2025년은 정직이 보상받는 해이외다. 그동안의 성실함이 누군가에게 인정되어 새로운 자리가 열립니다.",
+    overall: "올해는 정직이 보상받는 해이외다. 그동안의 성실함이 누군가에게 인정되어 새로운 자리가 열립니다.",
     goodMonths: "4월, 8월, 12월",
     badMonths: "2월, 6월",
   },
   개: {
-    overall: "2025년은 의리가 결실로 돌아오는 해이외다. 가까운 사람들과의 관계가 더욱 단단해지며, 함께 일하는 자리에서 운이 강합니다.",
+    overall: "올해는 의리가 결실로 돌아오는 해이외다. 가까운 사람들과의 관계가 더욱 단단해지며, 함께 일하는 자리에서 운이 강합니다.",
     goodMonths: "3월, 6월, 11월",
     badMonths: "1월, 9월",
   },
   돼지: {
-    overall: "2025년은 풍요가 따르는 해이외다. 재물과 인연이 함께 들어오는 시기이니 베풀수록 더 많이 들어옵니다.",
+    overall: "올해는 풍요가 따르는 해이외다. 재물과 인연이 함께 들어오는 시기이니 베풀수록 더 많이 들어옵니다.",
     goodMonths: "5월, 9월, 12월",
     badMonths: "2월, 7월",
   },
@@ -624,7 +625,7 @@ function buildExtendedReading(saju: SajuResult): ExtendedReading {
     wealth: WEALTH_BY_STEM[stem],
     career: CAREER_BY_STEM[stem],
     health: HEALTH_BY_DOMINANT[saju.dominant],
-    yearly: YEARLY_2025_BY_ZODIAC[animal],
+    yearly: YEARLY_BY_ZODIAC[animal],
     finalAdvice: FINAL_ADVICE_BY_STEM[stem],
   };
 }
@@ -722,6 +723,16 @@ function hourToBranchIdx(hour24: number): number {
   // 자(子) = 23–01 = index 0
   if (hour24 === 23) return 0;
   return Math.floor((hour24 + 1) / 2);
+}
+
+function yearGanji(year: number): { ko: string; hanja: string } {
+  // Same convention as calcSaju's year-pillar: 4 BCE = 갑자년.
+  const stemIdx = ((year - 4) % 10 + 10) % 10;
+  const branchIdx = ((year - 4) % 12 + 12) % 12;
+  return {
+    ko: `${STEMS[stemIdx].ko}${BRANCHES[branchIdx].ko}`,
+    hanja: `${STEMS[stemIdx].hanja}${BRANCHES[branchIdx].hanja}`,
+  };
 }
 
 function calcSaju(
@@ -928,7 +939,7 @@ export default function SajuPage(): ReactElement {
         `→ nolza.fun/games/saju`,
       `My saju reading:\n` +
         `Nature — ${reading.trait}\n` +
-        `2025 — ${yearLine}\n` +
+        `${new Date().getFullYear()} — ${yearLine}\n` +
         `→ nolza.fun/games/saju`,
     );
     try {
@@ -1138,12 +1149,12 @@ function LanguageStep({
       >
         {t("한국 사주 풀이", "KOREAN FORTUNE READING")}
       </div>
-      <div style={{ fontSize: 76, marginBottom: 16 }} aria-hidden>
+      <div style={{ fontSize: "clamp(56px, 14vw, 76px)", marginBottom: 16 }} aria-hidden>
         🔮
       </div>
       <h1
         style={{
-          fontSize: 40,
+          fontSize: "clamp(28px, 7vw, 40px)",
           fontWeight: 700,
           lineHeight: 1.2,
           letterSpacing: "-0.02em",
@@ -1153,7 +1164,7 @@ function LanguageStep({
       >
         {t("한국인이신가요?", "Are you Korean?")}
       </h1>
-      <p style={{ fontSize: 19, color: SUBTLE, marginBottom: 40 }}>
+      <p style={{ fontSize: "clamp(15px, 4vw, 19px)", color: SUBTLE, marginBottom: 40 }}>
         {t("어떤 사주 흐름을 보여드릴까요?", "Choose the flow that fits you")}
       </p>
 
@@ -1347,7 +1358,7 @@ function BridgeStep({
         <div
           style={{
             fontFamily: "var(--font-noto-serif-kr), serif",
-            fontSize: 80,
+            fontSize: "clamp(48px, 13vw, 80px)",
             fontWeight: 700,
             lineHeight: 1.05,
             color: ACCENT,
@@ -1669,6 +1680,8 @@ function ResultView({
   onShare: () => void;
   onReset: () => void;
 }): ReactElement {
+  const { locale } = useLocale();
+  const showEn = locale !== "ko";
   const dayReading = DAY_STEM_READINGS[result.day.stem.ko];
   const yearAnimal = result.year.branch.animal;
   const zodiacBrief = ZODIAC_BRIEF[yearAnimal] ?? "";
@@ -1676,7 +1689,30 @@ function ResultView({
   const weakestInfo = ELEMENT_INFO[result.weakest];
 
   return (
-    <div style={{ maxWidth: 560, width: "100%" }}>
+    <ShareCard
+      filename={`nolza-saju-${name}`}
+      locale={locale}
+      backgroundColor={BG}
+      buttonLabel={{ ko: "사주 이미지 저장", en: "Save saju image" }}
+      buttonStyle={{
+        padding: "12px 22px",
+        borderRadius: 999,
+        border: `1px solid ${ACCENT}`,
+        background: "transparent",
+        color: ACCENT,
+        fontWeight: 700,
+        fontSize: 13,
+        letterSpacing: "0.18em",
+        cursor: "pointer",
+        minHeight: 44,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+      }}
+    >
+      {({ cardRef }) => (
+        <div style={{ maxWidth: 560, width: "100%" }}>
+          <div ref={cardRef} style={{ background: BG, padding: "4px 0" }}>
       <div style={{ textAlign: "center", marginBottom: 24 }}>
         <Eyebrow>SAJU READING</Eyebrow>
         <h1 style={{ ...titleStyle, color: ACCENT }}>{name}</h1>
@@ -1857,6 +1893,7 @@ function ResultView({
 
       {/* ── Extended reading ─────────────────────────────────────── */}
       <ExtendedSections result={result} />
+          </div>
 
       {/* Buttons */}
       <div
@@ -1875,7 +1912,9 @@ function ResultView({
           ↺ 다시 보기
         </button>
       </div>
-    </div>
+        </div>
+      )}
+    </ShareCard>
   );
 }
 
@@ -1977,6 +2016,8 @@ function PillarCol({
 }
 
 function ExtendedSections({ result }: { result: SajuResult }): ReactElement {
+  const { locale } = useLocale();
+  const showEn = locale !== "ko";
   const ext = useMemo(() => buildExtendedReading(result), [result]);
 
   return (
@@ -2028,8 +2069,15 @@ function ExtendedSections({ result }: { result: SajuResult }): ReactElement {
         <Paragraph text={ext.health} />
       </Section>
 
-      {/* 2025 운세 */}
-      <Section title="을사년 운세 (2025)" en="THIS YEAR">
+      {/* 올해 운세 (자동 갱신) */}
+      <Section
+        title={(() => {
+          const y = new Date().getFullYear();
+          const g = yearGanji(y);
+          return `${g.ko}년 운세 (${y})`;
+        })()}
+        en="THIS YEAR"
+      >
         <Paragraph text={ext.yearly.overall} />
         <div
           style={{
@@ -2057,7 +2105,7 @@ function ExtendedSections({ result }: { result: SajuResult }): ReactElement {
                 textTransform: "uppercase",
               }}
             >
-              GOOD MONTHS
+              {showEn ? "GOOD MONTHS" : "좋은 달"}
             </div>
             <div
               style={{
@@ -2088,7 +2136,7 @@ function ExtendedSections({ result }: { result: SajuResult }): ReactElement {
                 textTransform: "uppercase",
               }}
             >
-              BE CAREFUL
+              {showEn ? "BE CAREFUL" : "주의할 달"}
             </div>
             <div
               style={{
@@ -2226,6 +2274,8 @@ function Section({
   en: string;
   children: React.ReactNode;
 }): ReactElement {
+  const { locale } = useLocale();
+  const showEn = locale !== "ko";
   return (
     <div
       style={{
@@ -2256,18 +2306,20 @@ function Section({
         >
           {title}
         </div>
-        <div
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 13,
-            letterSpacing: "0.2em",
-            color: ACCENT_DIM,
-            fontWeight: 600,
-            textTransform: "uppercase",
-          }}
-        >
-          {en}
-        </div>
+        {showEn && (
+          <div
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: 13,
+              letterSpacing: "0.2em",
+              color: ACCENT_DIM,
+              fontWeight: 600,
+              textTransform: "uppercase",
+            }}
+          >
+            {en}
+          </div>
+        )}
       </div>
       {children}
     </div>
@@ -2283,6 +2335,8 @@ function Lucky({
   en: string;
   value: string;
 }): ReactElement {
+  const { locale } = useLocale();
+  const showEn = locale !== "ko";
   return (
     <div
       style={{
@@ -2293,19 +2347,21 @@ function Lucky({
         textAlign: "center",
       }}
     >
-      <div
-        style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: 9,
-          color: ACCENT_DIM,
-          letterSpacing: "0.18em",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          marginBottom: 4,
-        }}
-      >
-        {en}
-      </div>
+      {showEn && (
+        <div
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: 9,
+            color: ACCENT_DIM,
+            letterSpacing: "0.18em",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            marginBottom: 4,
+          }}
+        >
+          {en}
+        </div>
+      )}
       <div style={{ fontSize: 13, color: SUBTLE, marginBottom: 6 }}>{label}</div>
       <div
         style={{

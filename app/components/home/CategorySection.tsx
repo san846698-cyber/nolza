@@ -1,95 +1,46 @@
 "use client";
 
-import type { CatId, Lang } from "@/lib/games-home";
-import { GAMES, T } from "@/lib/games-home";
-import { GameTile } from "./GameTile";
 import { useLocale } from "@/hooks/useLocale";
+import GameTile from "./GameTile";
+import type { Category, Game } from "@/lib/games-home";
 
-interface Props {
-  cat: CatId;
-}
-
-export function CategorySection({ cat }: Props) {
-  const { locale } = useLocale();
-  const tx = T[locale];
-  const games = GAMES.filter((g) => g.cat === cat);
-
-  if (games.length === 0) return null;
+export default function CategorySection({
+  cat,
+  index,
+  games,
+}: {
+  cat: Category;
+  index: number;
+  games: Game[];
+}) {
+  const { t } = useLocale();
 
   return (
-    <section
-      style={{
-        padding: "clamp(40px, 6vw, 96px) clamp(20px, 4vw, 56px)",
-        maxWidth: 1440,
-        margin: "0 auto",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          marginBottom: 40,
-          paddingBottom: 18,
-          borderBottom: "1px solid var(--home-hairline)",
-          gap: 24,
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <div
-            style={{
-              fontFamily: "var(--font-inter), sans-serif",
-              fontSize: 11,
-              letterSpacing: "0.3em",
-              color: "var(--home-muted)",
-              textTransform: "uppercase",
-              marginBottom: 12,
-            }}
-          >
-            {tx.section_en[cat]}
-          </div>
-          <h2
-            style={{
-              margin: 0,
-              fontFamily:
-                locale === "ko"
-                  ? "var(--font-noto-serif-kr), serif"
-                  : "var(--font-fraunces), serif",
-              fontWeight: locale === "ko" ? 700 : 400,
-              fontStyle: locale === "ko" ? "normal" : "italic",
-              fontSize: "clamp(36px, 5vw, 56px)",
-              letterSpacing: "-0.02em",
-              lineHeight: 1.05,
-              color: "var(--home-ink)",
-            }}
-          >
-            {tx.section[cat]}
+    <section id={cat.id} data-cat={cat.id} className="scroll-mt-[68px]">
+      <div className="mx-auto max-w-col px-4 sm:px-6 py-10 sm:py-14">
+        <div className="flex items-baseline gap-3 mb-6 sm:mb-8">
+          <span className="font-fraunces italic font-light text-2xl text-home-muted leading-none">
+            {String(index).padStart(2, "0")}
+          </span>
+          <h2 className="font-serif font-bold text-2xl sm:text-3xl tracking-tight leading-none m-0 text-home-ink">
+            {t(cat.labelKo, cat.labelEn)}
           </h2>
+          <span className="font-fraunces italic font-light text-sm text-home-muted ml-1">
+            / {cat.labelEn.toLowerCase()}
+          </span>
+          <span className="ml-auto font-mono text-[11px] text-home-muted">
+            {String(games.length).padStart(2, "0")}
+          </span>
         </div>
-        <div
-          style={{
-            fontFamily: "var(--font-fraunces), serif",
-            fontStyle: "italic",
-            fontSize: 18,
-            color: "var(--home-muted)",
-            letterSpacing: "0.04em",
-          }}
-        >
-          {games.length} {tx.count_unit}
-        </div>
-      </div>
+        <p className="font-fraunces italic text-home-ink-2 text-sm mb-6 pb-4 border-b border-home-hairline max-w-[44ch]">
+          {t(cat.subKo, cat.subEn)}
+        </p>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))",
-          gap: 20,
-        }}
-      >
-        {games.map((g) => (
-          <GameTile key={g.id} game={g} lang={locale as Lang} />
-        ))}
+        <div className="grid gap-[var(--tile-gap,16px)] grid-cols-2 sm:grid-cols-3">
+          {games.map((g, i) => (
+            <GameTile key={g.id} game={g} no={i + 1} />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -9,6 +9,7 @@ import {
   type ReactElement,
 } from "react";
 import { AdMobileSticky } from "../../components/Ads";
+import { ShareCard } from "../../components/ShareCard";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   buildQuestionList,
@@ -539,7 +540,30 @@ function ResultView({
   const altTxt = locale === "ko" ? type.en : type.ko;
 
   return (
-    <div style={{ maxWidth: 560, width: "100%" }}>
+    <ShareCard
+      filename={`nolza-kbti-${(locale === "ko" ? type.ko.code : type.en.code).replace(/\s+/g, "")}`}
+      locale={locale === "ko" ? "ko" : "en"}
+      backgroundColor={BG}
+      buttonLabel={{ ko: "결과 이미지 저장", en: "Save result image" }}
+      buttonStyle={{
+        padding: "12px 22px",
+        borderRadius: 999,
+        border: `1px solid ${ACCENT}`,
+        background: "transparent",
+        color: ACCENT,
+        fontWeight: 700,
+        fontSize: 13,
+        letterSpacing: "0.18em",
+        cursor: "pointer",
+        minHeight: 44,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+      }}
+    >
+      {({ cardRef }) => (
+        <div style={{ maxWidth: 560, width: "100%" }}>
+          <div ref={cardRef} style={{ background: BG, padding: "4px 0" }}>
       {/* Eyebrow */}
       <div
         className="kbti-reveal"
@@ -751,6 +775,7 @@ function ResultView({
         </div>
       )}
 
+          </div>
       {/* Buttons */}
       <div
         className="kbti-reveal"
@@ -771,7 +796,9 @@ function ResultView({
           ↺ {t("다시 하기", "Try Again")}
         </button>
       </div>
-    </div>
+        </div>
+      )}
+    </ShareCard>
   );
 }
 

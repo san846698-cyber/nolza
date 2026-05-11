@@ -1,8 +1,37 @@
 import { FISH_DATABASE } from './fishData';
 
-export const spawnFish = (zone: number, boatX: number, windowInnerWidth: number) => {
-      const possibleFishes = Object.keys(FISH_DATABASE).filter(k => FISH_DATABASE[k].zone.includes(zone));
-      const type = possibleFishes[Math.floor(Math.random() * possibleFishes.length)] || 'rockfish';
+const RARITY_WEIGHT: Record<string, number> = {
+  common: 50,
+  uncommon: 25,
+  rare: 12,
+  epic: 6,
+  legendary: 2,
+  mythic: 0.5,
+};
+
+export const BIG_CREATURE_SHAPES = new Set(['whale', 'shark']);
+export const isBigCreature = (type: string) => {
+  const def = FISH_DATABASE[type];
+  return !!def && BIG_CREATURE_SHAPES.has(def.shape);
+};
+export const BIG_CREATURE_TYPES = Object.keys(FISH_DATABASE).filter(k => BIG_CREATURE_SHAPES.has(FISH_DATABASE[k].shape));
+
+export const spawnFish = (zone: number, boatX: number, windowInnerWidth: number, forcedType?: string) => {
+      let type: string;
+      if (forcedType && FISH_DATABASE[forcedType]) {
+        type = forcedType;
+        zone = FISH_DATABASE[forcedType].zone[0];
+      } else {
+        const possibleFishes = Object.keys(FISH_DATABASE).filter(k => FISH_DATABASE[k].zone.includes(zone));
+        const weights = possibleFishes.map(k => RARITY_WEIGHT[FISH_DATABASE[k].rarity.toLowerCase()] ?? 1);
+        const totalWeight = weights.reduce((a, b) => a + b, 0);
+        let pick = Math.random() * totalWeight;
+        type = possibleFishes[0] || 'rockfish';
+        for (let i = 0; i < possibleFishes.length; i++) {
+          pick -= weights[i];
+          if (pick <= 0) { type = possibleFishes[i]; break; }
+        }
+      }
       const def = FISH_DATABASE[type] || Object.values(FISH_DATABASE)[0];
       
       let y;
