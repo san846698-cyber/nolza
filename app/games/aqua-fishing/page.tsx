@@ -314,22 +314,84 @@ const sendInput = (detail: AquaInput) => {
 
 export default function AquaFishingGame() {
   const { locale, t } = useLocale();
+  const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [showEncyclopedia, setShowEncyclopedia] = useState(false);
   const [caughtData, setCaughtData] = useState<Record<string, number>>({});
   const [selectedFish, setSelectedFish] = useState<string | null>(null);
   const [isTouch, setIsTouch] = useState(false);
+  const isTouchRef = useRef(false);
   const [shopVisible, setShopVisible] = useState(false);
   const localeRef = useRef(locale);
   useEffect(() => { localeRef.current = locale; }, [locale]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const mq = window.matchMedia('(hover: none) and (pointer: coarse)');
-    const update = () => setIsTouch(mq.matches);
+    const coarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)');
+    const compactViewport = window.matchMedia('(max-width: 820px), (max-height: 520px)');
+    const update = () => {
+      const next =
+        coarsePointer.matches ||
+        compactViewport.matches ||
+        navigator.maxTouchPoints > 0 ||
+        'ontouchstart' in window;
+      isTouchRef.current = next;
+      setIsTouch(next);
+    };
     update();
-    mq.addEventListener?.('change', update);
-    return () => mq.removeEventListener?.('change', update);
+    coarsePointer.addEventListener?.('change', update);
+    compactViewport.addEventListener?.('change', update);
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', update);
+    return () => {
+      coarsePointer.removeEventListener?.('change', update);
+      compactViewport.removeEventListener?.('change', update);
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    const applyViewport = () => {
+      const visualViewport = window.visualViewport;
+      const width = Math.round(visualViewport?.width ?? window.innerWidth);
+      const height = Math.round(visualViewport?.height ?? window.innerHeight);
+      root.style.setProperty('--aqua-vw', `${width}px`);
+      root.style.setProperty('--aqua-vh', `${height}px`);
+    };
+
+    const preventDocumentGesture = (event: Event) => event.preventDefault();
+    const previousOverscroll = document.documentElement.style.overscrollBehavior;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overscrollBehavior = 'none';
+    document.body.style.overflow = 'hidden';
+    applyViewport();
+
+    window.visualViewport?.addEventListener('resize', applyViewport);
+    window.visualViewport?.addEventListener('scroll', applyViewport);
+    window.addEventListener('resize', applyViewport);
+    window.addEventListener('orientationchange', applyViewport);
+    root.addEventListener('touchmove', preventDocumentGesture, { passive: false });
+    root.addEventListener('gesturestart', preventDocumentGesture);
+    root.addEventListener('gesturechange', preventDocumentGesture);
+    root.addEventListener('gestureend', preventDocumentGesture);
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', applyViewport);
+      window.visualViewport?.removeEventListener('scroll', applyViewport);
+      window.removeEventListener('resize', applyViewport);
+      window.removeEventListener('orientationchange', applyViewport);
+      root.removeEventListener('touchmove', preventDocumentGesture);
+      root.removeEventListener('gesturestart', preventDocumentGesture);
+      root.removeEventListener('gesturechange', preventDocumentGesture);
+      root.removeEventListener('gestureend', preventDocumentGesture);
+      document.documentElement.style.overscrollBehavior = previousOverscroll;
+      document.body.style.overflow = previousBodyOverflow;
+    };
   }, []);
 
   // Canvas-side i18n helper. The game loop closure uses localeRef so it
@@ -337,6 +399,16 @@ export default function AquaFishingGame() {
   const tr = (en: string, ko: string) => (localeRef.current === 'ko' ? ko : en);
   const trRef = useRef(tr);
   trRef.current = tr;
+  const getFishName = (key: string) => {
+    const fish = FISH_DATABASE[key];
+    if (!fish) return key;
+    return locale === 'en' ? fish.nameEn : fish.name;
+  };
+  const getFishDesc = (key: string) => {
+    const fish = FISH_DATABASE[key];
+    if (!fish) return '';
+    return locale === 'en' ? fish.descEn : fish.desc;
+  };
 
   useEffect(() => {
     const handleToggleEnc = () => setShowEncyclopedia(s => !s);
@@ -360,10 +432,15 @@ export default function AquaFishingGame() {
     let cachedSkyGrad: CanvasGradient | null = null;
     let cachedSeaGrad: CanvasGradient | null = null;
 
+    let resizeFrame = 0;
     const resize = () => {
       const wrap = canvas.parentElement;
-      canvas.width = wrap ? wrap.clientWidth : window.innerWidth;
-      canvas.height = wrap ? wrap.clientHeight : window.innerHeight;
+      const visualViewport = window.visualViewport;
+      const width = Math.max(1, Math.floor(wrap?.clientWidth || visualViewport?.width || window.innerWidth));
+      const height = Math.max(1, Math.floor(wrap?.clientHeight || visualViewport?.height || window.innerHeight));
+      if (canvas.width === width && canvas.height === height) return;
+      canvas.width = width;
+      canvas.height = height;
       cachedSkyGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
       cachedSkyGrad.addColorStop(0, '#38bdf8');
       cachedSkyGrad.addColorStop(1, '#bae6fd');
@@ -371,7 +448,14 @@ export default function AquaFishingGame() {
       cachedSeaGrad.addColorStop(0, '#1e3a8a');
       cachedSeaGrad.addColorStop(1, '#020617');
     };
-    window.addEventListener('resize', resize);
+    const queueResize = () => {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(resize);
+    };
+    window.addEventListener('resize', queueResize);
+    window.addEventListener('orientationchange', queueResize);
+    window.visualViewport?.addEventListener('resize', queueResize);
+    window.visualViewport?.addEventListener('scroll', queueResize);
     resize();
 
     let time = 0;
@@ -1634,25 +1718,32 @@ export default function AquaFishingGame() {
           ctx.globalAlpha = 1.0;
       }
 
+      const mobileMode = isTouchRef.current || canvas.width < 760 || canvas.height < 520;
+      const safeTop = mobileMode ? Math.max(12, canvas.height < 520 ? 8 : 20) : 20;
+      const safeSide = mobileMode ? 12 : 20;
+
       // HUD Score & Combo
       ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
       ctx.beginPath();
-      ctx.roundRect(canvas.width - 240, 20, 220, combo > 0 ? 80 : 50, 10);
+      const coinBoxWidth = mobileMode ? 160 : 220;
+      const coinBoxHeight = combo > 0 ? (mobileMode ? 66 : 80) : (mobileMode ? 42 : 50);
+      ctx.roundRect(canvas.width - coinBoxWidth - safeSide, safeTop, coinBoxWidth, coinBoxHeight, 10);
       ctx.fill();
 
       ctx.fillStyle = '#facc15';
-      ctx.font = 'bold 24px sans-serif';
+      ctx.font = mobileMode ? 'bold 17px sans-serif' : 'bold 24px sans-serif';
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`${trRef.current('COINS', '코인')}: ${boatStats.coins}`, canvas.width - 40, 45);
+      ctx.fillText(`${trRef.current('COINS', '코인')}: ${boatStats.coins}`, canvas.width - safeSide - 14, safeTop + (mobileMode ? 22 : 25));
       
       if (combo > 0) {
          ctx.fillStyle = '#facc15';
-         ctx.font = 'bold 18px sans-serif';
-         ctx.fillText(`${trRef.current('COMBO', '콤보')} x${combo}`, canvas.width - 40, 75);
+         ctx.font = mobileMode ? 'bold 14px sans-serif' : 'bold 18px sans-serif';
+         ctx.fillText(`${trRef.current('COMBO', '콤보')} x${combo}`, canvas.width - safeSide - 14, safeTop + (mobileMode ? 50 : 55));
       }
 
       // HUD Controls
+      if (!mobileMode) {
       ctx.fillStyle = 'rgba(15, 23, 42, 0.5)';
       ctx.beginPath(); 
       ctx.roundRect(20, 20, 280, 200, 10); 
@@ -1675,38 +1766,54 @@ export default function AquaFishingGame() {
 
       ctx.fillStyle = '#22c55e';
       ctx.fillText(trRef.current("E  -  Encyclopedia", "E  -  도감"), 40, 185);
+      }
 
       if (shopOpen) {
+          const shopWidth = Math.min(500, canvas.width - safeSide * 2);
+          const shopHeight = Math.min(400, canvas.height - safeTop * 2 - (mobileMode ? 108 : 0));
+          const shopLeft = canvas.width / 2 - shopWidth / 2;
+          const shopTop = Math.max(safeTop + 56, canvas.height / 2 - shopHeight / 2);
+          const shopCenterX = canvas.width / 2;
           ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
           ctx.beginPath();
-          ctx.roundRect(canvas.width / 2 - 250, canvas.height / 2 - 200, 500, 400, 20);
+          ctx.roundRect(shopLeft, shopTop, shopWidth, shopHeight, 20);
           ctx.fill();
 
           ctx.textAlign = 'center';
           ctx.fillStyle = '#facc15';
-          ctx.font = 'bold 32px sans-serif';
-          ctx.fillText(trRef.current("UPGRADE SHOP", "업그레이드 상점"), canvas.width / 2, canvas.height / 2 - 140);
+          ctx.font = mobileMode ? 'bold 22px sans-serif' : 'bold 32px sans-serif';
+          ctx.fillText(trRef.current("UPGRADE SHOP", "업그레이드 상점"), shopCenterX, shopTop + 60);
 
-          ctx.font = '20px sans-serif';
+          ctx.font = mobileMode ? '15px sans-serif' : '20px sans-serif';
           ctx.fillStyle = '#f8fafc';
 
           const getCost = (level: number) => level < 5 ? 50 + level * 50 : trRef.current('MAX', '최대');
           const costLabel = trRef.current('Cost', '비용');
 
           ctx.textAlign = 'left';
-          ctx.fillText(trRef.current(`1: Drop Speed (Lv ${boatStats.drop}/5)`, `1: 하강 속도 (Lv ${boatStats.drop}/5)`), canvas.width / 2 - 180, canvas.height / 2 - 30);
-          ctx.fillText(`${costLabel}: ${getCost(boatStats.drop)}`, canvas.width / 2 + 60, canvas.height / 2 - 30);
+          const labelX = shopLeft + (mobileMode ? 24 : 70);
+          const costX = shopLeft + shopWidth - (mobileMode ? 112 : 190);
+          const firstRowY = shopTop + (mobileMode ? 126 : 170);
+          const rowGap = mobileMode ? 54 : 70;
+          ctx.fillText(trRef.current(`1: Drop Speed (Lv ${boatStats.drop}/5)`, `1: 하강 속도 (Lv ${boatStats.drop}/5)`), labelX, firstRowY);
+          ctx.fillText(`${costLabel}: ${getCost(boatStats.drop)}`, costX, firstRowY);
 
-          ctx.fillText(trRef.current(`2: Max Depth (Lv ${boatStats.depth}/5)`, `2: 최대 수심 (Lv ${boatStats.depth}/5)`), canvas.width / 2 - 180, canvas.height / 2 + 40);
-          ctx.fillText(`${costLabel}: ${getCost(boatStats.depth)}`, canvas.width / 2 + 60, canvas.height / 2 + 40);
+          ctx.fillText(trRef.current(`2: Max Depth (Lv ${boatStats.depth}/5)`, `2: 최대 수심 (Lv ${boatStats.depth}/5)`), labelX, firstRowY + rowGap);
+          ctx.fillText(`${costLabel}: ${getCost(boatStats.depth)}`, costX, firstRowY + rowGap);
 
-          ctx.fillText(trRef.current(`3: Sonar Cone (Lv ${boatStats.sonar}/5)`, `3: 소나 (Lv ${boatStats.sonar}/5)`), canvas.width / 2 - 180, canvas.height / 2 + 110);
-          ctx.fillText(`${costLabel}: ${getCost(boatStats.sonar)}`, canvas.width / 2 + 60, canvas.height / 2 + 110);
+          ctx.fillText(trRef.current(`3: Sonar Cone (Lv ${boatStats.sonar}/5)`, `3: 소나 (Lv ${boatStats.sonar}/5)`), labelX, firstRowY + rowGap * 2);
+          ctx.fillText(`${costLabel}: ${getCost(boatStats.sonar)}`, costX, firstRowY + rowGap * 2);
 
           ctx.textAlign = 'center';
           ctx.fillStyle = '#94a3b8';
-          ctx.font = '16px sans-serif';
-          ctx.fillText(trRef.current("Press corresponding number to buy. Press B to close.", "숫자 키로 구매 · B 키로 닫기"), canvas.width / 2, canvas.height / 2 + 180);
+          ctx.font = mobileMode ? '12px sans-serif' : '16px sans-serif';
+          ctx.fillText(
+            mobileMode
+              ? trRef.current("Tap the buttons above to buy.", "위 버튼으로 구매하세요.")
+              : trRef.current("Press corresponding number to buy. Press B to close.", "숫자 키로 구매 · B 키로 닫기"),
+            shopCenterX,
+            shopTop + shopHeight - 28
+          );
       }
 
       if (rhythm.active && hook.fish) {
@@ -1835,7 +1942,11 @@ export default function AquaFishingGame() {
     window.addEventListener('aqua-fishing:input', handleAquaInput);
 
     return () => {
-      window.removeEventListener('resize', resize);
+      cancelAnimationFrame(resizeFrame);
+      window.removeEventListener('resize', queueResize);
+      window.removeEventListener('orientationchange', queueResize);
+      window.visualViewport?.removeEventListener('resize', queueResize);
+      window.visualViewport?.removeEventListener('scroll', queueResize);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('aqua-fishing:input', handleAquaInput);
@@ -1846,10 +1957,28 @@ export default function AquaFishingGame() {
 
   return (
     <div
-      className="w-full overflow-hidden bg-black flex items-center justify-center relative"
-      style={{ height: "100dvh", touchAction: "none", overscrollBehavior: "contain" }}
+      ref={rootRef}
+      className="aqua-game-root w-full overflow-hidden bg-black flex items-center justify-center relative"
+      data-touch={isTouch ? "true" : "false"}
+      style={{
+        width: "100vw",
+        height: "var(--aqua-vh, 100dvh)",
+        minHeight: "var(--aqua-vh, 100dvh)",
+        maxHeight: "var(--aqua-vh, 100dvh)",
+        touchAction: "none",
+        overscrollBehavior: "none",
+        WebkitUserSelect: "none",
+        userSelect: "none",
+      }}
     >
-      <canvas ref={canvasRef} className="block w-full h-full" style={{ touchAction: "none" }} />
+      <canvas
+        ref={canvasRef}
+        className="block w-full h-full"
+        style={{
+          touchAction: "none",
+          WebkitTapHighlightColor: "transparent",
+        }}
+      />
 
       {isTouch && !showEncyclopedia && (
         <MobileControls
@@ -1864,8 +1993,8 @@ export default function AquaFishingGame() {
       )}
       
       {showEncyclopedia && (
-         <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-4 sm:p-6 z-50">
-           <div className="bg-red-600 border-[6px] border-slate-900 w-full max-w-6xl h-[90vh] rounded-[2rem] flex flex-col md:flex-row shadow-[0_0_50px_rgba(220,38,38,0.4)] relative overflow-hidden">
+         <div className="absolute inset-0 bg-black/80 flex items-center justify-center p-2 sm:p-6 z-50" style={{ paddingTop: "max(8px, env(safe-area-inset-top, 0px))", paddingBottom: "max(8px, env(safe-area-inset-bottom, 0px))" }}>
+           <div className="bg-red-600 border-[4px] sm:border-[6px] border-slate-900 w-full max-w-6xl h-full sm:h-[90dvh] rounded-2xl sm:rounded-[2rem] flex flex-col md:flex-row shadow-[0_0_50px_rgba(220,38,38,0.4)] relative overflow-hidden">
                
                {/* Device Top Bar Decor */}
                <div className="absolute top-0 left-0 w-full h-12 bg-red-700 border-b-4 border-slate-900 flex items-center px-6 gap-4 z-10 md:hidden">
@@ -1893,7 +2022,7 @@ export default function AquaFishingGame() {
                                 {/* Title bar: Name + Number */}
                                 <div className="flex items-end justify-between mb-3 border-b-4 border-slate-300 pb-2 w-full">
                                     <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tighter leading-none mix-blend-color-burn break-words flex-1 ${caughtData[selectedFish] ? 'text-slate-800' : 'text-slate-400'}`}>
-                                        {caughtData[selectedFish] ? FISH_DATABASE[selectedFish].name : '???'}
+                                        {caughtData[selectedFish] ? getFishName(selectedFish) : '???'}
                                     </h2>
                                     <div className="text-xl sm:text-2xl font-black text-slate-400 mb-1 shrink-0 ml-2">
                                         {`#${String(Object.keys(FISH_DATABASE).indexOf(selectedFish) + 1).padStart(3, '0')}`}
@@ -1905,7 +2034,7 @@ export default function AquaFishingGame() {
                                     <div className="w-full h-full relative overflow-hidden rounded bg-black flex items-center justify-center">
                                         <img 
                                             src={FISH_DATABASE[selectedFish].imageUrl} 
-                                            alt="Fish" 
+                                            alt={getFishName(selectedFish)} 
                                             className={`w-full h-full object-cover transition-all ${caughtData[selectedFish] ? 'opacity-90' : 'opacity-40 contrast-0 brightness-0'}`} 
                                         />
                                         {!caughtData[selectedFish] && <div className="absolute text-5xl font-black text-slate-700/80">?</div>}
@@ -1930,7 +2059,7 @@ export default function AquaFishingGame() {
                                 {/* Text Box (Retro Green LCD) */}
                                 <div className="flex-1 bg-[#88c070] border-[6px] border-[#346856] rounded-xl p-4 overflow-y-auto shadow-[inset_0_0_20px_rgba(0,0,0,0.4)] relative">
                                     <p className="text-[#081820] font-mono text-sm sm:text-base leading-relaxed font-bold uppercase tracking-wide">
-                                        {caughtData[selectedFish] ? FISH_DATABASE[selectedFish].desc : t('미발견 어종입니다. 계속 낚시해서 정체를 밝혀보세요!', 'Unknown species. Keep fishing to discover its secrets!')}
+                                        {caughtData[selectedFish] ? getFishDesc(selectedFish) : t('미발견 어종입니다. 계속 낚시해서 정체를 밝혀보세요!', 'Unknown species. Keep fishing to discover its secrets!')}
                                     </p>
                                 </div>
                             </div>
@@ -1987,7 +2116,7 @@ export default function AquaFishingGame() {
                                     `}>
                                         <img 
                                             src={data.imageUrl} 
-                                            alt={data.name} 
+                                            alt={locale === 'en' ? data.nameEn : data.name} 
                                             className={`w-full h-full object-cover transition-all ${isCaught ? '' : 'opacity-40 contrast-0 brightness-0'}`} 
                                         />
                                         {!isCaught && <span className="absolute text-slate-600 text-xl font-black drop-shadow-md">?</span>}
@@ -1997,7 +2126,7 @@ export default function AquaFishingGame() {
                                         <div className={`text-xs font-bold leading-tight truncate px-1
                                             ${isCaught ? 'text-white' : 'text-slate-500'}
                                         `}>
-                                            {isCaught ? data.name : '???'}
+                                            {isCaught ? (locale === 'en' ? data.nameEn : data.name) : '???'}
                                         </div>
                                     </div>
 
@@ -2023,45 +2152,45 @@ export default function AquaFishingGame() {
    with touch buttons. Each button dispatches `aqua-fishing:input` events that
    the game loop's effect listens for and translates into the same `keys`
    state mutations the keyboard handler does. */
-function MobileControls({
-  t,
-  shopVisible,
-  onToggleShop,
-  onToggleEnc,
+function AquaHoldButton({
+  label,
+  onDown,
+  onUp,
+  ariaLabel,
+  style,
 }: {
-  t: (ko: string, en: string) => string;
-  shopVisible: boolean;
-  onToggleShop: () => void;
-  onToggleEnc: () => void;
+  label: React.ReactNode;
+  onDown: () => void;
+  onUp: () => void;
+  ariaLabel: string;
+  style?: React.CSSProperties;
 }) {
-  // Hold-to-steer button: press-and-hold dispatches `down`, release dispatches `up`.
-  const HoldButton = ({
-    label,
-    onDown,
-    onUp,
-    ariaLabel,
-    style,
-  }: {
-    label: React.ReactNode;
-    onDown: () => void;
-    onUp: () => void;
-    ariaLabel: string;
-    style?: React.CSSProperties;
-  }) => (
+  return (
     <button
       type="button"
       aria-label={ariaLabel}
       onPointerDown={(e) => {
+        e.preventDefault();
         e.currentTarget.setPointerCapture(e.pointerId);
         onDown();
       }}
-      onPointerUp={onUp}
-      onPointerCancel={onUp}
-      onPointerLeave={onUp}
+      onPointerUp={(e) => {
+        e.preventDefault();
+        onUp();
+      }}
+      onPointerCancel={(e) => {
+        e.preventDefault();
+        onUp();
+      }}
+      onPointerLeave={(e) => {
+        if (e.buttons === 0) onUp();
+      }}
       onContextMenu={(e) => e.preventDefault()}
       style={{
         width: 64,
         height: 64,
+        minWidth: 64,
+        minHeight: 64,
         borderRadius: 999,
         border: "2px solid rgba(255,255,255,0.35)",
         background: "rgba(15,23,42,0.55)",
@@ -2074,24 +2203,28 @@ function MobileControls({
         justifyContent: "center",
         userSelect: "none",
         WebkitUserSelect: "none",
+        MozUserSelect: "none",
         WebkitTapHighlightColor: "transparent",
         touchAction: "none",
+        cursor: "pointer",
         ...style,
       }}
     >
       {label}
     </button>
   );
+}
 
-  const ChipButton = ({
-    onClick,
-    children,
-    style,
-  }: {
-    onClick: () => void;
-    children: React.ReactNode;
-    style?: React.CSSProperties;
-  }) => (
+function AquaChipButton({
+  onClick,
+  children,
+  style,
+}: {
+  onClick: () => void;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
+  return (
     <button
       type="button"
       onPointerDown={(e) => {
@@ -2100,7 +2233,9 @@ function MobileControls({
       }}
       onContextMenu={(e) => e.preventDefault()}
       style={{
-        padding: "8px 14px",
+        minHeight: 44,
+        minWidth: 44,
+        padding: "9px 14px",
         borderRadius: 999,
         border: "1px solid rgba(255,255,255,0.3)",
         background: "rgba(15,23,42,0.55)",
@@ -2110,34 +2245,69 @@ function MobileControls({
         fontWeight: 700,
         letterSpacing: "0.05em",
         userSelect: "none",
+        WebkitUserSelect: "none",
         WebkitTapHighlightColor: "transparent",
         touchAction: "none",
+        cursor: "pointer",
         ...style,
       }}
     >
       {children}
     </button>
   );
+}
 
+function MobileControls({
+  t,
+  shopVisible,
+  onToggleShop,
+  onToggleEnc,
+}: {
+  t: (ko: string, en: string) => string;
+  shopVisible: boolean;
+  onToggleShop: () => void;
+  onToggleEnc: () => void;
+}) {
+  useEffect(() => {
+    const releaseAll = () => {
+      sendInput({ kind: "up", key: "left" });
+      sendInput({ kind: "up", key: "right" });
+      sendInput({ kind: "up", key: "space" });
+    };
+    window.addEventListener("pointerup", releaseAll);
+    window.addEventListener("pointercancel", releaseAll);
+    window.addEventListener("blur", releaseAll);
+    document.addEventListener("visibilitychange", releaseAll);
+    return () => {
+      releaseAll();
+      window.removeEventListener("pointerup", releaseAll);
+      window.removeEventListener("pointercancel", releaseAll);
+      window.removeEventListener("blur", releaseAll);
+      document.removeEventListener("visibilitychange", releaseAll);
+    };
+  }, []);
   return (
     <>
       {/* Top-right chips: shop · encyclopedia */}
       <div
         style={{
           position: "absolute",
-          top: "max(12px, env(safe-area-inset-top, 0px))",
-          right: 12,
+          top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
+          right: "max(12px, env(safe-area-inset-right, 0px))",
           display: "flex",
           gap: 8,
+          flexWrap: "wrap",
+          justifyContent: "flex-end",
           zIndex: 40,
+          pointerEvents: "auto",
         }}
       >
-        <ChipButton onClick={onToggleShop}>
+        <AquaChipButton onClick={onToggleShop}>
           {t("상점", "Shop")}
-        </ChipButton>
-        <ChipButton onClick={onToggleEnc}>
+        </AquaChipButton>
+        <AquaChipButton onClick={onToggleEnc}>
           {t("도감", "Dex")}
-        </ChipButton>
+        </AquaChipButton>
       </div>
 
       {/* Shop upgrade chips — only visible while shop is open */}
@@ -2146,22 +2316,23 @@ function MobileControls({
           style={{
             position: "absolute",
             top: "max(64px, calc(env(safe-area-inset-top, 0px) + 64px))",
-            right: 12,
+            right: "max(12px, env(safe-area-inset-right, 0px))",
             display: "flex",
             flexDirection: "column",
             gap: 6,
             zIndex: 40,
+            pointerEvents: "auto",
           }}
         >
-          <ChipButton onClick={() => sendInput({ kind: "tap", key: "shop1" })}>
+          <AquaChipButton onClick={() => sendInput({ kind: "tap", key: "shop1" })}>
             1 · {t("드롭", "Drop")}
-          </ChipButton>
-          <ChipButton onClick={() => sendInput({ kind: "tap", key: "shop2" })}>
+          </AquaChipButton>
+          <AquaChipButton onClick={() => sendInput({ kind: "tap", key: "shop2" })}>
             2 · {t("수심", "Depth")}
-          </ChipButton>
-          <ChipButton onClick={() => sendInput({ kind: "tap", key: "shop3" })}>
+          </AquaChipButton>
+          <AquaChipButton onClick={() => sendInput({ kind: "tap", key: "shop3" })}>
             3 · {t("소나", "Sonar")}
-          </ChipButton>
+          </AquaChipButton>
         </div>
       )}
 
@@ -2175,19 +2346,19 @@ function MobileControls({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-end",
-          padding: "0 20px",
+          padding: "0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px))",
           zIndex: 40,
           pointerEvents: "none",
         }}
       >
         <div style={{ display: "flex", gap: 12, pointerEvents: "auto" }}>
-          <HoldButton
+          <AquaHoldButton
             ariaLabel={t("왼쪽", "Left")}
             label="◀"
             onDown={() => sendInput({ kind: "down", key: "left" })}
             onUp={() => sendInput({ kind: "up", key: "left" })}
           />
-          <HoldButton
+          <AquaHoldButton
             ariaLabel={t("오른쪽", "Right")}
             label="▶"
             onDown={() => sendInput({ kind: "down", key: "right" })}
@@ -2195,7 +2366,7 @@ function MobileControls({
           />
         </div>
         <div style={{ pointerEvents: "auto" }}>
-          <HoldButton
+          <AquaHoldButton
             ariaLabel={t("낚시", "Reel")}
             label={<span style={{ fontSize: 22 }}>🎣</span>}
             onDown={() => sendInput({ kind: "down", key: "space" })}

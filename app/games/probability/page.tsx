@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   type ReactElement,
+  type ReactNode,
 } from "react";
 import { useLocale } from "@/hooks/useLocale";
 
@@ -155,7 +156,11 @@ function saveTally(t: Tally) {
 
 // ─── Page ──────────────────────────────────────────────────────────────────
 export default function ProbabilityPage(): ReactElement {
-  const { locale, t } = useLocale();
+  const { locale } = useLocale();
+  const t = useCallback(
+    (ko: ReactNode, en: ReactNode): ReactNode => (locale === "ko" ? ko : en),
+    [locale],
+  );
   const [tally, setTally] = useState<Tally>({});
   const [active, setActive] = useState<string | null>(null);
 

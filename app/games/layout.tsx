@@ -90,9 +90,10 @@ export default function GamesLayout({
           aria-label={locale === "ko" ? "모든 놀이로" : "All plays"}
           style={{
             ...floatingBtnBase,
-            top: 12,
-            left: 12,
-            width: 40,
+            top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
+            left: "max(12px, calc(env(safe-area-inset-left, 0px) + 8px))",
+            width: 44,
+            height: 44,
             fontSize: 22,
           }}
         >
@@ -106,9 +107,11 @@ export default function GamesLayout({
           }
           style={{
             ...floatingBtnBase,
-            top: 12,
-            left: 60,
+            top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
+            left: "max(64px, calc(env(safe-area-inset-left, 0px) + 60px))",
             padding: "0 12px",
+            minWidth: 44,
+            height: 44,
             fontSize: 12,
             fontWeight: 700,
             letterSpacing: "0.08em",
