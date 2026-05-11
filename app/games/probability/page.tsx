@@ -8,179 +8,158 @@ import {
   useState,
   type ReactElement,
 } from "react";
-import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
 
-// ============================================================================
-// Theme
-// ============================================================================
+// ─── Design tokens ─────────────────────────────────────────────────────────
+const BG      = "#0C0A07";
+const SURFACE = "#141109";
+const SURF2   = "#1A1610";
+const INK     = "#EDE8DF";
+const INK2    = "rgba(237,232,223,0.55)";
+const INK3    = "rgba(237,232,223,0.22)";
+const GOLD    = "#C8A96A";
+const GOLD_D  = "rgba(200,169,106,0.18)";
+const GREEN   = "#5BB88A";
+const SERIF   = "var(--font-noto-serif-kr), 'Noto Serif KR', serif";
+const MONO    = "var(--font-jetbrains-mono), 'JetBrains Mono', monospace";
+const SANS    = "var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif";
+const INTER   = "var(--font-inter), 'Inter', sans-serif";
 
-const BG = "#0d0d0d";
-const GOLD = "#FFD700";
-const GOLD_DIM = "#b8920b";
-const SERIF = "var(--font-noto-serif-kr), 'Noto Serif KR', serif";
-const KSANS = "var(--font-noto-sans-kr), 'Noto Sans KR', sans-serif";
-const INTER = "var(--font-inter), 'Inter', sans-serif";
-
-// ============================================================================
-// Experiments
-// ============================================================================
+// ─── Experiments ───────────────────────────────────────────────────────────
+type HitStyle = "burst" | "flash" | "rain" | "rise";
 
 type Experiment = {
   id: string;
-  emoji: string;
+  code: string;
   ko: string;
   en: string;
-  denom: number;        // 1 / denom
+  denom: number;
   hitKo: string;
   hitEn: string;
   flavorKo: string;
   flavorEn: string;
-  /** Visual treatment when a hit happens. */
-  hitStyle: "fireworks" | "lightning" | "shark" | "money" | "headset" | "rings" | "twins" | "candle";
+  hitStyle: HitStyle;
 };
 
 const EXPERIMENTS: Experiment[] = [
   {
     id: "lotto",
-    emoji: "🎰",
+    code: "LOT",
     ko: "로또 1등",
     en: "Lottery jackpot",
     denom: 8_145_060,
-    hitKo: "당첨!",
-    hitEn: "JACKPOT!",
-    flavorKo: "한국 로또 6/45 1등 확률입니다.",
+    hitKo: "당첨",
+    hitEn: "JACKPOT",
+    flavorKo: "한국 로또 6/45 1등 확률.",
     flavorEn: "Korean Lotto 6/45 grand-prize odds.",
-    hitStyle: "fireworks",
+    hitStyle: "burst",
   },
   {
     id: "lightning",
-    emoji: "⚡",
+    code: "LTN",
     ko: "벼락 맞을 확률",
     en: "Struck by lightning",
     denom: 1_000_000,
-    hitKo: "맞았습니다",
+    hitKo: "맞음",
     hitEn: "STRUCK",
-    flavorKo: "평생 벼락에 맞을 확률입니다.",
+    flavorKo: "평생 벼락에 맞을 확률.",
     flavorEn: "Lifetime odds of being struck by lightning.",
-    hitStyle: "lightning",
+    hitStyle: "flash",
   },
   {
     id: "shark",
-    emoji: "🦈",
+    code: "SHK",
     ko: "상어에게 물릴 확률",
     en: "Bitten by a shark",
     denom: 3_748_067,
-    hitKo: "물렸습니다",
+    hitKo: "물림",
     hitEn: "BITTEN",
-    flavorKo: "해변에서 상어에게 공격받을 확률.",
-    flavorEn: "Annual odds of an unprovoked shark attack at a beach.",
-    hitStyle: "shark",
+    flavorKo: "해변에서 상어에게 공격받을 연간 확률.",
+    flavorEn: "Annual odds of an unprovoked shark attack.",
+    hitStyle: "burst",
   },
   {
     id: "rich",
-    emoji: "👑",
-    ko: "한국에서 재벌 될 확률",
-    en: "Becoming a Korean tycoon",
+    code: "RCH",
+    ko: "재벌 될 확률",
+    en: "Becoming a tycoon",
     denom: 1_000_000,
-    hitKo: "재벌!",
-    hitEn: "TYCOON!",
-    flavorKo: "재벌가 또는 자수성가 억만장자가 될 대략적 확률.",
+    hitKo: "재벌",
+    hitEn: "TYCOON",
+    flavorKo: "자수성가 억만장자가 될 대략적 확률.",
     flavorEn: "Approximate odds of joining the Korean billionaire class.",
-    hitStyle: "money",
+    hitStyle: "rain",
   },
   {
     id: "pro-gamer",
-    emoji: "🎮",
+    code: "PRO",
     ko: "프로게이머 될 확률",
-    en: "Becoming a pro gamer",
+    en: "Going pro",
     denom: 10_000,
-    hitKo: "프로 데뷔!",
-    hitEn: "DRAFTED!",
+    hitKo: "프로",
+    hitEn: "DRAFTED",
     flavorKo: "한국 1군 프로게이머 등록 비율.",
-    flavorEn: "Roughly the share of Korean players who turn pro.",
-    hitStyle: "headset",
+    flavorEn: "Share of Korean players who turn pro.",
+    hitStyle: "rise",
   },
   {
     id: "soulmate",
-    emoji: "💘",
-    ko: "첫눈에 반한 사람과 결혼할 확률",
-    en: "Marrying your love-at-first-sight",
+    code: "LVE",
+    ko: "첫눈에 반한 상대와 결혼",
+    en: "Marry love-at-first-sight",
     denom: 562_000,
-    hitKo: "결혼!",
-    hitEn: "MARRIED!",
-    flavorKo: "한 사회학 연구의 추정치.",
-    flavorEn: "From a sociological estimate of love-at-first-sight outcomes.",
-    hitStyle: "rings",
+    hitKo: "결혼",
+    hitEn: "MARRIED",
+    flavorKo: "사회학 연구 기반 추정치.",
+    flavorEn: "From a sociological estimate.",
+    hitStyle: "burst",
   },
   {
     id: "twins",
-    emoji: "🧬",
+    code: "TWN",
     ko: "일란성 쌍둥이 낳을 확률",
     en: "Identical twins",
     denom: 285,
-    hitKo: "쌍둥이!",
-    hitEn: "TWINS!",
-    flavorKo: "전 세계 거의 일정한 자연 발생률.",
+    hitKo: "쌍둥이",
+    hitEn: "TWINS",
+    flavorKo: "전 세계 자연 발생률.",
     flavorEn: "Roughly constant natural rate worldwide.",
-    hitStyle: "twins",
+    hitStyle: "burst",
   },
   {
     id: "centenarian",
-    emoji: "👴",
+    code: "C·T",
     ko: "100세 이상 살 확률",
     en: "Living past 100",
     denom: 5_000,
-    hitKo: "100세 돌파!",
-    hitEn: "100 YEARS!",
+    hitKo: "100세",
+    hitEn: "CENTURY",
     flavorKo: "선진국 평균 백세인 비율.",
-    flavorEn: "Approximate centenarian share in developed countries.",
-    hitStyle: "candle",
+    flavorEn: "Centenarian share in developed countries.",
+    hitStyle: "rise",
   },
 ];
 
-// ============================================================================
-// Storage — per-device totals
-// ============================================================================
-
+// ─── Storage ───────────────────────────────────────────────────────────────
 const STORAGE_KEY = "nolza_probability_v1";
-
-type Tally = Record<
-  string,
-  { attempts: number; hits: number; bestHitOnAttempt: number | null }
->;
+type Tally = Record<string, { attempts: number; hits: number; bestHitOnAttempt: number | null }>;
 
 function loadTally(): Tally {
   if (typeof window === "undefined") return {};
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-    return JSON.parse(raw) as Tally;
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") as Tally; }
+  catch { return {}; }
 }
-
 function saveTally(t: Tally) {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(t));
-  } catch {
-    /* ignore */
-  }
+  try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(t)); } catch { /* */ }
 }
 
-// ============================================================================
-// Page
-// ============================================================================
-
+// ─── Page ──────────────────────────────────────────────────────────────────
 export default function ProbabilityPage(): ReactElement {
   const { locale, t } = useLocale();
   const [tally, setTally] = useState<Tally>({});
   const [active, setActive] = useState<string | null>(null);
 
-  useEffect(() => {
-    setTally(loadTally());
-  }, []);
+  useEffect(() => { setTally(loadTally()); }, []);
 
   const updateExperiment = useCallback(
     (id: string, attemptsAdded: number, hits: number, lastHitAttempt: number | null) => {
@@ -194,114 +173,82 @@ export default function ProbabilityPage(): ReactElement {
             bestHitOnAttempt:
               lastHitAttempt !== null
                 ? cur.bestHitOnAttempt === null || lastHitAttempt < cur.bestHitOnAttempt
-                  ? lastHitAttempt
-                  : cur.bestHitOnAttempt
+                  ? lastHitAttempt : cur.bestHitOnAttempt
                 : cur.bestHitOnAttempt,
           },
         };
         saveTally(next);
         return next;
       });
-    },
-    [],
+    }, [],
   );
 
   const exp = EXPERIMENTS.find((e) => e.id === active) ?? null;
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: BG,
-        color: "#f5f5f5",
-        fontFamily: locale === "ko" ? KSANS : INTER,
-        padding: "60px 20px 80px",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <BackdropDots />
+    <main style={{
+      minHeight: "100vh",
+      background: BG,
+      color: INK,
+      fontFamily: locale === "ko" ? SANS : INTER,
+    }}>
+      <GlobalStyles />
 
-      <Link
-        href="/"
-        aria-label="home"
-        style={{
-          position: "fixed",
-          top: 20,
-          left: 20,
-          width: 40,
-          height: 40,
-          background: "rgba(255,255,255,0.08)",
-          border: "1px solid rgba(255,255,255,0.15)",
-          borderRadius: 999,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "rgba(255,255,255,0.7)",
-          textDecoration: "none",
-          zIndex: 30,
-          fontSize: 18,
-        }}
-      >
-        ←
-      </Link>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "clamp(40px,6vw,72px) clamp(20px,4vw,40px) 80px" }}>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Header */}
-        <header style={{ textAlign: "center", marginBottom: 56 }}>
-          <div
-            style={{
-              fontFamily: INTER,
-              color: GOLD,
-              fontSize: 14,
-              letterSpacing: "0.4em",
-              fontWeight: 700,
-              marginBottom: 16,
-            }}
-          >
-            EXPERIENCE PROBABILITY
-          </div>
-          <h1
-            style={{
-              fontFamily: SERIF,
-              fontSize: "clamp(28px, 5vw, 48px)",
-              fontWeight: 700,
-              margin: 0,
-              lineHeight: 1.2,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            {t("확률을 직접 체험해보세요", "Feel what probability really means")}
-          </h1>
-          <p
-            style={{
-              marginTop: 14,
-              color: "rgba(255,255,255,0.7)",
-              fontSize: 18,
-              maxWidth: 600,
-              margin: "14px auto 0",
-              lineHeight: 1.6,
-            }}
-          >
+        {/* ── Header ── */}
+        <header style={{ marginBottom: "clamp(48px,6vw,72px)" }}>
+          <p style={{
+            fontFamily: MONO,
+            fontSize: 11,
+            letterSpacing: "0.3em",
+            color: GOLD,
+            fontWeight: 500,
+            marginBottom: 20,
+            textTransform: "uppercase",
+          }}>
+            {t("확률 체험기", "Probability Lab")}
+          </p>
+          <h1 style={{
+            fontFamily: SERIF,
+            fontSize: "clamp(32px,5vw,56px)",
+            fontWeight: 900,
+            margin: 0,
+            letterSpacing: "-0.03em",
+            lineHeight: 1.1,
+            color: INK,
+          }}>
             {t(
-              "숫자로만 보던 확률을 몸으로 느껴보세요.",
+              <>1%가 얼마나<br />자주 일어나는지</>,
+              <>How often is<br />1%, really?</>
+            )}
+          </h1>
+          <p style={{
+            marginTop: 20,
+            fontFamily: locale === "ko" ? SANS : INTER,
+            fontSize: "clamp(14px,1.8vw,17px)",
+            color: INK2,
+            lineHeight: 1.7,
+            maxWidth: "48ch",
+          }}>
+            {t(
+              "숫자로 보면 감이 없어요. 직접 눌러보면 달라집니다.",
               "Numbers don't feel like much. Click them and they will.",
             )}
           </p>
         </header>
 
-        {/* Grid of experiments */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 16,
-          }}
-        >
-          {EXPERIMENTS.map((e) => (
+        {/* ── Grid ── */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
+          gap: "clamp(10px,1.6vw,16px)",
+        }}>
+          {EXPERIMENTS.map((e, i) => (
             <ExperimentCard
               key={e.id}
               exp={e}
+              index={i}
               tally={tally[e.id]}
               onOpen={() => setActive(e.id)}
               t={t}
@@ -310,7 +257,6 @@ export default function ProbabilityPage(): ReactElement {
           ))}
         </div>
 
-        {/* Aggregate footer */}
         <AggregateFooter tally={tally} t={t} locale={locale} />
       </div>
 
@@ -324,814 +270,580 @@ export default function ProbabilityPage(): ReactElement {
           locale={locale}
         />
       )}
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-@keyframes probFade {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes probFlash {
-  0%, 100% { background: transparent; }
-  50%      { background: rgba(255,255,255,0.4); }
-}
-@keyframes probBoom {
-  0%   { transform: scale(0.4); opacity: 1; }
-  100% { transform: scale(2.4); opacity: 0; }
-}
-@keyframes probJiggle {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.05); }
-}
-@keyframes probRain {
-  from { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-  to   { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-}
-@keyframes probShockBolt {
-  0%   { opacity: 0; transform: scaleY(0); }
-  10%  { opacity: 1; transform: scaleY(1); }
-  100% { opacity: 0; transform: scaleY(1); }
-}
-.gold-btn {
-  cursor: pointer;
-  border: 1.5px solid ${GOLD}55;
-  background: linear-gradient(180deg, ${GOLD}, ${GOLD_DIM});
-  color: #1a1a1a;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  border-radius: 999px;
-  padding: 14px 24px;
-  font-size: 15px;
-  font-family: ${INTER};
-  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-  box-shadow: 0 6px 18px ${GOLD}33;
-}
-.gold-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
-.gold-btn.ghost {
-  background: transparent;
-  color: #f5f5f5;
-  border-color: rgba(255,255,255,0.25);
-  box-shadow: none;
-}
-.gold-btn.ghost:hover {
-  border-color: ${GOLD};
-  color: ${GOLD};
-}
-.gold-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  transform: none;
-}
-`,
-        }}
-      />
     </main>
   );
 }
 
-// ============================================================================
-// Experiment card (grid item)
-// ============================================================================
-
+// ─── Card ──────────────────────────────────────────────────────────────────
 function ExperimentCard({
-  exp,
-  tally,
-  onOpen,
-  t,
-  locale,
+  exp, index, tally, onOpen, t, locale,
 }: {
   exp: Experiment;
+  index: number;
   tally: Tally[string] | undefined;
   onOpen: () => void;
-  t: (ko: string, en: string) => string;
+  t: (ko: React.ReactNode, en: React.ReactNode) => React.ReactNode;
   locale: "ko" | "en";
 }): ReactElement {
+  const pct = Math.max((1 / exp.denom) * 100, 0.002);
+  const hasData = tally && tally.attempts > 0;
+
   return (
     <button
       type="button"
       onClick={onOpen}
+      className="prob-card"
       style={{
-        background: "linear-gradient(180deg, #161616, #0d0d0d)",
-        border: "1px solid rgba(255,215,0,0.15)",
-        borderRadius: 16,
-        padding: "26px 22px",
-        color: "#f5f5f5",
+        background: SURFACE,
+        border: `1px solid ${INK3}`,
+        borderRadius: 4,
+        padding: "28px 26px 22px",
+        color: INK,
         cursor: "pointer",
         textAlign: "left",
-        transition: "transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease",
-        fontFamily: locale === "ko" ? KSANS : INTER,
+        fontFamily: locale === "ko" ? SANS : INTER,
         position: "relative",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-3px)";
-        e.currentTarget.style.borderColor = `${GOLD}66`;
-        e.currentTarget.style.boxShadow = `0 12px 32px ${GOLD}22`;
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.borderColor = "rgba(255,215,0,0.15)";
-        e.currentTarget.style.boxShadow = "none";
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <div style={{ fontSize: 44, lineHeight: 1, marginBottom: 16 }}>{exp.emoji}</div>
-      <div style={{ fontSize: 20, fontWeight: 700, color: "#f5f5f5", marginBottom: 8 }}>
-        {locale === "ko" ? exp.ko : exp.en}
-      </div>
-      <div
-        style={{
-          fontFamily: INTER,
-          fontSize: 17,
-          fontWeight: 700,
+      {/* Top row */}
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 24 }}>
+        <span style={{
+          fontFamily: MONO,
+          fontSize: 10,
+          letterSpacing: "0.2em",
           color: GOLD,
-          letterSpacing: "0.02em",
-          fontVariantNumeric: "tabular-nums",
-          marginBottom: 14,
-        }}
-      >
-        1 / {exp.denom.toLocaleString()}
-      </div>
-      <div style={{ fontSize: 15, color: "rgba(255,255,255,0.62)", lineHeight: 1.55 }}>
-        {locale === "ko" ? exp.flavorKo : exp.flavorEn}
+          fontWeight: 600,
+        }}>
+          {exp.code}
+        </span>
+        <span style={{
+          fontFamily: MONO,
+          fontSize: 10,
+          letterSpacing: "0.15em",
+          color: INK3,
+        }}>
+          {String(index + 1).padStart(2, "0")}
+        </span>
       </div>
 
-      {tally && tally.attempts > 0 && (
-        <div
-          style={{
-            marginTop: 18,
-            paddingTop: 14,
-            borderTop: "1px solid rgba(255,255,255,0.10)",
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: 16,
-            color: "rgba(255,255,255,0.7)",
-            fontWeight: 500,
-            fontFamily: INTER,
-          }}
-        >
-          <span>
-            {t("시도", "Attempts")} · {tally.attempts.toLocaleString()}
+      {/* Fraction — hero element */}
+      <div style={{ marginBottom: 20, flex: 1 }}>
+        <div style={{
+          fontFamily: SERIF,
+          fontSize: "clamp(13px,1.6vw,15px)",
+          color: INK2,
+          marginBottom: 4,
+          letterSpacing: "-0.01em",
+        }}>
+          {locale === "ko" ? exp.ko : exp.en}
+        </div>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 0, lineHeight: 1 }}>
+          <span style={{
+            fontFamily: MONO,
+            fontSize: "clamp(11px,1.3vw,13px)",
+            color: INK3,
+            marginRight: 4,
+          }}>1 ÷</span>
+          <span style={{
+            fontFamily: MONO,
+            fontSize: "clamp(26px,3.6vw,38px)",
+            fontWeight: 700,
+            color: INK,
+            letterSpacing: "-0.04em",
+            fontVariantNumeric: "tabular-nums",
+          }}>
+            {exp.denom.toLocaleString()}
           </span>
-          <span style={{ color: tally.hits > 0 ? GOLD : undefined, fontWeight: tally.hits > 0 ? 700 : 500 }}>
-            {t("성공", "Hits")} · {tally.hits.toLocaleString()}
+        </div>
+      </div>
+
+      {/* Flavor */}
+      <p style={{
+        fontSize: 13,
+        color: INK2,
+        lineHeight: 1.6,
+        margin: 0,
+        marginBottom: 20,
+      }}>
+        {locale === "ko" ? exp.flavorKo : exp.flavorEn}
+      </p>
+
+      {/* Stats */}
+      {hasData && (
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 12,
+          fontFamily: MONO,
+          color: INK2,
+          paddingTop: 14,
+          borderTop: `1px solid ${INK3}`,
+          marginBottom: 14,
+        }}>
+          <span>{tally!.attempts.toLocaleString()} {t("번", "tries")}</span>
+          <span style={{ color: tally!.hits > 0 ? GREEN : INK2, fontWeight: tally!.hits > 0 ? 700 : 400 }}>
+            {tally!.hits > 0 ? `✓ ${tally!.hits.toLocaleString()}` : t("미성공", "0 hits")}
           </span>
         </div>
       )}
+
+      {/* Probability bar */}
+      <div style={{
+        height: 2,
+        background: INK3,
+        borderRadius: 999,
+        overflow: "hidden",
+      }}>
+        <div style={{
+          height: "100%",
+          width: `${pct}%`,
+          minWidth: 2,
+          background: GOLD,
+          borderRadius: 999,
+        }} />
+      </div>
     </button>
   );
 }
 
-// ============================================================================
-// Modal — interactive trial space
-// ============================================================================
-
+// ─── Modal ─────────────────────────────────────────────────────────────────
 type Mode = "single" | "100" | "1000" | "auto";
 
-function ExperimentModal({
-  exp,
-  tally,
-  onClose,
-  onUpdate,
-  t,
-  locale,
-}: {
+function ExperimentModal({ exp, tally, onClose, onUpdate, t, locale }: {
   exp: Experiment;
   tally: Tally[string] | undefined;
   onClose: () => void;
-  onUpdate: (attempts: number, hits: number, lastHitAttempt: number | null) => void;
-  t: (ko: string, en: string) => string;
+  onUpdate: (a: number, h: number, l: number | null) => void;
+  t: (ko: React.ReactNode, en: React.ReactNode) => React.ReactNode;
   locale: "ko" | "en";
 }): ReactElement {
-  const [sessionAttempts, setSessionAttempts] = useState(0);
-  const [sessionHits, setSessionHits] = useState(0);
+  const [sAttempts, setSAttempts] = useState(0);
+  const [sHits, setSHits] = useState(0);
   const [lastResult, setLastResult] = useState<"hit" | "miss" | null>(null);
   const [autoRunning, setAutoRunning] = useState(false);
-  const [hitFx, setHitFx] = useState(0);
+  const [hitKey, setHitKey] = useState(0);
   const autoRef = useRef<number | null>(null);
-  // Keep latest setter for use inside the auto-run interval.
-  const sessionAttemptsRef = useRef(sessionAttempts);
-  sessionAttemptsRef.current = sessionAttempts;
+  const sAttemptsRef = useRef(sAttempts);
+  sAttemptsRef.current = sAttempts;
 
-  // Cleanup on unmount or close
-  useEffect(() => {
-    return () => {
-      if (autoRef.current !== null) {
-        window.clearInterval(autoRef.current);
-        autoRef.current = null;
-      }
-    };
-  }, []);
+  useEffect(() => () => { if (autoRef.current) window.clearInterval(autoRef.current); }, []);
 
   const close = useCallback(() => {
-    if (autoRef.current !== null) {
-      window.clearInterval(autoRef.current);
-      autoRef.current = null;
-    }
+    if (autoRef.current) { window.clearInterval(autoRef.current); autoRef.current = null; }
     onClose();
   }, [onClose]);
 
-  const trial = useCallback(
-    (count: number) => {
-      let hits = 0;
-      let lastHitAt: number | null = null;
-      const start = sessionAttemptsRef.current;
-      for (let i = 0; i < count; i++) {
-        const roll = Math.floor(Math.random() * exp.denom);
-        if (roll === 0) {
-          hits++;
-          lastHitAt = start + i + 1;
-        }
-      }
-      setSessionAttempts((p) => p + count);
-      if (hits > 0) setSessionHits((p) => p + hits);
-      setLastResult(hits > 0 ? "hit" : "miss");
-      onUpdate(count, hits, lastHitAt);
-      if (hits > 0) {
-        setHitFx((n) => n + 1);
-      }
-    },
-    [exp.denom, onUpdate],
-  );
+  const trial = useCallback((count: number) => {
+    let hits = 0;
+    let lastHitAt: number | null = null;
+    const start = sAttemptsRef.current;
+    for (let i = 0; i < count; i++) {
+      if (Math.floor(Math.random() * exp.denom) === 0) { hits++; lastHitAt = start + i + 1; }
+    }
+    setSAttempts((p) => p + count);
+    if (hits > 0) setSHits((p) => p + hits);
+    setLastResult(hits > 0 ? "hit" : "miss");
+    onUpdate(count, hits, lastHitAt);
+    if (hits > 0) setHitKey((n) => n + 1);
+  }, [exp.denom, onUpdate]);
 
-  const runMode = useCallback(
-    (mode: Mode) => {
-      if (autoRef.current !== null) {
-        window.clearInterval(autoRef.current);
-        autoRef.current = null;
-      }
-      if (mode === "single") {
-        trial(1);
-        return;
-      }
-      if (mode === "100") {
-        trial(100);
-        return;
-      }
-      if (mode === "1000") {
-        trial(1000);
-        return;
-      }
-      // auto: run continuously in 5000-trial chunks every 16ms
-      setAutoRunning(true);
-      autoRef.current = window.setInterval(() => trial(5000), 16);
-    },
-    [trial],
-  );
+  const runMode = useCallback((mode: Mode) => {
+    if (autoRef.current) { window.clearInterval(autoRef.current); autoRef.current = null; }
+    if (mode === "single") { trial(1); return; }
+    if (mode === "100")   { trial(100); return; }
+    if (mode === "1000")  { trial(1000); return; }
+    setAutoRunning(true);
+    autoRef.current = window.setInterval(() => trial(5000), 16);
+  }, [trial]);
 
   const stopAuto = useCallback(() => {
-    if (autoRef.current !== null) {
-      window.clearInterval(autoRef.current);
-      autoRef.current = null;
-    }
+    if (autoRef.current) { window.clearInterval(autoRef.current); autoRef.current = null; }
     setAutoRunning(false);
   }, []);
 
-  // Auto-stop on hit
-  useEffect(() => {
-    if (autoRunning && sessionHits > 0) {
-      stopAuto();
-    }
-  }, [autoRunning, sessionHits, stopAuto]);
+  useEffect(() => { if (autoRunning && sHits > 0) stopAuto(); }, [autoRunning, sHits, stopAuto]);
 
-  const expectedAttempts = exp.denom;
-  const totalAttempts = (tally?.attempts ?? 0) + sessionAttempts;
-  const totalHits = (tally?.hits ?? 0) + sessionHits;
-
-  const shareText = useMemo(() => {
-    if (sessionHits > 0) {
-      return t(
-        `${exp.ko}을 ${sessionAttempts.toLocaleString("ko-KR")}번 만에 뚫었습니다 (확률 1/${exp.denom.toLocaleString()})\n→ nolza.fun/games/probability`,
-        `Hit "${exp.en}" in ${sessionAttempts.toLocaleString()} attempts (1/${exp.denom.toLocaleString()})\n→ nolza.fun/games/probability`,
-      );
-    }
-    return t(
-      `${exp.ko}을 ${sessionAttempts.toLocaleString("ko-KR")}번 했는데도 안 됨 ㅋㅋㅋ (확률 1/${exp.denom.toLocaleString()})\n→ nolza.fun/games/probability`,
-      `${sessionAttempts.toLocaleString()} tries on "${exp.en}" and nothing (1/${exp.denom.toLocaleString()})\n→ nolza.fun/games/probability`,
-    );
-  }, [sessionHits, sessionAttempts, exp, t]);
+  const totalAttempts = (tally?.attempts ?? 0) + sAttempts;
+  const totalHits     = (tally?.hits ?? 0) + sHits;
 
   const [copied, setCopied] = useState(false);
+  const shareText = useMemo(() => {
+    if (sHits > 0)
+      return t(
+        `${exp.ko}을 ${sAttempts.toLocaleString("ko-KR")}번 만에 성공 (1/${exp.denom.toLocaleString()}) → nolza.fun/games/probability`,
+        `Hit "${exp.en}" in ${sAttempts.toLocaleString()} tries (1/${exp.denom.toLocaleString()}) → nolza.fun/games/probability`,
+      ) as string;
+    return t(
+      `${exp.ko}을 ${sAttempts.toLocaleString("ko-KR")}번 했는데도 실패 (1/${exp.denom.toLocaleString()}) → nolza.fun/games/probability`,
+      `${sAttempts.toLocaleString()} tries on "${exp.en}", nothing (1/${exp.denom.toLocaleString()}) → nolza.fun/games/probability`,
+    ) as string;
+  }, [sHits, sAttempts, exp, t]);
+
   const share = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(shareText);
-    } catch {
-      /* ignore */
-    }
+    try { await navigator.clipboard.writeText(shareText); } catch { /* */ }
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2000);
   }, [shareText]);
 
   return (
     <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.85)",
-        backdropFilter: "blur(10px)",
-        zIndex: 60,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-        animation: "probFade 0.3s ease",
-      }}
+      className="prob-overlay"
       onClick={close}
+      style={{
+        position: "fixed", inset: 0,
+        background: "rgba(0,0,0,0.88)",
+        backdropFilter: "blur(12px)",
+        zIndex: 60,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: 20,
+      }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: "linear-gradient(180deg, #161616, #0a0a0a)",
-          border: `1.5px solid ${GOLD}55`,
-          borderRadius: 20,
-          padding: "30px 28px",
-          maxWidth: 520,
+          background: SURF2,
+          border: `1px solid rgba(200,169,106,0.3)`,
+          borderRadius: 6,
+          padding: "clamp(24px,4vw,40px)",
+          maxWidth: 480,
           width: "100%",
-          maxHeight: "90vh",
+          maxHeight: "92vh",
           overflowY: "auto",
-          boxShadow: `0 30px 80px rgba(0,0,0,0.7), 0 0 40px ${GOLD}22`,
           position: "relative",
+          boxShadow: "0 40px 100px rgba(0,0,0,0.8)",
         }}
       >
-        <button
-          onClick={close}
-          aria-label="close"
-          style={{
-            position: "absolute",
-            top: 12,
-            right: 14,
-            background: "transparent",
-            border: "none",
-            color: "rgba(255,255,255,0.5)",
-            fontSize: 22,
-            cursor: "pointer",
-            padding: 4,
-          }}
-        >
-          ✕
-        </button>
+        <button onClick={close} aria-label="close" style={{
+          position: "absolute", top: 16, right: 18,
+          background: "transparent", border: "none",
+          color: INK2, fontSize: 20, cursor: "pointer", padding: 4, lineHeight: 1,
+        }}>×</button>
 
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ fontSize: 56, lineHeight: 1, marginBottom: 14 }}>{exp.emoji}</div>
-          <div
-            style={{
-              fontFamily: SERIF,
-              fontSize: 26,
-              fontWeight: 700,
-              color: "#f5f5f5",
-              marginBottom: 8,
-            }}
-          >
+        {/* Modal header */}
+        <div style={{ marginBottom: 28 }}>
+          <div style={{
+            fontFamily: MONO, fontSize: 10,
+            letterSpacing: "0.25em", color: GOLD, marginBottom: 10,
+          }}>
+            {exp.code} · {String(EXPERIMENTS.findIndex(e => e.id === exp.id) + 1).padStart(2, "0")}
+          </div>
+          <div style={{
+            fontFamily: SERIF,
+            fontSize: "clamp(20px,2.8vw,26px)",
+            fontWeight: 700, color: INK, letterSpacing: "-0.02em", marginBottom: 6,
+          }}>
             {locale === "ko" ? exp.ko : exp.en}
           </div>
-          <div
-            style={{
-              fontFamily: INTER,
-              fontSize: 16,
-              fontWeight: 700,
-              color: GOLD,
-              letterSpacing: "0.04em",
+          <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+            <span style={{ fontFamily: MONO, fontSize: 12, color: INK3 }}>1 ÷</span>
+            <span style={{
+              fontFamily: MONO, fontSize: "clamp(22px,3vw,30px)",
+              fontWeight: 700, color: GOLD, letterSpacing: "-0.03em",
               fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            1 / {exp.denom.toLocaleString()}
+            }}>
+              {exp.denom.toLocaleString()}
+            </span>
           </div>
         </div>
 
-        {/* Result panel */}
-        <div
-          style={{
-            position: "relative",
-            background: "#0a0a0a",
-            border: `1px solid ${
-              lastResult === "hit" ? GOLD : lastResult === "miss" ? "rgba(239,68,68,0.4)" : "rgba(255,255,255,0.1)"
-            }`,
-            borderRadius: 14,
-            padding: "26px 18px",
-            textAlign: "center",
-            minHeight: 120,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 10,
-            overflow: "hidden",
-          }}
-        >
+        {/* Result box */}
+        <div style={{
+          background: BG,
+          border: `1px solid ${
+            lastResult === "hit" ? GOLD :
+            lastResult === "miss" ? INK3 : INK3
+          }`,
+          borderRadius: 4,
+          minHeight: 110,
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          padding: "24px 20px", textAlign: "center",
+          position: "relative", overflow: "hidden",
+          gap: 8,
+          transition: "border-color 0.3s",
+        }}>
           {lastResult === "hit" ? (
             <>
-              <HitVisual style={exp.hitStyle} key={hitFx} />
-              <div
-                style={{
-                  fontFamily: SERIF,
-                  fontSize: 26,
-                  color: GOLD,
-                  fontWeight: 800,
-                  textShadow: `0 0 18px ${GOLD}88`,
-                  zIndex: 2,
-                }}
-              >
-                ✨ {locale === "ko" ? exp.hitKo : exp.hitEn}
+              <HitVisual style={exp.hitStyle} key={hitKey} />
+              <div style={{
+                fontFamily: SERIF, fontSize: "clamp(22px,3vw,28px)",
+                fontWeight: 900, color: GOLD, letterSpacing: "-0.02em",
+                textShadow: `0 0 24px ${GOLD}66`, zIndex: 2,
+              }}>
+                {locale === "ko" ? exp.hitKo : exp.hitEn}
               </div>
-              <div style={{ fontSize: 16, color: "rgba(255,255,255,0.78)", zIndex: 2 }}>
+              <div style={{ fontSize: 14, color: INK2, zIndex: 2 }}>
                 {t(
-                  `${sessionAttempts.toLocaleString("ko-KR")}번 만에 성공!`,
-                  `Hit on attempt #${sessionAttempts.toLocaleString()}!`,
+                  `${sAttempts.toLocaleString("ko-KR")}번 만에 성공`,
+                  `Hit on attempt #${sAttempts.toLocaleString()}`,
                 )}
               </div>
             </>
           ) : lastResult === "miss" ? (
             <>
-              <div style={{ fontSize: 44, opacity: 0.5 }}>✕</div>
-              <div style={{ fontSize: 17, fontWeight: 500, color: "rgba(255,255,255,0.7)" }}>
+              <div style={{ fontFamily: MONO, fontSize: 28, color: INK3, letterSpacing: "-0.04em" }}>—</div>
+              <div style={{ fontSize: 14, color: INK2 }}>
                 {t("아직 안 됐어요", "Not yet")}
               </div>
             </>
           ) : (
-            <div style={{ fontSize: 17, color: "rgba(255,255,255,0.55)" }}>
-              {t("아래 버튼을 눌러 시도하세요", "Press a button to roll")}
+            <div style={{ fontSize: 14, color: INK3, fontFamily: MONO, letterSpacing: "0.05em" }}>
+              {t("버튼을 눌러 시도하세요", "press a button to roll")}
             </div>
           )}
         </div>
 
         {/* Counters */}
-        <div
-          style={{
-            marginTop: 18,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 8,
-          }}
-        >
-          <Counter label={t("이번 세션", "This session")} value={sessionAttempts.toLocaleString()} />
-          <Counter
-            label={t("성공", "Hits")}
-            value={sessionHits.toLocaleString()}
-            color={sessionHits > 0 ? GOLD : undefined}
-          />
-          <Counter
-            label={t("기댓값까지", "Expected by")}
-            value={`${expectedAttempts.toLocaleString()}`}
-            small
-          />
+        <div style={{
+          marginTop: 14,
+          display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8,
+        }}>
+          {[
+            { label: t("시도", "Tries"), value: sAttempts.toLocaleString(), color: INK },
+            { label: t("성공", "Hits"), value: sHits.toLocaleString(), color: sHits > 0 ? GREEN : INK2 },
+            { label: t("기댓값", "Expected"), value: exp.denom.toLocaleString(), color: INK3 },
+          ].map(({ label, value, color }) => (
+            <div key={String(label)} style={{
+              background: BG, border: `1px solid ${INK3}`,
+              borderRadius: 4, padding: "12px 8px", textAlign: "center",
+            }}>
+              <div style={{ fontFamily: MONO, fontSize: 9, letterSpacing: "0.2em", color: INK3, marginBottom: 6 }}>
+                {label}
+              </div>
+              <div style={{
+                fontFamily: MONO, fontSize: "clamp(14px,2vw,18px)",
+                fontWeight: 700, color, fontVariantNumeric: "tabular-nums",
+                letterSpacing: "-0.02em",
+              }}>
+                {value}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Action buttons */}
-        <div
-          style={{
-            marginTop: 22,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 10,
-          }}
-        >
-          <button
-            className="gold-btn"
-            onClick={() => runMode("single")}
-            disabled={autoRunning}
-          >
-            {t("1번 해보기", "Try once")}
+        <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+          <button className="prob-btn primary" onClick={() => runMode("single")} disabled={autoRunning}>
+            {t("1번", "× 1")}
           </button>
-          <button
-            className="gold-btn ghost"
-            onClick={() => runMode("100")}
-            disabled={autoRunning}
-          >
-            {t("100번 자동", "100 auto")}
+          <button className="prob-btn ghost" onClick={() => runMode("100")} disabled={autoRunning}>
+            {t("100번", "× 100")}
           </button>
-          <button
-            className="gold-btn ghost"
-            onClick={() => runMode("1000")}
-            disabled={autoRunning}
-          >
-            {t("1,000번 자동", "1,000 auto")}
+          <button className="prob-btn ghost" onClick={() => runMode("1000")} disabled={autoRunning}>
+            {t("1,000번", "× 1,000")}
           </button>
           {autoRunning ? (
-            <button
-              className="gold-btn"
-              onClick={stopAuto}
-              style={{
-                background: "linear-gradient(180deg, #ef4444, #b91c1c)",
-                color: "#fff",
-                borderColor: "#ef444466",
-              }}
-            >
-              {t("멈추기", "STOP")}
+            <button className="prob-btn stop" onClick={stopAuto}>
+              {t("중지", "STOP")}
             </button>
           ) : (
-            <button
-              className="gold-btn ghost"
-              onClick={() => runMode("auto")}
-            >
-              {t("당첨될 때까지", "Until I win")}
+            <button className="prob-btn ghost" onClick={() => runMode("auto")}>
+              {t("될 때까지", "until I win")}
             </button>
           )}
         </div>
 
         {autoRunning && (
-          <div
-            style={{
-              marginTop: 14,
-              fontFamily: INTER,
-              fontSize: 16,
-              color: "rgba(255,255,255,0.7)",
-              textAlign: "center",
-              animation: "probJiggle 1s ease-in-out infinite",
-            }}
-          >
+          <div style={{
+            marginTop: 12, textAlign: "center",
+            fontFamily: MONO, fontSize: 12, color: INK3,
+            letterSpacing: "0.05em",
+          }}>
             {t(
-              `초당 ~30만 시도... (${sessionAttempts.toLocaleString("ko-KR")}번)`,
-              `~300k tries/sec... (${sessionAttempts.toLocaleString()})`,
+              `${sAttempts.toLocaleString("ko-KR")}번 시도 중...`,
+              `${sAttempts.toLocaleString()} tries...`,
             )}
           </div>
         )}
 
-        {/* Persistent total */}
+        {/* Lifetime */}
         {totalAttempts > 0 && (
-          <div
-            style={{
-              marginTop: 22,
-              padding: "14px 16px",
-              background: "rgba(255,215,0,0.05)",
-              border: `1px solid ${GOLD}33`,
-              borderRadius: 10,
-              fontSize: 16,
-              color: "rgba(255,255,255,0.78)",
-              fontFamily: locale === "ko" ? KSANS : INTER,
-              lineHeight: 1.6,
-              textAlign: "center",
-            }}
-          >
+          <div style={{
+            marginTop: 16,
+            padding: "12px 14px",
+            background: GOLD_D,
+            border: `1px solid rgba(200,169,106,0.2)`,
+            borderRadius: 4,
+            fontFamily: MONO, fontSize: 12, color: INK2,
+            lineHeight: 1.7, textAlign: "center",
+            letterSpacing: "0.02em",
+          }}>
             {t(
-              `이 기기에서 누적 ${totalAttempts.toLocaleString("ko-KR")}번 시도, ${totalHits.toLocaleString("ko-KR")}번 성공`,
-              `Lifetime on this device: ${totalAttempts.toLocaleString()} attempts, ${totalHits.toLocaleString()} hits`,
+              `누적 ${totalAttempts.toLocaleString("ko-KR")}번 · ${totalHits.toLocaleString("ko-KR")}번 성공`,
+              `${totalAttempts.toLocaleString()} total · ${totalHits.toLocaleString()} hits`,
             )}
           </div>
         )}
 
         {/* Share */}
-        {sessionAttempts > 0 && (
+        {sAttempts > 0 && (
           <button
             onClick={share}
-            className="gold-btn ghost"
-            style={{ marginTop: 16, width: "100%" }}
+            className="prob-btn ghost"
+            style={{ marginTop: 10, width: "100%" }}
           >
-            {copied ? t("복사됨 ✓", "Copied ✓") : t("결과 공유", "Share result")}
+            {copied ? t("복사됨 ✓", "Copied ✓") : t("결과 공유", "Share")}
           </button>
         )}
+
+        {/* Flavor */}
+        <p style={{
+          marginTop: 20, marginBottom: 0,
+          fontFamily: MONO, fontSize: 11,
+          color: INK3, lineHeight: 1.7,
+          letterSpacing: "0.03em", textAlign: "center",
+        }}>
+          {locale === "ko" ? exp.flavorKo : exp.flavorEn}
+        </p>
       </div>
     </div>
   );
 }
 
-// ============================================================================
-// Hit visuals — one variant per experiment
-// ============================================================================
-
-function HitVisual({ style }: { style: Experiment["hitStyle"] }): ReactElement {
-  if (style === "fireworks") {
+// ─── Hit visuals ───────────────────────────────────────────────────────────
+function HitVisual({ style }: { style: HitStyle }): ReactElement {
+  if (style === "flash") {
     return (
-      <>
-        {Array.from({ length: 24 }, (_, i) => {
-          const angle = (i / 24) * 360;
-          const dist = 80 + Math.random() * 40;
-          const c = ["#FFD700", "#ef4444", "#3b82f6", "#10b981", "#f97316"][i % 5];
-          return (
-            <span
-              key={i}
-              aria-hidden
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: c,
-                transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${dist}px)`,
-                opacity: 0,
-                animation: `probBoom 1.2s ease-out forwards`,
-              }}
-            />
-          );
-        })}
-      </>
+      <span aria-hidden style={{
+        position: "absolute", inset: 0,
+        background: "radial-gradient(circle at 50% 40%, rgba(200,169,106,0.5), transparent 60%)",
+        animation: "probFlash 0.35s ease 3",
+        pointerEvents: "none",
+      }} />
     );
   }
-  if (style === "lightning") {
-    return (
-      <span
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(circle at 50% 30%, rgba(255,255,255,0.9), transparent 50%)",
-          animation: "probFlash 0.4s ease 3",
-          pointerEvents: "none",
-        }}
-      />
-    );
-  }
-  if (style === "shark") {
-    return <SymbolBurst symbol="🦷" />;
-  }
-  if (style === "money") {
+  if (style === "rain") {
     return (
       <>
-        {Array.from({ length: 14 }, (_, i) => (
-          <span
-            key={i}
-            aria-hidden
-            style={{
-              position: "absolute",
-              top: -20,
-              left: `${5 + Math.random() * 90}%`,
-              fontSize: 24,
-              animation: `probRain ${1 + Math.random()}s linear ${Math.random() * 0.4}s forwards`,
-            }}
-          >
-            💵
-          </span>
+        {Array.from({ length: 12 }, (_, i) => (
+          <span key={i} aria-hidden style={{
+            position: "absolute", top: -10,
+            left: `${8 + Math.random() * 84}%`,
+            fontFamily: MONO, fontSize: 13,
+            color: GOLD, opacity: 0.8,
+            animation: `probRain ${0.8 + Math.random() * 0.6}s linear ${Math.random() * 0.3}s forwards`,
+          }}>₩</span>
         ))}
       </>
     );
   }
-  if (style === "headset") {
-    return <SymbolBurst symbol="🏆" />;
+  if (style === "rise") {
+    return (
+      <span aria-hidden style={{
+        position: "absolute", inset: 0,
+        background: `linear-gradient(0deg, ${GOLD_D}, transparent 60%)`,
+        animation: "probRise 0.8s ease forwards",
+        pointerEvents: "none",
+      }} />
+    );
   }
-  if (style === "rings") {
-    return <SymbolBurst symbol="💍" />;
-  }
-  if (style === "twins") {
-    return <SymbolBurst symbol="👶" />;
-  }
-  if (style === "candle") {
-    return <SymbolBurst symbol="🕯️" />;
-  }
-  return <></>;
-}
-
-function SymbolBurst({ symbol }: { symbol: string }): ReactElement {
+  // burst (default)
   return (
     <>
-      {Array.from({ length: 10 }, (_, i) => {
-        const angle = (i / 10) * 360;
-        const dist = 50 + Math.random() * 30;
+      {Array.from({ length: 20 }, (_, i) => {
+        const angle = (i / 20) * 360;
+        const dist = 60 + Math.random() * 30;
+        const colors = [GOLD, INK, GREEN, "rgba(200,169,106,0.6)"];
         return (
-          <span
-            key={i}
-            aria-hidden
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              fontSize: 22,
-              transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${dist}px)`,
-              opacity: 0,
-              animation: `probBoom 1.2s ease-out forwards`,
-            }}
-          >
-            {symbol}
-          </span>
+          <span key={i} aria-hidden style={{
+            position: "absolute", left: "50%", top: "50%",
+            width: 5, height: 5, borderRadius: "50%",
+            background: colors[i % colors.length],
+            transform: `translate(-50%,-50%) rotate(${angle}deg) translateY(-${dist}px)`,
+            opacity: 0,
+            animation: "probBoom 1s ease-out forwards",
+          }} />
         );
       })}
     </>
   );
 }
 
-// ============================================================================
-// Counter mini
-// ============================================================================
-
-function Counter({
-  label,
-  value,
-  color,
-  small,
-}: {
-  label: string;
-  value: string;
-  color?: string;
-  small?: boolean;
-}): ReactElement {
-  return (
-    <div
-      style={{
-        background: "#0a0a0a",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 10,
-        padding: "14px 10px",
-        textAlign: "center",
-      }}
-    >
-      <div
-        style={{
-          fontFamily: INTER,
-          fontSize: 14,
-          letterSpacing: "0.14em",
-          color: "rgba(255,255,255,0.62)",
-          fontWeight: 700,
-          marginBottom: 8,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-      >
-        {label}
-      </div>
-      <div
-        style={{
-          fontFamily: INTER,
-          fontSize: small ? 18 : 22,
-          fontWeight: 800,
-          color: color ?? "#f5f5f5",
-          fontVariantNumeric: "tabular-nums",
-          letterSpacing: "-0.01em",
-        }}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
-// ============================================================================
-// Aggregate footer
-// ============================================================================
-
-function AggregateFooter({
-  tally,
-  t,
-  locale,
-}: {
+// ─── Aggregate footer ──────────────────────────────────────────────────────
+function AggregateFooter({ tally, t, locale }: {
   tally: Tally;
-  t: (ko: string, en: string) => string;
+  t: (ko: React.ReactNode, en: React.ReactNode) => React.ReactNode;
   locale: "ko" | "en";
 }): ReactElement {
-  const totalAttempts = useMemo(
-    () => Object.values(tally).reduce((s, v) => s + v.attempts, 0),
-    [tally],
-  );
-  const totalHits = useMemo(
-    () => Object.values(tally).reduce((s, v) => s + v.hits, 0),
-    [tally],
-  );
-
+  const totalAttempts = useMemo(() => Object.values(tally).reduce((s, v) => s + v.attempts, 0), [tally]);
+  const totalHits     = useMemo(() => Object.values(tally).reduce((s, v) => s + v.hits, 0), [tally]);
   if (totalAttempts === 0) return <></>;
-
   return (
-    <div
-      style={{
-        marginTop: 56,
-        padding: "22px 24px",
-        background: "rgba(255,215,0,0.05)",
-        border: `1px solid ${GOLD}33`,
-        borderRadius: 16,
-        textAlign: "center",
-        fontFamily: locale === "ko" ? KSANS : INTER,
-      }}
-    >
-      <div
-        style={{
-          fontFamily: INTER,
-          fontSize: 15,
-          letterSpacing: "0.24em",
-          fontWeight: 700,
-          color: GOLD,
-          marginBottom: 12,
-        }}
-      >
-        {t("이 기기의 누적 통계", "ON THIS DEVICE")}
-      </div>
-      <div style={{ fontSize: 18, fontWeight: 500, color: "rgba(255,255,255,0.9)", lineHeight: 1.6 }}>
+    <div style={{
+      marginTop: 56,
+      padding: "20px 24px",
+      border: `1px solid ${INK3}`,
+      borderRadius: 4,
+      display: "flex", alignItems: "center", justifyContent: "space-between",
+      flexWrap: "wrap", gap: 12,
+      fontFamily: MONO,
+    }}>
+      <span style={{ fontSize: 11, letterSpacing: "0.2em", color: INK3 }}>
+        {t("이 기기 누적", "THIS DEVICE")}
+      </span>
+      <span style={{ fontSize: 14, color: INK2, letterSpacing: "-0.01em" }}>
         {t(
-          `지금까지 ${totalAttempts.toLocaleString("ko-KR")}번 시도해서 ${totalHits.toLocaleString("ko-KR")}번 성공했어요.`,
-          `${totalAttempts.toLocaleString()} attempts so far · ${totalHits.toLocaleString()} hits.`,
+          `${totalAttempts.toLocaleString("ko-KR")}번 시도 · ${totalHits.toLocaleString("ko-KR")}번 성공`,
+          `${totalAttempts.toLocaleString()} tries · ${totalHits.toLocaleString()} hits`,
         )}
-      </div>
+      </span>
     </div>
   );
 }
 
-// ============================================================================
-// Backdrop dots
-// ============================================================================
-
-function BackdropDots(): ReactElement {
+// ─── Global styles ─────────────────────────────────────────────────────────
+function GlobalStyles(): ReactElement {
   return (
-    <div
-      aria-hidden
-      style={{
-        position: "fixed",
-        inset: 0,
-        opacity: 0.05,
-        pointerEvents: "none",
-        backgroundImage:
-          "radial-gradient(rgba(255,215,0,0.6) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
-        zIndex: 0,
-      }}
-    />
+    <style dangerouslySetInnerHTML={{ __html: `
+@keyframes probFade  { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+@keyframes probBoom  { 0%{opacity:1;transform:translate(-50%,-50%) rotate(var(--a,0deg)) translateY(0)} 100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--a,0deg)) translateY(-80px)} }
+@keyframes probFlash { 0%,100%{opacity:0} 50%{opacity:1} }
+@keyframes probRain  { from{transform:translateY(-10px);opacity:1} to{transform:translateY(120px);opacity:0} }
+@keyframes probRise  { from{opacity:0} to{opacity:1} }
+
+.prob-overlay { animation: probFade 0.25s ease; }
+
+.prob-card {
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.prob-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(200,169,106,0.4) !important;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+}
+
+.prob-btn {
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 13px 18px;
+  font-size: 13px;
+  font-family: ${MONO};
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.prob-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.prob-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+.prob-btn.primary {
+  background: ${GOLD};
+  color: ${BG};
+  border: none;
+}
+.prob-btn.ghost {
+  background: transparent;
+  color: ${INK};
+  border: 1px solid ${INK3};
+}
+.prob-btn.ghost:hover { border-color: ${GOLD}; color: ${GOLD}; }
+.prob-btn.stop {
+  background: transparent;
+  color: #E05C5C;
+  border: 1px solid rgba(224,92,92,0.4);
+}
+` }} />
   );
 }
