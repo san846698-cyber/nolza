@@ -16,6 +16,7 @@ type Result = { accuracy: number; center: Point; radius: number };
 const STORAGE_KEY = "nolza-circle-best";
 const MIN_POINTS = 20;
 const MIN_RADIUS = 20;
+const DRAW_START_THRESHOLD = 6;
 
 function calculateAccuracy(points: Point[]): Result | null {
   if (points.length < MIN_POINTS) return null;
@@ -52,6 +53,8 @@ export default function CircleGame() {
   const pointsRef = useRef<Point[]>([]);
   const resultRef = useRef<Result | null>(null);
   const drawingRef = useRef(false);
+  const strokeStartedRef = useRef(false);
+  const startPointRef = useRef<Point | null>(null);
   const rafRef = useRef<number | null>(null);
   const bestRef = useRef<number | null>(null);
 
@@ -126,6 +129,8 @@ export default function CircleGame() {
     pointsRef.current = [];
     resultRef.current = null;
     drawingRef.current = false;
+    strokeStartedRef.current = false;
+    startPointRef.current = null;
     setResult(null);
     setHasStarted(false);
     draw();
@@ -137,13 +142,12 @@ export default function CircleGame() {
     e.preventDefault();
     canvas.setPointerCapture(e.pointerId);
     drawingRef.current = true;
+    strokeStartedRef.current = false;
     pointsRef.current = [];
     resultRef.current = null;
     setResult(null);
-    setHasStarted(true);
     const rect = canvas.getBoundingClientRect();
-    pointsRef.current.push({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    scheduleRedraw();
+    startPointRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
   const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -153,6 +157,15 @@ export default function CircleGame() {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+    const start = startPointRef.current;
+    if (!strokeStartedRef.current) {
+      if (!start || Math.hypot(x - start.x, y - start.y) < DRAW_START_THRESHOLD) return;
+      strokeStartedRef.current = true;
+      setHasStarted(true);
+      pointsRef.current.push(start, { x, y });
+      scheduleRedraw();
+      return;
+    }
     const last = pointsRef.current[pointsRef.current.length - 1];
     if (last && Math.hypot(x - last.x, y - last.y) < 1.5) return;
     pointsRef.current.push({ x, y });
@@ -166,6 +179,14 @@ export default function CircleGame() {
     if (canvas && canvas.hasPointerCapture(e.pointerId)) {
       canvas.releasePointerCapture(e.pointerId);
     }
+    startPointRef.current = null;
+    if (!strokeStartedRef.current) {
+      pointsRef.current = [];
+      setHasStarted(false);
+      scheduleRedraw();
+      return;
+    }
+    strokeStartedRef.current = false;
     const r = calculateAccuracy(pointsRef.current);
     resultRef.current = r;
     setResult(r);
