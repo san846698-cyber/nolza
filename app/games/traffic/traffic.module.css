@@ -1,5 +1,5 @@
 .shell {
-  min-height: 100vh;
+  min-height: 100svh;
   background: #1a1a1a;
   color: #f0f0f0;
   display: flex;
@@ -130,6 +130,10 @@
   isolation: isolate;
 }
 .car:active {
+  cursor: grabbing;
+}
+.car[data-dragging="true"] {
+  transition: none;
   cursor: grabbing;
 }
 .car[data-player="true"] {
@@ -303,7 +307,8 @@
   justify-content: center;
   z-index: 50;
   animation: fadein 280ms ease;
-  padding: 20px;
+  padding: max(20px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+  overflow-y: auto;
 }
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 
@@ -443,4 +448,48 @@
 .selectClose:hover {
   border-color: #ef4444;
   color: #ef4444;
+}
+
+@media (max-width: 520px) {
+  .topbar {
+    padding: 12px max(12px, env(safe-area-inset-right, 0px)) 12px max(12px, env(safe-area-inset-left, 0px));
+  }
+  .title {
+    font-size: 14px;
+    max-width: 55vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .main {
+    padding: 18px 12px calc(72px + env(safe-area-inset-bottom, 0px));
+    gap: 16px;
+  }
+  .boardWrap {
+    width: min(calc(100vw - 48px), calc(100svh - 250px), 560px);
+    min-width: 280px;
+  }
+  .exit {
+    right: -18px;
+    width: 18px;
+    font-size: 18px;
+  }
+  .controls {
+    width: 100%;
+    gap: 8px;
+  }
+  .btn,
+  .btnPrimary {
+    min-height: 44px;
+    padding: 10px 12px;
+    flex: 1 1 calc(50% - 8px);
+  }
+  .winCard,
+  .selectCard {
+    max-height: calc(100svh - 40px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+  }
+  .levelGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

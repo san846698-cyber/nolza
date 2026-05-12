@@ -814,7 +814,7 @@ function ParticleCanvas({
         position: "fixed",
         inset: 0,
         width: "100vw",
-        height: "100vh",
+        height: "100svh",
         pointerEvents: "none",
         zIndex: 0,
       }}
@@ -865,7 +865,7 @@ function FinalShare({ locale }: { locale: SimpleLocale }): ReactElement {
   return (
     <section
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         width: "100%",
         display: "flex",
         flexDirection: "column",
@@ -1039,7 +1039,7 @@ export default function DeepGame(): ReactElement {
     <main
       style={{
         position: "relative",
-        minHeight: "100vh",
+        minHeight: "100svh",
         width: "100%",
         color: "#fff",
         overflowX: "hidden",
@@ -1052,7 +1052,7 @@ export default function DeepGame(): ReactElement {
           position: "fixed",
           inset: 0,
           width: "100%",
-          height: "100vh",
+          height: "100svh",
           background: bgGrad,
           transition: "background 0.6s linear",
           zIndex: 0,

@@ -457,7 +457,7 @@ export default function GamblingPage(): ReactElement {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: BG,
         color: "#f5f5f5",
         fontFamily: locale === "ko" ? KSANS : INTER,
@@ -904,7 +904,7 @@ function IntroScreen({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -1040,7 +1040,7 @@ function BankSelectScreen({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -1210,7 +1210,7 @@ function GameSelectScreen({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -1513,7 +1513,7 @@ function SlotMachine({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -1867,7 +1867,7 @@ function Blackjack({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -2167,7 +2167,7 @@ function Roulette({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -2493,7 +2493,7 @@ function BankruptScreen({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         background:
           "radial-gradient(ellipse at top, rgba(0,0,0,0.4), transparent 60%), #0a0a0a",
         padding: "60px 20px 80px",
@@ -2868,7 +2868,7 @@ function LeftEarlyScreen({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

@@ -418,7 +418,7 @@ function IdolSide({
       aria-label={`Choose ${idol.en}`}
       style={{
         position: "relative",
-        height: "100vh",
+        height: "100svh",
         flex: `0 0 ${flexBasis}`,
         cursor: disabled ? "default" : "pointer",
         overflow: "hidden",
@@ -727,7 +727,7 @@ export default function BiasPage(): ReactElement {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: BG,
         color: "#fff",
         fontFamily: "var(--font-inter), var(--font-noto-sans-kr), sans-serif",
@@ -758,7 +758,7 @@ export default function BiasPage(): ReactElement {
       </Link>
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

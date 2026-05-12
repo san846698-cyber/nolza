@@ -331,7 +331,7 @@ export default function DilemmaGame() {
       <main
         className="page-in"
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           backgroundColor: BG,
           color: FG,
           fontFamily: SERIF,
@@ -460,7 +460,7 @@ export default function DilemmaGame() {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         backgroundColor: BG,
         color: FG,
         fontFamily: SERIF,

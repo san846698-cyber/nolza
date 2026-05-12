@@ -110,9 +110,9 @@ export default function WaterlooGame({
 
   return (
     <main
-      className="page-in"
+      className="page-in bwif-root"
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         backgroundColor: BG,
         color: FG,
         fontFamily: SERIF,

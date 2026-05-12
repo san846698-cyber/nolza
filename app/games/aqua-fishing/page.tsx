@@ -1,13 +1,81 @@
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FISH_DATABASE } from './fishData';
-import { spawnFish, drawFish, isBigCreature, BIG_CREATURE_TYPES } from './fish_logic';
+import { spawnFish, drawFish, isBigCreature, BIG_CREATURE_TYPES, type FishInstance } from './fish_logic';
 import { useLocale } from '@/hooks/useLocale';
 
 let audioCtx: AudioContext | null = null;
 let bgmGain: GainNode | null = null;
 let bgmActive = false;
+
+type WebKitAudioWindow = Window & typeof globalThis & {
+  webkitAudioContext?: typeof AudioContext;
+};
+
+type BoatStats = {
+  rod: number;
+  speed: number;
+  drop: number;
+  depth: number;
+  sonar: number;
+  coins: number;
+  caught: Record<string, number>;
+};
+
+type HookState = {
+  y: number;
+  vy: number;
+  fish: FishInstance | null;
+  catchY: number;
+  tension: number;
+};
+
+type FloatingText = {
+  text: string;
+  x: number;
+  y: number;
+  lifetime: number;
+  color: string;
+};
+
+type Particle = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  color: string;
+  size: number;
+};
+
+type School = {
+  x: number;
+  y: number;
+  vx: number;
+  members: { offsetX: number; offsetY: number; phase: number }[];
+  color: string;
+};
+
+type BubbleParticle = {
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+  wobbleSpeed: number;
+  wobbleSize: number;
+  wobbleOffset: number;
+};
+
+type SnowParticle = {
+  x: number;
+  y: number;
+  size: number;
+  speedY: number;
+  speedX: number;
+  phase: number;
+};
 
 // Cleanly tear down all audio so leaving the route doesn't keep the BGM
 // (ocean noise + ambient piano + delay tail) playing across the rest of
@@ -156,7 +224,9 @@ const startBGM = () => {
 
 const playSound = (type: string) => {
     if (!audioCtx) {
-        audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const AudioContextCtor = window.AudioContext || (window as WebKitAudioWindow).webkitAudioContext;
+        if (!AudioContextCtor) return;
+        audioCtx = new AudioContextCtor();
     }
     if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
     if (!bgmActive) startBGM();
@@ -297,7 +367,7 @@ const playSound = (type: string) => {
             osc.start(now);
             osc.stop(now + 0.4);
         }
-    } catch (e) {
+    } catch {
         // ignore errors
     }
 };
@@ -396,9 +466,11 @@ export default function AquaFishingGame() {
 
   // Canvas-side i18n helper. The game loop closure uses localeRef so it
   // reflects locale changes without re-running the effect.
-  const tr = (en: string, ko: string) => (localeRef.current === 'ko' ? ko : en);
+  const tr = useCallback((en: string, ko: string) => (localeRef.current === 'ko' ? ko : en), []);
   const trRef = useRef(tr);
-  trRef.current = tr;
+  useEffect(() => {
+    trRef.current = tr;
+  }, [tr]);
   const getFishName = (key: string) => {
     const fish = FISH_DATABASE[key];
     if (!fish) return key;
@@ -412,7 +484,9 @@ export default function AquaFishingGame() {
 
   useEffect(() => {
     const handleToggleEnc = () => setShowEncyclopedia(s => !s);
-    const handleUpdateEnc = (e: any) => setCaughtData(e.detail);
+    const handleUpdateEnc = (e: Event) => {
+      setCaughtData((e as CustomEvent<Record<string, number>>).detail);
+    };
     window.addEventListener('toggle-enc', handleToggleEnc);
     window.addEventListener('update-enc', handleUpdateEnc);
     return () => {
@@ -493,7 +567,7 @@ export default function AquaFishingGame() {
     // Add boat stats to be read from UI
     const getStats = () => {
       const stored = localStorage.getItem('fishing_stats');
-      let data = { rod: 0, speed: 0, drop: 0, depth: 0, sonar: 0, coins: 0, caught: {} as Record<string, number> };
+      let data: BoatStats = { rod: 0, speed: 0, drop: 0, depth: 0, sonar: 0, coins: 0, caught: {} };
       if (stored) {
          try {
              const parsed = JSON.parse(stored);
@@ -501,12 +575,12 @@ export default function AquaFishingGame() {
              if (data.rod === undefined) data.rod = data.speed || 0;
              if (data.sonar === undefined) data.sonar = 0;
              if (!data.caught) data.caught = {};
-         } catch(e) {}
+         } catch {}
       }
       return data;
     };
 
-    let boatStats = getStats();
+    const boatStats = getStats();
     window.dispatchEvent(new CustomEvent('update-enc', { detail: boatStats.caught }));
     
     const saveStats = () => {
@@ -547,7 +621,7 @@ export default function AquaFishingGame() {
                   zone: 1, w: def.w, h: def.h, score: def.score, color: def.iconColor, speed, type: 'blue_whale', shape: def.shape,
                   y, baseY: y, baseX: boat.x + window.innerWidth * 0.2, // slightly to the right
                   x: 0, vx: 0, timeOffset: Math.random() * 100, amplitude: 50,
-                  escapeSpeed: Math.max(speed * 2.5, 120), state: 'patrol', exclamationTimer: 0, noticeDist: def.noticeDist
+                  escapeSpeed: Math.max(speed * 2.5, 120), state: 'patrol', exclamationTimer: 0, hasShownExclamation: false, noticeDist: def.noticeDist
               });
           }
       }
@@ -583,10 +657,10 @@ export default function AquaFishingGame() {
       rotation: 0,
     };
 
-    const hook = {
+    const hook: HookState = {
       y: 0,
       vy: 0,
-      fish: null as any,
+      fish: null,
       catchY: 0,
       tension: 0,
     };
@@ -606,8 +680,8 @@ export default function AquaFishingGame() {
       graceTimer: 0,  // seconds remaining before passive tension starts ticking after a hook
     };
 
-    const floatingTexts: any[] = [];
-    const particles: any[] = [];
+    const floatingTexts: FloatingText[] = [];
+    const particles: Particle[] = [];
 
     const spawnParticles = (x: number, y: number, color: string, count: number, speedMulti: number = 1) => {
       for(let i=0; i<count; i++) {
@@ -622,7 +696,7 @@ export default function AquaFishingGame() {
       }
     };
 
-    const fishes: any[] = [];
+    const fishes: FishInstance[] = [];
     for (let i=0; i<6; i++) fishes.push(spawnFish(1, boat.x, window.innerWidth));
     for (let i=0; i<6; i++) fishes.push(spawnFish(2, boat.x, window.innerWidth));
     for (let i=0; i<4; i++) fishes.push(spawnFish(3, boat.x, window.innerWidth));
@@ -646,7 +720,7 @@ export default function AquaFishingGame() {
       };
     };
 
-    const schools: any[] = [];
+    const schools: School[] = [];
     for(let i=0; i<6; i++) schools.push(spawnSchool());
 
     const spawnBubble = () => {
@@ -661,7 +735,7 @@ export default function AquaFishingGame() {
       };
     };
 
-    const bubbles: any[] = [];
+    const bubbles: BubbleParticle[] = [];
     for (let i = 0; i < 150; i++) bubbles.push(spawnBubble());
 
     const spawnSnow = () => {
@@ -675,7 +749,7 @@ export default function AquaFishingGame() {
       };
     };
 
-    const marineSnow: any[] = [];
+    const marineSnow: SnowParticle[] = [];
     for(let i=0; i<300; i++) marineSnow.push(spawnSnow());
 
     const sonars: {y: number, radius: number}[] = [];
@@ -894,8 +968,8 @@ export default function AquaFishingGame() {
                 spawnParticles(boat.x, boat.worldY - 20, '#ef4444', 30, 2.0);
                 playSound('miss');
             } else {
-                let mult = 1 + combo * 0.1;
-                let finalScore = Math.floor(hook.fish.score * mult);
+                const mult = 1 + combo * 0.1;
+                const finalScore = Math.floor(hook.fish.score * mult);
                 boatStats.coins += finalScore;
                 if (!boatStats.caught[hook.fish.type]) boatStats.caught[hook.fish.type] = 0;
                 boatStats.caught[hook.fish.type]++;
@@ -1163,7 +1237,7 @@ export default function AquaFishingGame() {
 
       // Camera
       const targetZoom = hook.y > 300 ? 0.8 : 1.0;
-      let boundedZoom = Math.max(0.4, targetZoom);
+      const boundedZoom = Math.max(0.4, targetZoom);
       zoom += (boundedZoom - zoom) * dt * 2.5;
 
       camX += (boat.x - camX) * dt * 5;
@@ -1542,12 +1616,12 @@ export default function AquaFishingGame() {
       ctx.beginPath();
       ctx.moveTo(boat.x, boat.worldY);
       
-      let hookWorldY = boat.worldY + hook.y;
+      const hookWorldY = boat.worldY + hook.y;
       if (hook.fish && hook.vy < 0) {
         ctx.lineTo(boat.x, hookWorldY);
       } else {
-        let slack = (hook.vy > 0) ? hook.vy * 0.05 : 0; 
-        let windCurve = weatherIntensity * 80 * Math.min(1, hook.y / 200);
+        const slack = hook.vy > 0 ? hook.vy * 0.05 : 0;
+        const windCurve = weatherIntensity * 80 * Math.min(1, hook.y / 200);
         ctx.quadraticCurveTo(boat.x + slack + windCurve, boat.worldY + hook.y / 2, boat.x, hookWorldY);
       }
       ctx.stroke();
@@ -2032,10 +2106,12 @@ export default function AquaFishingGame() {
                                 {/* Image area */}
                                 <div className="w-full aspect-[4/3] shrink-0 bg-slate-900 border-[6px] border-slate-700 rounded-lg overflow-hidden relative mb-4 shadow-md flex items-center justify-center p-2 box-border">
                                     <div className="w-full h-full relative overflow-hidden rounded bg-black flex items-center justify-center">
-                                        <img 
+                                        <Image
                                             src={FISH_DATABASE[selectedFish].imageUrl} 
                                             alt={getFishName(selectedFish)} 
-                                            className={`w-full h-full object-cover transition-all ${caughtData[selectedFish] ? 'opacity-90' : 'opacity-40 contrast-0 brightness-0'}`} 
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, 360px"
+                                            className={`object-cover transition-all ${caughtData[selectedFish] ? 'opacity-90' : 'opacity-40 contrast-0 brightness-0'}`}
                                         />
                                         {!caughtData[selectedFish] && <div className="absolute text-5xl font-black text-slate-700/80">?</div>}
                                         <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none"></div>
@@ -2114,10 +2190,12 @@ export default function AquaFishingGame() {
                                     <div className={`w-16 h-16 rounded-full border-2 border-slate-900 overflow-hidden shrink-0 shadow-inner flex items-center justify-center relative
                                         ${isCaught ? 'bg-slate-800' : 'bg-slate-950'}
                                     `}>
-                                        <img 
+                                        <Image
                                             src={data.imageUrl} 
                                             alt={locale === 'en' ? data.nameEn : data.name} 
-                                            className={`w-full h-full object-cover transition-all ${isCaught ? '' : 'opacity-40 contrast-0 brightness-0'}`} 
+                                            fill
+                                            sizes="64px"
+                                            className={`object-cover transition-all ${isCaught ? '' : 'opacity-40 contrast-0 brightness-0'}`}
                                         />
                                         {!isCaught && <span className="absolute text-slate-600 text-xl font-black drop-shadow-md">?</span>}
                                     </div>

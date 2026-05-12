@@ -256,7 +256,7 @@ export default function NunchiGame() {
   }, [phase, round]);
 
   if (situations.length === 0) {
-    return <main style={{ minHeight: "100vh", background: BG, fontFamily: SERIF }} />;
+    return <main style={{ minHeight: "100svh", background: BG, fontFamily: SERIF }} />;
   }
 
   const current = situations[round];
@@ -312,7 +312,7 @@ export default function NunchiGame() {
     return (
       <main
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           background: BG,
           color: FG,
           fontFamily: SERIF,
@@ -420,7 +420,7 @@ export default function NunchiGame() {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: BG,
         color: FG,
         fontFamily: SERIF,
@@ -445,7 +445,7 @@ export default function NunchiGame() {
 
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

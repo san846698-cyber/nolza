@@ -1258,7 +1258,7 @@ export default function KdramaCouplePage(): ReactElement {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: BG,
         color: INK,
         fontFamily: "var(--font-noto-serif-kr), 'Noto Sans KR', serif",
@@ -1310,7 +1310,7 @@ export default function KdramaCouplePage(): ReactElement {
       </Link>
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -1378,7 +1378,7 @@ export default function KdramaCouplePage(): ReactElement {
 }
 @keyframes kdcCreditsRoll {
   from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-100vh); }
+  to   { opacity: 0; transform: translateY(-100svh); }
 }
 .kdc-credits-out {
   animation: kdcCreditsRoll 0.7s cubic-bezier(0.65, 0, 0.35, 1) forwards;

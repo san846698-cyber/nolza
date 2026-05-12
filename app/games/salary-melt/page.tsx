@@ -91,7 +91,7 @@ export default function SalaryMelt() {
         <AdTop />
       </div>
 
-      <div className="mx-auto flex flex-col" style={{ maxWidth: 720, padding: "0 32px 80px", minHeight: "calc(100vh - 200px)" }}>
+      <div className="mx-auto flex flex-col" style={{ maxWidth: 720, padding: "0 32px 80px", minHeight: "calc(100svh - 200px)" }}>
         <h1
           className="text-center"
           style={{

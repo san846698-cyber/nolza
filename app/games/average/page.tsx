@@ -239,7 +239,7 @@ export default function AverageGame() {
         <AdTop />
       </div>
 
-      <div className="mx-auto flex max-w-xl flex-col justify-center px-6 pb-16" style={{ minHeight: "calc(100vh - 220px)" }}>
+      <div className="mx-auto flex max-w-xl flex-col justify-center px-6 pb-16" style={{ minHeight: "calc(100svh - 220px)" }}>
         <div className="text-center fade-in" key={step}>
           <div style={{ fontSize: 13, letterSpacing: "0.3em", color: "#999" }}>
             {step + 1} / {QUESTIONS.length}

@@ -1,4 +1,5 @@
 import { FISH_DATABASE } from './fishData';
+import type { FishShape } from './fishData';
 
 const RARITY_WEIGHT: Record<string, number> = {
   common: 50,
@@ -15,6 +16,30 @@ export const isBigCreature = (type: string) => {
   return !!def && BIG_CREATURE_SHAPES.has(def.shape);
 };
 export const BIG_CREATURE_TYPES = Object.keys(FISH_DATABASE).filter(k => BIG_CREATURE_SHAPES.has(FISH_DATABASE[k].shape));
+
+export type FishInstance = {
+  zone: number;
+  w: number;
+  h: number;
+  score: number;
+  color: string;
+  speed: number;
+  type: string;
+  shape: FishShape;
+  y: number;
+  baseY: number;
+  baseX: number;
+  x: number;
+  vx: number;
+  timeOffset: number;
+  amplitude: number;
+  escapeSpeed: number;
+  state: string;
+  exclamationTimer: number;
+  hasShownExclamation: boolean;
+  noticeDist: number;
+  revealedAmount?: number;
+};
 
 export const spawnFish = (zone: number, boatX: number, windowInnerWidth: number, forcedType?: string) => {
       let type: string;
@@ -55,14 +80,14 @@ export const spawnFish = (zone: number, boatX: number, windowInnerWidth: number,
       };
     };
 
-export const drawFish = (ctx: CanvasRenderingContext2D, f: any, time: number, dangerLevel: number = 0, isHooked: boolean = false, revealedAmount: number = 0) => {
+export const drawFish = (ctx: CanvasRenderingContext2D, f: FishInstance, time: number, dangerLevel: number = 0, isHooked: boolean = false, revealedAmount: number = 0) => {
       if (!isHooked && revealedAmount <= 0.01) return;
 
       const t = time * (f.speed / 50) + f.timeOffset;
       const wobbleSpeed = 10 + dangerLevel * 40;
       const tailWobble = Math.sin(t * wobbleSpeed) * (4 + dangerLevel * 6);
 
-      const drawSpecificPatterns = (ctx: CanvasRenderingContext2D, f: any, w: number, h: number) => {
+      const drawSpecificPatterns = (ctx: CanvasRenderingContext2D, f: FishInstance, w: number, h: number) => {
           ctx.save();
           ctx.clip(); // clip to main body
           

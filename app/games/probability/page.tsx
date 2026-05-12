@@ -192,7 +192,7 @@ export default function ProbabilityPage(): ReactElement {
 
   return (
     <main style={{
-      minHeight: "100vh",
+      minHeight: "100svh",
       background: BG,
       color: INK,
       fontFamily: locale === "ko" ? SANS : INTER,

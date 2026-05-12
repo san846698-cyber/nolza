@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/hooks/useLocale";
 import { LEVELS, GRID, EXIT_ROW, type Car } from "@/lib/traffic/levels";
 import { solve } from "@/lib/traffic/solver";
@@ -63,7 +63,7 @@ function computeRange(car: Car, others: Car[]): [number, number] {
 }
 
 export default function TrafficGame() {
-  const { locale, t } = useLocale();
+  const { t } = useLocale();
   const [levelIdx, setLevelIdx] = useState(0);
   const [cars, setCars] = useState<Car[]>(() => cloneCars(LEVELS[0].cars));
   const [moves, setMoves] = useState(0);
@@ -76,8 +76,14 @@ export default function TrafficGame() {
   const [copied, setCopied] = useState(false);
 
   const boardRef = useRef<HTMLDivElement>(null);
+  const carsRef = useRef<Car[]>(cars);
   const dragRef = useRef<DragState | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const [draggingCarId, setDraggingCarId] = useState<string | null>(null);
+
+  useEffect(() => {
+    carsRef.current = cars;
+  }, [cars]);
 
   function playMoveSound() {
     try {
@@ -143,7 +149,6 @@ export default function TrafficGame() {
   }
 
   const level = LEVELS[levelIdx];
-  const playerCar = cars[0];
   const isFinal = levelIdx === LEVELS.length - 1;
 
   useEffect(() => {
@@ -177,6 +182,7 @@ export default function TrafficGame() {
       origPos: car.orientation === "h" ? car.x : car.y,
       axis: car.orientation === "h" ? "x" : "y",
     };
+    setDraggingCarId(car.id);
   }
 
   function onPointerMove(e: React.PointerEvent) {
@@ -184,30 +190,32 @@ export default function TrafficGame() {
     if (!d) return;
     const cellSize = getCellSize();
     if (cellSize === 0) return;
-    const car = cars.find((c) => c.id === d.carId);
-    if (!car) return;
     const cur = d.axis === "x" ? e.clientX : e.clientY;
     const deltaCells = Math.round((cur - d.pointerStart) / cellSize);
-    const desired = d.origPos + deltaCells;
-    const [min, max] = computeRange(car, cars);
-    const clamped = Math.max(min, Math.min(max, desired));
-    const newPos = clamped;
-    const cur_axis = car.orientation === "h" ? car.x : car.y;
-    if (newPos === cur_axis) return;
-    setCars((prev) =>
-      prev.map((c) => {
+    setCars((prev) => {
+      const car = prev.find((c) => c.id === d.carId);
+      if (!car) return prev;
+      const desired = d.origPos + deltaCells;
+      const [min, max] = computeRange(car, prev);
+      const newPos = Math.max(min, Math.min(max, desired));
+      const curAxis = car.orientation === "h" ? car.x : car.y;
+      if (newPos === curAxis) return prev;
+      const next = prev.map((c) => {
         if (c.id !== d.carId) return c;
         if (c.orientation === "h") return { ...c, x: newPos };
         return { ...c, y: newPos };
-      }),
-    );
+      });
+      carsRef.current = next;
+      return next;
+    });
   }
 
   function onPointerUp() {
     const d = dragRef.current;
     if (!d) return;
     dragRef.current = null;
-    const car = cars.find((c) => c.id === d.carId);
+    setDraggingCarId(null);
+    const car = carsRef.current.find((c) => c.id === d.carId);
     if (!car) return;
     const finalPos = car.orientation === "h" ? car.x : car.y;
     if (finalPos !== d.origPos) {
@@ -283,10 +291,6 @@ export default function TrafficGame() {
     } catch {}
   }
 
-  const cellSizePx = boardRef.current?.getBoundingClientRect().width
-    ? boardRef.current.getBoundingClientRect().width / GRID
-    : 0;
-
   // Force re-render on resize so cars re-position.
   const [, setResizeTick] = useState(0);
   useEffect(() => {
@@ -345,6 +349,7 @@ export default function TrafficGame() {
                   data-player={isPlayer}
                   data-orient={car.orientation}
                   data-exiting={isPlayer && exiting}
+                  data-dragging={draggingCarId === car.id}
                   style={{
                     left: `calc(${xPos} * 100% / ${GRID} + 3px)`,
                     top: `calc(${car.y} * 100% / ${GRID} + 3px)`,

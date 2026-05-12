@@ -14,7 +14,7 @@
   --ast-cyan: #5DD9FF;
   background: var(--ast-bg);
   color: var(--ast-ink);
-  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
 }
@@ -532,7 +532,7 @@
   right: 16px;
   width: 400px;
   max-width: calc(100% - 32px);
-  max-height: calc(100vh - 120px);
+  max-height: calc(100svh - 120px);
   overflow-y: auto;
   background: rgba(11, 15, 26, 0.94);
   border: 1px solid var(--ast-line-strong);

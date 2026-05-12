@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
-import { GAMES, T, type CatId } from "@/lib/games-home";
+import { GAMES, type CatId } from "@/lib/games-home";
 
 const SECTION_NO: Record<CatId, string> = {
   play: "01",
@@ -50,13 +50,11 @@ export default function GamesLayout({
 
   if (isNoChrome) {
     return (
-      <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100vh" }}>
+      <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
         {children}
       </div>
     );
   }
-  const tx = T[locale];
-
   const fallbackTitle = id
     ? id
         .split("-")
@@ -84,7 +82,7 @@ export default function GamesLayout({
       fontFamily: "var(--font-inter), sans-serif",
     };
     return (
-      <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100vh" }}>
+      <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
         <Link
           href="/"
           aria-label={locale === "ko" ? "모든 놀이로" : "All plays"}
@@ -127,7 +125,7 @@ export default function GamesLayout({
   return (
     <div
       data-game-shell={isDark ? "dark" : "light"}
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "100svh" }}
     >
       <header className="game-shell-bar">
         <div className="game-shell-bar__inner">

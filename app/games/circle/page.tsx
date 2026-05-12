@@ -210,7 +210,7 @@ export default function CircleGame() {
         <AdTop />
       </div>
 
-      <div className="mx-auto flex max-w-3xl flex-col items-center justify-center px-5 pb-12 md:px-8" style={{ minHeight: "calc(100vh - 200px)" }}>
+      <div className="mx-auto flex max-w-3xl flex-col items-center justify-center px-5 pb-12 md:px-8" style={{ minHeight: "calc(100svh - 200px)" }}>
         <h1
           className="text-center"
           style={{ fontSize: 22, fontWeight: 300, letterSpacing: "0.1em", color: "#888" }}

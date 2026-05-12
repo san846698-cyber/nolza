@@ -20,7 +20,7 @@ export default function BattleWhatIfHub() {
     <main
       className="page-in"
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         backgroundColor: BG,
         color: FG,
         fontFamily: SERIF,

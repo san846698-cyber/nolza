@@ -156,7 +156,7 @@ export default function JoseonCouplePage(): ReactElement {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: HANJI,
         color: INK,
         fontFamily: SERIF,
@@ -199,7 +199,7 @@ export default function JoseonCouplePage(): ReactElement {
       </Link>
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

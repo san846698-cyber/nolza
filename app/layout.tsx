@@ -73,8 +73,26 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://nolza.fun",
   ),
-  title: "놀자.fun",
-  description: "놀자.fun — 인터랙티브 게임 모음",
+  title: {
+    default: "nolza.fun",
+    template: "%s | nolza.fun",
+  },
+  description: "nolza.fun - 짧고 재미있는 인터랙티브 웹게임 모음",
+  openGraph: {
+    title: "nolza.fun",
+    description: "짧고 재미있는 인터랙티브 웹게임 모음",
+    url: "/",
+    siteName: "nolza.fun",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "nolza.fun",
+    description: "짧고 재미있는 인터랙티브 웹게임 모음",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default function RootLayout({

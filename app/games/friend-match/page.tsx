@@ -215,7 +215,7 @@ function FriendMatchInner() {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: C.bg,
         color: C.ink,
         fontFamily: FONT_SANS,

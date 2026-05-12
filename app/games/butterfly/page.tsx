@@ -266,7 +266,7 @@ export default function ButterflyGame() {
       {/* Visual scene */}
       <div
         className="relative w-full overflow-hidden"
-        style={{ height: "70vh", minHeight: 480 }}
+        style={{ height: "clamp(320px, 58svh, 640px)", minHeight: 0 }}
       >
         {/* Lightning flash */}
         {showLightning && <div className="butterfly-lightning" />}

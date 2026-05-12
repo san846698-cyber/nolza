@@ -190,7 +190,7 @@ export default function ResonanceGame() {
       {/* Canvas */}
       <div
         className={`relative w-full ${resonating ? "resonance-active" : ""}`}
-        style={{ height: "55vh", minHeight: 360 }}
+        style={{ height: "clamp(280px, 50svh, 560px)", minHeight: 0 }}
       >
         <canvas
           ref={canvasRef}

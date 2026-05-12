@@ -11,6 +11,20 @@
 
 html, body {
   -webkit-font-smoothing: antialiased;
+  min-height: 100%;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Mobile browsers include dynamic browser chrome in legacy 100vh. Tailwind's
+   screen-height utilities are used across nearly every game, so normalize them
+   once instead of chasing each route. */
+@supports (min-height: 100svh) {
+  .min-h-screen { min-height: 100svh; }
+  .h-screen { height: 100svh; }
+}
+@supports (min-height: 100dvh) {
+  [data-game-shell] { min-height: 100dvh !important; }
 }
 
 .aqua-game-root {
@@ -47,6 +61,20 @@ html, body {
    position: sticky on the game shell keeps working. */
 body {
   overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+/* Battle-What-If (Crossroads of War) typography: raise baseline readability.
+   `zoom` scales inline px-based styles used by these game UIs. */
+.bwif-root {
+  zoom: 1.15;
+}
+@supports not (zoom: 1) {
+  .bwif-root {
+    transform: scale(1.15);
+    transform-origin: top center;
+    width: calc(100% / 1.15);
+  }
 }
 
 /* ==========================================================================
@@ -69,10 +97,30 @@ body {
    devices. Skip when the element has its own size class (h-*, w-*, size-*)
    by relying on min-* which Tailwind utilities can still override. */
 @media (hover: none) and (pointer: coarse) {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    overscroll-behavior-y: contain;
+  }
   button:not(:disabled),
   a[role="button"],
   [role="button"] {
     min-height: 40px;
+    touch-action: manipulation;
+  }
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  canvas {
+    touch-action: manipulation;
+  }
+  canvas[data-touch-action="none"],
+  .touch-none,
+  .aqua-game-root canvas {
+    touch-action: none;
   }
 }
 

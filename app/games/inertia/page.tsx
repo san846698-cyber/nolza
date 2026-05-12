@@ -260,7 +260,11 @@ export default function InertiaGame() {
       {/* Canvas */}
       <div
         className="relative w-full"
-        style={{ height: "70vh", minHeight: 480, marginTop: 56 }}
+        style={{
+          height: "clamp(320px, 62svh, 640px)",
+          minHeight: 0,
+          marginTop: 56,
+        }}
       >
         <canvas
           ref={canvasRef}

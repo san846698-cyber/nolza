@@ -1171,7 +1171,7 @@ export default function TimelinePage(): ReactElement {
     <main
       style={{
         position: "relative",
-        minHeight: "100vh",
+        minHeight: "100svh",
         color: "#f5f5f5",
         fontFamily: locale === "ko" ? KSANS : INTER,
         overflowX: "hidden",
@@ -1495,7 +1495,7 @@ function Hero({
       style={{
         position: "relative",
         zIndex: 1,
-        minHeight: "100vh",
+        minHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

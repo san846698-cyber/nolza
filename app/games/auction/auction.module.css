@@ -14,7 +14,7 @@
   --auc-line-strong: rgba(43, 31, 18, 0.42);
   background: var(--auc-bg);
   color: var(--auc-ink);
-  min-height: 100vh;
+  min-height: 100svh;
   padding-bottom: 6rem;
 }
 

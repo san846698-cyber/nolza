@@ -143,7 +143,7 @@ export default function KbtiPage(): ReactElement {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: BG,
         color: INK,
         fontFamily: SANS,
@@ -178,7 +178,7 @@ export default function KbtiPage(): ReactElement {
 
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

@@ -172,11 +172,13 @@ export default function ScaleGame() {
     <main
       style={{
         position: "relative",
-        height: "calc(100vh - 72px)",
+        height: "calc(100svh - clamp(64px, 8vw, 72px))",
+        minHeight: "min(520px, calc(100svh - 64px))",
         background: "#faf6e8",
         color: "#2a2620",
         fontFamily: "var(--font-noto-serif-kr), serif",
         overflow: "hidden",
+        touchAction: "pan-y",
       }}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}

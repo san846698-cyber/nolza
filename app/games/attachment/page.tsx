@@ -243,7 +243,7 @@ export default function AttachmentPage(): ReactElement {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: pageBg,
         color: INK,
         fontFamily: SERIF,
@@ -290,7 +290,7 @@ export default function AttachmentPage(): ReactElement {
       ) : (
         <div
           style={{
-            minHeight: "100vh",
+            minHeight: "100svh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -533,7 +533,7 @@ export default function AttachmentPage(): ReactElement {
 
 /* Quiz layout — top bar + space-around body + side rail */
 .att-quiz-shell {
-  min-height: 100vh;
+  min-height: 100svh;
   min-height: 100svh;
   position: relative;
   overflow: hidden;

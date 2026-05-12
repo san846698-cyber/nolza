@@ -967,7 +967,7 @@ export default function SajuPage(): ReactElement {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: BG,
         color: INK,
         fontFamily: "var(--font-noto-serif-kr), 'Noto Sans KR', serif",
@@ -1035,7 +1035,7 @@ export default function SajuPage(): ReactElement {
 
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "100svh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
