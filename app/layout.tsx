@@ -10,6 +10,7 @@ import {
   Press_Start_2P,
 } from "next/font/google";
 import "./globals.css";
+import { AdSideRails } from "./components/Ads";
 import LocaleToggle from "./components/LocaleToggle";
 
 const notoSans = Noto_Sans_KR({
@@ -125,6 +126,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <LocaleToggle />
         {children}
+        <AdSideRails />
       </body>
     </html>
   );

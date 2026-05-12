@@ -11,10 +11,12 @@ import { useEffect } from "react";
  *   NEXT_PUBLIC_ADSENSE_SLOT_MOBILE
  * 미설정 상태에서는 컴포넌트가 null을 반환하여 회색 placeholder가 보이지 않음.
  */
-const CLIENT_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "";
+const CLIENT_ID =
+  process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "ca-pub-3027162336323004";
 const SLOT_TOP = process.env.NEXT_PUBLIC_ADSENSE_SLOT_TOP ?? "";
 const SLOT_BOTTOM = process.env.NEXT_PUBLIC_ADSENSE_SLOT_BOTTOM ?? "";
 const SLOT_MOBILE = process.env.NEXT_PUBLIC_ADSENSE_SLOT_MOBILE ?? "";
+const SLOT_SIDE = process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDE ?? "8829770332";
 
 declare global {
   interface Window {
@@ -41,9 +43,9 @@ export const HAS_REAL_ADS =
 /* 728×90 leaderboard — 게임 UI 상단 */
 export function AdTop() {
   useEffect(() => {
-    if (HAS_REAL_ADS) pushAd();
+    if (HAS_REAL_ADS && SLOT_TOP) pushAd();
   }, []);
-  if (!HAS_REAL_ADS) return null;
+  if (!HAS_REAL_ADS || !SLOT_TOP) return null;
   return (
     <div
       style={{
@@ -70,9 +72,9 @@ export function AdTop() {
 /* 336×280 rectangle — 게임 UI 하단 (결과/공유 아래) */
 export function AdBottom() {
   useEffect(() => {
-    if (HAS_REAL_ADS) pushAd();
+    if (HAS_REAL_ADS && SLOT_BOTTOM) pushAd();
   }, []);
-  if (!HAS_REAL_ADS) return null;
+  if (!HAS_REAL_ADS || !SLOT_BOTTOM) return null;
   return (
     <div
       style={{
@@ -99,9 +101,9 @@ export function AdBottom() {
 /* 320×50 mobile sticky — 화면 하단 고정 (모바일에서만) */
 export function AdMobileSticky() {
   useEffect(() => {
-    if (HAS_REAL_ADS) pushAd();
+    if (HAS_REAL_ADS && SLOT_MOBILE) pushAd();
   }, []);
-  if (!HAS_REAL_ADS) return null;
+  if (!HAS_REAL_ADS || !SLOT_MOBILE) return null;
   return (
     <div
       className="ad-mobile-sticky flex md:hidden items-center justify-center"
@@ -122,6 +124,40 @@ export function AdMobileSticky() {
         data-ad-client={CLIENT_ID}
         data-ad-slot={SLOT_MOBILE}
       />
+    </div>
+  );
+}
+
+export function AdSideRails() {
+  useEffect(() => {
+    if (!HAS_REAL_ADS || !SLOT_SIDE) return;
+    pushAd();
+    pushAd();
+  }, []);
+  if (!HAS_REAL_ADS || !SLOT_SIDE) return null;
+
+  return (
+    <div className="ad-side-rails">
+      <aside className="ad-side-rail ad-side-rail--left">
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block", width: 160, minHeight: 600 }}
+          data-ad-client={CLIENT_ID}
+          data-ad-slot={SLOT_SIDE}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+      </aside>
+      <aside className="ad-side-rail ad-side-rail--right">
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block", width: 160, minHeight: 600 }}
+          data-ad-client={CLIENT_ID}
+          data-ad-slot={SLOT_SIDE}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+      </aside>
     </div>
   );
 }

@@ -670,6 +670,31 @@ img {
   }
 }
 
+.ad-side-rails {
+  display: none;
+}
+@media (min-width: 1760px) and (min-height: 760px) {
+  .ad-side-rails {
+    display: block;
+  }
+  .ad-side-rail {
+    position: fixed;
+    top: 50%;
+    z-index: 30;
+    width: 160px;
+    min-height: 600px;
+    transform: translateY(-50%);
+    overflow: hidden;
+    background: transparent;
+  }
+  .ad-side-rail--left {
+    left: 24px;
+  }
+  .ad-side-rail--right {
+    right: 24px;
+  }
+}
+
 /* === Butterfly: rain, storm, fade ins === */
 @keyframes butterflyRain {
   from { transform: translateY(-20vh); opacity: 0; }
