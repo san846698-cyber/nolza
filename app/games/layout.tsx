@@ -28,7 +28,7 @@ const DARK_GAME_IDS = new Set([
 
 // Games that hide the full header and show only a floating back button.
 // (Games here either render their own topbar, or want full-bleed canvas.)
-const MINIMAL_HEADER_GAME_IDS = new Set(["aqua-fishing", "traffic", "friend-match"]);
+const MINIMAL_HEADER_GAME_IDS = new Set(["aqua-fishing", "traffic", "friend-match", "react"]);
 
 // Games that render a fully bespoke header (back + locale toggle) themselves —
 // the shared layout chrome is suppressed entirely so we don't show a duplicate header.

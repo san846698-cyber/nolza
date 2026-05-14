@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+import { AdMobileSticky } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
 
 type T = (ko: string, en: string) => string;
@@ -358,7 +358,6 @@ function validateTree(): boolean {
   QUESTIONS.forEach((q) => {
     q.options.forEach((o) => {
       if (o.next && !ids.has(o.next)) {
-        // eslint-disable-next-line no-console
         console.error(
           `[ahmolla] broken option link: ${q.id}["${o.text}"] → ${o.next}`,
         );
@@ -366,32 +365,22 @@ function validateTree(): boolean {
       }
     });
     if (q.fixedNext && !ids.has(q.fixedNext)) {
-      // eslint-disable-next-line no-console
       console.error(`[ahmolla] broken fixedNext: ${q.id} → ${q.fixedNext}`);
       broken++;
     }
   });
-  if (broken === 0) {
-    // eslint-disable-next-line no-console
-    console.log(
-      `[ahmolla] ✓ tree valid · ${QUESTIONS.length} questions (${QUESTIONS.filter((q) => q.tier === "branch").length} branch / ${QUESTIONS.filter((q) => q.tier === "linked").length} linked / ${QUESTIONS.filter((q) => q.tier === "mid").length} mid / ${QUESTIONS.filter((q) => q.tier === "late").length} late / ${QUESTIONS.filter((q) => q.tier === "chaos").length} chaos)`,
-    );
-  } else {
-    // eslint-disable-next-line no-console
+  if (broken > 0) {
     console.error(`[ahmolla] ✗ ${broken} broken link(s)`);
   }
   return broken === 0;
 }
 
 function debugDumpTree(): void {
-  // eslint-disable-next-line no-console
   console.log(`[ahmolla] tree dump (?debug to enable):`);
   QUESTIONS.forEach((q) => {
-    // eslint-disable-next-line no-console
     console.log(`  ${q.id} [${q.tier}]: ${q.q}`);
     q.options.forEach((o, i) => {
       const target = o.next ?? q.fixedNext ?? "→ random tier pool";
-      // eslint-disable-next-line no-console
       console.log(`    [${i}] "${o.text}" → ${target}`);
     });
   });

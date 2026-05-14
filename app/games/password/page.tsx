@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useEffect,
   useLayoutEffect,
@@ -9,6 +8,8 @@ import {
   useState,
 } from "react";
 import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+import GameIntro from "../../components/game/GameIntro";
+import ResultScreen from "../../components/game/ResultScreen";
 import { useLocale } from "@/hooks/useLocale";
 
 type T = (ko: string, en: string) => string;
@@ -219,14 +220,43 @@ const RULES: Rule[] = [
 
 const EMOJI_RULE = 7, ROMAN_RULE = 10, HANJA_RULE = 11;
 
+type PasswordMode = "light" | "hard";
+
+function passwordMood({
+  passed,
+  revealed,
+  total,
+  won,
+  t,
+}: {
+  passed: number;
+  revealed: number;
+  total: number;
+  won: boolean;
+  t: T;
+}) {
+  if (won) return t("컴파일 성공. 이 비밀번호는 이제 거의 문화재입니다.", "Compiled successfully. This password is basically a cultural artifact.");
+  if (revealed <= 3) return t("아직은 사람용 비밀번호입니다. 방심하지 마세요.", "Still human-readable. Do not relax.");
+  if (passed < Math.ceil(revealed * 0.55)) return t("비밀번호가 면접에서 탈락 직전입니다.", "Your password is about to fail the interview.");
+  if (revealed >= total - 2) return t("거의 다 왔습니다. 이제 손가락이 제일 위험합니다.", "Almost there. Your fingers are now the biggest risk.");
+  if (revealed >= 20) return t("보안팀도 울고, 사용자도 울고 있습니다.", "Security is crying. The user is also crying.");
+  if (revealed >= 10) return t("이쯤 되면 비밀번호가 아니라 수행평가입니다.", "At this point this is homework, not a password.");
+  return t("좋습니다. 아직 멘탈이 살아 있습니다.", "Good. Your morale is still alive.");
+}
+
+function seededUnit(seed: number): number {
+  const x = Math.sin(seed * 9301 + 49297) * 233280;
+  return x - Math.floor(x);
+}
+
 function Confetti() {
   const pieces = useMemo(
     () => Array.from({ length: 100 }).map((_, i) => ({
-      left: Math.random() * 100,
-      delay: Math.random() * 1.5,
-      duration: 2.6 + Math.random() * 2.4,
+      left: seededUnit(i + 1) * 100,
+      delay: seededUnit(i + 101) * 1.5,
+      duration: 2.6 + seededUnit(i + 201) * 2.4,
       color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-      size: 5 + Math.random() * 7,
+      size: 5 + seededUnit(i + 301) * 7,
     })),
     [],
   );
@@ -282,11 +312,13 @@ function Palette({ items, dimmed, onSelect }: {
 }
 
 export default function PasswordGame() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const [mode, setMode] = useState<PasswordMode | null>(null);
   const [pw, setPw] = useState("");
   const [revealed, setRevealed] = useState(1);
   const [seoulTemp, setSeoulTemp] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
+  const [showResult, setShowResult] = useState(false);
   const [currentMinute, setCurrentMinute] = useState(() => new Date().getMinutes());
   const [minLengthBoost, setMinLengthBoost] = useState(0);
   const [demonLog, setDemonLog] = useState<string | null>(null);
@@ -373,12 +405,16 @@ export default function PasswordGame() {
     [currentMonth, currentMinute, seoulTemp, weekdayKo, weekdayEn, minLengthBoost, pw, t],
   );
 
+  const activeRuleCount = mode === "light" ? 10 : RULES.length;
+  const activeRules = useMemo(() => RULES.slice(0, activeRuleCount), [activeRuleCount]);
+
   useEffect(() => {
-    if (revealed >= RULES.length) return;
+    if (!mode) return;
+    if (revealed >= activeRuleCount) return;
     if (RULES[revealed - 1].test(pw, ctx)) {
-      setRevealed((r) => Math.min(r + 1, RULES.length));
+      setRevealed((r) => Math.min(r + 1, activeRuleCount));
     }
-  }, [pw, revealed, ctx]);
+  }, [pw, revealed, ctx, mode, activeRuleCount]);
 
   useLayoutEffect(() => {
     if (pendingCursor.current !== null && taRef.current) {
@@ -399,9 +435,27 @@ export default function PasswordGame() {
     setPw(newValue);
   };
 
-  const visible = RULES.slice(0, revealed);
+  const visible = activeRules.slice(0, revealed);
   const passed = visible.filter((r) => r.test(pw, ctx)).length;
-  const won = revealed === RULES.length && passed === visible.length;
+  const blockingRule = visible.find((r) => !r.test(pw, ctx)) ?? null;
+  const nextRule = revealed < activeRuleCount ? activeRules[revealed] : null;
+  const won = revealed === activeRuleCount && passed === visible.length;
+  const progressPct = Math.round((passed / activeRuleCount) * 100);
+  const modeLabel = mode === "light" ? t("라이트 모드", "Light Mode") : t("하드 모드", "Hard Mode");
+  const mood = passwordMood({ passed, revealed, total: activeRuleCount, won, t });
+
+  const startMode = (nextMode: PasswordMode) => {
+    setMode(nextMode);
+    setPw("");
+    setRevealed(1);
+    setCopied(false);
+    setShowResult(false);
+    setMinLengthBoost(0);
+    setDemonLog(null);
+    window.setTimeout(() => taRef.current?.focus(), 80);
+  };
+
+  const restart = () => startMode(mode ?? "hard");
 
   const handleShare = async () => {
     const origin =
@@ -409,12 +463,12 @@ export default function PasswordGame() {
     const url = `${origin}/games/password`;
     const text = won
       ? t(
-          `놀자.fun 비밀번호 게임 깨버림! ${RULES.length}개 규칙 다 통과 ${Array.from(pw).length}자\n${url}`,
-          `Beat the nolza.fun password game! All ${RULES.length} rules, ${Array.from(pw).length} chars\n${url}`,
+          `놀자.fun 비밀번호 게임 ${modeLabel} 클리어! ${activeRuleCount}개 규칙 다 통과 ${Array.from(pw).length}자\n${url}`,
+          `Beat nolza.fun password game ${modeLabel}! All ${activeRuleCount} rules, ${Array.from(pw).length} chars\n${url}`,
         )
       : t(
-          `놀자.fun 비밀번호 게임 도전 중 — ${passed}/${revealed} 통과. 너도 해봐\n${url}`,
-          `Stuck on the nolza.fun password game — ${passed}/${revealed} rules. Your turn\n${url}`,
+          `놀자.fun 비밀번호 게임 ${modeLabel} 도전 중 — ${passed}/${activeRuleCount} 통과. 너도 해봐\n${url}`,
+          `Stuck on nolza.fun password game ${modeLabel} — ${passed}/${activeRuleCount} rules. Your turn\n${url}`,
         );
     try {
       if (
@@ -429,12 +483,12 @@ export default function PasswordGame() {
           title: t("놀자.fun 비밀번호 게임", "nolza.fun password game"),
           text: won
             ? t(
-                `${RULES.length}개 규칙 다 통과! ${Array.from(pw).length}자`,
-                `All ${RULES.length} rules · ${Array.from(pw).length} chars`,
+                `${activeRuleCount}개 규칙 다 통과! ${Array.from(pw).length}자`,
+                `All ${activeRuleCount} rules · ${Array.from(pw).length} chars`,
               )
             : t(
-                `${passed}/${revealed} 통과 — 너도 해봐`,
-                `${passed}/${revealed} rules · your turn`,
+                `${passed}/${activeRuleCount} 통과 — 너도 해봐`,
+                `${passed}/${activeRuleCount} rules · your turn`,
               ),
           url,
         });
@@ -450,6 +504,34 @@ export default function PasswordGame() {
   const showRoman = revealed >= ROMAN_RULE + 1;
   const showHanja = revealed >= HANJA_RULE + 1;
 
+  if (!mode) {
+    return (
+      <main
+        className="min-h-screen page-in flex items-center justify-center px-5 py-16"
+        style={{ backgroundColor: "#0d1117", color: "#c9d1d9" }}
+      >
+        <GameIntro
+          eyebrow={t("CHALLENGE · 조건의 미로", "CHALLENGE · RULE MAZE")}
+          title={t("한국판 비밀번호 게임", "Korean Password Game")}
+          hook={t("규칙을 하나씩 통과할수록 비밀번호가 점점 이상해집니다.", "Your password gets weirder with every rule you pass.")}
+          howTo={t("가볍게 맛보려면 10규칙, 진짜 고통을 원하면 30규칙으로 가세요.", "Try 10 rules for a quick run, or 30 rules for the full beautiful pain.")}
+          meta={[t("라이트 10규칙", "Light 10 rules"), t("하드 30규칙", "Hard 30 rules"), t("중간 결과 공유", "Share progress")]}
+          tone="dark"
+        >
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 24 }}>
+            <button type="button" className="game-intro__start btn-press" style={{ marginTop: 0 }} onClick={() => startMode("light")}>
+              {t("라이트 모드", "Light Mode")}
+            </button>
+            <button type="button" className="game-intro__start btn-press" style={{ marginTop: 0, background: "#00ff88", color: "#0d1117" }} onClick={() => startMode("hard")}>
+              {t("하드 모드", "Hard Mode")}
+            </button>
+          </div>
+        </GameIntro>
+        <AdMobileSticky />
+      </main>
+    );
+  }
+
   return (
     <main
       className="min-h-screen page-in"
@@ -459,9 +541,6 @@ export default function PasswordGame() {
         fontFamily: "var(--font-jetbrains)",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home" style={{ color: "#8b949e" }}>
-        ←
-      </Link>
       {won && <Confetti />}
 
       <div className="mx-auto max-w-5xl px-5 pt-16 md:px-8">
@@ -494,7 +573,7 @@ export default function PasswordGame() {
                   letterSpacing: "0.05em",
                 }}
               >
-                ~/password ▸ input
+                ~/password ▸ {mode === "light" ? "light" : "hard"} ▸ input
               </div>
               <textarea
                 ref={taRef}
@@ -503,22 +582,119 @@ export default function PasswordGame() {
                 rows={3}
                 spellCheck={false}
                 autoComplete="off"
+                autoCapitalize="off"
+                autoCorrect="off"
                 placeholder={t("비밀번호를 입력하세요...", "Enter a password...")}
                 className="w-full resize-none outline-none"
                 style={{
                   background: "transparent",
                   border: "none",
                   color: "#00ff88",
-                  fontSize: 18,
+                  fontSize: "clamp(16px, 4.8vw, 18px)",
                   fontFamily: "var(--font-jetbrains)",
                   caretColor: "#00ff88",
+                  lineHeight: 1.6,
+                  minHeight: 96,
                 }}
               />
               <div
                 style={{ fontSize: 13, color: "#484f58", marginTop: 6 }}
               >
-                {Array.from(pw).length} {t("자", "chars")} · {passed}/{RULES.length} {t("통과", "passed")}
+                {Array.from(pw).length} {t("자", "chars")} · {passed}/{activeRuleCount} {t("통과", "passed")}
               </div>
+              <div
+                aria-label={t("진행률", "Progress")}
+                style={{
+                  marginTop: 10,
+                  height: 8,
+                  borderRadius: 999,
+                  overflow: "hidden",
+                  background: "#161b22",
+                  border: "1px solid #30363d",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${progressPct}%`,
+                    height: "100%",
+                    background: won ? "#00ff88" : "#3fb950",
+                    transition: "width 180ms ease",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  marginTop: 10,
+                  color: won ? "#00ff88" : "#7d8590",
+                  fontSize: 13,
+                  lineHeight: 1.5,
+                }}
+              >
+                {mood}
+              </div>
+              {blockingRule && (
+                <div
+                  style={{
+                    marginTop: 12,
+                    border: "1px solid rgba(248,81,73,0.35)",
+                    borderRadius: 8,
+                    background: "rgba(248,81,73,0.08)",
+                    padding: "10px 12px",
+                    color: "#ff9b9b",
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                    wordBreak: "keep-all",
+                  }}
+                >
+                  <strong style={{ display: "block", marginBottom: 4, color: "#f85149" }}>
+                    {t("지금 막힌 규칙", "Current blocker")}
+                  </strong>
+                  [{String(blockingRule.id).padStart(2, "0")}] {blockingRule.title(ctx)}
+                </div>
+              )}
+              {!blockingRule && nextRule && (
+                <div
+                  style={{
+                    marginTop: 12,
+                    border: "1px solid rgba(63,185,80,0.28)",
+                    borderRadius: 8,
+                    background: "rgba(63,185,80,0.08)",
+                    padding: "10px 12px",
+                    color: "#9be9a8",
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                    wordBreak: "keep-all",
+                  }}
+                >
+                  <strong style={{ display: "block", marginBottom: 4, color: "#3fb950" }}>
+                    {t("다음에 열릴 규칙", "Next rule")}
+                  </strong>
+                  [{String(nextRule.id).padStart(2, "0")}] {nextRule.title(ctx)}
+                </div>
+              )}
+              {!won && revealed >= 5 && (
+                <button
+                  type="button"
+                  onClick={() => setShowResult(true)}
+                  className="btn-press"
+                  style={{
+                    width: "100%",
+                    minHeight: 44,
+                    marginTop: 12,
+                    border: "1px solid #3fb950",
+                    borderRadius: 8,
+                    background: "rgba(63,185,80,0.08)",
+                    color: "#00ff88",
+                    fontFamily: "inherit",
+                    fontSize: 13,
+                    fontWeight: 800,
+                    letterSpacing: "0.04em",
+                    cursor: "pointer",
+                  }}
+                >
+                  {t("여기까지 온 거 공유하기", "Share this progress")}
+                </button>
+              )}
               {demonLog && (
                 <div
                   style={{
@@ -578,7 +754,7 @@ export default function PasswordGame() {
                 }}
               >
                 <span>
-                  ✓ {t(`모든 ${RULES.length}개 규칙 통과 · 비밀번호 완성!`, `ALL ${RULES.length} RULES PASSED · COMPILED SUCCESSFULLY`)}
+                  ✓ {t(`모든 ${activeRuleCount}개 규칙 통과 · 비밀번호 완성!`, `ALL ${activeRuleCount} RULES PASSED · COMPILED SUCCESSFULLY`)}
                 </span>
                 <button
                   onClick={handleShare}
@@ -607,6 +783,50 @@ export default function PasswordGame() {
                 </button>
               </div>
             )}
+
+            {(showResult || won) && (
+              <ResultScreen
+                locale={locale}
+                currentGameId="password"
+                eyebrow={modeLabel}
+                title={
+                  won
+                    ? t("비밀번호 문화재 등재", "Password Artifact Unlocked")
+                    : t("여기까지 온 것도 기록입니다", "This Progress Counts")
+                }
+                score={`${passed}/${activeRuleCount}`}
+                scoreLabel={t("규칙", "rules")}
+                description={
+                  won
+                    ? t("이 정도면 로그인보다 입국심사가 빠를 수 있습니다.", "At this point immigration may be faster than logging in.")
+                    : mood
+                }
+                details={[
+                  t(`현재 글자 수: ${Array.from(pw).length}자`, `Current length: ${Array.from(pw).length} chars`),
+                  t(`열린 규칙: ${revealed}개`, `Rules revealed: ${revealed}`),
+                  won
+                    ? t("모든 조건을 통과했습니다. 이제 기억하는 일이 남았습니다.", "All rules passed. Now you only need to remember it.")
+                    : t("막히면 라이트 모드로 감을 잡고 다시 하드로 돌아오세요.", "If stuck, warm up in Light Mode and return to Hard."),
+                ]}
+                shareTitle={t("한국판 비밀번호 게임 결과", "Korean Password Game result")}
+                shareText={
+                  won
+                    ? t(
+                        `나는 한국판 비밀번호 게임 ${modeLabel}에서 ${activeRuleCount}개 규칙을 통과했다. 비밀번호가 이제 거의 작품이다.`,
+                        `I beat ${activeRuleCount} rules in ${modeLabel}. My password is basically art.`,
+                      )
+                    : t(
+                        `나는 한국판 비밀번호 게임 ${modeLabel}에서 ${passed}/${activeRuleCount} 규칙까지 갔다. 여기부터 사람이 흔들립니다.`,
+                        `I reached ${passed}/${activeRuleCount} rules in ${modeLabel}. This is where humans start shaking.`,
+                      )
+                }
+                shareUrl="/games/password"
+                onReplay={restart}
+                replayLabel={t("처음부터 다시", "Restart")}
+                recommendedIds={["kbti", "react", "circle"]}
+                tone="dark"
+              />
+            )}
           </section>
 
           <aside>
@@ -627,11 +847,11 @@ export default function PasswordGame() {
                 <span style={{ color: "#3fb950" }}>{passed}</span>
                 <span style={{ color: "#30363d" }}>/</span>
                 <span style={{ color: "#7d8590" }}>{revealed}</span>
-                <span style={{ color: "#30363d" }}> · {RULES.length}</span>
+                <span style={{ color: "#30363d" }}> · {activeRuleCount}</span>
               </span>
               {!won && revealed >= 5 && (
                 <button
-                  onClick={handleShare}
+                  onClick={() => setShowResult(true)}
                   title={t("공유하기", "Share")}
                   style={{
                     padding: "3px 10px",
@@ -654,7 +874,7 @@ export default function PasswordGame() {
                     e.currentTarget.style.color = "#7d8590";
                   }}
                 >
-                  {copied ? t("복사됨", "copied") : t("공유", "share")}
+                  {t("중간 결과", "result")}
                 </button>
               )}
             </div>

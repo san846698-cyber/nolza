@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Game, Skin } from "@/lib/games-home";
 import ScaleMotif from "./motifs/Scale";
 import AuctionMotif from "./motifs/Auction";
@@ -18,10 +19,12 @@ const REGISTRY: Record<string, React.FC<{ skin: Skin }>> = {
 export default function Thumb({ game, skin }: { game: Game; skin: Skin }) {
   if (game.thumb) {
     return (
-      <img
+      <Image
         src={game.thumb}
         alt=""
-        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        fill
+        sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 220px"
+        style={{ objectFit: "cover" }}
       />
     );
   }

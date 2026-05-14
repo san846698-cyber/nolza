@@ -43,11 +43,11 @@ export default function BattleWhatIfHub() {
         ←
       </Link>
 
-      <div className="mx-auto" style={{ maxWidth: 760, padding: "96px 24px 96px" }}>
+      <div className="mx-auto" style={{ maxWidth: 820, padding: "96px 24px 96px" }}>
         <div className="text-center">
           <div
             style={{
-              fontSize: 13,
+              fontSize: 15,
               color: ACCENT,
               letterSpacing: "0.24em",
               textTransform: "uppercase",
@@ -59,10 +59,10 @@ export default function BattleWhatIfHub() {
           <h1
             style={{
               marginTop: 22,
-              fontSize: 36,
+              fontSize: "clamp(38px, 8vw, 52px)",
               fontWeight: 600,
-              lineHeight: 1.3,
-              letterSpacing: "-0.5px",
+              lineHeight: 1.18,
+              letterSpacing: 0,
             }}
           >
             {t("당신이 지휘관이라면", "If you were the commander")}
@@ -70,11 +70,11 @@ export default function BattleWhatIfHub() {
           <p
             style={{
               marginTop: 22,
-              fontSize: 17,
+              fontSize: "clamp(18px, 4.5vw, 21px)",
               color: DIM,
-              lineHeight: 1.85,
-              letterSpacing: "-0.1px",
-              maxWidth: 560,
+              lineHeight: 1.8,
+              letterSpacing: 0,
+              maxWidth: 660,
               margin: "22px auto 0",
             }}
           >
@@ -89,8 +89,8 @@ export default function BattleWhatIfHub() {
           style={{
             marginTop: 56,
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: 16,
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 18,
           }}
         >
           {BATTLE_ENTRIES.map((entry) => (
@@ -101,7 +101,7 @@ export default function BattleWhatIfHub() {
         <p
           style={{
             marginTop: 64,
-            fontSize: 13,
+            fontSize: 15,
             color: DIM,
             lineHeight: 1.9,
             letterSpacing: "0.02em",
@@ -146,7 +146,7 @@ function BattleCard({ entry }: { entry: (typeof BATTLE_ENTRIES)[number] }) {
     >
       <div
         style={{
-          fontSize: 12,
+          fontSize: 14,
           color: ACCENT,
           letterSpacing: "0.18em",
           fontWeight: 600,
@@ -157,10 +157,10 @@ function BattleCard({ entry }: { entry: (typeof BATTLE_ENTRIES)[number] }) {
       <div
         style={{
           marginTop: 8,
-          fontSize: 22,
+          fontSize: 26,
           fontWeight: 600,
-          letterSpacing: "-0.3px",
-          lineHeight: 1.3,
+          letterSpacing: 0,
+          lineHeight: 1.25,
         }}
       >
         {t(entry.title.ko, entry.title.en)}
@@ -168,7 +168,7 @@ function BattleCard({ entry }: { entry: (typeof BATTLE_ENTRIES)[number] }) {
       <div
         style={{
           marginTop: 4,
-          fontSize: 14,
+          fontSize: 16,
           color: DIM,
           fontStyle: "italic",
         }}
@@ -178,10 +178,10 @@ function BattleCard({ entry }: { entry: (typeof BATTLE_ENTRIES)[number] }) {
       <p
         style={{
           marginTop: 16,
-          fontSize: 14,
+          fontSize: 17,
           color: FG,
-          lineHeight: 1.7,
-          letterSpacing: "-0.1px",
+          lineHeight: 1.75,
+          letterSpacing: 0,
         }}
       >
         {t(entry.tagline.ko, entry.tagline.en)}
@@ -189,7 +189,7 @@ function BattleCard({ entry }: { entry: (typeof BATTLE_ENTRIES)[number] }) {
       <div
         style={{
           marginTop: 18,
-          fontSize: 12,
+          fontSize: 14,
           color: disabled ? DIM : ACCENT,
           letterSpacing: "0.18em",
           textTransform: "uppercase",

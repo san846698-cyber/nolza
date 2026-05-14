@@ -74,6 +74,7 @@ export default function TrafficGame() {
   const [showHint, setShowHint] = useState(false);
   const [showSelect, setShowSelect] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [bumpCarId, setBumpCarId] = useState<string | null>(null);
 
   const boardRef = useRef<HTMLDivElement>(null);
   const carsRef = useRef<Car[]>(cars);
@@ -183,6 +184,7 @@ export default function TrafficGame() {
       axis: car.orientation === "h" ? "x" : "y",
     };
     setDraggingCarId(car.id);
+    setBumpCarId(null);
   }
 
   function onPointerMove(e: React.PointerEvent) {
@@ -230,6 +232,9 @@ export default function TrafficGame() {
       ) {
         triggerWin();
       }
+    } else {
+      setBumpCarId(d.carId);
+      window.setTimeout(() => setBumpCarId(null), 260);
     }
   }
 
@@ -281,9 +286,21 @@ export default function TrafficGame() {
     const url = "https://nolza.fun/games/traffic";
     const my = moves;
     const text = t(
-      `나 레벨 ${level.id}에서 막혔어\n${my}번 만에 클리어했는데\n너는 몇까지 갔어?\n→ ${url}`,
-      `Stuck on level ${level.id}\nCleared it in ${my} moves\nHow far can you go?\n→ ${url}`,
+      `레벨 ${level.id}을 ${my}번 만에 클리어했어요! 🚗\n${url}`,
+      `I cleared level ${level.id} in ${my} moves! 🚗\n${url}`,
     );
+    if (typeof navigator !== "undefined" && "share" in navigator) {
+      try {
+        await navigator.share({
+          title: t("교통 지옥 클리어!", "Traffic Hell cleared!"),
+          text,
+          url,
+        });
+        return;
+      } catch {
+        /* fall through to clipboard */
+      }
+    }
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -328,15 +345,34 @@ export default function TrafficGame() {
             <div className={s.movesNum}>{moves}</div>
           </div>
         </div>
+        <div className={s.hudCards}>
+          <div>
+            <span>{t("기록", "Best")}</span>
+            <b>{playerBest ?? "—"}</b>
+          </div>
+          <div>
+            <span>{t("출구", "Exit")}</span>
+            <b>{t("오른쪽", "Right")}</b>
+          </div>
+          <div>
+            <span>{t("퍼즐", "Puzzle")}</span>
+            <b>{levelIdx + 1}/{LEVELS.length}</b>
+          </div>
+        </div>
 
         <div className={s.boardWrap} ref={boardRef}>
+          <div className={s.exitLane} aria-hidden>
+            <span>{t("출구", "EXIT")}</span>
+          </div>
           <div
             className={s.grid}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
           >
-            <div className={s.exit}>→</div>
+            <div className={s.exit} aria-hidden>
+              <span>→</span>
+            </div>
             {cars.map((car) => {
               const isPlayer = car.id === "R";
               const xPos = isPlayer && exiting ? GRID + 0.5 : car.x;
@@ -350,6 +386,7 @@ export default function TrafficGame() {
                   data-orient={car.orientation}
                   data-exiting={isPlayer && exiting}
                   data-dragging={draggingCarId === car.id}
+                  data-bump={bumpCarId === car.id}
                   style={{
                     left: `calc(${xPos} * 100% / ${GRID} + 3px)`,
                     top: `calc(${car.y} * 100% / ${GRID} + 3px)`,
@@ -359,8 +396,15 @@ export default function TrafficGame() {
                   }}
                   onPointerDown={(e) => onPointerDown(e, car)}
                 >
+                  <div className={s.carGlow} />
                   <div className={s.windshield} />
                   <div className={s.hood} />
+                  <div className={s.wheels}>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                  </div>
                   <div className={s.headlights}>
                     <span />
                     <span />
@@ -395,20 +439,20 @@ export default function TrafficGame() {
             onClick={prevLevel}
             disabled={levelIdx === 0}
           >
-            ← {t("이전", "Prev")}
+            <span>‹</span>{t("이전", "Prev")}
           </button>
           <button type="button" className={s.btn} onClick={reset}>
-            ↻ {t("다시", "Reset")}
+            <span>↺</span>{t("다시", "Retry")}
           </button>
           <button type="button" className={s.btn} onClick={toggleHint}>
-            💡 {t("힌트", "Hint")}
+            <span>?</span>{t("힌트", "Hint")}
           </button>
           <button
             type="button"
             className={s.btn}
             onClick={() => setShowSelect(true)}
           >
-            ☰ {t("레벨 선택", "Levels")}
+            <span>▦</span>{t("레벨", "Levels")}
           </button>
           <button
             type="button"
@@ -416,7 +460,7 @@ export default function TrafficGame() {
             onClick={nextLevel}
             disabled={levelIdx >= LEVELS.length - 1}
           >
-            {t("다음", "Next")} →
+            {t("다음", "Next")}<span>›</span>
           </button>
         </div>
       </main>
@@ -478,8 +522,15 @@ export default function TrafficGame() {
       {won && (
         <div className={s.winOverlay} onClick={(e) => e.stopPropagation()}>
           <div className={s.winCard}>
-            <div className={s.winEmoji}>🎉</div>
-            <div className={s.winTitle}>CLEARED!</div>
+            <div className={s.confetti} aria-hidden>
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className={s.winEmoji}>🚗</div>
+            <div className={s.winTitle}>{t("클리어!", "Cleared!")}</div>
             {isFinal && (
               <div className={s.winSpecial}>
                 {t(
@@ -512,12 +563,12 @@ export default function TrafficGame() {
             </div>
             <div className={s.winActions}>
               <button type="button" className={s.btn} onClick={reset}>
-                ↻ {t("다시", "Replay")}
+                <span>↺</span>{t("다시 하기", "Retry")}
               </button>
               <button type="button" className={s.btn} onClick={share}>
                 {copied
-                  ? t("✓ 복사됨", "✓ Copied")
-                  : `📋 ${t("자랑하기", "Share")}`}
+                  ? t("복사됨", "Copied")
+                  : <><span>↗</span>{t("공유하기", "Share")}</>}
               </button>
               {!isFinal && (
                 <button
@@ -525,7 +576,7 @@ export default function TrafficGame() {
                   className={s.btnPrimary}
                   onClick={nextLevel}
                 >
-                  {t("다음 레벨 →", "Next Level →")}
+                  {t("다음 레벨", "Next Level")}<span>›</span>
                 </button>
               )}
             </div>

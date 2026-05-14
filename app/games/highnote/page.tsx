@@ -28,25 +28,31 @@ type Singer = {
   name: string;
   note: string;
   hz: number;
-  song?: string;
+};
+
+type HighnoteResult = {
+  ko: string;
+  en: string;
+  detailKo: string;
+  detailEn: string;
 };
 
 const SINGERS: Singer[] = [
-  { name: "임창정", note: "A3", hz: 220, song: "찾아가" },
+  { name: "임창정", note: "A3", hz: 220 },
   { name: "장혜진", note: "C4", hz: 262 },
   { name: "태양", note: "D4", hz: 294 },
   { name: "G-DRAGON", note: "E4", hz: 330 },
   { name: "BTS 뷔", note: "F4", hz: 349 },
-  { name: "아이유", note: "G4", hz: 392, song: "좋은날 3단 고음" },
+  { name: "아이유", note: "G4", hz: 392 },
   { name: "태연", note: "A4", hz: 440 },
   { name: "AKMU 수현", note: "B4", hz: 494 },
-  { name: "휘성", note: "C5", hz: 523, song: "되돌리다" },
+  { name: "휘성", note: "C5", hz: 523 },
   { name: "BTS 정국", note: "D5", hz: 587 },
   { name: "딤플 (기현)", note: "E5", hz: 659 },
   { name: "나얼", note: "F5", hz: 698 },
   { name: "박효신", note: "G5", hz: 784 },
   { name: "김범수", note: "A5", hz: 880 },
-  { name: "소향", note: "C6", hz: 1047, song: "홀로아리랑" },
+  { name: "소향", note: "C6", hz: 1047 },
 ];
 
 const CHART_MIN_HZ = 180; // a bit below 임창정 (A3 = 220)
@@ -159,16 +165,61 @@ function freqToNoteName(freq: number): string {
   return `${name}${octave}`;
 }
 
-function getResultMessage(hz: number): { ko: string; en: string } {
-  if (hz <= 0) return { ko: "측정되지 않았어요", en: "No reading — try again" };
-  if (hz < 220) return { ko: "편안한 저음대 보이스예요", en: "A comfy low-range voice" };
-  if (hz < 262) return { ko: "임창정과 비슷한 음역대예요", en: "Range like Lim Chang-jung" };
-  if (hz < 330) return { ko: "안정적인 중음대 보이스예요", en: "Stable mid-range voice" };
-  if (hz < 392) return { ko: "아이유 음역대까지 닿아요", en: "You reach IU's range" };
-  if (hz < 494) return { ko: "메인보컬 가능성 있어요 🎤", en: "Main vocalist potential 🎤" };
-  if (hz < 587) return { ko: "꽤 넓은 음역대를 가지고 있어요", en: "A pretty wide range" };
-  if (hz < 698) return { ko: "고음대까지 편하게 닿아요 ✨", en: "Comfortable up to high notes ✨" };
-  return { ko: "소향급 음역대입니다 👑", en: "Sohyang-tier range 👑" };
+function getResultMessage(hz: number): HighnoteResult {
+  if (hz <= 0) {
+    return {
+      ko: "측정되지 않았어요",
+      en: "No reading — try again",
+      detailKo: "마이크 입력이 충분히 안정적이지 않았습니다. 조용한 곳에서 다시 불러보세요.",
+      detailEn: "The mic input was not stable enough. Try again somewhere quieter.",
+    };
+  }
+  if (hz < 220) {
+    return {
+      ko: "고음 도전 입문자",
+      en: "High-note beginner",
+      detailKo: "무리해서 올리기보다 안정적인 발성과 호흡으로 시작하면 좋은 단계입니다.",
+      detailEn: "Start with steady breath and comfortable tone before pushing higher.",
+    };
+  }
+  if (hz < 330) {
+    return {
+      ko: "노래방 자신감 충전형",
+      en: "Karaoke confidence charger",
+      detailKo: "선곡만 잘 맞추면 분위기를 살릴 수 있는 현실적인 음역입니다.",
+      detailEn: "With the right song choice, this range can carry the room.",
+    };
+  }
+  if (hz < 494) {
+    return {
+      ko: "마이크 잡으면 안 내려놓는 타입",
+      en: "Won't-put-the-mic-down type",
+      detailKo: "고음 구간에 진입했습니다. 친구들이 다음 곡 예약을 서두를 수 있어요.",
+      detailEn: "You are entering high-note territory. Friends may rush to queue the next song.",
+    };
+  }
+  if (hz < 698) {
+    return {
+      ko: "코인노래방 히든보스",
+      en: "Coin-karaoke hidden boss",
+      detailKo: "꽤 높은 구간까지 편하게 닿았습니다. 컨디션 좋은 날엔 관객 반응이 옵니다.",
+      detailEn: "You reached a strong high range. On a good day, the room reacts.",
+    };
+  }
+  if (hz < 880) {
+    return {
+      ko: "친구들이 말릴 수도 있는 고음러",
+      en: "Friends-may-intervene belter",
+      detailKo: "이미 충분히 높은 구간입니다. 멋있지만 목 보호도 같이 챙겨야 합니다.",
+      detailEn: "This is already a very high zone. Impressive, but protect your voice too.",
+    };
+  }
+  return {
+    ko: "인간 사이렌 후보",
+    en: "Human siren candidate",
+    detailKo: "재미용 측정 기준으로는 최상단입니다. 억지로 반복하지 말고 목 컨디션을 아껴주세요.",
+    detailEn: "On this playful scale, this is the top zone. Do not force repeats; save your voice.",
+  };
 }
 
 // ============================================================
@@ -437,11 +488,11 @@ export default function HighNotePage(): ReactElement {
 
   const onShare = () => {
     const text = t(
-      `내가 편하게 낼 수 있는 최고음: ${noteName}` +
-        (closestSinger ? `\n${closestSinger.name}과 비슷한 음역대!` : "") +
+      `내 고음챌린지 결과: ${result.ko} · ${noteName}` +
+        (closestSinger ? `\n참고용 비교: ${closestSinger.name} 근처 (${closestSinger.note})` : "") +
         `\n내 음역대도 측정해보기 → nolza.fun/games/highnote`,
-      `My highest comfortable note: ${noteName}` +
-        (closestSinger ? `\nSimilar range to ${closestSinger.name}!` : "") +
+      `My High Note Challenge result: ${result.en} · ${noteName}` +
+        (closestSinger ? `\nReference comparison: near ${closestSinger.name} (${closestSinger.note})` : "") +
         `\nTest your range too → nolza.fun/games/highnote`,
     );
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -1002,7 +1053,7 @@ function ResultView({
 }: {
   maxHz: number;
   noteName: string;
-  result: { ko: string; en: string };
+  result: HighnoteResult;
   closest: Singer | null;
   onShare: () => void;
   onReset: () => void;
@@ -1046,21 +1097,34 @@ function ResultView({
         }}
       >
         {t(
-          "억지로 지른 게 아니라 실제 음역대를 측정한 값이에요",
-          "This is your real comfortable range, not strained shouting",
+          "마이크로 잡힌 최고음을 재미용으로 정리한 참고값이에요",
+          "This is a playful reference based on the highest note the mic detected",
         )}
       </p>
 
       <p
         style={{
-          fontSize: 18,
-          fontWeight: 600,
-          marginBottom: 32,
+          fontSize: "clamp(24px, 6vw, 32px)",
+          fontWeight: 800,
+          marginBottom: 10,
           color: "#fff",
           fontFamily: "var(--font-noto-sans-kr), sans-serif",
+          lineHeight: 1.2,
         }}
       >
         {t(result.ko, result.en)}
+      </p>
+      <p
+        style={{
+          margin: "0 auto 32px",
+          maxWidth: 430,
+          fontSize: 15,
+          color: "rgba(255,255,255,0.62)",
+          fontFamily: "var(--font-noto-sans-kr), sans-serif",
+          lineHeight: 1.6,
+        }}
+      >
+        {t(result.detailKo, result.detailEn)}
       </p>
 
       {/* Chart */}
@@ -1084,7 +1148,7 @@ function ResultView({
             textAlign: "center",
           }}
         >
-          {t("K-POP 가수 비교", "K-POP SINGER COMPARISON")}
+          {t("참고용 음역대 비교", "REFERENCE RANGE COMPARISON")}
         </div>
 
         <div className="flex flex-col" style={{ gap: 6 }}>
@@ -1130,24 +1194,6 @@ function ResultView({
                       borderRadius: 9,
                     }}
                   />
-                  {s.song && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        right: 8,
-                        top: 0,
-                        bottom: 0,
-                        display: "flex",
-                        alignItems: "center",
-                        fontSize: 13,
-                        color: "rgba(255,255,255,0.5)",
-                        fontFamily: "var(--font-noto-sans-kr), sans-serif",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {s.song}
-                    </div>
-                  )}
                 </div>
                 <div
                   style={{
@@ -1204,11 +1250,26 @@ function ResultView({
             </div>
           </div>
         )}
+        <p
+          style={{
+            marginTop: 24,
+            fontSize: 12,
+            color: "rgba(255,255,255,0.45)",
+            lineHeight: 1.6,
+            textAlign: "center",
+            fontFamily: "var(--font-noto-sans-kr), sans-serif",
+          }}
+        >
+          {t(
+            "음역대 비교는 재미용 참고 자료이며, 실제 라이브/키/편곡/컨디션에 따라 달라질 수 있습니다.",
+            "Range comparison is for fun only and can vary by live performance, key, arrangement, and condition.",
+          )}
+        </p>
       </div>
 
       {closest && maxHz > 0 && (
         <p style={{ fontSize: 15, color: "rgba(255,255,255,0.65)", marginBottom: 24, fontFamily: "var(--font-noto-sans-kr), sans-serif" }}>
-          {t("가장 가까운 가수는", "Closest singer:")} <span style={{ color: ACCENT, fontWeight: 700 }}>{closest.name}</span> ({closest.note})
+          {t("가장 가까운 참고 구간", "Closest reference range:")} <span style={{ color: ACCENT, fontWeight: 700 }}>{closest.name}</span> ({closest.note})
         </p>
       )}
 

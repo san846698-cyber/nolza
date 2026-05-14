@@ -30,7 +30,7 @@ export function HomeHeader() {
             type="button"
             onClick={toggle}
             aria-label={
-              locale === "ko" ? "Switch to English" : "한국어로 전환"
+              locale === "ko" ? "Switch to English" : "Switch to Korean"
             }
             className="font-inter text-[11px] font-semibold tracking-[0.1em] px-3 py-2 border border-home-hairline-strong bg-transparent text-home-ink hover:bg-[rgba(20,17,14,0.04)] transition-colors whitespace-nowrap"
           >

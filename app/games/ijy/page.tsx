@@ -1,8 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+import GameIntro from "../../components/game/GameIntro";
+import ResultScreen from "../../components/game/ResultScreen";
 import { useLocale } from "@/hooks/useLocale";
 
 type Category =
@@ -14,6 +16,7 @@ type Category =
   | "absurd";
 
 type SpecialBlock = { ko: string; en: string };
+type Localized = { ko: string; en: string };
 
 type Item = {
   id: string;
@@ -139,6 +142,15 @@ const CAT_TABS: { id: Category | "all"; ko: string; en: string }[] = [
   { id: "absurd",      ko: "황당",     en: "Absurd" },
 ];
 
+const CAT_LABELS: Record<Category, Localized> = {
+  daily: { ko: "일상", en: "Daily" },
+  electronics: { ko: "전자기기", en: "Tech" },
+  luxury: { ko: "명품", en: "Luxury" },
+  cars: { ko: "자동차", en: "Cars" },
+  realestate: { ko: "부동산", en: "Real Estate" },
+  absurd: { ko: "황당", en: "Absurd" },
+};
+
 const COLOR = {
   bg: "#faf8f3",          // cream (matches home)
   card: "#ffffff",        // thumb panel
@@ -214,10 +226,86 @@ function getReaction(spentRatio: number, t: (ko: string, en: string) => string):
   return t("파산!", "Bankrupt!");
 }
 
+function getSpendingType({
+  spent,
+  totalItems,
+  topCategory,
+  topItem,
+  ratio,
+}: {
+  spent: number;
+  totalItems: number;
+  topCategory: Category | null;
+  topItem: Item | null;
+  ratio: number;
+}): { name: Localized; line: Localized } {
+  if (spent <= 0) {
+    return {
+      name: { ko: "돈 쓰는 재능 없음", en: "No-Spend Talent" },
+      line: {
+        ko: "30조를 앞에 두고도 장바구니 앞에서 심호흡하는 타입입니다.",
+        en: "You can stare at ₩30T and still hesitate at checkout.",
+      },
+    };
+  }
+  if (topCategory === "daily" && ratio < 0.01) {
+    return {
+      name: { ko: "편의점 재벌", en: "Convenience-store Tycoon" },
+      line: {
+        ko: "세계 경제보다 삼각김밥 회전율에 더 진심입니다.",
+        en: "You care more about triangle kimbap turnover than the global economy.",
+      },
+    };
+  }
+  if (topCategory === "realestate") {
+    return {
+      name: { ko: "부동산 영혼 보유자", en: "Real-estate Soul" },
+      line: {
+        ko: "돈이 생기자마자 땅부터 보는 아주 한국적인 영혼입니다.",
+        en: "Very Korean: money arrives, real estate tabs open.",
+      },
+    };
+  }
+  if (topCategory === "absurd" && ["mars", "shuttle", "iss"].includes(topItem?.id ?? "")) {
+    return {
+      name: { ko: "우주까지 사버린 사람", en: "Bought Outer Space" },
+      line: {
+        ko: "지구에서 살 수 있는 건 거의 끝났다고 판단하셨군요.",
+        en: "Apparently Earth shopping was too small for you.",
+      },
+    };
+  }
+  if (ratio >= 0.75 || totalItems >= 30) {
+    return {
+      name: { ko: "플렉스 중독자", en: "Flex Addict" },
+      line: {
+        ko: "카드 승인 문자가 오기도 전에 다음 구매를 누르는 타입입니다.",
+        en: "You press buy again before the card alert even arrives.",
+      },
+    };
+  }
+  if (ratio < 0.08) {
+    return {
+      name: { ko: "재벌 초보", en: "Beginner Chaebol" },
+      line: {
+        ko: "돈은 많은데 아직 가격표 보는 습관을 못 버렸습니다.",
+        en: "Rich budget, normal-person price-checking reflex.",
+      },
+    };
+  }
+  return {
+    name: { ko: "차분한 회장님", en: "Calm Chairperson" },
+    line: {
+      ko: "쓴 건 썼는데 아직도 나라 예산처럼 남았습니다.",
+      en: "You spent a lot and it still looks like a national budget.",
+    },
+  };
+}
+
 // ── Item thumbnail (image w/ emoji fallback) ───────────────────────────
 function ItemThumb({ item }: { item: Item }) {
   const [errored, setErrored] = useState(false);
-  const showImage = item.image && !errored;
+  const imageSrc = !errored ? item.image : undefined;
   return (
     <div
       className="ijy-thumb"
@@ -233,17 +321,16 @@ function ItemThumb({ item }: { item: Item }) {
         position: "relative",
       }}
     >
-      {showImage ? (
-        <img
-          src={item.image}
+      {imageSrc ? (
+        <Image
+          src={imageSrc}
           alt={item.ko}
+          fill
+          sizes="80px"
           loading="lazy"
           onError={() => setErrored(true)}
           style={{
-            width: "100%",
-            height: "100%",
             objectFit: "cover",
-            display: "block",
           }}
         />
       ) : (
@@ -284,11 +371,14 @@ function ItemTooltip({ text }: { text: string }) {
 
 export default function IjyGame() {
   const { locale, t } = useLocale();
+  const [introDone, setIntroDone] = useState(false);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [bumpKey, setBumpKey] = useState(0);
   const [tab, setTab] = useState<Category | "all">("all");
   const [block, setBlock] = useState<SpecialBlock | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [showResult, setShowResult] = useState(false);
+  const [lastBuy, setLastBuy] = useState<{ item: Item; count: number } | null>(null);
 
   // Auto-dismiss the special-block message after 3.2s.
   useEffect(() => {
@@ -296,6 +386,12 @@ export default function IjyGame() {
     const id = setTimeout(() => setBlock(null), 3200);
     return () => clearTimeout(id);
   }, [block]);
+
+  useEffect(() => {
+    if (!lastBuy) return;
+    const id = setTimeout(() => setLastBuy(null), 1200);
+    return () => clearTimeout(id);
+  }, [lastBuy]);
 
   const spent = useMemo(
     () => ITEMS.reduce((acc, item) => acc + (counts[item.id] ?? 0) * item.price, 0),
@@ -305,6 +401,40 @@ export default function IjyGame() {
   const ratio = Math.min(1, spent / TOTAL_MONEY);
   const reaction = getReaction(ratio, t);
   const balance = formatBalance(remaining, locale);
+  const spentDisplay = formatBalance(spent, locale);
+
+  const purchased = useMemo(
+    () => ITEMS
+      .map((item) => ({ item, count: counts[item.id] ?? 0 }))
+      .filter(({ count }) => count > 0),
+    [counts],
+  );
+  const totalItems = purchased.reduce((sum, entry) => sum + entry.count, 0);
+  const topItem =
+    purchased
+      .slice()
+      .sort((a, b) => b.count * b.item.price - a.count * a.item.price)[0]?.item ?? null;
+  const topCategory = useMemo(() => {
+    const totals = new Map<Category, number>();
+    for (const { item, count } of purchased) {
+      totals.set(item.cat, (totals.get(item.cat) ?? 0) + item.price * count);
+    }
+    return Array.from(totals.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  }, [purchased]);
+  const spendingType = getSpendingType({ spent, totalItems, topCategory, topItem, ratio });
+  const topCategoryLabel = topCategory ? CAT_LABELS[topCategory][locale] : t("없음", "None");
+  const topItemName = topItem ? topItem[locale] : t("없음", "None");
+  const resultDetails = [
+    t(`총 ${totalItems.toLocaleString("ko-KR")}개를 샀습니다. 손가락 관절도 재벌급으로 일했습니다.`, `Bought ${totalItems.toLocaleString("en-US")} items. Your thumb did executive-level labor.`),
+    t(`가장 크게 쓴 분야: ${topCategoryLabel}`, `Biggest category: ${topCategoryLabel}`),
+    t(`가장 큰 지출 아이템: ${topItemName}`, `Biggest purchase: ${topItemName}`),
+    t(`남은 돈: ${balance.value}${balance.unit}. 아직도 숫자가 현실감이 없습니다.`, `Remaining: ${balance.value} ${balance.unit}. Still not a normal number.`),
+  ];
+  const shareText = t(
+    `나는 30조 중 ${spentDisplay.value}${spentDisplay.unit}을 쓰고도 아직 ${balance.value}${balance.unit}이 남았다.\n내 소비 유형은 "${spendingType.name.ko}". 너도 이재용 돈 다 써봐.`,
+    `I spent ${spentDisplay.value} ${spentDisplay.unit} out of ₩30T and still have ${balance.value} ${balance.unit} left.\nMy spending type: "${spendingType.name.en}". Try spending Lee Jae-yong's money.`,
+  );
+  const resultVisible = showResult || ratio >= 1;
 
   const visibleItems = useMemo(
     () => (tab === "all" ? ITEMS : ITEMS.filter((it) => it.cat === tab)),
@@ -317,8 +447,11 @@ export default function IjyGame() {
       return;
     }
     if (remaining < item.price) return;
+    const nextCount = (counts[item.id] ?? 0) + 1;
     setCounts((p) => ({ ...p, [item.id]: (p[item.id] ?? 0) + 1 }));
+    setLastBuy({ item, count: nextCount });
     setBumpKey((k) => k + 1);
+    setShowResult(false);
   };
   const remove = (item: Item) => {
     setCounts((p) => {
@@ -329,7 +462,39 @@ export default function IjyGame() {
       return next;
     });
     setBumpKey((k) => k + 1);
+    setShowResult(false);
   };
+
+  const restart = () => {
+    setCounts({});
+    setBumpKey((k) => k + 1);
+    setBlock(null);
+    setLastBuy(null);
+    setHovered(null);
+    setShowResult(false);
+    setTab("all");
+  };
+
+  if (!introDone) {
+    return (
+      <main
+        className="min-h-screen page-in flex items-center justify-center px-5 py-16"
+        style={{ backgroundColor: COLOR.bg, color: COLOR.ink }}
+      >
+        <GameIntro
+          eyebrow={t("LIVE IT · 재벌 시뮬레이터", "LIVE IT · CHAEBOL SIM")}
+          title={t("이재용 돈 다 써봐", "Spend Lee Jae-yong's Money")}
+          hook={t("30조원이 들어왔습니다. 이제 가격표가 당신을 무서워합니다.", "₩30T just arrived. Price tags fear you now.")}
+          howTo={t("물건을 눌러 사고, 마지막에 소비 유형을 정산하세요. 결과는 링크로 바로 공유할 수 있어요.", "Buy items, settle your spending type, and share the result link.")}
+          meta={[t("약 1분", "1 min"), t("52개 아이템", "52 items"), t("결과 카드", "Result card")]}
+          startLabel={t("쇼핑 시작", "Start shopping")}
+          onStart={() => setIntroDone(true)}
+          tone="paper"
+        />
+        <AdMobileSticky />
+      </main>
+    );
+  }
 
   return (
     <main
@@ -355,6 +520,13 @@ export default function IjyGame() {
         .ijy-qty-btn { width: 44px; height: 44px; font-size: 22px; }
         .ijy-qty-count { min-width: 44px; font-size: 17px; }
         .ijy-row-controls { gap: 8px; }
+        .ijy-mobile-settle { display: none; }
+        @keyframes ijyToastIn {
+          0% { opacity: 0; transform: translate(-50%, 10px) scale(0.96); }
+          18% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+          100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+        }
+        .ijy-purchase-toast { animation: ijyToastIn 0.22s ease-out; }
 
         @media (max-width: 640px) {
           .ijy-ad-wrap { padding: 16px 12px 0; }
@@ -375,6 +547,23 @@ export default function IjyGame() {
           .ijy-qty-btn { width: 38px; height: 38px; font-size: 20px; }
           .ijy-qty-count { min-width: 32px; font-size: 15px; }
           .ijy-row-controls { gap: 4px; }
+          .ijy-mobile-settle {
+            display: inline-flex;
+            position: fixed;
+            left: 14px;
+            right: 14px;
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 82px);
+            z-index: 70;
+            min-height: 50px;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 999px;
+            background: ${COLOR.buttonBg};
+            color: ${COLOR.buttonText};
+            font-weight: 900;
+            box-shadow: 0 18px 38px -22px rgba(20,17,14,0.55);
+          }
         }
 
         @media (min-width: 641px) and (max-width: 900px) {
@@ -460,7 +649,83 @@ export default function IjyGame() {
           >
             {reaction}
           </div>
+          <div
+            className="ijy-guide"
+            style={{
+              margin: "22px auto 0",
+              maxWidth: 560,
+              display: "grid",
+              gap: 10,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 8,
+                flexWrap: "wrap",
+              }}
+            >
+              {[t("1. 사고 싶은 걸 누르기", "1. Tap what you want"), t("2. 돈이 줄어드는지 보기", "2. Watch the money shrink"), t("3. 소비 유형 정산", "3. Get your spending type")].map((item) => (
+                <span
+                  key={item}
+                  style={{
+                    border: `1px solid ${COLOR.border}`,
+                    borderRadius: 999,
+                    padding: "7px 11px",
+                    color: COLOR.muted,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    background: COLOR.card,
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+            <button
+              type="button"
+              className="btn-press"
+              disabled={spent <= 0}
+              onClick={() => setShowResult(true)}
+              style={{
+                justifySelf: "center",
+                minHeight: 46,
+                border: "none",
+                borderRadius: 999,
+                background: spent > 0 ? COLOR.buttonBg : COLOR.disabled,
+                color: COLOR.buttonText,
+                padding: "11px 22px",
+                fontWeight: 800,
+                cursor: spent > 0 ? "pointer" : "not-allowed",
+              }}
+            >
+              {spent > 0
+                ? t("내 소비 유형 보기", "Settle my spending")
+                : t("먼저 뭐라도 사보세요", "Buy something first")}
+            </button>
+          </div>
         </div>
+
+        {resultVisible && spent > 0 && (
+          <ResultScreen
+            locale={locale}
+            currentGameId="ijy"
+            eyebrow={t("소비 정산 완료", "Spending settled")}
+            title={spendingType.name[locale]}
+            score={`${spentDisplay.value}${spentDisplay.unit}`}
+            scoreLabel={t("사용", "spent")}
+            description={spendingType.line[locale]}
+            details={resultDetails}
+            shareTitle={t("이재용 돈 다 써봐 결과", "Spend Lee Jae-yong's Money result")}
+            shareText={shareText}
+            shareUrl="/games/ijy"
+            onReplay={restart}
+            replayLabel={t("다시 30조 받기", "Get ₩30T again")}
+            recommendedIds={["kbti", "password", "circle"]}
+            tone="paper"
+          />
+        )}
 
         {/* Category tabs */}
         <div
@@ -682,6 +947,42 @@ export default function IjyGame() {
         >
           {block[locale]}
         </div>
+      )}
+
+      {lastBuy && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="ijy-purchase-toast"
+          style={{
+            position: "fixed",
+            left: "50%",
+            bottom: "calc(env(safe-area-inset-bottom, 0px) + 150px)",
+            transform: "translateX(-50%)",
+            zIndex: 75,
+            background: COLOR.card,
+            border: `1px solid ${COLOR.border}`,
+            color: COLOR.ink,
+            padding: "10px 14px",
+            borderRadius: 999,
+            fontSize: 13,
+            fontWeight: 800,
+            maxWidth: "92vw",
+            textAlign: "center",
+            boxShadow: "0 18px 40px -24px rgba(20,17,14,0.55)",
+          }}
+        >
+          {t(
+            `${lastBuy.item.ko} ${lastBuy.count.toLocaleString("ko-KR")}개째 결제 완료`,
+            `${lastBuy.item.en} x${lastBuy.count.toLocaleString("en-US")} purchased`,
+          )}
+        </div>
+      )}
+
+      {spent > 0 && !resultVisible && (
+        <button type="button" className="ijy-mobile-settle btn-press" onClick={() => setShowResult(true)}>
+          {t(`${spentDisplay.value}${spentDisplay.unit} 사용 · 소비 유형 보기`, `${spentDisplay.value} ${spentDisplay.unit} spent · See type`)}
+        </button>
       )}
 
       <div className="mx-auto max-w-3xl px-6" style={{ paddingBottom: 80 }}>

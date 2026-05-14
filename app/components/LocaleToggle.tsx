@@ -7,29 +7,27 @@ export default function LocaleToggle() {
   const { locale, setLocale } = useLocale();
   const pathname = usePathname();
 
-  // The home page and game routes both render their own toggle inside their
-  // headers — skip the floating fallback so we don't show two pickers.
   if (pathname === "/" || pathname.startsWith("/games")) return null;
 
   return (
     <button
       type="button"
       onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
-      aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
+      aria-label={locale === "ko" ? "Switch to English" : "Switch to Korean"}
       className="btn-press"
       style={{
         position: "fixed",
         top: 20,
         right: 20,
         zIndex: 9999,
-        background: "rgba(255,255,255,0.1)",
-        border: "1px solid rgba(255,255,255,0.2)",
+        background: "rgba(20,17,14,0.78)",
+        border: "1px solid rgba(255,255,255,0.18)",
         borderRadius: 20,
         padding: "8px 16px",
         cursor: "pointer",
         color: "white",
         fontSize: 14,
-        fontWeight: 600,
+        fontWeight: 700,
         letterSpacing: "0.04em",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
@@ -37,7 +35,7 @@ export default function LocaleToggle() {
         transition: "background 0.15s ease, transform 0.1s ease",
       }}
     >
-      {locale === "ko" ? "🇺🇸 EN" : "🇰🇷 KO"}
+      {locale === "ko" ? "한 / EN" : "EN / 한"}
     </button>
   );
 }

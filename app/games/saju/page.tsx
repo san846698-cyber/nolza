@@ -18,16 +18,16 @@ import { useLocale } from "@/hooks/useLocale";
    Theme — fortune-teller's chamber: deep navy + gold + crimson
    ============================================================================ */
 
-const ACCENT = "#FFD700"; // 금색
-const ACCENT_DIM = "rgba(255,215,0,0.55)";
-const ACCENT_DEEP = "#C0A060"; // 고동금색
-const CRIMSON = "#8B0000"; // 진한 빨강
-const BG = "#0d0a1a";
-const PAPER = "rgba(255,215,0,0.04)";
-const PAPER_2 = "rgba(255,215,0,0.07)";
+const ACCENT = "#E8D39A"; // refined soft gold
+const ACCENT_DIM = "rgba(232,211,154,0.58)";
+const ACCENT_DEEP = "#B99454"; // antique gold
+const CRIMSON = "#7B1F31"; // deep wine accent
+const BG = "#070812";
+const PAPER = "rgba(255,255,255,0.045)";
+const PAPER_2 = "rgba(232,211,154,0.085)";
 const INK = "#f5f0e0"; // 크림
 const SUBTLE = "rgba(245,240,224,0.55)";
-const RULE = "rgba(255,215,0,0.18)";
+const RULE = "rgba(232,211,154,0.2)";
 
 /* ============================================================================
    Types
@@ -801,7 +801,7 @@ function calcSaju(
    ============================================================================ */
 
 type Phase =
-  | "lang"        // Step 1: Korean or foreigner?
+  | "lang"        // Step 1: Korean or international visitor?
   | "ko-form"     // Step 2A: Korean — name + DOB + time
   | "fr-name"     // Step 2B-1: Foreign — name + gender input
   | "fr-bridge"   // Step 2B-2: Show generated Korean name
@@ -974,8 +974,9 @@ export default function SajuPage(): ReactElement {
         position: "relative",
         paddingBottom: 100,
         backgroundImage:
-          "radial-gradient(circle at 20% 10%, rgba(255,215,0,0.06), transparent 40%)," +
-          "radial-gradient(circle at 80% 80%, rgba(139,0,0,0.08), transparent 50%)",
+          "radial-gradient(circle at 18% 8%, rgba(154,127,255,0.14), transparent 38%)," +
+          "radial-gradient(circle at 82% 78%, rgba(185,148,84,0.13), transparent 48%)," +
+          "linear-gradient(135deg, rgba(7,8,18,0.98), rgba(18,12,36,0.98))",
         overflow: "hidden",
       }}
     >
@@ -1126,6 +1127,15 @@ export default function SajuPage(): ReactElement {
    Step 1 — Language / origin
    ============================================================================ */
 
+const SAJU_ENTRY_PARTICLES = Array.from({ length: 22 }, (_, index) => ({
+  id: index,
+  left: (index * 37 + 11) % 100,
+  top: (index * 53 + 7) % 100,
+  size: 2 + (index % 3),
+  delay: (index % 7) * -0.85,
+  duration: 7 + (index % 5) * 1.4,
+}));
+
 function LanguageStep({
   onPickKorean,
   onPickForeign,
@@ -1135,87 +1145,410 @@ function LanguageStep({
   onPickForeign: () => void;
   t: (ko: string, en: string) => string;
 }): ReactElement {
+  const choices = [
+    {
+      key: "korean",
+      label: t("네, 한국인이에요", "Yes, I\u2019m Korean"),
+      detail: t("바로 사주 리딩으로 들어갈게요.", "Start the reading with your birth details."),
+      onClick: onPickKorean,
+    },
+    {
+      key: "international",
+      label: t("해외에서 오셨어요", "I\u2019m visiting from abroad"),
+      detail: t(
+        "먼저 리딩에 어울리는 한국 이름을 만들어드릴게요.",
+        "Receive a Korean name for your reading first.",
+      ),
+      onClick: onPickForeign,
+    },
+  ];
+
   return (
-    <div style={{ maxWidth: 560, width: "100%", textAlign: "center" }}>
+    <section
+      className="saju-entry"
+      style={{
+        position: "relative",
+        width: "100%",
+        maxWidth: 720,
+        display: "grid",
+        placeItems: "center",
+        padding: "24px 0 44px",
+      }}
+    >
+      <div className="saju-entry__glow" aria-hidden />
+      <div className="saju-entry__constellation" aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="saju-entry__particles" aria-hidden>
+        {SAJU_ENTRY_PARTICLES.map((particle) => (
+          <i
+            key={particle.id}
+            style={{
+              left: `${particle.left}%`,
+              top: `${particle.top}%`,
+              width: particle.size,
+              height: particle.size,
+              animationDelay: `${particle.delay}s`,
+              animationDuration: `${particle.duration}s`,
+            }}
+          />
+        ))}
+      </div>
+
       <div
+        className="saju-entry__card"
         style={{
-          color: ACCENT,
-          fontSize: 16,
-          letterSpacing: "0.26em",
-          fontWeight: 700,
-          marginBottom: 20,
-          fontFamily: "'Inter', sans-serif",
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          overflow: "hidden",
+          borderRadius: 32,
+          border: "1px solid rgba(232,211,154,0.26)",
+          background:
+            "linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035))",
+          boxShadow:
+            "0 28px 90px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.18)",
+          backdropFilter: "blur(22px)",
+          WebkitBackdropFilter: "blur(22px)",
+          padding: "clamp(28px, 5.4vw, 44px)",
+          textAlign: "center",
         }}
       >
-        {t("한국 사주 풀이", "KOREAN FORTUNE READING")}
-      </div>
-      <div style={{ fontSize: "clamp(56px, 14vw, 76px)", marginBottom: 16 }} aria-hidden>
-        🔮
-      </div>
-      <h1
-        style={{
-          fontSize: "clamp(28px, 7vw, 40px)",
-          fontWeight: 700,
-          lineHeight: 1.2,
-          letterSpacing: "-0.02em",
-          marginBottom: 12,
-          color: ACCENT,
-        }}
-      >
-        {t("한국인이신가요?", "Are you Korean?")}
-      </h1>
-      <p style={{ fontSize: "clamp(15px, 4vw, 19px)", color: SUBTLE, marginBottom: 40 }}>
-        {t("어떤 사주 흐름을 보여드릴까요?", "Choose the flow that fits you")}
-      </p>
+        <div className="saju-entry__halo" aria-hidden>
+          <span />
+          <span />
+        </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        <button
-          type="button"
-          onClick={onPickKorean}
+        <div className="saju-entry__eyebrow">
+          {t("별빛 사주 리딩", "CELESTIAL SAJU READING")}
+        </div>
+
+        <div className="saju-entry__mark" aria-hidden>
+          <span />
+          <b />
+        </div>
+
+        <h1
           style={{
-            ...primaryButtonStyle,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 14,
-            padding: "20px 28px",
+            fontSize: "clamp(32px, 8vw, 48px)",
+            fontWeight: 700,
+            lineHeight: 1.15,
+            letterSpacing: "-0.01em",
+            margin: "14px 0 10px",
+            color: "#fff7df",
+            textShadow: "0 0 34px rgba(232,211,154,0.22)",
           }}
         >
-          <span style={{ fontSize: 28 }} aria-hidden>🇰🇷</span>
-          <span>{t("네, 한국인이에요", "Yes, I'm Korean")}</span>
-        </button>
-        <button
-          type="button"
-          onClick={onPickForeign}
+          {t("한국인이신가요?", "Are you Korean?")}
+        </h1>
+        <p
           style={{
-            ...secondaryButtonStyle,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 14,
-            padding: "20px 28px",
+            fontSize: "clamp(15px, 4vw, 18px)",
+            color: "rgba(245,240,224,0.72)",
+            margin: "0 auto 28px",
+            lineHeight: 1.65,
+            maxWidth: 420,
+            fontFamily: "var(--font-noto-sans-kr), sans-serif",
           }}
         >
-          <span style={{ fontSize: 28 }} aria-hidden>🌍</span>
-          <span>{t("아니요, 외국인이에요", "No, I'm a foreigner")}</span>
-        </button>
+          {t("당신에게 맞는 흐름을 선택해주세요.", "Choose the path that fits you.")}
+        </p>
+
+        <div className="saju-entry__choices">
+          {choices.map((choice) => (
+            <button
+              key={choice.key}
+              type="button"
+              onClick={choice.onClick}
+              className="saju-entry__choice"
+            >
+              <span className="saju-entry__choice-orbit" aria-hidden />
+              <span>
+                <strong>{choice.label}</strong>
+                <small>{choice.detail}</small>
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <p className="saju-entry__helper">
+          {t(
+            "해외 방문자는 먼저 사주에 사용할 한국 이름을 만들어드릴게요.",
+            "International visitors can receive a Korean name before the reading.",
+          )}
+        </p>
       </div>
 
-      <p
-        style={{
-          marginTop: 32,
-          fontSize: 16,
-          color: "rgba(240,232,216,0.55)",
-          lineHeight: 1.6,
-          fontFamily: "var(--font-noto-sans-kr), sans-serif",
-        }}
-      >
-        {t(
-          "외국인은 한국 이름을 먼저 만들어드릴게요 ✨",
-          "Non-Koreans get a Korean name first ✨",
-        )}
-      </p>
-    </div>
+      <style jsx>{`
+        .saju-entry__glow {
+          position: absolute;
+          inset: 10% 4% 0;
+          border-radius: 999px;
+          background:
+            radial-gradient(circle at 50% 44%, rgba(232, 211, 154, 0.17), transparent 34%),
+            radial-gradient(circle at 18% 18%, rgba(126, 99, 255, 0.16), transparent 32%),
+            radial-gradient(circle at 82% 72%, rgba(129, 206, 255, 0.12), transparent 34%);
+          filter: blur(12px);
+          animation: saju-breathe 7s ease-in-out infinite;
+        }
+
+        .saju-entry__constellation {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0.48;
+        }
+
+        .saju-entry__constellation span {
+          position: absolute;
+          height: 1px;
+          width: min(220px, 36vw);
+          background: linear-gradient(90deg, transparent, rgba(232, 211, 154, 0.34), transparent);
+          transform-origin: center;
+        }
+
+        .saju-entry__constellation span:nth-child(1) {
+          top: 18%;
+          left: 4%;
+          transform: rotate(-18deg);
+        }
+
+        .saju-entry__constellation span:nth-child(2) {
+          top: 22%;
+          right: 0;
+          transform: rotate(24deg);
+        }
+
+        .saju-entry__constellation span:nth-child(3) {
+          bottom: 18%;
+          left: 18%;
+          transform: rotate(9deg);
+        }
+
+        .saju-entry__particles i {
+          position: absolute;
+          z-index: 1;
+          display: block;
+          border-radius: 999px;
+          background: rgba(255, 246, 218, 0.86);
+          box-shadow: 0 0 18px rgba(232, 211, 154, 0.42);
+          animation: saju-float linear infinite;
+          pointer-events: none;
+        }
+
+        .saju-entry__card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 50% 0%, rgba(232, 211, 154, 0.14), transparent 42%),
+            linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.07) 44%, transparent 55%);
+          pointer-events: none;
+        }
+
+        .saju-entry__halo {
+          position: absolute;
+          inset: 26px;
+          pointer-events: none;
+          opacity: 0.56;
+        }
+
+        .saju-entry__halo span {
+          position: absolute;
+          left: 50%;
+          top: 76px;
+          width: 174px;
+          height: 174px;
+          border-radius: 999px;
+          border: 1px solid rgba(232, 211, 154, 0.2);
+          transform: translateX(-50%);
+          animation: saju-orbit 18s linear infinite;
+        }
+
+        .saju-entry__halo span:nth-child(2) {
+          width: 220px;
+          height: 220px;
+          border-color: rgba(143, 126, 255, 0.16);
+          animation-duration: 28s;
+          animation-direction: reverse;
+        }
+
+        .saju-entry__eyebrow {
+          position: relative;
+          z-index: 1;
+          color: ${ACCENT};
+          font-family: 'Inter', sans-serif;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+        }
+
+        .saju-entry__mark {
+          position: relative;
+          z-index: 1;
+          width: 78px;
+          height: 78px;
+          margin: 20px auto 0;
+          border-radius: 999px;
+          border: 1px solid rgba(232, 211, 154, 0.42);
+          background:
+            radial-gradient(circle, rgba(255, 247, 223, 0.92) 0 4px, transparent 5px),
+            radial-gradient(circle, rgba(232, 211, 154, 0.2), rgba(255,255,255,0.035) 62%, transparent 64%);
+          box-shadow:
+            0 0 44px rgba(232, 211, 154, 0.24),
+            inset 0 0 24px rgba(255,255,255,0.08);
+        }
+
+        .saju-entry__mark span,
+        .saju-entry__mark b {
+          position: absolute;
+          inset: 13px;
+          border-radius: 999px;
+          border: 1px solid rgba(232, 211, 154, 0.24);
+          transform: rotate(28deg) scaleX(1.35);
+        }
+
+        .saju-entry__mark b {
+          inset: 21px;
+          transform: rotate(-38deg) scaleX(1.75);
+          border-color: rgba(144, 191, 255, 0.24);
+        }
+
+        .saju-entry__choices {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          gap: 12px;
+          margin: 0 auto;
+          max-width: 500px;
+        }
+
+        .saju-entry__choice {
+          min-height: 74px;
+          border: 1px solid rgba(232, 211, 154, 0.25);
+          border-radius: 22px;
+          background:
+            linear-gradient(135deg, rgba(232, 211, 154, 0.12), rgba(255,255,255,0.045)),
+            rgba(8, 9, 22, 0.62);
+          color: #fff8e7;
+          cursor: pointer;
+          display: grid;
+          grid-template-columns: 32px 1fr;
+          gap: 14px;
+          align-items: center;
+          padding: 16px 18px;
+          text-align: left;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+          transition:
+            transform 180ms ease,
+            border-color 180ms ease,
+            box-shadow 180ms ease,
+            background 180ms ease;
+          touch-action: manipulation;
+          font-family: var(--font-noto-sans-kr), 'Inter', sans-serif;
+        }
+
+        .saju-entry__choice:hover,
+        .saju-entry__choice:focus-visible {
+          transform: translateY(-2px);
+          border-color: rgba(232, 211, 154, 0.62);
+          background:
+            linear-gradient(135deg, rgba(232, 211, 154, 0.2), rgba(142, 125, 255, 0.08)),
+            rgba(8, 9, 22, 0.72);
+          box-shadow:
+            0 16px 42px rgba(0,0,0,0.32),
+            0 0 28px rgba(232,211,154,0.14),
+            inset 0 1px 0 rgba(255,255,255,0.18);
+          outline: none;
+        }
+
+        .saju-entry__choice:active {
+          transform: translateY(0);
+        }
+
+        .saju-entry__choice-orbit {
+          width: 30px;
+          height: 30px;
+          border-radius: 999px;
+          border: 1px solid rgba(232, 211, 154, 0.42);
+          background: radial-gradient(circle, rgba(232,211,154,0.9) 0 3px, transparent 4px);
+          box-shadow: 0 0 20px rgba(232,211,154,0.2);
+        }
+
+        .saju-entry__choice strong {
+          display: block;
+          font-size: clamp(16px, 4vw, 19px);
+          line-height: 1.35;
+          letter-spacing: 0;
+        }
+
+        .saju-entry__choice small {
+          display: block;
+          margin-top: 5px;
+          color: rgba(245,240,224,0.62);
+          font-size: 13px;
+          line-height: 1.45;
+        }
+
+        .saju-entry__helper {
+          position: relative;
+          z-index: 1;
+          margin: 22px auto 0;
+          max-width: 430px;
+          color: rgba(245,240,224,0.62);
+          font-size: 14px;
+          line-height: 1.65;
+          font-family: var(--font-noto-sans-kr), sans-serif;
+        }
+
+        @keyframes saju-breathe {
+          0%, 100% { opacity: 0.72; transform: scale(0.98); }
+          50% { opacity: 1; transform: scale(1.03); }
+        }
+
+        @keyframes saju-float {
+          0% { opacity: 0; transform: translate3d(0, 16px, 0); }
+          18% { opacity: 0.72; }
+          100% { opacity: 0; transform: translate3d(8px, -42px, 0); }
+        }
+
+        @keyframes saju-orbit {
+          from { transform: translateX(-50%) rotate(0deg) scaleX(1.38); }
+          to { transform: translateX(-50%) rotate(360deg) scaleX(1.38); }
+        }
+
+        @media (max-width: 540px) {
+          .saju-entry {
+            padding: 12px 0 42px;
+          }
+
+          .saju-entry__card {
+            border-radius: 26px;
+          }
+
+          .saju-entry__choice {
+            min-height: 74px;
+            border-radius: 18px;
+            padding: 14px 15px;
+          }
+
+          .saju-entry__halo {
+            inset: 12px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .saju-entry__glow,
+          .saju-entry__particles i,
+          .saju-entry__halo span {
+            animation: none;
+          }
+        }
+      `}</style>
+    </section>
   );
 }
 
@@ -1473,29 +1806,17 @@ function SajuForm({
         </Field>
 
         <Field label="태어난 시간  ·  Birth Hour">
-          <select
+          <HourPicker
             value={form.unknownHour ? "" : form.hour}
-            onChange={(e) =>
+            disabled={form.unknownHour}
+            onChange={(hour) =>
               setForm((f) => ({
                 ...f,
-                hour: e.target.value,
-                unknownHour: e.target.value === "" ? f.unknownHour : false,
+                hour,
+                unknownHour: hour === "" ? f.unknownHour : false,
               }))
             }
-            disabled={form.unknownHour}
-            style={{ ...inputStyle, opacity: form.unknownHour ? 0.4 : 1 }}
-          >
-            <option value="">시간을 선택하세요</option>
-            {BRANCHES.map((b, i) => {
-              // Display 2-hour block + branch animal
-              const hourCenter = i === 0 ? 0 : i * 2 - 1;
-              return (
-                <option key={b.ko} value={String(hourCenter)}>
-                  {b.hourRange} · {b.ko}시 ({b.animal} {b.emoji})
-                </option>
-              );
-            })}
-          </select>
+          />
           <label
             style={{
               display: "flex",
@@ -1578,6 +1899,128 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
+function HourPicker({
+  value,
+  disabled,
+  onChange,
+}: {
+  value: string;
+  disabled: boolean;
+  onChange: (hour: string) => void;
+}): ReactElement {
+  const [open, setOpen] = useState(false);
+  const pickerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!pickerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    window.addEventListener("pointerdown", onPointerDown);
+    return () => window.removeEventListener("pointerdown", onPointerDown);
+  }, [open]);
+
+  const options = BRANCHES.map((branch, index) => {
+    const hourCenter = index === 0 ? 0 : index * 2 - 1;
+    return {
+      value: String(hourCenter),
+      label: `${branch.hourRange} · ${branch.ko}시 (${branch.animal} ${branch.emoji})`,
+    };
+  });
+  const selected = options.find((option) => option.value === value);
+
+  return (
+    <div ref={pickerRef} style={{ position: "relative" }}>
+      <button
+        type="button"
+        disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+        style={{
+          ...inputStyle,
+          width: "100%",
+          minHeight: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          textAlign: "left",
+          cursor: disabled ? "not-allowed" : "pointer",
+          opacity: disabled ? 0.4 : 1,
+          color: selected ? INK : "rgba(245,240,224,0.48)",
+        }}
+      >
+        <span>{selected?.label ?? "시간을 선택하세요"}</span>
+        <span
+          aria-hidden
+          style={{
+            color: ACCENT,
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 160ms ease",
+          }}
+        >
+          ▾
+        </span>
+      </button>
+
+      {open && !disabled && (
+        <div
+          role="listbox"
+          style={{
+            position: "absolute",
+            zIndex: 20,
+            top: "calc(100% + 8px)",
+            left: 0,
+            right: 0,
+            maxHeight: 260,
+            overflowY: "auto",
+            padding: 6,
+            border: `1px solid ${RULE}`,
+            borderRadius: 16,
+            background: "#111321",
+            boxShadow: "0 18px 42px rgba(0,0,0,0.38)",
+          }}
+        >
+          {options.map((option) => {
+            const active = option.value === value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                role="option"
+                aria-selected={active}
+                onClick={() => {
+                  onChange(option.value);
+                  setOpen(false);
+                }}
+                style={{
+                  width: "100%",
+                  minHeight: 42,
+                  padding: "10px 12px",
+                  border: 0,
+                  borderRadius: 12,
+                  background: active ? PAPER_2 : "transparent",
+                  color: active ? ACCENT : INK,
+                  textAlign: "left",
+                  fontFamily: "var(--font-noto-sans-kr), sans-serif",
+                  fontSize: 14,
+                  fontWeight: active ? 800 : 600,
+                  cursor: "pointer",
+                }}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ============================================================================
    Result view
    ============================================================================ */
@@ -1627,7 +2070,7 @@ function Starfield(): ReactElement {
             cx={s.x}
             cy={s.y}
             r={s.r * 0.15}
-            fill="#FFD700"
+            fill={ACCENT}
             opacity={s.o * 0.4}
           />
         ))}
@@ -1654,7 +2097,7 @@ function BaguaCorner(): ReactElement {
         pointerEvents: "none",
         fontFamily: "serif",
         fontSize: 26,
-        color: "#FFD700",
+        color: ACCENT,
         letterSpacing: "0.2em",
       }}
     >
@@ -2412,9 +2855,9 @@ const inputStyle: React.CSSProperties = {
 };
 
 const primaryButtonStyle: React.CSSProperties = {
-  background: ACCENT,
-  color: "#0a0a1a",
-  border: "none",
+  background: "linear-gradient(135deg, #fff1bd 0%, #d7b56e 48%, #95713a 100%)",
+  color: "#080914",
+  border: "1px solid rgba(255,255,255,0.24)",
   padding: "18px 32px",
   borderRadius: 999,
   fontSize: 18,
@@ -2422,12 +2865,13 @@ const primaryButtonStyle: React.CSSProperties = {
   letterSpacing: "0.16em",
   cursor: "pointer",
   touchAction: "manipulation",
-  boxShadow: "0 8px 28px rgba(255,215,0,0.25)",
+  boxShadow:
+    "0 16px 42px rgba(185,148,84,0.24), inset 0 1px 0 rgba(255,255,255,0.45)",
   fontFamily: "'Inter', sans-serif",
 };
 
 const secondaryButtonStyle: React.CSSProperties = {
-  background: "transparent",
+  background: "rgba(255,255,255,0.04)",
   color: INK,
   border: `1px solid ${RULE}`,
   padding: "18px 32px",
@@ -2438,6 +2882,7 @@ const secondaryButtonStyle: React.CSSProperties = {
   cursor: "pointer",
   touchAction: "manipulation",
   fontFamily: "'Inter', sans-serif",
+  backdropFilter: "blur(10px)",
 };
 
 function Eyebrow({ children }: { children: React.ReactNode }): ReactElement {

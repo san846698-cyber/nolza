@@ -12,6 +12,7 @@ import {
 import "./globals.css";
 import { AdSideRails } from "./components/Ads";
 import LocaleToggle from "./components/LocaleToggle";
+import SiteFooter from "./components/SiteFooter";
 
 const notoSans = Noto_Sans_KR({
   subsets: ["latin"],
@@ -70,6 +71,9 @@ const pressStart = Press_Start_2P({
   display: "swap",
 });
 
+const siteDescription =
+  "Nolza.fun is a collection of original browser games, quizzes, simulations, and interactive entertainment experiences.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://nolza.fun",
@@ -78,10 +82,10 @@ export const metadata: Metadata = {
     default: "nolza.fun",
     template: "%s | nolza.fun",
   },
-  description: "nolza.fun - 짧고 재미있는 인터랙티브 웹게임 모음",
+  description: siteDescription,
   openGraph: {
     title: "nolza.fun",
-    description: "짧고 재미있는 인터랙티브 웹게임 모음",
+    description: siteDescription,
     url: "/",
     siteName: "nolza.fun",
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
@@ -91,7 +95,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "nolza.fun",
-    description: "짧고 재미있는 인터랙티브 웹게임 모음",
+    description: siteDescription,
     images: ["/opengraph-image"],
   },
 };
@@ -110,8 +114,6 @@ export default function RootLayout({
     >
       <head>
         {adsenseClient && !adsenseClient.startsWith("ca-pub-XXX") && (
-          // AdSense verification + ad-serving script must be a real <script> in <head>.
-          // next/script only injects a preload hint here, which the AdSense crawler ignores.
           <script
             async
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
@@ -126,6 +128,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <LocaleToggle />
         {children}
+        <SiteFooter />
         <AdSideRails />
       </body>
     </html>

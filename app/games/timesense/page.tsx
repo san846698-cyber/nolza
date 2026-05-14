@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+import { AdBottom, AdMobileSticky } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
 
 const ROUNDS = [3, 7, 15, 30, 60];
@@ -28,11 +28,47 @@ function roundMessage(target: number, actual: number, t: T): string {
   return t("조금 늦었어요", "A bit late");
 }
 
-function totalTier(avg: number, t: T): { msg: string; tone: string } {
-  if (avg >= 95) return { msg: t("당신은 시간을 느낍니다 ⏱️", "You feel time ⏱️"), tone: "#FFD60A" };
-  if (avg >= 85) return { msg: t("훌륭한 시간 감각이에요", "Excellent time sense"), tone: "#00FF88" };
-  if (avg >= 70) return { msg: t("평균적인 시간 감각", "Average time sense"), tone: "#fff" };
-  return { msg: t("시간이 당신을 지배하고 있어요", "Time controls you"), tone: "#FF9F0A" };
+function totalTier(avg: number, t: T): { title: string; desc: string; tone: string } {
+  if (avg >= 90) {
+    return {
+      title: t("시간을 지배하는 자", "Master of time"),
+      desc: t("초 단위 감각이 거의 스톱워치입니다. 이 정도면 눈 감고도 꽤 정확해요.", "Your seconds are nearly stopwatch-level. Even with eyes closed, you are very precise."),
+      tone: "#FFD60A",
+    };
+  }
+  if (avg >= 75) {
+    return {
+      title: t("인간 스톱워치", "Human stopwatch"),
+      desc: t("크게 흔들리지 않는 안정적인 시간 감각입니다. 집중하면 더 무서워질 타입이에요.", "A steady internal clock. With focus, this gets dangerous."),
+      tone: "#00FF88",
+    };
+  }
+  if (avg >= 60) {
+    return {
+      title: t("감각은 꽤 좋은 편", "Pretty good time sense"),
+      desc: t("완벽하진 않아도 흐름은 잘 잡습니다. 중간중간 한 박자만 다듬으면 좋아요.", "Not perfect, but you catch the flow. A little tuning would help."),
+      tone: "#9BE15D",
+    };
+  }
+  if (avg >= 45) {
+    return {
+      title: t("시간과 살짝 어긋난 사람", "Slightly out of sync"),
+      desc: t("몸속 시계가 아주 살짝 늦거나 빨랐습니다. 감은 있는데 리듬이 흔들렸어요.", "Your inner clock ran a little early or late. The sense is there, but the rhythm wobbled."),
+      tone: "#FFD60A",
+    };
+  }
+  if (avg >= 30) {
+    return {
+      title: t("시계가 필요한 타입", "Needs a clock"),
+      desc: t("시간 감각이 살짝 흔들렸어요. 44% 근처라면 칭찬보다 리듬 재정비가 먼저입니다.", "Your time sense wobbled. Around 44%, this needs rhythm tuning before praise."),
+      tone: "#FF9F0A",
+    };
+  }
+  return {
+    title: t("시간 감각이 산책 나감", "Time sense went for a walk"),
+    desc: t("몸속 시계가 잠깐 외출했습니다. 다시 하면 의외로 금방 돌아올 수 있어요.", "Your internal clock stepped out for a moment. A retry may bring it back quickly."),
+    tone: "#FF453A",
+  };
 }
 
 export default function TimeSenseGame() {
@@ -105,9 +141,10 @@ export default function TimeSenseGame() {
   }, [phase, results, best]);
 
   const handleShare = async () => {
+    const tier = totalTier(overall, t);
     const text = t(
-      `내 시간 감각 정확도 ${overall.toFixed(1)}% → nolza.fun/games/timesense`,
-      `My time sense accuracy: ${overall.toFixed(1)}% → nolza.fun/games/timesense`,
+      `내 시간 감각 정확도 ${overall.toFixed(1)}%, 결과는 "${tier.title}" → nolza.fun/games/timesense`,
+      `My time sense accuracy: ${overall.toFixed(1)}%. Result: "${tier.title}" → nolza.fun/games/timesense`,
     );
     try {
       await navigator.clipboard.writeText(text);
@@ -244,8 +281,30 @@ export default function TimeSenseGame() {
               {overall.toFixed(0)}
               <span style={{ fontSize: 36, color: "#444", fontWeight: 300 }}>%</span>
             </div>
-            <div style={{ marginTop: 16, fontSize: 16, color: "#aaa" }}>
-              {tier.msg}
+            <div
+              style={{
+                marginTop: 18,
+                fontSize: "clamp(23px, 6vw, 34px)",
+                fontWeight: 800,
+                color: tier.tone,
+                lineHeight: 1.18,
+                letterSpacing: "-0.01em",
+                fontFamily: "var(--font-noto-sans-kr), sans-serif",
+              }}
+            >
+              {tier.title}
+            </div>
+            <div
+              style={{
+                margin: "12px auto 0",
+                maxWidth: 360,
+                fontSize: 15,
+                color: "#aaa",
+                lineHeight: 1.65,
+                fontFamily: "var(--font-noto-sans-kr), sans-serif",
+              }}
+            >
+              {tier.desc}
             </div>
           </div>
 

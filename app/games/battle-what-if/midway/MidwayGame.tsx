@@ -127,7 +127,7 @@ export default function MidwayGame({
           top: 24,
           left: 24,
           color: DIM,
-          fontSize: 22,
+          fontSize: 24,
           textDecoration: "none",
           zIndex: 5,
         }}
@@ -174,7 +174,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
     <div className="text-center fade-in">
       <div
         style={{
-          fontSize: 13,
+          fontSize: 15,
           color: ACCENT,
           letterSpacing: "0.24em",
           textTransform: "uppercase",
@@ -186,7 +186,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
       <h1
         style={{
           marginTop: 24,
-          fontSize: 38,
+          fontSize: 40,
           fontWeight: 600,
           lineHeight: 1.3,
           letterSpacing: "-0.5px",
@@ -197,7 +197,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
       <div
         style={{
           marginTop: 12,
-          fontSize: 17,
+          fontSize: 19,
           color: DIM,
           fontStyle: "italic",
         }}
@@ -207,7 +207,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
       <p
         style={{
           marginTop: 32,
-          fontSize: 17,
+          fontSize: 19,
           color: FG,
           lineHeight: 1.85,
           letterSpacing: "-0.1px",
@@ -226,7 +226,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
       <p
         style={{
           marginTop: 16,
-          fontSize: 14,
+          fontSize: 16,
           color: DIM,
           lineHeight: 1.85,
           letterSpacing: "0.02em",
@@ -262,7 +262,7 @@ function DilemmaScreen({
       <div
         style={{
           textAlign: "center",
-          fontSize: 12,
+          fontSize: 14,
           color: DIM,
           letterSpacing: "0.3em",
           textTransform: "uppercase",
@@ -275,7 +275,7 @@ function DilemmaScreen({
         style={{
           textAlign: "center",
           marginTop: 6,
-          fontSize: 13,
+          fontSize: 15,
           color: ACCENT,
           letterSpacing: "0.08em",
         }}
@@ -304,7 +304,7 @@ function DilemmaScreen({
           <div>
             <p
               style={{
-                fontSize: 16,
+                fontSize: 18,
                 color: FG,
                 lineHeight: 1.85,
                 letterSpacing: "-0.1px",
@@ -328,7 +328,7 @@ function DilemmaScreen({
             >
               <div
                 style={{
-                  fontSize: 11,
+                  fontSize: 12,
                   color: ACCENT,
                   letterSpacing: "0.28em",
                   textTransform: "uppercase",
@@ -349,7 +349,7 @@ function DilemmaScreen({
                 >
                   <div
                     style={{
-                      fontSize: 11,
+                      fontSize: 12,
                       color: DIM,
                       letterSpacing: "0.12em",
                       textTransform: "uppercase",
@@ -361,7 +361,7 @@ function DilemmaScreen({
                   </div>
                   <div
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       color: FG,
                       lineHeight: 1.7,
                       letterSpacing: "-0.05px",
@@ -379,7 +379,7 @@ function DilemmaScreen({
             <h3
               style={{
                 margin: 0,
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: 500,
                 lineHeight: 1.5,
                 letterSpacing: "-0.2px",
@@ -407,7 +407,7 @@ function DilemmaScreen({
                       borderRadius: 6,
                       color: FG,
                       fontFamily: SERIF,
-                      fontSize: 15,
+                      fontSize: 17,
                       lineHeight: 1.5,
                       letterSpacing: "-0.1px",
                       textAlign: "left",
@@ -434,7 +434,7 @@ function DilemmaScreen({
                       <div
                         style={{
                           marginTop: 6,
-                          fontSize: 12,
+                          fontSize: 14,
                           color: DIM,
                           fontStyle: "italic",
                           lineHeight: 1.6,
@@ -474,7 +474,7 @@ function AftermathCard({
       >
         <div
           style={{
-            fontSize: 11,
+            fontSize: 12,
             color: ACCENT,
             letterSpacing: "0.28em",
             textTransform: "uppercase",
@@ -486,7 +486,7 @@ function AftermathCard({
         <div
           style={{
             marginTop: 12,
-            fontSize: 18,
+            fontSize: 20,
             color: FG,
             fontWeight: 500,
             lineHeight: 1.55,
@@ -499,7 +499,7 @@ function AftermathCard({
           <div
             style={{
               marginTop: 10,
-              fontSize: 14,
+              fontSize: 16,
               color: DIM,
               fontStyle: "italic",
               lineHeight: 1.7,
@@ -518,7 +518,7 @@ function AftermathCard({
         >
           <div
             style={{
-              fontSize: 11,
+              fontSize: 12,
               color: DIM,
               letterSpacing: "0.28em",
               textTransform: "uppercase",
@@ -530,7 +530,7 @@ function AftermathCard({
           <div
             style={{
               marginTop: 10,
-              fontSize: 15,
+              fontSize: 17,
               color: FG,
               lineHeight: 1.85,
               letterSpacing: "-0.05px",
@@ -576,7 +576,7 @@ function ResultScreen({
       <div
         style={{
           textAlign: "center",
-          fontSize: 12,
+          fontSize: 14,
           color: ACCENT,
           letterSpacing: "0.32em",
           textTransform: "uppercase",
@@ -589,7 +589,7 @@ function ResultScreen({
         style={{
           marginTop: 14,
           textAlign: "center",
-          fontSize: 32,
+          fontSize: 34,
           fontWeight: 700,
           color: ACCENT,
           letterSpacing: "-0.4px",
@@ -602,7 +602,7 @@ function ResultScreen({
         style={{
           marginTop: 14,
           textAlign: "center",
-          fontSize: 16,
+          fontSize: 18,
           color: FG,
           lineHeight: 1.7,
           fontStyle: "italic",
@@ -637,7 +637,7 @@ function ResultScreen({
             borderRadius: 999,
             color: BG,
             fontFamily: SERIF,
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: 700,
             letterSpacing: "0.08em",
             textDecoration: "none",
@@ -674,7 +674,7 @@ function AxisBar({ axis, value }: { axis: Axis; value: number }) {
       >
         <span
           style={{
-            fontSize: 13,
+            fontSize: 15,
             color: FG,
             letterSpacing: "0.14em",
             textTransform: "uppercase",
@@ -685,7 +685,7 @@ function AxisBar({ axis, value }: { axis: Axis; value: number }) {
         </span>
         <span
           style={{
-            fontSize: 13,
+            fontSize: 15,
             color: value >= 0 ? ACCENT : DIM,
             fontFamily: MONO,
             letterSpacing: "0.04em",
@@ -697,7 +697,7 @@ function AxisBar({ axis, value }: { axis: Axis; value: number }) {
       </div>
       <div
         style={{
-          fontSize: 12,
+          fontSize: 14,
           color: DIM,
           lineHeight: 1.6,
           fontStyle: "italic",
@@ -778,7 +778,7 @@ function TraitBlock({
     >
       <div
         style={{
-          fontSize: 11,
+          fontSize: 12,
           color,
           letterSpacing: "0.24em",
           textTransform: "uppercase",
@@ -804,7 +804,7 @@ function TraitBlock({
             style={{
               display: "flex",
               gap: 10,
-              fontSize: 14,
+              fontSize: 16,
               color: FG,
               lineHeight: 1.6,
               letterSpacing: "-0.05px",
@@ -843,7 +843,7 @@ function ChemistryCard({
     >
       <div
         style={{
-          fontSize: 10,
+          fontSize: 12,
           color: tone,
           letterSpacing: "0.26em",
           textTransform: "uppercase",
@@ -855,7 +855,7 @@ function ChemistryCard({
       </div>
       <div
         style={{
-          fontSize: 16,
+          fontSize: 18,
           color: FG,
           fontWeight: 600,
           letterSpacing: "-0.1px",
@@ -867,7 +867,7 @@ function ChemistryCard({
       <div
         style={{
           marginTop: 6,
-          fontSize: 13,
+          fontSize: 15,
           color: DIM,
           lineHeight: 1.65,
           fontStyle: "italic",
@@ -914,7 +914,7 @@ function HistoryTimeline({
       {/* Section eyebrow + main headline */}
       <div
         style={{
-          fontSize: 11,
+          fontSize: 12,
           color: ACCENT,
           letterSpacing: "0.32em",
           textTransform: "uppercase",
@@ -928,7 +928,7 @@ function HistoryTimeline({
         style={{
           margin: "12px 0 0",
           textAlign: "center",
-          fontSize: 30,
+          fontSize: 32,
           fontWeight: 700,
           letterSpacing: "-0.5px",
           color: FG,
@@ -944,7 +944,7 @@ function HistoryTimeline({
         style={{
           marginTop: 16,
           textAlign: "center",
-          fontSize: 15,
+          fontSize: 17,
           color: DIM,
           lineHeight: 1.85,
           fontStyle: "italic",
@@ -1018,7 +1018,7 @@ function HistoryTimeline({
               >
                 <div
                   style={{
-                    fontSize: 11,
+                    fontSize: 12,
                     color: DIM,
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
@@ -1029,7 +1029,7 @@ function HistoryTimeline({
                 </div>
                 <div
                   style={{
-                    fontSize: 10,
+                    fontSize: 12,
                     color: matched ? "#7ad77a" : DIM,
                     fontFamily: MONO,
                     letterSpacing: "0.1em",
@@ -1042,7 +1042,7 @@ function HistoryTimeline({
               </div>
               <div
                 style={{
-                  fontSize: 16,
+                  fontSize: 18,
                   color: ACCENT,
                   fontWeight: 600,
                   letterSpacing: "-0.1px",
@@ -1064,7 +1064,7 @@ function HistoryTimeline({
                 {/* Lead-in: what you chose */}
                 <div
                   style={{
-                    fontSize: 14,
+                    fontSize: 16,
                     color: FG,
                     lineHeight: 1.7,
                     letterSpacing: "-0.05px",
@@ -1091,7 +1091,7 @@ function HistoryTimeline({
                 >
                   <div
                     style={{
-                      fontSize: 10,
+                      fontSize: 12,
                       color: ACCENT,
                       letterSpacing: "0.24em",
                       textTransform: "uppercase",
@@ -1103,7 +1103,7 @@ function HistoryTimeline({
                   </div>
                   <div
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       color: FG,
                       lineHeight: 1.75,
                       letterSpacing: "-0.05px",
@@ -1123,7 +1123,7 @@ function HistoryTimeline({
                 >
                   <div
                     style={{
-                      fontSize: 10,
+                      fontSize: 12,
                       color: DIM,
                       letterSpacing: "0.18em",
                       textTransform: "uppercase",
@@ -1135,7 +1135,7 @@ function HistoryTimeline({
                   </div>
                   <div
                     style={{
-                      fontSize: 13,
+                      fontSize: 15,
                       color: DIM,
                       lineHeight: 1.75,
                       fontStyle: "italic",
@@ -1157,7 +1157,7 @@ function HistoryTimeline({
                   >
                     <div
                       style={{
-                        fontSize: 10,
+                        fontSize: 12,
                         color: DIM,
                         letterSpacing: "0.18em",
                         textTransform: "uppercase",
@@ -1169,7 +1169,7 @@ function HistoryTimeline({
                     </div>
                     <div
                       style={{
-                        fontSize: 13,
+                        fontSize: 15,
                         color: DIM,
                         lineHeight: 1.7,
                       }}
@@ -1185,7 +1185,7 @@ function HistoryTimeline({
                     marginTop: 12,
                     paddingTop: 8,
                     borderTop: `1px dashed ${BORDER}`,
-                    fontSize: 11,
+                    fontSize: 12,
                     color: DIM,
                     fontFamily: MONO,
                     lineHeight: 1.6,
@@ -1261,7 +1261,7 @@ function ShareCardPanel({
             display: "flex",
             justifyContent: "space-between",
             alignItems: "baseline",
-            fontSize: 11,
+            fontSize: 12,
             color: ACCENT,
             letterSpacing: "0.32em",
             textTransform: "uppercase",
@@ -1278,7 +1278,7 @@ function ShareCardPanel({
         <div
           style={{
             marginTop: 24,
-            fontSize: 12,
+            fontSize: 14,
             color: DIM,
             letterSpacing: "0.22em",
             textTransform: "uppercase",
@@ -1311,7 +1311,7 @@ function ShareCardPanel({
             background: "rgba(244,236,216,0.04)",
             borderLeft: `3px solid ${ACCENT}`,
             borderRadius: 4,
-            fontSize: 16,
+            fontSize: 18,
             color: FG,
             lineHeight: 1.65,
             fontStyle: "italic",
@@ -1353,7 +1353,7 @@ function ShareCardPanel({
                 >
                   <span
                     style={{
-                      fontSize: 11,
+                      fontSize: 12,
                       color: FG,
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
@@ -1364,7 +1364,7 @@ function ShareCardPanel({
                   </span>
                   <span
                     style={{
-                      fontSize: 12,
+                      fontSize: 14,
                       color: v >= 0 ? ACCENT : DIM,
                       fontFamily: MONO,
                       fontWeight: 700,
@@ -1411,7 +1411,7 @@ function ShareCardPanel({
           <div>
             <div
               style={{
-                fontSize: 11,
+                fontSize: 12,
                 color: DIM,
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
@@ -1431,7 +1431,7 @@ function ShareCardPanel({
             >
               <span
                 style={{
-                  fontSize: 36,
+                  fontSize: 38,
                   fontWeight: 800,
                   color: ACCENT,
                   lineHeight: 1,
@@ -1440,12 +1440,12 @@ function ShareCardPanel({
               >
                 {commanderMatchCount}
               </span>
-              <span style={{ fontSize: 16, color: DIM }}>/ 5</span>
+              <span style={{ fontSize: 18, color: DIM }}>/ 5</span>
             </div>
           </div>
           <div
             style={{
-              fontSize: 11,
+              fontSize: 12,
               color: ACCENT,
               letterSpacing: "0.24em",
               textTransform: "uppercase",
@@ -1478,7 +1478,7 @@ function ShareCardPanel({
             borderRadius: 999,
             color: BG,
             fontFamily: SERIF,
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: 700,
             letterSpacing: "0.08em",
             textDecoration: "none",
@@ -1503,7 +1503,7 @@ function ShareCardPanel({
             borderRadius: 999,
             color: ACCENT,
             fontFamily: SERIF,
-            fontSize: 14,
+            fontSize: 16,
             letterSpacing: "0.08em",
             cursor: "pointer",
             transition: "background 150ms, color 150ms",
@@ -1526,7 +1526,7 @@ function ShareCardPanel({
         style={{
           marginTop: 10,
           textAlign: "center",
-          fontSize: 12,
+          fontSize: 14,
           color: DIM,
           fontStyle: "italic",
           lineHeight: 1.6,
@@ -1553,7 +1553,7 @@ function Pill({ children, onClick }: { children: React.ReactNode; onClick: () =>
         borderRadius: 999,
         color: ACCENT,
         fontFamily: SERIF,
-        fontSize: 15,
+        fontSize: 17,
         letterSpacing: "0.08em",
         cursor: "pointer",
         transition: "background 150ms, color 150ms",

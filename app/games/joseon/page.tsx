@@ -11,7 +11,7 @@ import {
 import { AdMobileSticky } from "../../components/Ads";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
-  buildFateStory,
+  buildRichJoseonResult,
   hashString,
   HISTORICAL_EVENTS,
   mulberry32,
@@ -25,8 +25,10 @@ import {
   type Gender,
   type HistoricalEvent,
   type JoseonName,
+  type RichJoseonResult,
   type Residence,
 } from "@/lib/joseon";
+import RecommendedGames from "../../components/game/RecommendedGames";
 
 type Phase = "input" | "loading" | "result";
 
@@ -49,6 +51,7 @@ type Result = {
   profession: { ko: string; en: string };
   storyKo: string;
   storyEn: string;
+  rich: RichJoseonResult;
 };
 
 function computeResult(
@@ -76,10 +79,11 @@ function computeResult(
     profession,
     rng: mulberry32(seed + 1),
   };
-  const storyKo = buildFateStory(baseCtx, "ko");
-  const storyEn = buildFateStory({ ...baseCtx, rng: mulberry32(seed + 1) }, "en");
+  const rich = buildRichJoseonResult({ ...baseCtx, rng: mulberry32(seed + 3) });
+  const storyKo = rich.story.ko;
+  const storyEn = rich.story.en;
 
-  return { cls, joseonName, residence, event, profession, storyKo, storyEn };
+  return { cls, joseonName, residence, event, profession, storyKo, storyEn, rich };
 }
 
 export default function JoseonPage(): ReactElement {
@@ -92,7 +96,7 @@ export default function JoseonPage(): ReactElement {
   const [day, setDay] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [submittedName, setSubmittedName] = useState("");
-  const [copied, setCopied] = useState(false);
+  const [shareState, setShareState] = useState<"link" | "share" | null>(null);
   const [stamping, setStamping] = useState(false);
 
   const handleSubmit = useCallback(
@@ -133,26 +137,54 @@ export default function JoseonPage(): ReactElement {
 
   const handleShare = useCallback(async () => {
     if (!result) return;
+    const shareUrl =
+      typeof window !== "undefined" ? `${window.location.origin}/games/joseon` : "https://nolza.fun/games/joseon";
+    const title = t(result.rich.title.ko, result.rich.title.en);
     const text = t(
-      `나의 조선시대 신분: ${result.cls.ko}\n` +
-        `이름: ${result.joseonName.display}(${result.joseonName.hanja})\n` +
-        `${result.storyKo.split(".")[0]}.\n` +
-        `→ nolza.fun/games/joseon`,
-      `My Joseon Dynasty fate: ${result.cls.en}\n` +
-        `Name: ${result.joseonName.display} (${result.joseonName.hanja})\n` +
-        `${result.storyEn.split(".")[0]}.\n` +
-        `→ nolza.fun/games/joseon`,
+      `${result.rich.shareLine.ko}\n` +
+        `신분: ${result.cls.ko} · 직업: ${result.profession.ko}\n` +
+        `대표 키워드: ${result.rich.shareTraits.map((trait) => trait.ko).join(", ")}`,
+      `${result.rich.shareLine.en}\n` +
+        `Status: ${result.cls.en} · Job: ${result.profession.en}\n` +
+        `Key traits: ${result.rich.shareTraits.map((trait) => trait.en).join(", ")}`,
     );
     try {
+      if (
+        typeof navigator !== "undefined" &&
+        typeof (navigator as Navigator & { share?: unknown }).share === "function"
+      ) {
+        await (
+          navigator as Navigator & {
+            share: (data: { title: string; text: string; url: string }) => Promise<void>;
+          }
+        ).share({ title, text, url: shareUrl });
+        setShareState("share");
+        setTimeout(() => setShareState(null), 2000);
+        return;
+      }
       if (typeof navigator !== "undefined" && navigator.clipboard) {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard.writeText(`${text}\n${shareUrl}`);
       }
     } catch {
       /* ignore */
     }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setShareState("share");
+    setTimeout(() => setShareState(null), 2000);
   }, [result, t]);
+
+  const handleCopyLink = useCallback(async () => {
+    const link =
+      typeof window !== "undefined" ? `${window.location.origin}/games/joseon` : "https://nolza.fun/games/joseon";
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        await navigator.clipboard.writeText(link);
+      }
+    } catch {
+      /* ignore */
+    }
+    setShareState("link");
+    setTimeout(() => setShareState(null), 2000);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") window.scrollTo(0, 0);
@@ -242,8 +274,9 @@ export default function JoseonPage(): ReactElement {
             locale={locale}
             t={t}
             onShare={handleShare}
+            onCopyLink={handleCopyLink}
             onReset={handleReset}
-            copied={copied}
+            shareState={shareState}
           />
         )}
       </div>
@@ -907,19 +940,28 @@ function ResultView({
   locale,
   t,
   onShare,
+  onCopyLink,
   onReset,
-  copied,
+  shareState,
 }: {
   result: Result;
   originalName: string;
   locale: SimpleLocale;
   t: (ko: string, en: string) => string;
   onShare: () => void;
+  onCopyLink: () => void;
   onReset: () => void;
-  copied: boolean;
+  shareState: "link" | "share" | null;
 }): ReactElement {
   const { cls, joseonName, residence, event, profession } = result;
   const story = locale === "ko" ? result.storyKo : result.storyEn;
+  const rich = result.rich;
+  const title = rich.title[locale];
+  const summary = rich.summary[locale];
+  const identityNote = rich.identityNote[locale];
+  const keywords = rich.keywords.map((keyword) => keyword[locale]);
+  const shareTraits = rich.shareTraits.map((trait) => trait[locale]);
+  const shareLine = rich.shareLine[locale];
 
   let revealIdx = 0;
   const stagger = (): React.CSSProperties => ({
@@ -927,7 +969,7 @@ function ResultView({
   });
 
   return (
-    <div className="j-scroll" style={{ maxWidth: 580, width: "100%" }}>
+    <div className="j-scroll" style={{ maxWidth: 680, width: "100%" }}>
       <ScrollFrame>
         <div className="j-ink" style={{ ...stagger(), textAlign: "center", marginBottom: 16 }}>
           <div
@@ -949,7 +991,7 @@ function ResultView({
           <div
             style={{
               fontSize: 11,
-              letterSpacing: "0.32em",
+              letterSpacing: "0.24em",
               color: SUBTLE,
               fontFamily: "'Inter', sans-serif",
               fontWeight: 700,
@@ -959,7 +1001,6 @@ function ResultView({
           </div>
         </div>
 
-        {/* Name card */}
         <div
           className="j-ink"
           style={{
@@ -967,14 +1008,14 @@ function ResultView({
             background: HANJI,
             border: `1px solid ${INK}`,
             borderRadius: 4,
-            padding: "26px 20px 22px",
+            padding: "28px 20px 24px",
             textAlign: "center",
             marginBottom: 18,
             position: "relative",
             boxShadow: `inset 0 0 0 4px ${HANJI}, inset 0 0 0 5px ${DANCHEONG_RED}`,
           }}
         >
-          <div style={{ fontSize: "clamp(40px, 12vw, 52px)", marginBottom: 6 }}>{cls.emoji}</div>
+          <div style={{ fontSize: "clamp(36px, 10vw, 50px)", marginBottom: 8 }}>{cls.emoji}</div>
           <div
             style={{
               fontFamily: SERIF,
@@ -987,29 +1028,65 @@ function ResultView({
           >
             {locale === "ko" ? cls.ko : cls.en}
           </div>
-          <div
+          <h2
             style={{
+              margin: "0 0 10px",
               fontFamily: SERIF,
-              fontSize: "clamp(30px, 9vw, 44px)",
-              fontWeight: 800,
+              fontSize: "clamp(28px, 8vw, 46px)",
+              fontWeight: 900,
               color: INK,
-              letterSpacing: "0.05em",
-              lineHeight: 1.1,
+              lineHeight: 1.18,
             }}
           >
-            {joseonName.display}
-          </div>
+            {title}
+          </h2>
+          <p
+            style={{
+              margin: "0 auto 18px",
+              maxWidth: 520,
+              color: INK_SOFT,
+              fontSize: "clamp(15px, 4vw, 18px)",
+              lineHeight: 1.75,
+              fontWeight: 700,
+            }}
+          >
+            {summary}
+          </p>
           <div
             style={{
-              fontFamily: SERIF,
-              fontSize: 22,
-              color: GOLD,
-              marginTop: 4,
-              letterSpacing: "0.15em",
-              fontWeight: 600,
+              display: "inline-grid",
+              gridTemplateColumns: "auto auto",
+              alignItems: "baseline",
+              gap: 10,
+              padding: "10px 18px",
+              border: `1px solid ${RULE}`,
+              background: "rgba(235,223,184,0.45)",
+              marginBottom: 10,
             }}
           >
-            {joseonName.hanja}
+            <span
+              style={{
+                fontFamily: SERIF,
+                fontSize: "clamp(28px, 8vw, 42px)",
+                fontWeight: 900,
+                color: INK,
+                letterSpacing: "0.05em",
+                lineHeight: 1.1,
+              }}
+            >
+              {joseonName.display}
+            </span>
+            <span
+              style={{
+                fontFamily: SERIF,
+                fontSize: 20,
+                color: GOLD,
+                letterSpacing: "0.1em",
+                fontWeight: 700,
+              }}
+            >
+              {joseonName.hanja}
+            </span>
           </div>
           {originalName && originalName.trim() !== joseonName.display && (
             <div
@@ -1055,7 +1132,6 @@ function ResultView({
           </div>
         </div>
 
-        {/* Info grid */}
         <div
           className="j-ink"
           style={{
@@ -1063,9 +1139,14 @@ function ResultView({
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gap: 10,
-            marginBottom: 16,
+            marginBottom: 14,
           }}
         >
+          <InfoTile
+            label={t("이름 / 호", "Name / Style")}
+            hanja="姓名"
+            value={`${joseonName.display} (${joseonName.hanja})`}
+          />
           <InfoTile
             label={t("신분", "Status")}
             hanja="身分"
@@ -1086,9 +1167,14 @@ function ResultView({
             hanja="時代"
             value={locale === "ko" ? event.ko : event.en}
           />
+          <InfoTile
+            label={t("대표 키워드", "Keywords")}
+            hanja="標語"
+            value={keywords.join(" · ")}
+            wide
+          />
         </div>
 
-        {/* Class blurb */}
         <div
           className="j-ink"
           style={{
@@ -1104,16 +1190,17 @@ function ResultView({
             fontFamily: SERIF,
           }}
         >
-          {locale === "ko" ? cls.story.ko : cls.story.en}
+          <strong style={{ color: DANCHEONG_RED }}>{t("조선 신분증 해설", "Identity note")}</strong>
+          <br />
+          {identityNote}
         </div>
 
-        {/* Fate story */}
         <div className="j-ink" style={{ ...stagger(), marginBottom: 24 }}>
-          <SectionTitle ko="運命" title={t("그대의 운명", "Your Fate")} />
+          <SectionTitle ko="傳記" title={t("그대의 운명 서사", "Your Fate Story")} />
           <p
             style={{
-              fontSize: 15,
-              lineHeight: 1.95,
+              fontSize: "clamp(15px, 3.9vw, 17px)",
+              lineHeight: 2,
               color: INK,
               fontFamily: SERIF,
               margin: 0,
@@ -1129,7 +1216,83 @@ function ResultView({
           </p>
         </div>
 
-        {/* Buttons */}
+        <div
+          className="j-ink"
+          style={{
+            ...stagger(),
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
+            gap: 12,
+            marginBottom: 22,
+          }}
+        >
+          {rich.sections.map((section) => (
+            <ResultSectionPanel
+              key={section.title.ko}
+              title={section.title[locale]}
+              items={section.items.map((item) => item[locale])}
+            />
+          ))}
+        </div>
+
+        <div
+          className="j-ink"
+          style={{
+            ...stagger(),
+            background: `linear-gradient(180deg, ${HANJI} 0%, rgba(235,223,184,0.9) 100%)`,
+            border: `1.5px solid ${INK}`,
+            borderRadius: 6,
+            padding: "20px",
+            marginBottom: 18,
+            boxShadow: `inset 0 0 0 4px ${HANJI}, inset 0 0 0 5px ${GOLD}`,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11,
+              color: DANCHEONG_RED,
+              letterSpacing: "0.22em",
+              fontWeight: 900,
+              marginBottom: 8,
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            SHARE CARD
+          </div>
+          <h3
+            style={{
+              margin: "0 0 8px",
+              fontSize: "clamp(24px, 7vw, 36px)",
+              lineHeight: 1.2,
+              fontWeight: 900,
+            }}
+          >
+            {title}
+          </h3>
+          <p style={{ margin: "0 0 14px", lineHeight: 1.75, fontSize: 15, color: INK_SOFT }}>
+            {locale === "ko"
+              ? `${joseonName.display} · ${cls.ko} · ${residence.ko}의 ${profession.ko}`
+              : `${joseonName.display} · ${cls.en} · ${profession.en} of ${residence.en}`}
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
+            {shareTraits.map((trait) => (
+              <TraitPill key={trait} text={trait} />
+            ))}
+          </div>
+          <p
+            style={{
+              margin: 0,
+              borderTop: `1px dashed ${RULE}`,
+              paddingTop: 12,
+              color: DANCHEONG_BLUE,
+              fontWeight: 800,
+              lineHeight: 1.7,
+            }}
+          >
+            {shareLine}
+          </p>
+        </div>
+
         <div
           className="j-ink"
           style={{
@@ -1140,14 +1303,24 @@ function ResultView({
             flexWrap: "wrap",
           }}
         >
+          <button type="button" onClick={onCopyLink} style={secondaryButton}>
+            {shareState === "link" ? t("✓ 링크 복사됨", "✓ Link copied") : t("링크 복사", "Copy link")}
+          </button>
           <button type="button" onClick={onShare} style={primarySealButton}>
-            {copied ? t("✓ 복사됨", "✓ Copied") : t("📜 운명 공유", "📜 Share")}
+            {shareState === "share" ? t("✓ 공유됨", "✓ Shared") : t("공유하기", "Share")}
           </button>
           <button type="button" onClick={onReset} style={secondaryButton}>
-            ↺ {t("다시 보기", "Try again")}
+            {t("다시 보기", "Try again")}
           </button>
         </div>
       </ScrollFrame>
+      <div className="j-ink" style={{ ...stagger(), marginTop: 22 }}>
+        <RecommendedGames
+          currentId="joseon"
+          ids={["joseon-couple", "korean-name", "saju", "kbti"]}
+          title={{ ko: "이 결과 다음에 하기 좋은 놀이", en: "Play next" }}
+        />
+      </div>
     </div>
   );
 }
@@ -1156,10 +1329,12 @@ function InfoTile({
   label,
   hanja,
   value,
+  wide = false,
 }: {
   label: string;
   hanja: string;
   value: string;
+  wide?: boolean;
 }): ReactElement {
   return (
     <div
@@ -1169,6 +1344,7 @@ function InfoTile({
         borderRadius: 4,
         padding: "12px 14px",
         position: "relative",
+        gridColumn: wide ? "1 / -1" : undefined,
       }}
     >
       <div
@@ -1189,11 +1365,72 @@ function InfoTile({
           fontWeight: 700,
           color: INK,
           fontFamily: SERIF,
+          lineHeight: 1.45,
         }}
       >
         {value}
       </div>
     </div>
+  );
+}
+
+function TraitPill({ text }: { text: string }): ReactElement {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        minHeight: 30,
+        padding: "6px 10px",
+        border: `1px solid ${DANCHEONG_RED}`,
+        background: "rgba(196,30,58,0.08)",
+        color: DANCHEONG_RED,
+        fontSize: 13,
+        fontWeight: 900,
+        lineHeight: 1.2,
+      }}
+    >
+      {text}
+    </span>
+  );
+}
+
+function ResultSectionPanel({
+  title,
+  items,
+}: {
+  title: string;
+  items: string[];
+}): ReactElement {
+  return (
+    <section
+      style={{
+        background: "rgba(245,240,224,0.82)",
+        border: `1px solid ${RULE}`,
+        borderTop: `3px solid ${DANCHEONG_BLUE}`,
+        borderRadius: 4,
+        padding: "14px 14px 13px",
+      }}
+    >
+      <h3
+        style={{
+          margin: "0 0 9px",
+          color: DANCHEONG_BLUE,
+          fontSize: 15,
+          fontWeight: 900,
+          lineHeight: 1.35,
+        }}
+      >
+        {title}
+      </h3>
+      <ul style={{ margin: 0, paddingLeft: 18, display: "grid", gap: 6 }}>
+        {items.map((item) => (
+          <li key={item} style={{ fontSize: 14, lineHeight: 1.65, color: INK_SOFT }}>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

@@ -1,816 +1,300 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AdBottom, AdMobileSticky } from "../../components/Ads";
+import GameIntro from "../../components/game/GameIntro";
+import ResultScreen from "../../components/game/ResultScreen";
 import { useLocale } from "@/hooks/useLocale";
 
-const ROUND_TIMES = [4000, 3000, 2500, 2000, 1500, 1000, 700, 500, 400, 300];
-const STORAGE_KEY = "nolza-ppalli-best";
+type LocalText = { ko: string; en: string };
+type Situation = {
+  id: string;
+  title: LocalText;
+  setup: LocalText;
+  choices: LocalText[];
+  correct: number;
+  limitMs: number;
+  success: LocalText;
+  fail: LocalText;
+};
+type RoundResult = {
+  id: string;
+  choice: number | null;
+  elapsedMs: number;
+  correct: boolean;
+  points: number;
+};
+type Phase = "intro" | "playing" | "feedback" | "done";
 
-function timeForRound(round: number): number {
-  if (round <= 0) return ROUND_TIMES[0];
-  if (round - 1 < ROUND_TIMES.length) return ROUND_TIMES[round - 1];
-  return 250;
+const SITUATIONS: Situation[] = [
+  {
+    id: "elevator",
+    title: { ko: "엘리베이터 문 닫힘 1초 전", en: "Elevator doors closing in 1 second" },
+    setup: { ko: "뒤에서 누가 뛰어오지만 내 회의도 2분 뒤 시작입니다.", en: "Someone is running behind you, but your meeting starts in two minutes." },
+    choices: [
+      { ko: "열림 누르고 한 번 기다린다", en: "Hold open once" },
+      { ko: "닫힘 버튼을 조용히 누른다", en: "Quietly press close" },
+      { ko: "못 본 척 휴대폰 본다", en: "Pretend to check your phone" },
+    ],
+    correct: 0,
+    limitMs: 2800,
+    success: { ko: "빠르지만 사람은 챙겼습니다. 사회생활 점수까지 챙긴 선택.", en: "Fast, but still human. Speed plus social points." },
+    fail: { ko: "속도는 있었지만 뒷맛이 애매합니다. 빨라도 매너는 옵션이 아닙니다.", en: "There was speed, but the aftertaste is awkward. Manners are not optional." },
+  },
+  {
+    id: "convenience",
+    title: { ko: "편의점 계산대 뒤 3명 대기", en: "Three people waiting behind you at checkout" },
+    setup: { ko: "봉투, 멤버십, 결제수단을 동시에 처리해야 합니다.", en: "Bag, membership, and payment must happen almost at once." },
+    choices: [
+      { ko: "멤버십 바코드와 카드 미리 준비", en: "Prepare barcode and card first" },
+      { ko: "계산 끝나고 앱을 찾는다", en: "Find the app after checkout" },
+      { ko: "동전 주머니를 깊게 탐사한다", en: "Explore the coin pocket" },
+    ],
+    correct: 0,
+    limitMs: 2500,
+    success: { ko: "카운터 흐름을 읽었습니다. 뒤 사람들의 무언의 박수.", en: "You read the counter flow. Silent applause from the line." },
+    fail: { ko: "뒤 줄의 공기가 무거워졌습니다. 앱은 미리 켜야 제맛입니다.", en: "The line got heavier. The app should have been open." },
+  },
+  {
+    id: "subway",
+    title: { ko: "지하철 환승 4분", en: "Four-minute subway transfer" },
+    setup: { ko: "계단은 두 개, 표지판은 셋, 사람은 많습니다.", en: "Two stairways, three signs, too many people." },
+    choices: [
+      { ko: "노선 색 보고 빠른 계단으로 이동", en: "Follow line color to the fast stairs" },
+      { ko: "사람 많은 쪽으로 일단 간다", en: "Follow the crowd blindly" },
+      { ko: "지도 앱 확대하다 멈춘다", en: "Freeze while zooming the map" },
+    ],
+    correct: 0,
+    limitMs: 2400,
+    success: { ko: "환승 동선이 몸에 있습니다. 계단 앞에서 이미 승부가 났어요.", en: "Transfer routes live in your body. The win happened at the stairs." },
+    fail: { ko: "발은 빨랐지만 방향이 틀렸습니다. 환승은 속도보다 색깔입니다.", en: "Fast feet, wrong direction. Transfer is color before speed." },
+  },
+  {
+    id: "delivery",
+    title: { ko: "배달 도착 알림", en: "Delivery arrival notification" },
+    setup: { ko: "따뜻할 때 먹어야 하는 음식입니다. 현관 앞엔 비닐 소리가 납니다.", en: "This food must be eaten hot. There is bag noise at the door." },
+    choices: [
+      { ko: "문 앞 확인 후 바로 수령", en: "Check the door and grab it" },
+      { ko: "리뷰 이벤트 문구부터 고민", en: "Think about review-event wording first" },
+      { ko: "식탁 사진 각도부터 잡는다", en: "Set up the table photo angle" },
+    ],
+    correct: 0,
+    limitMs: 2300,
+    success: { ko: "면이 불기 전에 구했습니다. 이건 생활형 순발력입니다.", en: "You saved it before the noodles softened. Practical reflexes." },
+    fail: { ko: "음식의 골든타임이 지나갑니다. 리뷰보다 젓가락이 먼저입니다.", en: "The golden window is closing. Chopsticks before reviews." },
+  },
+  {
+    id: "crosswalk",
+    title: { ko: "횡단보도 3초 남음", en: "Crosswalk has 3 seconds left" },
+    setup: { ko: "건너편 약속이 급하지만 안전은 더 급합니다.", en: "The appointment across the street is urgent, but safety is more urgent." },
+    choices: [
+      { ko: "무리하지 않고 다음 신호를 잡는다", en: "Wait for the next signal" },
+      { ko: "전력질주로 밀어붙인다", en: "Sprint across anyway" },
+      { ko: "차 사이로 대각선 이동", en: "Cut diagonally between cars" },
+    ],
+    correct: 0,
+    limitMs: 2200,
+    success: { ko: "진짜 고수는 급해도 선을 압니다. 안전한 빨리빨리.", en: "Real experts know the line even when rushed. Safe speed." },
+    fail: { ko: "빨랐지만 위험했습니다. 이 게임도 무단횡단 점수는 안 줍니다.", en: "Fast, but unsafe. This game gives no points for reckless crossing." },
+  },
+  {
+    id: "lunch",
+    title: { ko: "점심 메뉴 결정 압박", en: "Lunch-menu pressure" },
+    setup: { ko: "팀 채팅방이 조용합니다. 누군가는 결정을 내려야 합니다.", en: "The team chat is silent. Someone must decide." },
+    choices: [
+      { ko: "제육/비빔 중 하나로 바로 확정", en: "Lock in one reliable menu" },
+      { ko: "다들 뭐 드실래요? 다시 묻기", en: "Ask everyone again" },
+      { ko: "식당 리뷰 47개 정독", en: "Read 47 restaurant reviews" },
+    ],
+    correct: 0,
+    limitMs: 2600,
+    success: { ko: "결정 피로를 끊었습니다. 오늘의 작은 리더십.", en: "You ended decision fatigue. Small leadership for lunch." },
+    fail: { ko: "점심은 토론회가 아닙니다. 배고픔은 의사결정을 기다려주지 않아요.", en: "Lunch is not a committee hearing. Hunger waits for no decision." },
+  },
+  {
+    id: "pcbang",
+    title: { ko: "PC방 시간 1분 남음", en: "One minute left at the PC bang" },
+    setup: { ko: "게임은 끝나가고 저장도 해야 하고 연장도 고민됩니다.", en: "The match is ending, saving is needed, and extension is tempting." },
+    choices: [
+      { ko: "저장 후 필요한 만큼만 연장", en: "Save, then extend only what you need" },
+      { ko: "시간 경고를 못 본 척한다", en: "Pretend not to see the warning" },
+      { ko: "마지막 1분에 새 판 시작", en: "Start a new match in the last minute" },
+    ],
+    correct: 0,
+    limitMs: 2300,
+    success: { ko: "지갑과 세이브 파일을 동시에 지켰습니다. 차분한 급함.", en: "Wallet and save file both protected. Calm urgency." },
+    fail: { ko: "급함이 판단을 이겼습니다. 새 판은 1분 안에 끝나지 않습니다.", en: "Urgency beat judgment. A new match does not end in one minute." },
+  },
+  {
+    id: "pickup",
+    title: { ko: "카페 픽업대에 음료 6잔", en: "Six drinks on the cafe pickup counter" },
+    setup: { ko: "내 닉네임과 비슷한 주문이 두 개 있습니다.", en: "Two orders have names similar to yours." },
+    choices: [
+      { ko: "주문번호 확인 후 가져간다", en: "Check the order number first" },
+      { ko: "비슷하면 일단 들고 간다", en: "Grab the similar-looking one" },
+      { ko: "직원 눈치만 보며 멈춘다", en: "Freeze while watching the staff" },
+    ],
+    correct: 0,
+    limitMs: 2200,
+    success: { ko: "빠른데 정확합니다. 카페 동선까지 깔끔한 사람.", en: "Fast and accurate. Clean cafe-lane behavior." },
+    fail: { ko: "속도만 챙기면 남의 라떼가 됩니다. 확인은 1초면 충분합니다.", en: "Speed alone makes it someone else's latte. One-second checking is enough." },
+  },
+];
+
+function pick(text: LocalText, locale: string) {
+  return locale === "en" ? text.en : text.ko;
 }
 
-function bgForRound(round: number): string {
-  if (round <= 2) return "#ffffff";
-  if (round <= 4) return "#fff8f8";
-  if (round <= 6) return "#ffeded";
-  if (round <= 8) return "#ffd8d8";
-  if (round <= 10) return "#ffbfbf";
-  return "#ff9a9a";
-}
-
-type Stage = 0 | 1 | 2 | 3 | 4 | 5;
-
-function moodStage(round: number): Stage {
-  if (round <= 2) return 0;
-  if (round <= 4) return 1;
-  if (round <= 6) return 2;
-  if (round <= 8) return 3;
-  if (round <= 10) return 4;
-  return 5;
-}
-
-function shoutSize(round: number): number {
-  return Math.min(28 + round * 3, 72);
-}
-
-function shoutColor(round: number): string {
-  if (round <= 3) return "#1a1a1a";
-  if (round <= 6) return "#FF6B5C";
-  return "#FF3B30";
-}
-
-/* ─── Grandfather: 6 stage SVG (relaxed → dead) ─── */
-function Grandfather({
-  stage,
-  size = 180,
-}: {
-  stage: Stage;
-  size?: number;
-}) {
-  // Face color per stage
-  const faceColor =
-    stage <= 2
-      ? "white"
-      : stage === 3
-      ? "#FFEDED"
-      : stage === 4
-      ? "#FFB8B8"
-      : "#FF7A7A";
-
-  // Body shake intensity
-  const shakeClass =
-    stage === 3
-      ? "ppalli-body-shake-1"
-      : stage === 4
-      ? "ppalli-body-shake-2"
-      : stage === 5
-      ? "ppalli-body-shake-3"
-      : "";
-
-  // Sweat drops - position list per stage
-  const sweats: { x: number; y: number }[] =
-    stage === 2
-      ? [{ x: 118, y: 42 }]
-      : stage === 3
-      ? [
-          { x: 118, y: 42 },
-          { x: 38, y: 50 },
-          { x: 122, y: 64 },
-        ]
-      : stage === 4
-      ? [
-          { x: 118, y: 42 },
-          { x: 38, y: 50 },
-          { x: 122, y: 64 },
-          { x: 35, y: 32 },
-          { x: 128, y: 88 },
-        ]
-      : stage === 5
-      ? [
-          { x: 118, y: 42 },
-          { x: 38, y: 50 },
-          { x: 122, y: 64 },
-          { x: 35, y: 32 },
-          { x: 128, y: 88 },
-          { x: 22, y: 70 },
-          { x: 138, y: 110 },
-        ]
-      : [];
-
-  return (
-    <svg
-      viewBox="-10 -20 170 200"
-      width={size}
-      height={size * 1.2}
-      style={{ overflow: "visible" }}
-    >
-      <g className={shakeClass}>
-        {/* head */}
-        <circle
-          cx="75"
-          cy="60"
-          r="38"
-          fill={faceColor}
-          stroke="#1a1a1a"
-          strokeWidth="2.5"
-          style={{ transition: "fill 0.3s ease" }}
-        />
-
-        {/* HAIR — variants */}
-        {stage <= 2 && (
-          <path
-            d="M 50 30 Q 60 22 75 24 Q 90 22 100 30"
-            stroke="#1a1a1a"
-            strokeWidth="2"
-            fill="none"
-          />
-        )}
-        {stage === 3 && (
-          <g stroke="#1a1a1a" strokeWidth="2.2" strokeLinecap="round">
-            <line x1="60" y1="22" x2="58" y2="10" />
-            <line x1="68" y1="20" x2="68" y2="6" />
-            <line x1="75" y1="20" x2="75" y2="4" />
-            <line x1="82" y1="20" x2="82" y2="6" />
-            <line x1="90" y1="22" x2="92" y2="10" />
-          </g>
-        )}
-        {stage === 4 && (
-          <g stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round">
-            <line x1="55" y1="28" x2="42" y2="8" />
-            <line x1="63" y1="22" x2="58" y2="2" />
-            <line x1="72" y1="20" x2="70" y2="-4" />
-            <line x1="78" y1="20" x2="80" y2="-4" />
-            <line x1="87" y1="22" x2="92" y2="2" />
-            <line x1="95" y1="28" x2="108" y2="8" />
-          </g>
-        )}
-        {stage === 5 && (
-          <g stroke="#1a1a1a" strokeWidth="3" strokeLinecap="round">
-            <line x1="48" y1="32" x2="32" y2="6" />
-            <line x1="58" y1="24" x2="48" y2="-2" />
-            <line x1="66" y1="22" x2="62" y2="-8" />
-            <line x1="73" y1="20" x2="73" y2="-12" />
-            <line x1="80" y1="20" x2="84" y2="-10" />
-            <line x1="89" y1="22" x2="98" y2="-6" />
-            <line x1="98" y1="24" x2="115" y2="0" />
-            <line x1="103" y1="32" x2="120" y2="10" />
-          </g>
-        )}
-
-        {/* EYEBROWS — variants */}
-        {stage === 0 && (
-          <>
-            <line
-              x1="50"
-              y1="48"
-              x2="68"
-              y2="46"
-              stroke="#1a1a1a"
-              strokeWidth="2"
-            />
-            <line
-              x1="100"
-              y1="48"
-              x2="82"
-              y2="46"
-              stroke="#1a1a1a"
-              strokeWidth="2"
-            />
-          </>
-        )}
-        {stage === 1 && (
-          <>
-            <line
-              x1="50"
-              y1="44"
-              x2="68"
-              y2="40"
-              stroke="#1a1a1a"
-              strokeWidth="2"
-            />
-            <line
-              x1="100"
-              y1="44"
-              x2="82"
-              y2="40"
-              stroke="#1a1a1a"
-              strokeWidth="2"
-            />
-          </>
-        )}
-        {stage === 2 && (
-          <>
-            <line
-              x1="48"
-              y1="40"
-              x2="68"
-              y2="36"
-              stroke="#1a1a1a"
-              strokeWidth="2.5"
-            />
-            <line
-              x1="102"
-              y1="40"
-              x2="82"
-              y2="36"
-              stroke="#1a1a1a"
-              strokeWidth="2.5"
-            />
-          </>
-        )}
-        {stage === 3 && (
-          <>
-            <path
-              d="M 46 38 Q 58 28 70 36"
-              stroke="#1a1a1a"
-              strokeWidth="2.5"
-              fill="none"
-            />
-            <path
-              d="M 104 38 Q 92 28 80 36"
-              stroke="#1a1a1a"
-              strokeWidth="2.5"
-              fill="none"
-            />
-          </>
-        )}
-        {stage === 4 && (
-          <>
-            <path
-              d="M 44 36 Q 56 22 70 34"
-              stroke="#1a1a1a"
-              strokeWidth="3"
-              fill="none"
-            />
-            <path
-              d="M 106 36 Q 94 22 80 34"
-              stroke="#1a1a1a"
-              strokeWidth="3"
-              fill="none"
-            />
-          </>
-        )}
-        {stage === 5 && (
-          <>
-            <path
-              d="M 44 38 L 70 36"
-              stroke="#1a1a1a"
-              strokeWidth="2.5"
-              fill="none"
-            />
-            <path
-              d="M 106 38 L 80 36"
-              stroke="#1a1a1a"
-              strokeWidth="2.5"
-              fill="none"
-            />
-          </>
-        )}
-
-        {/* GLASSES — disappear at stage 5 */}
-        {stage <= 4 && (
-          <>
-            <circle
-              cx="60"
-              cy="58"
-              r="9"
-              fill="none"
-              stroke="#1a1a1a"
-              strokeWidth="2"
-            />
-            <circle
-              cx="90"
-              cy="58"
-              r="9"
-              fill="none"
-              stroke="#1a1a1a"
-              strokeWidth="2"
-            />
-            <line
-              x1="69"
-              y1="58"
-              x2="81"
-              y2="58"
-              stroke="#1a1a1a"
-              strokeWidth="2"
-            />
-          </>
-        )}
-
-        {/* EYES — variants */}
-        {stage === 0 && (
-          <>
-            <circle cx="60" cy="58" r="2" fill="#1a1a1a" />
-            <circle cx="90" cy="58" r="2" fill="#1a1a1a" />
-          </>
-        )}
-        {stage === 1 && (
-          <>
-            <circle cx="60" cy="58" r="3" fill="#1a1a1a" />
-            <circle cx="90" cy="58" r="3" fill="#1a1a1a" />
-          </>
-        )}
-        {stage === 2 && (
-          <>
-            <circle
-              cx="60"
-              cy="58"
-              r="6"
-              fill="white"
-              stroke="#1a1a1a"
-              strokeWidth="1.5"
-            />
-            <circle cx="60" cy="58" r="2" fill="#1a1a1a" />
-            <circle
-              cx="90"
-              cy="58"
-              r="6"
-              fill="white"
-              stroke="#1a1a1a"
-              strokeWidth="1.5"
-            />
-            <circle cx="90" cy="58" r="2" fill="#1a1a1a" />
-          </>
-        )}
-        {stage === 3 && (
-          <>
-            <circle
-              cx="60"
-              cy="58"
-              r="7"
-              fill="white"
-              stroke="#1a1a1a"
-              strokeWidth="1.5"
-            />
-            <circle cx="60" cy="58" r="1.3" fill="#1a1a1a" />
-            <circle
-              cx="90"
-              cy="58"
-              r="7"
-              fill="white"
-              stroke="#1a1a1a"
-              strokeWidth="1.5"
-            />
-            <circle cx="90" cy="58" r="1.3" fill="#1a1a1a" />
-          </>
-        )}
-        {stage === 4 && (
-          <>
-            {/* Star eyes */}
-            <text
-              x="60"
-              y="64"
-              fontSize="18"
-              textAnchor="middle"
-              fill="#FF3B30"
-              fontWeight="900"
-            >
-              ★
-            </text>
-            <text
-              x="90"
-              y="64"
-              fontSize="18"
-              textAnchor="middle"
-              fill="#FF3B30"
-              fontWeight="900"
-            >
-              ★
-            </text>
-          </>
-        )}
-        {stage === 5 && (
-          <>
-            {/* X eyes */}
-            <line
-              x1="55"
-              y1="53"
-              x2="65"
-              y2="63"
-              stroke="#1a1a1a"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            <line
-              x1="65"
-              y1="53"
-              x2="55"
-              y2="63"
-              stroke="#1a1a1a"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            <line
-              x1="85"
-              y1="53"
-              x2="95"
-              y2="63"
-              stroke="#1a1a1a"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            <line
-              x1="95"
-              y1="53"
-              x2="85"
-              y2="63"
-              stroke="#1a1a1a"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-          </>
-        )}
-
-        {/* MUSTACHE */}
-        <path
-          d="M 58 76 Q 75 80 92 76"
-          fill="none"
-          stroke="#1a1a1a"
-          strokeWidth="2"
-        />
-
-        {/* MOUTH — variants */}
-        {stage === 0 && (
-          <path
-            d="M 60 84 Q 75 92 90 84"
-            fill="none"
-            stroke="#1a1a1a"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            style={{ transition: "d 0.3s" }}
-          />
-        )}
-        {stage === 1 && (
-          <ellipse
-            cx="75"
-            cy="86"
-            rx="5"
-            ry="6"
-            fill="white"
-            stroke="#1a1a1a"
-            strokeWidth="2"
-          />
-        )}
-        {stage === 2 && (
-          <ellipse
-            cx="75"
-            cy="87"
-            rx="8"
-            ry="9"
-            fill="#1a1a1a"
-          />
-        )}
-        {stage === 3 && (
-          <ellipse cx="75" cy="89" rx="9" ry="13" fill="#1a1a1a" />
-        )}
-        {stage === 4 && (
-          <>
-            <ellipse cx="75" cy="89" rx="11" ry="15" fill="#1a1a1a" />
-            {/* tongue */}
-            <ellipse cx="75" cy="100" rx="6" ry="8" fill="#FF6B6B" />
-          </>
-        )}
-        {stage === 5 && (
-          <>
-            {/* dead mouth */}
-            <ellipse cx="75" cy="88" rx="8" ry="10" fill="#1a1a1a" />
-            {/* soul wisp escaping upward */}
-            <path
-              d="M 75 78 Q 70 65 75 50 Q 80 35 75 20"
-              fill="none"
-              stroke="#aab5c4"
-              strokeWidth="1.5"
-              strokeDasharray="3 3"
-            />
-            <circle
-              cx="75"
-              cy="14"
-              r="6"
-              fill="#cdd5e0"
-              stroke="#aab5c4"
-              strokeWidth="1"
-            />
-            <circle cx="73" cy="13" r="0.8" fill="#1a1a1a" />
-            <circle cx="77" cy="13" r="0.8" fill="#1a1a1a" />
-            <path
-              d="M 70 18 Q 75 22 80 18"
-              fill="none"
-              stroke="#aab5c4"
-              strokeWidth="1"
-            />
-          </>
-        )}
-
-        {/* BODY */}
-        <line
-          x1="75"
-          y1="100"
-          x2="75"
-          y2="160"
-          stroke="#1a1a1a"
-          strokeWidth="2.5"
-        />
-        {/* ARM pointing */}
-        <line
-          x1="75"
-          y1="120"
-          x2="125"
-          y2="100"
-          stroke="#1a1a1a"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-        {/* HAND */}
-        <path
-          d="M 122 96 L 138 96 L 138 106 L 122 106 Z"
-          fill="#F4D7B5"
-          stroke="#1a1a1a"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
-        <line
-          x1="138"
-          y1="100"
-          x2="146"
-          y2="98"
-          stroke="#1a1a1a"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-
-        {/* MOTION lines (faster as stage rises) */}
-        {stage >= 1 && (
-          <g
-            stroke={stage >= 4 ? "#FF3B30" : stage >= 2 ? "#FF6B5C" : "#1a1a1a"}
-            strokeWidth={1.5 + stage * 0.3}
-            strokeLinecap="round"
-          >
-            <line x1="148" y1="86" x2="142" y2="92" />
-            <line x1="150" y1="100" x2="142" y2="100" />
-            <line x1="148" y1="114" x2="142" y2="108" />
-            {stage >= 3 && (
-              <>
-                <line x1="155" y1="78" x2="148" y2="82" />
-                <line x1="155" y1="120" x2="148" y2="116" />
-              </>
-            )}
-          </g>
-        )}
-
-        {/* SWEAT DROPS */}
-        {sweats.map((s, i) => (
-          <path
-            key={i}
-            d={`M ${s.x} ${s.y - 4} Q ${s.x - 3} ${s.y + 1} ${s.x} ${s.y + 5} Q ${s.x + 3} ${s.y + 1} ${s.x} ${s.y - 4} Z`}
-            fill="#5BA9F5"
-            stroke="#1a1a1a"
-            strokeWidth="0.8"
-          />
-        ))}
-      </g>
-    </svg>
-  );
+function getTier(score: number, correctCount: number, t: (ko: string, en: string) => string) {
+  const accuracy = correctCount / SITUATIONS.length;
+  if (score >= 720 && accuracy >= 0.85) {
+    return {
+      title: t("빨리빨리 DNA 보유자", "Ppalli-ppalli DNA carrier"),
+      desc: t("빠른데 정확하고, 급한데 선을 넘지 않습니다. 한국 생활 압박 면역이 꽤 높습니다.", "Fast but accurate, urgent but not reckless. You are highly adapted to Korean speed pressure."),
+      tone: "#ff3b30",
+    };
+  }
+  if (score >= 620) {
+    return {
+      title: t("지하철 환승 고수", "Subway-transfer expert"),
+      desc: t("판단이 빠르고 동선 감각이 좋습니다. 다만 한두 번은 마음이 손보다 먼저 뛰었습니다.", "Fast judgment and solid route sense. Once or twice, your heart ran before your hand."),
+      tone: "#ff6b35",
+    };
+  }
+  if (score >= 500) {
+    return {
+      title: t("엘리베이터 닫힘 버튼 장인", "Elevator-close-button artisan"),
+      desc: t("속도 본능은 확실합니다. 정확도만 조금 더 챙기면 일상 미션이 훨씬 편해집니다.", "The speed instinct is there. A bit more accuracy makes daily missions much easier."),
+      tone: "#f59e0b",
+    };
+  }
+  if (score >= 360) {
+    return {
+      title: t("한국 생활 적응 완료", "Korean-life adaptation complete"),
+      desc: t("평균적인 급함은 따라갑니다. 아주 복잡한 상황에서는 1초만 더 보고 움직이면 좋습니다.", "You can keep up with ordinary urgency. In complex moments, look one second longer."),
+      tone: "#22c55e",
+    };
+  }
+  return {
+    title: t("아직 여유로운 관광객", "Still a relaxed tourist"),
+    desc: t("속도가 부족하다기보다 상황 읽기가 늦었습니다. 한국식 빨리빨리는 빠름보다 빠른 판단입니다.", "It is not just speed; situation reading came late. Korean speed is quick judgment before quick hands."),
+    tone: "#64748b",
+  };
 }
 
 export default function PpalliGame() {
-  const { t } = useLocale();
-  const [phase, setPhase] = useState<
-    "idle" | "playing" | "fail" | "milestone" | "countdown"
-  >("idle");
-  const [round, setRound] = useState(1);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [best, setBest] = useState<number | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [countdown, setCountdown] = useState(3);
-  const startRef = useRef(0);
-  const milestoneShownRef = useRef(false);
+  const { locale, t } = useLocale();
+  const [phase, setPhase] = useState<Phase>("intro");
+  const [round, setRound] = useState(0);
+  const [remaining, setRemaining] = useState(SITUATIONS[0].limitMs);
+  const [results, setResults] = useState<RoundResult[]>([]);
+  const [lastResult, setLastResult] = useState<RoundResult | null>(null);
+  const startedAtRef = useRef(0);
+  const finishedRef = useRef(false);
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const v = parseInt(saved, 10);
-        if (!isNaN(v)) setBest(v);
-      }
-    } catch {}
-  }, []);
+  const current = SITUATIONS[round] ?? SITUATIONS[0];
 
-  // Round timer
+  const finishRound = (choice: number | null) => {
+    if (phase !== "playing" || finishedRef.current) return;
+    finishedRef.current = true;
+    const elapsed = Math.min(current.limitMs, performance.now() - startedAtRef.current);
+    const correct = choice === current.correct;
+    const speedRatio = Math.max(0, Math.min(1, 1 - elapsed / current.limitMs));
+    const points = correct ? Math.round(62 + speedRatio * 38) : Math.round(speedRatio * 18);
+    const result: RoundResult = { id: current.id, choice, elapsedMs: elapsed, correct, points };
+    setResults((prev) => [...prev, result]);
+    setLastResult(result);
+    setPhase("feedback");
+  };
+
   useEffect(() => {
     if (phase !== "playing") return;
-    const total = timeForRound(round);
-    startRef.current = performance.now();
-    setTimeLeft(total);
-    let raf: number | null = null;
+    finishedRef.current = false;
+    startedAtRef.current = performance.now();
+    setRemaining(current.limitMs);
+    let raf = 0;
     const tick = () => {
-      const elapsed = performance.now() - startRef.current;
-      const left = total - elapsed;
+      const elapsed = performance.now() - startedAtRef.current;
+      const left = current.limitMs - elapsed;
+      setRemaining(Math.max(0, left));
       if (left <= 0) {
-        setTimeLeft(0);
-        setPhase("fail");
+        finishRound(null);
         return;
       }
-      setTimeLeft(left);
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => {
-      if (raf !== null) cancelAnimationFrame(raf);
-    };
+    return () => cancelAnimationFrame(raf);
   }, [phase, round]);
 
-  // Update best when fail (final reached round)
-  useEffect(() => {
-    if (phase !== "fail") return;
-    if (best === null || round > best) setBest(round);
-  }, [phase, round, best]);
-
-  // Persist best
-  useEffect(() => {
-    if (best === null) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, String(best));
-    } catch {}
-  }, [best]);
-
-  // Milestone at round 10
-  useEffect(() => {
-    if (round === 10 && phase === "playing" && !milestoneShownRef.current) {
-      milestoneShownRef.current = true;
-      setPhase("milestone");
-    }
-  }, [round, phase]);
-
-  // Countdown 3 → 2 → 1 → resume playing
-  useEffect(() => {
-    if (phase !== "countdown") return;
-    setCountdown(3);
-    const id = setInterval(() => {
-      setCountdown((c) => {
-        if (c <= 1) {
-          clearInterval(id);
-          setPhase("playing");
-          return 0;
-        }
-        return c - 1;
-      });
-    }, 1000);
-    return () => clearInterval(id);
-  }, [phase]);
-
   const start = () => {
-    milestoneShownRef.current = false;
-    setRound(1);
+    setRound(0);
+    setResults([]);
+    setLastResult(null);
     setPhase("playing");
   };
 
-  const tap = () => {
-    if (phase !== "playing") return;
-    setRound((r) => r + 1);
+  const next = () => {
+    if (round + 1 >= SITUATIONS.length) {
+      setPhase("done");
+      return;
+    }
+    setRound((value) => value + 1);
+    setLastResult(null);
+    setPhase("playing");
   };
 
-  const handleShare = async () => {
-    const r = phase === "fail" ? round : best ?? round;
-    const text = t(
-      `나 빨리빨리 ${r}라운드까지 버텼다 → nolza.fun/games/ppalli`,
-      `I survived round ${r} of Ppalli Ppalli → nolza.fun/games/ppalli`,
-    );
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {}
-  };
+  const totalScore = useMemo(() => results.reduce((sum, result) => sum + result.points, 0), [results]);
+  const correctCount = useMemo(() => results.filter((result) => result.correct).length, [results]);
+  const tier = getTier(totalScore, correctCount, t);
+  const shareText = t(
+    `내 빨리빨리 결과는 "${tier.title}" · ${totalScore}점 · ${correctCount}/${SITUATIONS.length}개 성공`,
+    `My Ppalli result: "${tier.title}" · ${totalScore} pts · ${correctCount}/${SITUATIONS.length} correct`,
+  );
 
-  const bg = phase === "idle" ? "#ffffff" : bgForRound(round);
-  const stage =
-    phase === "fail" ? moodStage(round) : phase === "playing" || phase === "milestone" || phase === "countdown" ? moodStage(round) : 0;
-  const total = timeForRound(round);
-  const ratio = total > 0 ? timeLeft / total : 0;
-
-  /* ── IDLE / start screen ── */
-  if (phase === "idle") {
+  if (phase === "intro") {
     return (
-      <main
-        className="page-in min-h-screen"
-        style={{
-          backgroundColor: "#ffffff",
-          color: "#1a1a1a",
-          fontFamily: "var(--font-noto-sans-kr)",
-        }}
-      >
-        <Link
-          href="/"
-          className="back-arrow"
-          aria-label="home"
-          style={{ color: "#888" }}
-        >
-          ←
-        </Link>
-        <div className="flex min-h-screen flex-col items-center justify-center px-6">
-          <Grandfather stage={0} size={180} />
-          <div
-            className="text-center"
-            style={{
-              marginTop: 32,
-              fontSize: 56,
-              fontWeight: 900,
-              color: "#FF3B30",
-              letterSpacing: "-0.04em",
-              lineHeight: 1,
-            }}
-          >
-            {t("빨리빨리!", "Ppalli Ppalli!")}
-          </div>
-          <div
-            className="text-center"
-            style={{
-              marginTop: 8,
-              fontSize: 16,
-              color: "#888",
-              letterSpacing: "0.2em",
-              fontFamily: "var(--font-inter)",
-            }}
-          >
-            {t("PPALLI PPALLI!", "(quick quick!)")}
-          </div>
-          <p
-            className="text-center"
-            style={{
-              marginTop: 24,
-              fontSize: 15,
-              color: "#888",
-              maxWidth: 320,
-              lineHeight: 1.6,
-            }}
-          >
-            {t(
-              "제한 시간 안에 버튼을 눌러야 합니다.",
-              "Tap the button within the time limit.",
-            )}
-            <br />
-            {t(
-              "라운드가 올라갈수록 시간이 짧아져요.",
-              "Each round gives you less time.",
-            )}
-          </p>
-          <button
-            type="button"
-            onClick={start}
-            className="mt-10 rounded-full"
-            style={{
-              background: "#FF3B30",
-              color: "white",
-              padding: "14px 44px",
-              fontSize: 15,
-              fontWeight: 700,
-              letterSpacing: "0.25em",
-              cursor: "pointer",
-              boxShadow: "0 8px 24px rgba(255,59,48,0.25)",
-            }}
-          >
-            {t("시작", "START")} ▸
-          </button>
+      <main className="min-h-screen page-in flex items-center justify-center px-5 py-16" style={{ background: "#fff7ed", color: "#1c1917" }}>
+        <GameIntro
+          eyebrow={t("SPEED · DAILY KOREA", "SPEED · DAILY KOREA")}
+          title={t("한국인 빨리빨리 시뮬레이터", "Korean Ppalli-Ppalli Simulator")}
+          hook={t("급한 상황에서 빠르게 고르세요. 단, 위험하거나 틀린 선택은 점수가 깎입니다.", "Choose fast under pressure. Reckless or wrong choices lose points.")}
+          howTo={t("8개의 생활 미션이 나옵니다. 속도와 정확도를 합산해 당신의 빨리빨리 타입을 보여줍니다.", "Eight daily missions. Speed and accuracy combine into your result type.")}
+          meta={[t("약 40초", "40 sec"), t("8개 상황", "8 scenes"), t("결과 공유", "Share result")]}
+          startLabel={t("시뮬레이션 시작", "Start simulation")}
+          onStart={start}
+          tone="light"
+        />
+        <AdMobileSticky />
+      </main>
+    );
+  }
 
-          {best !== null && (
-            <>
-              <div
-                className="tabular-nums mt-10"
-                style={{
-                  fontSize: 13,
-                  color: "#bbb",
-                  letterSpacing: "0.15em",
-                  fontFamily: "var(--font-inter)",
-                }}
-              >
-                {t("최고 기록 · 라운드", "BEST · ROUND")} {best}
-              </div>
-              <button
-                type="button"
-                onClick={handleShare}
-                className="mt-3 rounded-full"
-                style={{
-                  background: "transparent",
-                  border: "1px solid #ddd",
-                  color: "#888",
-                  padding: "8px 22px",
-                  fontSize: 13,
-                  letterSpacing: "0.15em",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-inter)",
-                }}
-              >
-                {copied ? t("✓ 복사됨", "✓ Copied") : t("📋 공유하기", "📋 Share")}
-              </button>
-            </>
-          )}
-        </div>
-        <div className="mx-auto max-w-3xl px-6 pb-12">
+  if (phase === "done") {
+    return (
+      <main className="min-h-screen page-in" style={{ background: "#0f172a", color: "#fff" }}>
+        <ResultScreen
+          locale={locale}
+          currentGameId="ppalli"
+          eyebrow={t("빨리빨리 압박 테스트", "Ppalli pressure test")}
+          title={tier.title}
+          score={`${totalScore}`}
+          scoreLabel={t("점", "pts")}
+          description={tier.desc}
+          details={[
+            t(`${SITUATIONS.length}개 상황 중 ${correctCount}개를 정확히 처리했습니다.`, `${correctCount} of ${SITUATIONS.length} situations handled correctly.`),
+            t(`평균 반응 시간 ${Math.round(results.reduce((sum, item) => sum + item.elapsedMs, 0) / results.length)}ms`, `Average response ${Math.round(results.reduce((sum, item) => sum + item.elapsedMs, 0) / results.length)}ms`),
+            t("안전한 선택과 빠른 판단을 같이 봅니다.", "This score values safe choices and quick judgment together."),
+          ]}
+          shareTitle={t("빨리빨리 결과", "Ppalli result")}
+          shareText={shareText}
+          shareUrl="/games/ppalli"
+          onReplay={start}
+          replayLabel={t("다시 하기", "Play again")}
+          recommendedIds={["react", "timesense", "traffic"]}
+          tone="dark"
+        />
+        <div className="mx-auto max-w-3xl px-5 pb-12">
           <AdBottom />
         </div>
         <AdMobileSticky />
@@ -818,273 +302,133 @@ export default function PpalliGame() {
     );
   }
 
-  /* ── PLAYING / FAIL / MILESTONE / COUNTDOWN ── */
+  const progress = Math.max(0, Math.min(1, remaining / current.limitMs));
+  const selectedText =
+    lastResult?.choice === null
+      ? t("시간 초과", "Timed out")
+      : lastResult
+        ? pick(current.choices[lastResult.choice], locale)
+        : "";
+
   return (
     <main
-      className="page-in min-h-screen"
+      className="min-h-screen page-in"
       style={{
-        backgroundColor: bg,
-        color: "#1a1a1a",
-        fontFamily: "var(--font-noto-sans-kr)",
-        transition: "background-color 0.3s ease",
+        background: "linear-gradient(180deg, #fff7ed 0%, #fee2e2 100%)",
+        color: "#1c1917",
+        fontFamily: "var(--font-noto-sans-kr), sans-serif",
       }}
     >
-      <Link
-        href="/"
-        className="back-arrow"
-        aria-label="home"
-        style={{ color: "#888" }}
-      >
-        ←
-      </Link>
-      {phase === "fail" && <div className="ppalli-fail-flash" />}
-
-      {/* Top: round + timer bar (hidden on fail) */}
-      {phase !== "fail" && (
-        <div className="fixed left-0 right-0 top-0 z-30">
-          <div
-            style={{
-              height: 4,
-              backgroundColor: "rgba(0,0,0,0.05)",
-            }}
-          >
+      <div className="mx-auto flex min-h-screen max-w-3xl flex-col px-5 py-12">
+        <div className="mb-8">
+          <div className="flex items-center justify-between text-sm font-bold" style={{ color: "#9a3412", letterSpacing: "0.08em" }}>
+            <span>{t("상황", "Scene")} {round + 1}/{SITUATIONS.length}</span>
+            <span className="tabular-nums">{(remaining / 1000).toFixed(1)}s</span>
+          </div>
+          <div style={{ marginTop: 10, height: 10, borderRadius: 999, background: "rgba(28,25,23,0.12)", overflow: "hidden" }}>
             <div
-              className="h-full transition-none"
               style={{
-                width: `${ratio * 100}%`,
-                backgroundColor:
-                  ratio > 0.5 ? "#34C759" : ratio > 0.25 ? "#FF9F0A" : "#FF3B30",
+                width: `${phase === "playing" ? progress * 100 : 100}%`,
+                height: "100%",
+                borderRadius: 999,
+                background: progress > 0.45 ? "#22c55e" : progress > 0.2 ? "#f59e0b" : "#ef4444",
+                transition: "width 80ms linear",
               }}
             />
           </div>
-          <div
-            className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4"
-            style={{ fontSize: 13, color: "#888", letterSpacing: "0.2em" }}
-          >
-            <span style={{ fontFamily: "var(--font-inter)", textTransform: "uppercase" }}>
-              {t("라운드", "Round")} {round}
-            </span>
-            <span
-              className="tabular-nums"
-              style={{ fontFamily: "var(--font-inter)" }}
-            >
-              {(timeLeft / 1000).toFixed(2)}s
-            </span>
-          </div>
         </div>
-      )}
 
-      <div className="flex min-h-screen flex-col items-center justify-center px-6">
-        {phase !== "fail" ? (
-          <>
-            <Grandfather stage={stage} size={140} />
-            <div
-              className="text-center"
-              style={{
-                marginTop: 24,
-                fontSize: shoutSize(round),
-                fontWeight: 900,
-                color: shoutColor(round),
-                letterSpacing: "-0.04em",
-                lineHeight: 1,
-                transition: "all 0.2s ease",
-              }}
-            >
-              {t("빨리빨리!", "Ppalli Ppalli!")}
+        <section
+          style={{
+            flex: 1,
+            display: "grid",
+            alignContent: "center",
+            gap: 22,
+          }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <p style={{ margin: 0, color: "#ea580c", fontWeight: 900, letterSpacing: "0.12em" }}>
+              {t("한국식 급함 미션", "Korean urgency mission")}
+            </p>
+            <h1 style={{ margin: "14px 0 0", fontSize: "clamp(34px, 9vw, 58px)", lineHeight: 1.05, letterSpacing: 0, fontWeight: 900 }}>
+              {pick(current.title, locale)}
+            </h1>
+            <p style={{ margin: "16px auto 0", maxWidth: 560, color: "#57534e", fontSize: 18, lineHeight: 1.65 }}>
+              {pick(current.setup, locale)}
+            </p>
+          </div>
+
+          {phase === "playing" ? (
+            <div style={{ display: "grid", gap: 12 }}>
+              {current.choices.map((choice, index) => (
+                <button
+                  key={choice.ko}
+                  type="button"
+                  onClick={() => finishRound(index)}
+                  style={{
+                    minHeight: 62,
+                    border: "2px solid rgba(28,25,23,0.12)",
+                    borderRadius: 8,
+                    background: "#fff",
+                    color: "#1c1917",
+                    padding: "16px 18px",
+                    textAlign: "left",
+                    fontSize: 18,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    boxShadow: "0 10px 24px rgba(28,25,23,0.08)",
+                    touchAction: "manipulation",
+                  }}
+                >
+                  {pick(choice, locale)}
+                </button>
+              ))}
             </div>
-            <button
-              type="button"
-              onPointerDown={tap}
-              className="mt-12 rounded-full"
-              style={{
-                background: "#1a1a1a",
-                color: "white",
-                padding: "32px 64px",
-                fontSize: 24,
-                fontWeight: 800,
-                letterSpacing: "0.1em",
-                cursor: "pointer",
-                boxShadow: "0 12px 32px rgba(0,0,0,0.2)",
-                touchAction: "manipulation",
-                userSelect: "none",
-              }}
-            >
-              {t("탭!", "TAP")}
-            </button>
-          </>
-        ) : (
-          /* FAIL screen — no auto-restart, share + restart buttons */
-          <div className="text-center fade-in" style={{ maxWidth: 360 }}>
-            <Grandfather stage={5} size={140} />
+          ) : (
             <div
               style={{
-                marginTop: 24,
-                fontSize: 32,
-                fontWeight: 800,
-                color: "#FF3B30",
-                lineHeight: 1.2,
+                background: "#fff",
+                border: lastResult?.correct ? "2px solid #22c55e" : "2px solid #ef4444",
+                borderRadius: 10,
+                padding: "24px 22px",
+                boxShadow: "0 16px 36px rgba(28,25,23,0.1)",
               }}
             >
-              {t("너무 느려요!", "Too slow!")}
-            </div>
-            <div
-              className="tabular-nums"
-              style={{
-                marginTop: 16,
-                fontSize: 18,
-                color: "#1a1a1a",
-                fontWeight: 600,
-              }}
-            >
-              <span style={{ fontSize: 36, color: "#FF3B30", fontWeight: 900 }}>
-                {round}
-              </span>
-              <span style={{ marginLeft: 6 }}>{t("라운드까지 버텼습니다", "rounds survived")}</span>
-            </div>
-            {best !== null && best === round && (
-              <div
-                style={{
-                  marginTop: 8,
-                  fontSize: 13,
-                  color: "#888",
-                  letterSpacing: "0.2em",
-                  fontFamily: "var(--font-inter)",
-                }}
-              >
-                {t("신기록 🏆", "NEW BEST 🏆")}
+              <p style={{ margin: 0, color: lastResult?.correct ? "#16a34a" : "#dc2626", fontWeight: 900, fontSize: 16 }}>
+                {lastResult?.correct ? t("정확하고 빠름", "Fast and correct") : t("아쉽습니다", "Not quite")}
+              </p>
+              <h2 style={{ margin: "10px 0 0", fontSize: 28, lineHeight: 1.2 }}>
+                {selectedText}
+              </h2>
+              <p style={{ margin: "12px 0 0", color: "#57534e", fontSize: 17, lineHeight: 1.65 }}>
+                {pick(lastResult?.correct ? current.success : current.fail, locale)}
+              </p>
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+                <span className="tabular-nums" style={{ color: "#9a3412", fontWeight: 900 }}>
+                  +{lastResult?.points ?? 0} {t("점", "pts")}
+                </span>
+                <button
+                  type="button"
+                  onClick={next}
+                  style={{
+                    minHeight: 46,
+                    border: "none",
+                    borderRadius: 999,
+                    background: "#1c1917",
+                    color: "#fff",
+                    padding: "0 22px",
+                    fontSize: 15,
+                    fontWeight: 900,
+                    cursor: "pointer",
+                  }}
+                >
+                  {round + 1 >= SITUATIONS.length ? t("결과 보기", "See result") : t("다음 상황", "Next scene")}
+                </button>
               </div>
-            )}
-
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <button
-                type="button"
-                onClick={start}
-                className="rounded-full"
-                style={{
-                  background: "#1a1a1a",
-                  color: "white",
-                  padding: "12px 32px",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  letterSpacing: "0.2em",
-                  cursor: "pointer",
-                }}
-              >
-                ↻ {t("다시 시작", "Restart")}
-              </button>
-              <button
-                type="button"
-                onClick={handleShare}
-                className="rounded-full"
-                style={{
-                  background: "transparent",
-                  border: "1px solid #ccc",
-                  color: "#666",
-                  padding: "12px 32px",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  letterSpacing: "0.2em",
-                  cursor: "pointer",
-                }}
-              >
-                {copied ? t("✓ 복사됨", "✓ Copied") : t("📋 공유하기", "📋 Share")}
-              </button>
             </div>
-          </div>
-        )}
+          )}
+        </section>
       </div>
-
-      {/* Milestone overlay — paused, waits for user */}
-      {phase === "milestone" && (
-        <div
-          className="fade-in"
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(255, 255, 255, 0.97)",
-            zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 24,
-            backdropFilter: "blur(2px)",
-          }}
-        >
-          <div className="text-center">
-            <div style={{ fontSize: 64 }}>🇰🇷</div>
-            <h2
-              style={{
-                marginTop: 24,
-                fontSize: 32,
-                fontWeight: 800,
-                color: "#1a1a1a",
-                lineHeight: 1.3,
-              }}
-            >
-              {t("당신은 진정한 한국인입니다 🇰🇷", "You're a true Korean 🇰🇷")}
-            </h2>
-            <div
-              style={{
-                marginTop: 12,
-                fontSize: 15,
-                color: "#888",
-                letterSpacing: "0.2em",
-                fontFamily: "var(--font-inter)",
-              }}
-            >
-              {t("10라운드 달성", "ROUND 10 ACHIEVED")}
-            </div>
-            <button
-              type="button"
-              onClick={() => setPhase("countdown")}
-              className="mt-10 rounded-full"
-              style={{
-                background: "#FF3B30",
-                color: "white",
-                padding: "14px 40px",
-                fontSize: 15,
-                fontWeight: 700,
-                letterSpacing: "0.25em",
-                cursor: "pointer",
-                boxShadow: "0 8px 24px rgba(255,59,48,0.25)",
-              }}
-            >
-              {t("계속하기", "CONTINUE")} ▸
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Countdown overlay — 3..2..1 then resume */}
-      {phase === "countdown" && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(255, 255, 255, 0.97)",
-            zIndex: 50,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backdropFilter: "blur(2px)",
-          }}
-        >
-          <div
-            key={countdown}
-            className="number-bump tabular-nums text-center"
-            style={{
-              fontSize: 200,
-              fontWeight: 200,
-              color: "#FF3B30",
-              lineHeight: 1,
-              letterSpacing: "-0.04em",
-              fontFamily: "var(--font-inter)",
-            }}
-          >
-            {countdown}
-          </div>
-        </div>
-      )}
       <AdMobileSticky />
     </main>
   );

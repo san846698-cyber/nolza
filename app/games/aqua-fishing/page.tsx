@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { FISH_DATABASE } from './fishData';
+import { FISH_DATABASE, FISH_IMAGE_METADATA } from './fishData';
 import { spawnFish, drawFish, isBigCreature, BIG_CREATURE_TYPES, type FishInstance } from './fish_logic';
 import { useLocale } from '@/hooks/useLocale';
 
@@ -39,6 +39,45 @@ type FloatingText = {
   lifetime: number;
   color: string;
 };
+
+function FishImage({
+  src,
+  alt,
+  sizes,
+  className,
+  fallbackLabel,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  className: string;
+  fallbackLabel: string;
+}) {
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const failed = failedSrc === src;
+
+  if (failed) {
+    return (
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[radial-gradient(circle_at_50%_35%,rgba(14,165,233,0.22),rgba(15,23,42,0.95)_68%)] text-center text-slate-200">
+        <div className="text-2xl font-black">?</div>
+        <div className="px-3 text-[11px] font-black tracking-wide text-slate-300">
+          {fallbackLabel}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      sizes={sizes}
+      className={className}
+      onError={() => setFailedSrc(src)}
+    />
+  );
+}
 
 type Particle = {
   x: number;
@@ -392,6 +431,7 @@ export default function AquaFishingGame() {
   const [isTouch, setIsTouch] = useState(false);
   const isTouchRef = useRef(false);
   const [shopVisible, setShopVisible] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const localeRef = useRef(locale);
   useEffect(() => { localeRef.current = locale; }, [locale]);
 
@@ -481,6 +521,12 @@ export default function AquaFishingGame() {
     if (!fish) return '';
     return locale === 'en' ? fish.descEn : fish.desc;
   };
+  const getFishImageAlt = (key: string) => {
+    const meta = FISH_IMAGE_METADATA[key];
+    if (meta) return locale === 'en' ? meta.imageAltEn : meta.imageAlt;
+    return getFishName(key);
+  };
+  const getFishImageCredit = (key: string) => FISH_IMAGE_METADATA[key];
 
   useEffect(() => {
     const handleToggleEnc = () => setShowEncyclopedia(s => !s);
@@ -1816,32 +1862,6 @@ export default function AquaFishingGame() {
          ctx.fillText(`${trRef.current('COMBO', '콤보')} x${combo}`, canvas.width - safeSide - 14, safeTop + (mobileMode ? 50 : 55));
       }
 
-      // HUD Controls
-      if (!mobileMode) {
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.5)';
-      ctx.beginPath(); 
-      ctx.roundRect(20, 20, 280, 200, 10); 
-      ctx.fill();
-      
-      ctx.fillStyle = '#38bdf8';
-      ctx.textAlign = 'left';
-      ctx.font = 'bold 18px sans-serif';
-      ctx.fillText(trRef.current("CONTROLS", "조작법"), 40, 45);
-
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = '15px sans-serif';
-      ctx.fillText(trRef.current("A / D  -  Move Boat", "A / D  -  배 이동"), 40, 75);
-      ctx.fillText(trRef.current("SPACE (Hold)  -  Drop Line", "스페이스(꾹)  -  줄 내리기"), 40, 100);
-      ctx.fillText(trRef.current("SPACE (Tap)  -  Catch Fish", "스페이스(탭)  -  낚아채기"), 40, 125);
-
-      ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 15px sans-serif';
-      ctx.fillText(trRef.current("B  -  Open Shop", "B  -  상점 열기"), 40, 155);
-
-      ctx.fillStyle = '#22c55e';
-      ctx.fillText(trRef.current("E  -  Encyclopedia", "E  -  도감"), 40, 185);
-      }
-
       if (shopOpen) {
           const shopWidth = Math.min(500, canvas.width - safeSide * 2);
           const shopHeight = Math.min(400, canvas.height - safeTop * 2 - (mobileMode ? 108 : 0));
@@ -2054,6 +2074,16 @@ export default function AquaFishingGame() {
         }}
       />
 
+      {!showEncyclopedia && (
+        <AquaHelpPanel
+          t={t}
+          isTouch={isTouch}
+          open={helpOpen}
+          onToggle={() => setHelpOpen((value) => !value)}
+          onClose={() => setHelpOpen(false)}
+        />
+      )}
+
       {isTouch && !showEncyclopedia && (
         <MobileControls
           t={t}
@@ -2104,20 +2134,30 @@ export default function AquaFishingGame() {
                                 </div>
 
                                 {/* Image area */}
-                                <div className="w-full aspect-[4/3] shrink-0 bg-slate-900 border-[6px] border-slate-700 rounded-lg overflow-hidden relative mb-4 shadow-md flex items-center justify-center p-2 box-border">
-                                    <div className="w-full h-full relative overflow-hidden rounded bg-black flex items-center justify-center">
-                                        <Image
-                                            src={FISH_DATABASE[selectedFish].imageUrl} 
-                                            alt={getFishName(selectedFish)} 
-                                            fill
+                                <div className="w-full aspect-[4/3] shrink-0 bg-slate-900 border-[6px] border-slate-700 rounded-lg overflow-hidden relative mb-3 shadow-md flex items-center justify-center p-2 box-border">
+                                    <div className="w-full h-full relative overflow-hidden rounded bg-slate-950 flex items-center justify-center">
+                                        <FishImage
+                                            src={FISH_DATABASE[selectedFish].imageUrl}
+                                            alt={getFishImageAlt(selectedFish)}
                                             sizes="(max-width: 768px) 100vw, 360px"
-                                            className={`object-cover transition-all ${caughtData[selectedFish] ? 'opacity-90' : 'opacity-40 contrast-0 brightness-0'}`}
+                                            className={`object-contain p-2 transition-all ${caughtData[selectedFish] ? 'opacity-95' : 'opacity-40 contrast-0 brightness-0'}`}
+                                            fallbackLabel={t('이미지 준비 중', 'Image pending')}
                                         />
                                         {!caughtData[selectedFish] && <div className="absolute text-5xl font-black text-slate-700/80">?</div>}
                                         <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none"></div>
                                         <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] pointer-events-none"></div>
                                     </div>
                                 </div>
+                                {caughtData[selectedFish] && getFishImageCredit(selectedFish) && (
+                                    <a
+                                        href={getFishImageCredit(selectedFish)?.imageSourceUrl}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="mb-3 text-center text-[10px] font-bold leading-tight text-slate-500 hover:text-slate-700 underline decoration-dotted underline-offset-2"
+                                    >
+                                        {getFishImageCredit(selectedFish)?.imageCredit} · {getFishImageCredit(selectedFish)?.imageLicense}
+                                    </a>
+                                )}
                                 
                                 {/* Stats pills */}
                                 <div className="flex flex-wrap gap-2 mb-4 justify-center shrink-0">
@@ -2187,15 +2227,15 @@ export default function AquaFishingGame() {
                                         #{String(index + 1).padStart(3, '0')}
                                     </div>
                                     
-                                    <div className={`w-16 h-16 rounded-full border-2 border-slate-900 overflow-hidden shrink-0 shadow-inner flex items-center justify-center relative
+                                    <div className={`w-full max-w-24 aspect-[4/3] rounded-md border-2 border-slate-900 overflow-hidden shrink-0 shadow-inner flex items-center justify-center relative
                                         ${isCaught ? 'bg-slate-800' : 'bg-slate-950'}
                                     `}>
-                                        <Image
-                                            src={data.imageUrl} 
-                                            alt={locale === 'en' ? data.nameEn : data.name} 
-                                            fill
-                                            sizes="64px"
-                                            className={`object-cover transition-all ${isCaught ? '' : 'opacity-40 contrast-0 brightness-0'}`}
+                                        <FishImage
+                                            src={data.imageUrl}
+                                            alt={getFishImageAlt(key)}
+                                            sizes="96px"
+                                            className={`object-contain p-1 transition-all ${isCaught ? '' : 'opacity-40 contrast-0 brightness-0'}`}
+                                            fallbackLabel={t('이미지 없음', 'No image')}
                                         />
                                         {!isCaught && <span className="absolute text-slate-600 text-xl font-black drop-shadow-md">?</span>}
                                     </div>
@@ -2230,6 +2270,170 @@ export default function AquaFishingGame() {
    with touch buttons. Each button dispatches `aqua-fishing:input` events that
    the game loop's effect listens for and translates into the same `keys`
    state mutations the keyboard handler does. */
+function AquaHelpPanel({
+  t,
+  isTouch,
+  open,
+  onToggle,
+  onClose,
+}: {
+  t: (ko: string, en: string) => string;
+  isTouch: boolean;
+  open: boolean;
+  onToggle: () => void;
+  onClose: () => void;
+}) {
+  const panelStyle: React.CSSProperties = isTouch
+    ? {
+        position: "absolute",
+        left: "max(12px, env(safe-area-inset-left, 0px))",
+        right: "max(12px, env(safe-area-inset-right, 0px))",
+        bottom: "max(112px, calc(env(safe-area-inset-bottom, 0px) + 112px))",
+        maxHeight: "min(42vh, 340px)",
+        overflowY: "auto",
+      }
+    : {
+        position: "absolute",
+        left: 18,
+        top: "max(76px, calc(env(safe-area-inset-top, 0px) + 76px))",
+        width: 330,
+        maxWidth: "calc(100vw - 36px)",
+      };
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={false}
+        aria-label={t("조작법 열기", "Open controls")}
+        style={{
+          position: "absolute",
+          left: "max(14px, env(safe-area-inset-left, 0px))",
+          top: isTouch
+            ? "max(64px, calc(env(safe-area-inset-top, 0px) + 64px))"
+            : "max(76px, calc(env(safe-area-inset-top, 0px) + 76px))",
+          minHeight: 44,
+          minWidth: 44,
+          padding: "0 15px",
+          borderRadius: 999,
+          border: "1px solid rgba(255,255,255,0.28)",
+          background: "rgba(15,23,42,0.74)",
+          backdropFilter: "blur(10px)",
+          color: "white",
+          fontSize: 14,
+          fontWeight: 900,
+          letterSpacing: "0.02em",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.24)",
+          zIndex: 46,
+          cursor: "pointer",
+          WebkitTapHighlightColor: "transparent",
+          touchAction: "manipulation",
+        }}
+      >
+        ? {t("조작법", "Controls")}
+      </button>
+    );
+  }
+
+  return (
+    <section
+      role="dialog"
+      aria-label={t("조작법", "Controls")}
+      style={{
+        ...panelStyle,
+        zIndex: 45,
+        borderRadius: isTouch ? 20 : 14,
+        border: "1px solid rgba(255,255,255,0.28)",
+        background: "rgba(15,23,42,0.9)",
+        backdropFilter: "blur(14px)",
+        color: "white",
+        boxShadow: "0 18px 48px rgba(0,0,0,0.34)",
+        padding: isTouch ? "16px 16px 18px" : "16px",
+        pointerEvents: "auto",
+        touchAction: "pan-y",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 18, fontWeight: 950, lineHeight: 1.2 }}>
+            {t("조작법", "Controls")}
+          </div>
+          <div style={{ marginTop: 4, color: "rgba(226,232,240,0.72)", fontSize: 12, lineHeight: 1.45 }}>
+            {t("게임 중 언제든 접고 펼칠 수 있어요.", "Open or close this anytime during play.")}
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={t("닫기", "Close")}
+          style={{
+            minWidth: 48,
+            minHeight: 44,
+            borderRadius: 999,
+            border: "1px solid rgba(255,255,255,0.24)",
+            background: "rgba(255,255,255,0.1)",
+            color: "white",
+            fontSize: 14,
+            fontWeight: 900,
+            cursor: "pointer",
+            WebkitTapHighlightColor: "transparent",
+            touchAction: "manipulation",
+          }}
+        >
+          {isTouch ? t("닫기", "Close") : "X"}
+        </button>
+      </div>
+
+      <div style={{ display: "grid", gap: 12 }}>
+        <ControlGroup
+          title={t("데스크톱", "Desktop")}
+          items={[
+            t("A / D - 배 이동", "A / D - Move boat"),
+            t("Space 길게 - 줄 내리기", "Hold Space - Drop line"),
+            t("Space 짧게 - 낚아채기", "Tap Space - Catch fish"),
+            t("B - 상점 열기", "B - Open shop"),
+            t("E - 도감", "E - Encyclopedia"),
+          ]}
+        />
+        <ControlGroup
+          title={t("모바일", "Mobile")}
+          items={[
+            t("좌우 버튼으로 배 이동", "Use left/right buttons to move"),
+            t("낚시 버튼을 길게 눌러 줄 내리기", "Hold the fishing button to lower the line"),
+            t("타이밍에 맞춰 떼거나 다시 눌러 낚아채기", "Release or tap at the right timing to catch"),
+            t("상점/도감 버튼 사용", "Use the shop/dex buttons"),
+          ]}
+        />
+      </div>
+    </section>
+  );
+}
+
+function ControlGroup({ title, items }: { title: string; items: string[] }) {
+  return (
+    <div
+      style={{
+        border: "1px solid rgba(255,255,255,0.14)",
+        borderRadius: 12,
+        background: "rgba(2,6,23,0.28)",
+        padding: "12px 13px",
+      }}
+    >
+      <div style={{ color: "#38bdf8", fontSize: 13, fontWeight: 950, marginBottom: 8 }}>
+        {title}
+      </div>
+      <ul style={{ margin: 0, paddingLeft: 18, display: "grid", gap: 6 }}>
+        {items.map((item) => (
+          <li key={item} style={{ color: "#f8fafc", fontSize: 13, lineHeight: 1.45 }}>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function AquaHoldButton({
   label,
   onDown,
