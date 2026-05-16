@@ -426,6 +426,46 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       { id: "d", text: { ko: "사람들과의 미묘한 거리나 분위기가 마음에 남는다", en: "Subtle distance or mood with people stays with me." }, weights: { relationships: 2 } },
     ],
   },
+  {
+    id: "feedback-wait",
+    prompt: { ko: "중요한 피드백을 기다리는 중입니다. 당신은 주로 어디에 마음이 가나요?", en: "You are waiting for important feedback. Where does your mind usually go?" },
+    choices: [
+      { id: "a", text: { ko: "지금 할 수 있는 다음 행동을 하나 정한다", en: "I choose one next action I can take now." }, weights: { outcome: 1, future: 1 } },
+      { id: "b", text: { ko: "상대가 나를 어떻게 평가할지 계속 떠올린다", en: "I keep imagining how they will evaluate me." }, weights: { "others-opinion": 2 } },
+      { id: "c", text: { ko: "앞으로 일이 어떻게 흘러갈지 계속 계산한다", en: "I keep calculating how things may unfold from here." }, weights: { future: 2 } },
+      { id: "d", text: { ko: "불안해하는 내 마음부터 통제하려고 한다", en: "I first try to control my anxious feelings." }, weights: { emotions: 2 } },
+    ],
+  },
+  {
+    id: "boundary-text",
+    prompt: { ko: "누군가에게 가능한 범위를 말해야 합니다. 가장 가까운 반응은?", en: "You need to tell someone what you can and cannot do. What feels closest?" },
+    choices: [
+      { id: "a", text: { ko: "내가 선택할 수 있는 범위를 차분히 말한다", en: "I calmly state the range I can choose." }, weights: { relationships: 1, outcome: 1 } },
+      { id: "b", text: { ko: "이기적으로 보일까 봐 계속 신경 쓰인다", en: "I keep worrying that I may look selfish." }, weights: { "others-opinion": 2 } },
+      { id: "c", text: { ko: "완벽한 문장을 찾느라 말을 미루게 된다", en: "I delay speaking while looking for the perfect wording." }, weights: { "perfect-self": 2 } },
+      { id: "d", text: { ko: "비슷한 상황에서 어긋났던 기억이 떠오른다", en: "I remember a similar situation that went wrong." }, weights: { past: 2 } },
+    ],
+  },
+  {
+    id: "cancelled-plan",
+    prompt: { ko: "기대하던 약속이 갑자기 취소됐습니다. 당신은?", en: "A plan you were looking forward to is suddenly cancelled. What do you do?" },
+    choices: [
+      { id: "a", text: { ko: "아쉬움은 두고, 오늘 저녁을 어떻게 보낼지 정한다", en: "I let the disappointment be there and decide how to spend the evening." }, weights: { future: 1, emotions: 1 } },
+      { id: "b", text: { ko: "상대가 나를 덜 중요하게 보는 건 아닌지 걱정된다", en: "I worry they may not see me as important." }, weights: { relationships: 2, "others-opinion": 1 } },
+      { id: "c", text: { ko: "앞으로도 계속 이렇게 될까 봐 신경 쓰인다", en: "I worry this may keep happening in the future." }, weights: { future: 2 } },
+      { id: "d", text: { ko: "서운한 티가 나지 않게 감정을 눌러본다", en: "I try to hold down my feelings so disappointment does not show." }, weights: { emotions: 2 } },
+    ],
+  },
+  {
+    id: "old-choice",
+    prompt: { ko: "예전 선택이 문득 떠오르며 마음이 복잡해집니다. 당신은?", en: "An old choice suddenly returns to mind and makes you feel complicated. What do you do?" },
+    choices: [
+      { id: "a", text: { ko: "이미 지난 일에서 배울 점과 지금 할 일을 나눈다", en: "I separate what I can learn from the past from what I can do now." }, weights: { past: 1, outcome: 1 } },
+      { id: "b", text: { ko: "그때 다르게 했어야 했다는 장면을 계속 돌려본다", en: "I keep replaying how I should have done it differently." }, weights: { past: 2 } },
+      { id: "c", text: { ko: "그 선택이 앞으로도 영향을 줄까 봐 걱정된다", en: "I worry that choice may keep affecting the future." }, weights: { future: 2 } },
+      { id: "d", text: { ko: "그때의 내가 더 완벽했어야 한다고 느낀다", en: "I feel that my past self should have been more perfect." }, weights: { "perfect-self": 2 } },
+    ],
+  },
 ];
 export function calculateStoicResult(answers: StoicAnswer[]): StoicResult {
   const scores = new Map<StoicControlId, number>();

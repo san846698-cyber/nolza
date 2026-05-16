@@ -361,6 +361,46 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
       { id: "d", text: { ko: "책임만 늘고 자유가 줄어들까 봐 걱정된다", en: "I worry that responsibility will grow while freedom shrinks." }, weights: { "responsibility-freedom": 2 } },
     ],
   },
+  {
+    id: "career-offer",
+    prompt: { ko: "익숙한 자리와 새롭지만 불확실한 제안 사이에서 고민합니다. 가장 가까운 선택은?", en: "You are choosing between a familiar place and a new but uncertain offer. What feels closest?" },
+    choices: [
+      { id: "a", text: { ko: "잃을 것과 얻을 것을 적어보고 작은 안전장치를 만든다", en: "I list what I may lose and gain, then create a small safety net." }, weights: { "balanced-negotiator": 2, "freedom-stability": 1 } },
+      { id: "b", text: { ko: "불안해도 새로운 쪽으로 한번 움직이고 싶다", en: "Even with anxiety, I want to move toward the new option." }, weights: { "stability-change": 2, "freedom-stability": 1 } },
+      { id: "c", text: { ko: "어느 선택이 더 인정받을지 자꾸 생각한다", en: "I keep thinking about which choice will be more respected." }, weights: { "recognition-independence": 2 } },
+      { id: "d", text: { ko: "준비가 완벽해질 때까지 결정을 미루고 싶다", en: "I want to delay the decision until I feel perfectly ready." }, weights: { "perfect-start": 2 } },
+    ],
+  },
+  {
+    id: "rest-weekend",
+    prompt: { ko: "쉬기로 한 주말에 성장에 도움이 될 기회가 생겼습니다. 당신은?", en: "On a weekend you planned to rest, an opportunity for growth appears. What do you do?" },
+    choices: [
+      { id: "a", text: { ko: "이번에는 회복을 지키는 것도 필요하다고 본다", en: "I see that protecting recovery matters this time." }, weights: { "growth-rest": 2 } },
+      { id: "b", text: { ko: "힘들어도 놓치면 뒤처질 것 같아 참여한다", en: "Even if I am tired, I join because missing it may set me back." }, weights: { "growth-rest": 2, "responsibility-freedom": 1 } },
+      { id: "c", text: { ko: "일부만 참여하고 나머지 시간은 쉬는 식으로 조정한다", en: "I join only part of it and keep the rest of the time for rest." }, weights: { "balanced-negotiator": 2 } },
+      { id: "d", text: { ko: "내가 맡은 일이나 기대를 저버리는 느낌이 든다", en: "It feels like I am failing a duty or expectation." }, weights: { "responsibility-freedom": 2 } },
+    ],
+  },
+  {
+    id: "apology-message",
+    prompt: { ko: "가까운 사람에게 먼저 사과하거나 말을 걸어야 할지 고민됩니다. 당신은?", en: "You wonder whether to apologize or reach out first to someone close. What feels closest?" },
+    choices: [
+      { id: "a", text: { ko: "관계를 위해 필요한 말은 부드럽게 해본다", en: "For the relationship, I try saying what needs to be said gently." }, weights: { "love-pride": 1, "truth-peace": 1 } },
+      { id: "b", text: { ko: "먼저 다가가면 내가 진 것처럼 보일까 봐 망설인다", en: "I hesitate because reaching out first may look like losing." }, weights: { "love-pride": 2 } },
+      { id: "c", text: { ko: "분위기를 깨지 않으려 조금 더 기다리고 싶다", en: "I want to wait a little longer so I do not disturb the peace." }, weights: { "truth-peace": 2 } },
+      { id: "d", text: { ko: "짧게 마음을 전하고 상대의 반응을 기다린다", en: "I share my heart briefly and wait for their response." }, weights: { "balanced-negotiator": 2, "love-pride": 1 } },
+    ],
+  },
+  {
+    id: "unfinished-project",
+    prompt: { ko: "작업물이 완벽하진 않지만 사람들에게 보여줄 수는 있습니다. 당신의 선택은?", en: "Your work is not perfect, but it is ready enough to show. What do you choose?" },
+    choices: [
+      { id: "a", text: { ko: "작게 공개하고 반응을 보며 고친다", en: "I share a small version and improve it after seeing reactions." }, weights: { "balanced-negotiator": 2, "perfect-start": 1 } },
+      { id: "b", text: { ko: "부족한 부분이 보이면 아직 시작하면 안 될 것 같다", en: "If I can see flaws, it feels like I should not start yet." }, weights: { "perfect-start": 2 } },
+      { id: "c", text: { ko: "지금 바꾸지 않으면 계속 같은 자리에 있을 것 같다", en: "If I do not change now, I may stay in the same place." }, weights: { "stability-change": 2 } },
+      { id: "d", text: { ko: "믿을 만한 사람에게 먼저 보여주고 의견을 듣는다", en: "I first show it to someone I trust and listen to their thoughts." }, weights: { "recognition-independence": 1, "balanced-negotiator": 1 } },
+    ],
+  },
 ];
 
 

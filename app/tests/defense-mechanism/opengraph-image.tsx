@@ -122,7 +122,7 @@ export default function Image() {
             }}
           >
             <span style={{ padding: "12px 18px", borderRadius: 18, background: "#f2c879", color: "#17130f" }}>
-              12 QUESTIONS
+              16 QUESTIONS
             </span>
             <span style={{ padding: "12px 18px", borderRadius: 18, background: "#a8b8e8", color: "#17130f" }}>
               8 RESULTS

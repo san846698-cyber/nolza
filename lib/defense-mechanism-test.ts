@@ -35,6 +35,12 @@ export type DefenseResult = {
   weakPoint: LocalizedText;
   whenHelps: LocalizedText;
   carefulWhen: LocalizedText;
+  innerProcess: LocalizedText;
+  outwardLook: LocalizedText;
+  innerQuote: LocalizedText;
+  protectiveReason: LocalizedText;
+  repeatedPattern: LocalizedText;
+  gentlePractice: LocalizedText;
   shareLine: LocalizedText;
   accent: string;
 };
@@ -65,13 +71,19 @@ export const DEFENSE_COPY = {
   },
   questionCount: { ko: "질문", en: "Question" },
   resultLoading: { ko: "당신의 보호 방식을 정리하는 중...", en: "Organizing your protection pattern..." },
-  saveImage: { ko: "이미지로 저장", en: "Save as image" },
   resultLabel: { ko: "나의 방어기제", en: "My Defense Mechanism" },
   strength: { ko: "강점", en: "Strength" },
   weakPoint: { ko: "조심할 점", en: "Watch out" },
   whenHelps: { ko: "도움이 되는 순간", en: "When it helps" },
   carefulWhen: { ko: "주의할 순간", en: "Be careful when" },
-  shareLine: { ko: "공유 문장", en: "Share line" },
+  deeperTitle: { ko: "조금 더 들여다보면", en: "A closer look" },
+  innerProcess: { ko: "내 마음이 이렇게 움직여요", en: "How your mind moves" },
+  outwardLook: { ko: "겉으로 보이는 모습", en: "How it may look outside" },
+  innerQuote: { ko: "속으로 자주 하는 말", en: "What you may say inside" },
+  protectiveReason: { ko: "이 방식이 나를 지켜주는 이유", en: "Why this protects you" },
+  repeatedPattern: { ko: "하지만 오래 반복되면", en: "If it repeats for too long" },
+  gentlePractice: { ko: "조금 더 편해지는 연습", en: "A small practice" },
+  scoreTitle: { ko: "방어기제 경향", en: "Defense tendency" },
   share: { ko: "결과 공유하기", en: "Share result" },
   copied: { ko: "링크 복사됨", en: "Link copied" },
   retry: { ko: "다시 하기", en: "Retry" },
@@ -106,6 +118,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       ko: "상대가 진지한 대화를 원하거나, 나도 사실은 위로가 필요한 순간입니다.",
       en: "Be careful when someone wants a serious conversation, or when you actually need comfort.",
     },
+    innerProcess: {
+      ko: "상처를 받거나 민망할 때, 당신의 마음은 먼저 분위기를 가볍게 만들 방법을 찾습니다. 웃음이 생기면 감정의 무게가 조금 줄어들고, 나도 상대도 덜 불편해진다고 느끼기 때문입니다.",
+      en: "When you feel hurt or embarrassed, your mind quickly looks for a way to make the mood lighter. If people can laugh, the feeling seems less heavy and everyone feels a little safer.",
+    },
+    outwardLook: {
+      ko: "겉으로는 밝고 센스 있으며 분위기를 잘 풀어주는 사람처럼 보일 수 있습니다. 하지만 속으로는 웃으면서도 방금 받은 상처를 혼자 붙잡고 있을 때가 있어요.",
+      en: "You may look bright, witty, and good at easing tension. Inside, though, you may still be holding the hurt while everyone else thinks the moment has passed.",
+    },
+    innerQuote: {
+      ko: "“일단 웃기게 넘기자. 너무 심각해지면 더 이상해질 것 같아.”",
+      en: "\"Let me make it funny first. If it gets too serious, it will feel even stranger.\"",
+    },
+    protectiveReason: {
+      ko: "유머는 감정을 바로 드러내지 않아도 마음을 보호할 수 있게 해줍니다. 웃음이라는 완충재가 있어서 불편한 말이나 상황을 조금 더 견딜 수 있게 됩니다.",
+      en: "Humor lets you protect your feelings without exposing them right away. It creates a cushion between you and an uncomfortable moment.",
+    },
+    repeatedPattern: {
+      ko: "하지만 계속 웃음으로만 넘기면, 주변 사람들은 당신이 정말 괜찮다고 믿을 수 있습니다. 정작 필요한 위로나 사과를 받을 기회가 줄어들 수 있어요.",
+      en: "But if every hard feeling becomes a joke, people may believe you are truly fine. You may miss the comfort or apology you actually needed.",
+    },
+    gentlePractice: {
+      ko: "농담을 한 뒤에 마음속으로 한 번만 물어보세요. “웃기게 말했지만, 사실 나는 뭐가 조금 아팠지?”",
+      en: "After the joke, ask yourself once: \"I made it funny, but what actually hurt a little?\"",
+    },
     shareLine: {
       ko: "나는 힘들 때 유머화로 버티는 타입이래.",
       en: "Apparently, I get through hard moments with humor.",
@@ -138,6 +174,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
     carefulWhen: {
       ko: "괜찮은 이유는 많은데 마음은 계속 서운한 상태라면, 설명보다 감정이 먼저일 수 있습니다.",
       en: "If you have many reasons but still feel hurt, the feeling may need attention first.",
+    },
+    innerProcess: {
+      ko: "상처를 받거나 실망했을 때, 당신의 마음은 감정보다 먼저 이유를 찾으려 합니다. 상황을 납득 가능한 형태로 바꾸면 흔들림이 줄어들기 때문입니다.",
+      en: "When you feel hurt or disappointed, your mind often looks for reasons before it fully feels the emotion. Turning the situation into something understandable helps you feel steadier.",
+    },
+    outwardLook: {
+      ko: "겉으로는 이해심 있고 차분해 보일 수 있습니다. 하지만 속으로는 아직 서운한 마음이 남아 있는데도, 괜찮은 이유를 먼저 만들고 있을 수 있어요.",
+      en: "You may seem understanding and calm. Inside, however, you may still feel hurt while already building reasons for why it was probably okay.",
+    },
+    innerQuote: {
+      ko: "“그럴 만한 이유가 있었겠지. 내가 너무 크게 받아들인 걸 수도 있어.”",
+      en: "\"There was probably a reason. Maybe I am taking it too seriously.\"",
+    },
+    protectiveReason: {
+      ko: "이 방식은 감정이 한꺼번에 무너지지 않도록 도와줍니다. 이유를 찾는 동안 마음은 잠시 균형을 되찾고, 상황을 더 견딜 수 있는 형태로 바꿉니다.",
+      en: "This keeps emotion from collapsing all at once. While you search for reasons, your mind regains balance and makes the situation more bearable.",
+    },
+    repeatedPattern: {
+      ko: "하지만 모든 감정을 이유로만 정리하려 하면, 진짜 서운함이나 실망을 인정할 시간이 부족해질 수 있습니다. 마음은 납득했는데 감정은 아직 남아 있는 상태가 될 수 있어요.",
+      en: "But if every feeling is handled only through reasons, sadness or disappointment may not get enough room. Your mind may accept it while your feelings are still there.",
+    },
+    gentlePractice: {
+      ko: "이유를 찾은 뒤에는 “그래서 나는 실제로 어떤 감정을 느꼈지?”라고 한 번만 더 물어보세요.",
+      en: "After finding the reason, ask once more: \"So what did I actually feel?\"",
     },
     shareLine: {
       ko: "나는 합리화 타입 나왔다. 괜찮은 이유를 찾는 데 너무 빠름.",
@@ -172,6 +232,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       ko: "피하는 동안 문제를 해결했다고 느끼지만, 실제로는 아무것도 정리되지 않았을 때입니다.",
       en: "Be careful when avoiding feels like solving, but nothing has actually been resolved.",
     },
+    innerProcess: {
+      ko: "마음이 감당하기 어려운 장면을 만나면, 당신은 먼저 거리를 만들려 합니다. 잠깐 보지 않고, 듣지 않고, 생각하지 않으면 감정이 덜 커질 것 같기 때문입니다.",
+      en: "When a situation feels too much to hold, your mind tries to create distance first. Not looking, not hearing, or not thinking can make the feeling seem smaller for a while.",
+    },
+    outwardLook: {
+      ko: "겉으로는 조용히 물러나거나 아무렇지 않은 척하는 사람처럼 보일 수 있습니다. 주변 사람은 당신이 관심이 없거나 정리가 끝났다고 오해할 수도 있어요.",
+      en: "You may look quiet, distant, or unaffected. Others might mistake your distance for indifference or assume you have already moved on.",
+    },
+    innerQuote: {
+      ko: "“지금은 못 보겠어. 조금만 나중에 생각하자.”",
+      en: "\"I cannot look at this right now. I will think about it later.\"",
+    },
+    protectiveReason: {
+      ko: "회피는 마음이 너무 뜨거워졌을 때 잠시 식힐 시간을 줍니다. 바로 마주하면 더 다칠 것 같은 순간에 스스로를 보호하는 멈춤 버튼이 됩니다.",
+      en: "Avoidance gives your mind time to cool down when everything feels too hot. It can be a pause button when facing it immediately would hurt more.",
+    },
+    repeatedPattern: {
+      ko: "하지만 계속 미루기만 하면 감정은 사라지기보다 쌓일 수 있습니다. 어느 날 사소한 일에 갑자기 크게 흔들리는 이유가 될 수 있어요.",
+      en: "But if things are only postponed, feelings may pile up instead of disappearing. Later, a small moment can suddenly feel much bigger.",
+    },
+    gentlePractice: {
+      ko: "피하고 싶을 때는 완전히 닫기보다 “10분만 쉬고 다시 볼게”처럼 돌아올 시간을 작게 정해보세요.",
+      en: "When you want to avoid something, try setting a small return point: \"I will rest for ten minutes, then look again.\"",
+    },
     shareLine: {
       ko: "나는 회피 타입 나왔다. 일단 안 보고 마음을 살림.",
       en: "I got Avoidance. First I look away, then I survive.",
@@ -204,6 +288,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
     carefulWhen: {
       ko: "내 마음을 논리적으로 설명할 수는 있는데, 몸은 계속 긴장해 있을 때입니다.",
       en: "Be careful when your mind can explain everything, but your body still feels tense.",
+    },
+    innerProcess: {
+      ko: "불편한 감정이 올라오면, 당신의 마음은 그것을 바로 느끼기보다 구조와 원인으로 바꾸려 합니다. 감정을 분석 가능한 대상으로 만들면 덜 휩쓸린다고 느끼기 때문입니다.",
+      en: "When discomfort rises, your mind turns it into structure and causes before fully feeling it. If emotion becomes something to analyze, it feels less likely to sweep you away.",
+    },
+    outwardLook: {
+      ko: "겉으로는 침착하고 이성적이며 설명을 잘하는 사람처럼 보일 수 있습니다. 하지만 속으로는 감정보다 해석이 너무 빨리 앞서가고 있을 수 있어요.",
+      en: "You may look calm, reasonable, and articulate. Inside, interpretation may be moving faster than the actual feeling.",
+    },
+    innerQuote: {
+      ko: "“왜 이런 반응이 나왔는지 먼저 이해해야 해.”",
+      en: "\"I need to understand why this reaction happened first.\"",
+    },
+    protectiveReason: {
+      ko: "지성화는 감정과 나 사이에 안전한 거리를 만들어줍니다. 생각으로 다루는 동안 마음은 덜 노출되고, 상황을 통제할 수 있다는 감각을 얻습니다.",
+      en: "Intellectualization creates a safer distance between you and the feeling. While you think it through, you feel less exposed and more in control.",
+    },
+    repeatedPattern: {
+      ko: "하지만 계속 분석만 하면 감정은 이해됐지만 느껴지지 않은 채 남을 수 있습니다. 머리는 정리됐는데 몸과 마음은 아직 긴장한 상태가 될 수 있어요.",
+      en: "But if you only analyze, the feeling may be understood without being felt. Your mind may be organized while your body is still tense.",
+    },
+    gentlePractice: {
+      ko: "정리한 뒤에는 “설명은 됐고, 지금 내 몸은 어디가 긴장돼 있지?”라고 확인해보세요.",
+      en: "After organizing the facts, ask: \"The explanation is clear, but where does my body still feel tense?\"",
     },
     shareLine: {
       ko: "나는 지성화 타입이래. 감정도 분석부터 함.",
@@ -238,6 +346,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       ko: "성과는 나왔는데 마음은 여전히 돌봄을 기다리고 있을 때입니다.",
       en: "Be careful when the work is finished, but your heart still needs care.",
     },
+    innerProcess: {
+      ko: "힘든 감정이 생기면, 당신의 마음은 그것을 멈춰 세우기보다 어딘가에 쓰려고 합니다. 불안, 분노, 서운함도 목표나 작업으로 옮겨가면 덜 막막하게 느껴집니다.",
+      en: "When difficult feelings appear, your mind tries to use them instead of freezing. Anxiety, anger, or hurt can feel less overwhelming when moved into a goal or task.",
+    },
+    outwardLook: {
+      ko: "겉으로는 성실하고 생산적인 사람처럼 보일 수 있습니다. 힘든 일이 있어도 뭔가를 해내고 있어서, 주변은 당신이 잘 버티고 있다고 생각할 수 있어요.",
+      en: "You may look diligent and productive. Because you keep doing things even when it is hard, people may assume you are handling everything well.",
+    },
+    innerQuote: {
+      ko: "“가만히 있으면 더 힘드니까, 뭐라도 하자.”",
+      en: "\"If I stay still, it will feel worse. Let me do something.\"",
+    },
+    protectiveReason: {
+      ko: "승화는 감정의 에너지를 망가지지 않는 방향으로 흘려보내게 해줍니다. 마음이 복잡할 때도 움직일 수 있는 길을 만들어줍니다.",
+      en: "Sublimation lets emotional energy move in a direction that does not break you. It gives your mind somewhere useful to go.",
+    },
+    repeatedPattern: {
+      ko: "하지만 계속 결과로만 감정을 처리하면, 쉬어야 할 때도 스스로를 몰아붙일 수 있습니다. 성취는 남았지만 마음은 아직 쉬지 못했을 수 있어요.",
+      en: "But if feelings are processed only through results, you may push yourself even when you need rest. The achievement may be real while your heart still needs care.",
+    },
+    gentlePractice: {
+      ko: "무언가를 해낸 뒤에는 “이제 결과 말고 내 마음도 잠깐 챙겨도 된다”고 말해보세요.",
+      en: "After finishing something, try saying: \"The result is done. My feelings can have a moment too.\"",
+    },
     shareLine: {
       ko: "나는 승화 타입 나왔다. 힘든 걸 결과물로 바꾸는 편.",
       en: "I got Sublimation. I tend to turn hard feelings into results.",
@@ -270,6 +402,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
     carefulWhen: {
       ko: "계속 괜찮다고 말하지만 사소한 일에도 금방 지치는 상태입니다.",
       en: "Be careful when you keep saying you are fine, but tiny things drain you quickly.",
+    },
+    innerProcess: {
+      ko: "감정이 올라와도 당신의 마음은 우선 해야 할 일을 앞에 둡니다. 지금 무너지면 안 된다고 느껴서, 마음을 잠시 접어두고 기능하는 쪽을 선택합니다.",
+      en: "Even when feelings rise, your mind puts the next responsibility first. You may choose to function now because falling apart does not feel possible.",
+    },
+    outwardLook: {
+      ko: "겉으로는 침착하고 책임감 있어 보일 수 있습니다. 하지만 속으로는 괜찮지 않은 마음을 아주 조용히 뒤로 밀어두고 있을 때가 있어요.",
+      en: "You may look calm and responsible. Inside, though, you may be quietly pushing aside feelings that are not actually okay.",
+    },
+    innerQuote: {
+      ko: "“지금은 일단 괜찮아야 해. 나중에 생각하자.”",
+      en: "\"I need to be okay for now. I can think about it later.\"",
+    },
+    protectiveReason: {
+      ko: "억압은 당장 해야 할 일을 해낼 수 있게 도와줍니다. 감정이 너무 크게 올라와도 삶의 리듬을 완전히 멈추지 않게 붙잡아줍니다.",
+      en: "Suppression helps you get through what must be done. It keeps life from stopping completely when feelings become intense.",
+    },
+    repeatedPattern: {
+      ko: "하지만 계속 밀어두면 작은 일에도 쉽게 지칠 수 있습니다. 감정은 사라진 것이 아니라 조용히 기다리고 있었을 수 있어요.",
+      en: "But if everything is pushed away, small things can become strangely draining. The feeling may not be gone; it may simply be waiting.",
+    },
+    gentlePractice: {
+      ko: "하루가 끝난 뒤 “오늘 괜찮은 척하느라 힘들었던 순간이 있었나?”를 짧게 떠올려보세요.",
+      en: "At the end of the day, briefly ask: \"Was there a moment when pretending to be okay took effort?\"",
     },
     shareLine: {
       ko: "나는 억압 타입이래. 괜찮은 척이 너무 자동임.",
@@ -304,6 +460,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       ko: "확인하지 않은 생각이 사실처럼 느껴져서 혼자 지칠 때입니다.",
       en: "Be careful when an unconfirmed thought starts to feel like a fact.",
     },
+    innerProcess: {
+      ko: "불안하거나 예민해질 때, 당신의 마음은 바깥의 반응을 더 촘촘히 읽으려 합니다. 내 안의 걱정이 상대의 표정이나 말투에서 먼저 보이는 것처럼 느껴질 수 있습니다.",
+      en: "When you feel anxious or sensitive, your mind reads outside reactions more closely. Your own worry may seem to appear first in another person's tone or expression.",
+    },
+    outwardLook: {
+      ko: "겉으로는 눈치가 빠르고 분위기를 잘 읽는 사람처럼 보일 수 있습니다. 하지만 때로는 확인되지 않은 신호까지 너무 진지하게 받아들이고 있을 수 있어요.",
+      en: "You may look perceptive and quick to read the room. At times, though, you may treat unconfirmed signals as more certain than they are.",
+    },
+    innerQuote: {
+      ko: "“저 사람 지금 나한테 불편한가? 뭔가 달라진 것 같은데.”",
+      en: "\"Are they uncomfortable with me? Something feels different.\"",
+    },
+    protectiveReason: {
+      ko: "투사는 관계에서 위험을 빨리 알아차리게 해줍니다. 상처받기 전에 대비하려는 마음의 경보 장치처럼 작동합니다.",
+      en: "Projection can work like an alarm system in relationships. It helps you prepare before you get hurt.",
+    },
+    repeatedPattern: {
+      ko: "하지만 오래 반복되면 내 불안과 상대의 실제 마음이 섞일 수 있습니다. 확인하지 않은 생각이 사실처럼 굳어질 수 있어요.",
+      en: "But if it repeats for too long, your worry and the other person's actual feelings can blur together. A guess can start to feel like a fact.",
+    },
+    gentlePractice: {
+      ko: "추측이 강해질 때는 “이건 확인한 사실일까, 내가 걱정해서 느끼는 걸까?”라고 나눠보세요.",
+      en: "When a guess feels strong, ask: \"Did I confirm this, or am I feeling it because I am worried?\"",
+    },
     shareLine: {
       ko: "나는 투사 타입 나왔다. 상대 반응에서 내 불안을 읽는 편.",
       en: "I got Projection. I sometimes read my own worry in other people’s reactions.",
@@ -336,6 +516,30 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
     carefulWhen: {
       ko: "상대가 내 반대 행동을 진짜 뜻으로 받아들이기 시작할 때입니다.",
       en: "Be careful when others start believing the opposite act is your real meaning.",
+    },
+    innerProcess: {
+      ko: "마음을 들키는 것이 불편할 때, 당신은 실제 감정과 반대되는 행동을 먼저 꺼낼 수 있습니다. 좋아할수록 무심해지고, 상처받을수록 더 괜찮은 척할 수 있어요.",
+      en: "When revealing your feelings feels uncomfortable, you may first act in the opposite direction. The more you care, the more indifferent you may seem; the more hurt you are, the more fine you may act.",
+    },
+    outwardLook: {
+      ko: "겉으로는 쿨하거나 강한 사람처럼 보일 수 있습니다. 하지만 가까운 사람은 당신의 진짜 마음을 읽기 어려워 혼란스러울 수 있습니다.",
+      en: "You may look cool or strong. But people close to you may feel confused because your real feelings are hard to read.",
+    },
+    innerQuote: {
+      ko: "“티 내면 지는 것 같아. 아무렇지 않은 척하자.”",
+      en: "\"If I show it, I lose. Let me act like it does not matter.\"",
+    },
+    protectiveReason: {
+      ko: "반동형성은 마음을 너무 빨리 노출하지 않게 지켜줍니다. 거절당하거나 약해 보일까 봐 두려운 순간에 자신을 단단하게 세워줍니다.",
+      en: "Reaction formation keeps your heart from being exposed too quickly. It helps you stand firm when rejection or vulnerability feels scary.",
+    },
+    repeatedPattern: {
+      ko: "하지만 계속 반대로 행동하면, 사람들이 당신의 진짜 마음과 멀어질 수 있습니다. 원하는 것과 전혀 다른 반응을 받게 될 수도 있어요.",
+      en: "But if you keep acting opposite to what you feel, people may move farther from your real heart. You may receive the opposite of what you actually wanted.",
+    },
+    gentlePractice: {
+      ko: "완전히 드러내기 어렵다면 “사실 조금 신경 쓰였어”처럼 아주 작은 진심부터 꺼내보세요.",
+      en: "If full honesty feels hard, try a small truth first: \"Actually, that bothered me a little.\"",
     },
     shareLine: {
       ko: "나는 반동형성 타입이래. 진짜 마음이랑 반대로 행동할 때 있음.",
@@ -476,6 +680,50 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       { id: "b", text: { ko: "지금은 할 일을 먼저 하는 게 맞다고 생각한다", en: "I think it makes sense to handle what must be done first." }, scores: { rationalization: 1, suppression: 1 } },
       { id: "c", text: { ko: "감정은 잠시 밀어두고 아예 안 보려 한다", en: "I push the feeling aside and try not to look at it." }, scores: { suppression: 2 } },
       { id: "d", text: { ko: "마음이 흔들리는 이유와 할 일을 분리해서 본다", en: "I separate why my heart is shaken from what I need to do." }, scores: { intellectualization: 2 } },
+    ],
+  },
+  {
+    id: "meeting-silence",
+    scene: { ko: "회의에서 의견을 냈는데 반응이 거의 없습니다.", en: "You share an idea in a meeting, but there is almost no reaction." },
+    question: { ko: "당신에게 가장 가까운 반응은?", en: "What reaction feels closest to you?" },
+    answers: [
+      { id: "a", text: { ko: "필요한 피드백이 있는지 차분히 확인한다", en: "I calmly check whether there is any useful feedback." }, scores: { intellectualization: 1, sublimation: 1 } },
+      { id: "b", text: { ko: "가볍게 농담해서 어색함을 줄인다", en: "I make a light joke to soften the awkwardness." }, scores: { humor: 2 } },
+      { id: "c", text: { ko: "다들 생각할 시간이 필요했을 거라고 본다", en: "I assume people may have needed time to think." }, scores: { rationalization: 2 } },
+      { id: "d", text: { ko: "그 장면을 더 떠올리지 않으려고 다른 일로 넘긴다", en: "I move to another task so I do not keep replaying it." }, scores: { avoidance: 1, suppression: 1 } },
+    ],
+  },
+  {
+    id: "family-comment",
+    scene: { ko: "가족의 한마디가 예상보다 오래 마음에 남습니다.", en: "A family member's comment stays with you longer than expected." },
+    question: { ko: "당신은 보통 어떻게 하나요?", en: "What do you usually do?" },
+    answers: [
+      { id: "a", text: { ko: "어떤 부분이 건드려졌는지 정리한 뒤 필요하면 말한다", en: "I sort out what it touched in me and speak if needed." }, scores: { intellectualization: 1, sublimation: 1 } },
+      { id: "b", text: { ko: "오히려 괜찮은 척하며 더 밝게 군다", en: "I act brighter, as if I am completely fine." }, scores: { reactionFormation: 2 } },
+      { id: "c", text: { ko: "나쁘게 말하려던 건 아닐 거라고 생각한다", en: "I tell myself they probably did not mean it badly." }, scores: { rationalization: 2 } },
+      { id: "d", text: { ko: "잠시 거리를 두고 마음을 가라앉힌다", en: "I take a little space and let my feelings settle." }, scores: { avoidance: 1, suppression: 1 } },
+    ],
+  },
+  {
+    id: "small-conflict",
+    scene: { ko: "작은 의견 차이로 분위기가 굳어졌습니다.", en: "A small disagreement makes the mood tense." },
+    question: { ko: "가장 자연스러운 행동은?", en: "What action feels most natural?" },
+    answers: [
+      { id: "a", text: { ko: "짧은 농담으로 긴장을 조금 낮춘다", en: "I use a brief joke to lower the tension a little." }, scores: { humor: 2 } },
+      { id: "b", text: { ko: "감정은 잠시 두고 핵심만 차분히 확인한다", en: "I set the emotion aside briefly and calmly check the main point." }, scores: { suppression: 1, intellectualization: 1 } },
+      { id: "c", text: { ko: "다른 사람들이 나를 탓하는 것처럼 느껴진다", en: "It feels like others are blaming me." }, scores: { projection: 2 } },
+      { id: "d", text: { ko: "불편한 에너지를 문제 해결 쪽으로 돌린다", en: "I channel the uncomfortable energy into solving the issue." }, scores: { sublimation: 2 } },
+    ],
+  },
+  {
+    id: "envy-good-news",
+    scene: { ko: "내가 원하던 기회를 누군가 먼저 얻었습니다.", en: "Someone gets an opportunity you wanted first." },
+    question: { ko: "당신의 마음은 어디에 가까운가요?", en: "Where does your mind go first?" },
+    answers: [
+      { id: "a", text: { ko: "축하하면서도 부러운 마음을 조용히 알아차린다", en: "I congratulate them while quietly noticing my envy." }, scores: { intellectualization: 1, suppression: 1 } },
+      { id: "b", text: { ko: "농담처럼 넘기며 분위기를 가볍게 만든다", en: "I joke about it and keep the mood light." }, scores: { humor: 2 } },
+      { id: "c", text: { ko: "당분간 그 사람 소식을 덜 보려고 한다", en: "I try to see less of their updates for a while." }, scores: { avoidance: 2 } },
+      { id: "d", text: { ko: "내가 할 수 있는 다음 계획으로 에너지를 옮긴다", en: "I move that energy into my own next plan." }, scores: { sublimation: 2 } },
     ],
   },
 ];

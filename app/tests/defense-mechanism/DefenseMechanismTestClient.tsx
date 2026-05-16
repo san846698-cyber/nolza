@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { AdBottom } from "@/app/components/Ads";
-import { ShareCard } from "@/app/components/ShareCard";
 import { usePersistentTestSession } from "@/hooks/usePersistentTestSession";
 import {
   trackQuestionAnswered,
@@ -364,7 +363,7 @@ function Intro({ locale, onStart }: { locale: DefenseLocale; onStart: () => void
         {DEFENSE_COPY.start[locale]}
       </button>
       <small className="meta-line">
-        {locale === "ko" ? "12문항 · 약 3분" : "12 questions · about 3 minutes"}
+        {locale === "ko" ? "16문항 · 약 4분" : "16 questions · about 4 min"}
       </small>
       <small className="disclaimer">{DEFENSE_COPY.disclaimer[locale]}</small>
       </div>
@@ -455,65 +454,84 @@ function Result({
 
   return (
     <section className="result-wrap" style={{ "--accent": result.accent } as CSSProperties}>
-      <ShareCard
-        filename={`nolza-defense-mechanism-${result.id}`}
-        buttonLabel={DEFENSE_COPY.saveImage}
-        locale={locale}
-        backgroundColor="#17130f"
-        buttonClassName="save-image"
-      >
-        {({ cardRef }) => (
-          <article className="result-card" ref={cardRef}>
-            <div className="result-top">
-              <span>
-                {isSharedResult
-                  ? locale === "ko"
-                    ? "공유된 결과"
-                    : "Shared Result"
-                  : DEFENSE_COPY.resultLabel[locale]}
-              </span>
-              <strong>{secondaryName}</strong>
-            </div>
-            <h2>{result.name[locale]}</h2>
-            <p className="one-liner">{result.oneLiner[locale]}</p>
-            <p className="description">{result.description[locale]}</p>
+      <article className="result-card">
+        <div className="result-top">
+          <span>
+            {isSharedResult
+              ? locale === "ko"
+                ? "공유된 결과"
+                : "Shared Result"
+              : DEFENSE_COPY.resultLabel[locale]}
+          </span>
+          <strong>{secondaryName}</strong>
+        </div>
+        <h2>{result.name[locale]}</h2>
+        <p className="one-liner">{result.oneLiner[locale]}</p>
+        <p className="description">{result.description[locale]}</p>
 
-            <div className="insight-grid">
-              <section>
-                <span>{DEFENSE_COPY.strength[locale]}</span>
-                <p>{result.strength[locale]}</p>
-              </section>
-              <section>
-                <span>{DEFENSE_COPY.weakPoint[locale]}</span>
-                <p>{result.weakPoint[locale]}</p>
-              </section>
-              <section>
-                <span>{DEFENSE_COPY.whenHelps[locale]}</span>
-                <p>{result.whenHelps[locale]}</p>
-              </section>
-              <section>
-                <span>{DEFENSE_COPY.carefulWhen[locale]}</span>
-                <p>{result.carefulWhen[locale]}</p>
-              </section>
-            </div>
+        <div className="insight-grid">
+          <section>
+            <span>{DEFENSE_COPY.strength[locale]}</span>
+            <p>{result.strength[locale]}</p>
+          </section>
+          <section>
+            <span>{DEFENSE_COPY.weakPoint[locale]}</span>
+            <p>{result.weakPoint[locale]}</p>
+          </section>
+          <section>
+            <span>{DEFENSE_COPY.whenHelps[locale]}</span>
+            <p>{result.whenHelps[locale]}</p>
+          </section>
+          <section>
+            <span>{DEFENSE_COPY.carefulWhen[locale]}</span>
+            <p>{result.carefulWhen[locale]}</p>
+          </section>
+        </div>
 
-            <div className="score-list">
-              {(Object.entries(scores) as Array<[DefenseMechanismId, number]>).map(([key, value]) => (
-                <div key={key}>
-                  <span>{resultKeyLabels[key][locale]}</span>
-                  <i style={{ width: `${Math.max(6, (value / maxScore) * 100)}%` }} />
-                </div>
-              ))}
-            </div>
+        <section className="deep-insights">
+          <h3>{DEFENSE_COPY.deeperTitle[locale]}</h3>
+          <div className="deep-stack">
+            <section className="deep-section">
+              <span>{DEFENSE_COPY.innerProcess[locale]}</span>
+              <p>{result.innerProcess[locale]}</p>
+            </section>
+            <section className="deep-section">
+              <span>{DEFENSE_COPY.outwardLook[locale]}</span>
+              <p>{result.outwardLook[locale]}</p>
+            </section>
+            <blockquote className="inner-quote">
+              <span>{DEFENSE_COPY.innerQuote[locale]}</span>
+              <p>{result.innerQuote[locale]}</p>
+            </blockquote>
+            <section className="deep-section">
+              <span>{DEFENSE_COPY.protectiveReason[locale]}</span>
+              <p>{result.protectiveReason[locale]}</p>
+            </section>
+            <section className="deep-section">
+              <span>{DEFENSE_COPY.repeatedPattern[locale]}</span>
+              <p>{result.repeatedPattern[locale]}</p>
+            </section>
+            <section className="deep-section practice-card">
+              <span>{DEFENSE_COPY.gentlePractice[locale]}</span>
+              <p>{result.gentlePractice[locale]}</p>
+            </section>
+          </div>
+        </section>
 
-            <div className="share-line">
-              <span>{DEFENSE_COPY.shareLine[locale]}</span>
-              <p>{result.shareLine[locale]}</p>
-            </div>
-            <footer>nolza.fun · Defense Mechanism Test · Entertainment only</footer>
-          </article>
-        )}
-      </ShareCard>
+        <section className="score-section">
+          <h3>{DEFENSE_COPY.scoreTitle[locale]}</h3>
+          <div className="score-list">
+            {(Object.entries(scores) as Array<[DefenseMechanismId, number]>).map(([key, value]) => (
+              <div key={key}>
+                <span>{resultKeyLabels[key][locale]}</span>
+                <i style={{ width: `${Math.max(6, (value / maxScore) * 100)}%` }} />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <footer>nolza.fun · Defense Mechanism Test · Entertainment only</footer>
+      </article>
 
       <div className="actions" data-share-card-skip="true">
         <button type="button" className="share" onClick={onShare}>
@@ -709,8 +727,7 @@ const styles = `
     background: rgba(168, 184, 232, 0.11);
   }
   .primary,
-  .actions button,
-  :global(.save-image) {
+  .actions button {
     min-height: 52px;
     border: 0;
     border-radius: 999px;
@@ -823,7 +840,8 @@ const styles = `
   .scene-label,
   .result-top span,
   .insight-grid span,
-  .share-line span,
+  .deep-section span,
+  .inner-quote span,
   .score-list span {
     color: rgba(248, 239, 226, 0.6);
     font-size: 0.78rem;
@@ -984,25 +1002,77 @@ const styles = `
     gap: 12px;
     margin-top: 22px;
   }
-  .insight-grid section,
-  .share-line {
+  .insight-grid section {
     padding: 16px;
     border-radius: 20px;
     background: rgba(0, 0, 0, 0.18);
     border: 1px solid rgba(248, 239, 226, 0.1);
   }
-  .insight-grid p,
-  .share-line p {
+  .insight-grid p {
     margin: 9px 0 0;
     color: rgba(248, 239, 226, 0.8);
     line-height: 1.68;
     font-weight: 710;
     word-break: keep-all;
   }
+  .deep-insights {
+    margin-top: 26px;
+  }
+  .deep-insights h3,
+  .score-section h3 {
+    margin: 0 0 14px;
+    color: #f8efe2;
+    font-size: 1.02rem;
+    line-height: 1.35;
+    font-weight: 950;
+    letter-spacing: 0;
+  }
+  .deep-stack {
+    display: grid;
+    gap: 12px;
+  }
+  .deep-section,
+  .inner-quote {
+    margin: 0;
+    padding: 17px 18px;
+    border-radius: 20px;
+    background: rgba(12, 17, 28, 0.24);
+    border: 1px solid rgba(248, 239, 226, 0.1);
+  }
+  .deep-section p,
+  .inner-quote p {
+    margin: 9px 0 0;
+    color: rgba(248, 239, 226, 0.82);
+    line-height: 1.74;
+    font-weight: 710;
+    word-break: keep-all;
+  }
+  .inner-quote {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent), rgba(248, 239, 226, 0.045)),
+      rgba(0, 0, 0, 0.18);
+    border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+  }
+  .inner-quote p {
+    color: #fff4dd;
+    font-size: clamp(1.02rem, 2.4vw, 1.22rem);
+    font-weight: 900;
+  }
+  .practice-card {
+    background:
+      linear-gradient(135deg, rgba(248, 239, 226, 0.105), color-mix(in srgb, var(--accent) 16%, transparent)),
+      rgba(0, 0, 0, 0.16);
+    border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+  .score-section {
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(248, 239, 226, 0.11);
+  }
   .score-list {
     display: grid;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 0;
   }
   .score-list div {
     display: grid;
@@ -1015,24 +1085,12 @@ const styles = `
     border-radius: 999px;
     background: linear-gradient(90deg, var(--accent), #f8efe2);
   }
-  .share-line {
-    margin-top: 20px;
-  }
   .result-card footer {
     margin-top: 24px;
     color: rgba(248, 239, 226, 0.46);
     font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 0.1em;
-  }
-  :global(.save-image) {
-    display: flex;
-    margin: 16px auto 0;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: #17130f;
-    border: 0;
   }
   .actions {
     display: flex;

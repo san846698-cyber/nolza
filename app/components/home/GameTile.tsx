@@ -1,150 +1,154 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
 import { trackRecommendationClick } from "@/lib/analytics";
 import Thumb from "./Thumb";
-import type { Game, Skin } from "@/lib/games-home";
+import type { ContentType, Game, HomeCatId, Skin } from "@/lib/games-home";
 
-type SkinRecipe = {
-  border: string;
-  radius: string;
-  body: string;
-  titleColor: string;
-  subColor: string;
-  shadow: string;
+type Accent = {
+  ink: string;
+  soft: string;
+  wash: string;
 };
 
-const CARD_TITLE_FONT = "font-serif font-bold normal-case";
-
-const SKIN_STYLES: Record<Skin, SkinRecipe> = {
-  paper: {
-    border: "border border-home-hairline bg-home-paper text-home-ink",
-    radius: "rounded-none",
-    body: "border-t border-home-hairline bg-black/[0.02]",
-    titleColor: "text-home-ink",
-    subColor: "text-home-ink-2",
-    shadow:
-      "shadow-[0_1px_0_rgba(20,17,14,0.04)] hover:shadow-[0_14px_32px_-16px_rgba(20,17,14,0.32)]",
+const ACCENTS: Record<HomeCatId | "default", Accent> = {
+  featured: {
+    ink: "#9f4f24",
+    soft: "rgba(159, 79, 36, 0.16)",
+    wash: "rgba(255, 231, 198, 0.58)",
   },
-  block: {
-    border: "border-2 border-home-ink text-home-ink",
-    radius: "rounded-none",
-    body: "border-t-2 border-home-ink bg-home-ink text-home-bg",
-    titleColor: "text-home-bg",
-    subColor: "text-home-bg/70",
-    shadow:
-      "shadow-[4px_4px_0_0_var(--home-ink)] hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[6px_6px_0_0_var(--home-ink)]",
+  tests: {
+    ink: "#8a5b2c",
+    soft: "rgba(138, 91, 44, 0.16)",
+    wash: "rgba(251, 235, 205, 0.52)",
   },
-  hand: {
-    border: "border border-dashed border-home-ink-2 text-home-ink",
-    radius: "rounded-[18px]",
-    body: "border-t border-dashed border-home-ink-2/40 bg-transparent",
-    titleColor: "text-home-ink",
-    subColor: "text-home-ink-2",
-    shadow: "shadow-none hover:-rotate-1",
+  compatibility: {
+    ink: "#a74754",
+    soft: "rgba(167, 71, 84, 0.15)",
+    wash: "rgba(255, 224, 221, 0.52)",
   },
-  pixel: {
-    border: "border-2 border-skin-pixel-accent bg-skin-pixel-bg text-skin-pixel-fg",
-    radius: "rounded-none",
-    body: "border-t-2 border-skin-pixel-accent bg-skin-pixel-bg",
-    titleColor: "text-skin-pixel-fg",
-    subColor: "text-skin-pixel-accent",
-    shadow:
-      "shadow-[0_0_0_3px_var(--skin-pixel-bg),0_0_0_4px_var(--skin-pixel-accent)] hover:shadow-[0_0_0_3px_var(--skin-pixel-bg),0_0_0_6px_var(--skin-pixel-accent)]",
+  "mini-games": {
+    ink: "#37646e",
+    soft: "rgba(55, 100, 110, 0.15)",
+    wash: "rgba(221, 238, 236, 0.54)",
   },
-  mono: {
-    border: "border border-dotted border-home-ink-2 bg-skin-mono text-home-ink",
-    radius: "rounded-none",
-    body: "border-t border-dotted border-home-ink-2/50 bg-transparent",
-    titleColor: "text-home-ink",
-    subColor: "text-home-muted",
-    shadow: "shadow-none",
-  },
-  sticker: {
-    border: "border-0 bg-skin-sticker text-home-ink",
-    radius: "rounded-2xl",
-    body: "border-t border-home-hairline",
-    titleColor: "text-home-ink",
-    subColor: "text-home-ink-2",
-    shadow:
-      "shadow-[0_2px_0_rgba(20,17,14,0.06),0_8px_24px_-8px_rgba(20,17,14,0.18)] hover:-translate-y-[2px] hover:shadow-[0_2px_0_rgba(20,17,14,0.06),0_18px_40px_-12px_rgba(20,17,14,0.28)]",
+  default: {
+    ink: "#7d5a34",
+    soft: "rgba(125, 90, 52, 0.15)",
+    wash: "rgba(250, 241, 224, 0.54)",
   },
 };
 
-const TONE_BG: Record<string, string> = {
-  "block-1": "bg-skin-block-1",
-  "block-2": "bg-skin-block-2",
-  "block-3": "bg-skin-block-3",
-  "block-4": "bg-skin-block-4",
-  "block-5": "bg-skin-block-5",
-  "hand-1": "bg-skin-hand-1",
-  "hand-2": "bg-skin-hand-2",
-  "hand-3": "bg-skin-hand-3",
+const TYPE_LABELS: Record<ContentType, { ko: string; en: string }> = {
+  test: { ko: "테스트", en: "Test" },
+  compatibility: { ko: "관계", en: "Match" },
+  fortune: { ko: "운세", en: "Fortune" },
+  game: { ko: "게임", en: "Game" },
 };
 
-export default function GameTile({ game, no }: { game: Game; no: number }) {
-  const { t } = useLocale();
+function labelFor(game: Game, locale: "ko" | "en") {
+  if (game.type && TYPE_LABELS[game.type]) return TYPE_LABELS[game.type][locale];
+  return locale === "ko" ? game.ko.kicker : game.en.kicker;
+}
+
+export default function GameTile({
+  game,
+  no,
+  featured = false,
+}: {
+  game: Game;
+  no: number;
+  featured?: boolean;
+}) {
+  const { locale, t } = useLocale();
   const skinKey: Skin = game.skin ?? "paper";
-  const s = SKIN_STYLES[skinKey];
-
-  let toneBg = "";
-  if (skinKey === "block") toneBg = TONE_BG[`block-${game.tone ?? 1}`];
-  if (skinKey === "hand") toneBg = TONE_BG[`hand-${game.tone ?? 1}`];
-
-  const noColor =
-    skinKey === "pixel"
-      ? "text-skin-pixel-accent"
-      : skinKey === "block"
-        ? "text-home-ink"
-        : "text-home-muted";
+  const accent = ACCENTS[game.category ?? "default"] ?? ACCENTS.default;
+  const style = {
+    "--card-accent": accent.ink,
+    "--card-accent-soft": accent.soft,
+    "--card-accent-wash": accent.wash,
+  } as CSSProperties;
 
   return (
     <Link
       href={game.href}
       onClick={() => trackRecommendationClick("homepage", game.id, game.type)}
+      style={style}
       className={[
-        "group relative flex flex-col overflow-hidden no-underline min-h-[288px] sm:min-h-[306px]",
-        toneBg,
-        s.border,
-        s.radius,
-        s.shadow,
-        "transition-[transform,box-shadow,border-color] duration-300 focus-visible:ring-2 focus-visible:ring-home-injoo focus-visible:ring-offset-4 focus-visible:ring-offset-home-bg",
+        "group relative isolate flex min-h-[282px] flex-col overflow-hidden rounded-[22px] no-underline sm:min-h-[268px] lg:min-h-[252px]",
+        "border border-[rgba(66,45,25,0.13)] bg-[linear-gradient(145deg,#fffaf0_0%,#f5ead8_54%,#efe0c9_100%)]",
+        "shadow-[0_14px_34px_rgba(55,38,20,0.08),0_1px_0_rgba(255,255,255,0.78)_inset]",
+        "transition-[transform,box-shadow,border-color,background] duration-300 ease-[var(--home-easing)]",
+        "hover:-translate-y-1 hover:border-[color:var(--card-accent-soft)] hover:shadow-[0_22px_48px_rgba(55,38,20,0.13),0_1px_0_rgba(255,255,255,0.84)_inset]",
+        "focus-visible:ring-2 focus-visible:ring-[color:var(--card-accent)] focus-visible:ring-offset-4 focus-visible:ring-offset-home-bg",
+        featured ? "ring-1 ring-[color:var(--card-accent-soft)]" : "",
       ].join(" ")}
     >
-      <div className="relative aspect-[16/9.3] overflow-hidden">
-        <div className="absolute inset-[7%] transition-transform duration-500 group-hover:scale-[1.035]">
-          <Thumb game={game} skin={skinKey} />
-        </div>
-        <span
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_22%_0%,var(--card-accent-wash),transparent_62%)] opacity-90"
+      />
+
+      <div className="relative p-3 pb-0 sm:p-3.5 sm:pb-0 lg:p-3 lg:pb-0">
+        <div
           className={[
-            "absolute top-2.5 left-3 font-mono text-[10.5px] sm:text-[11px] tracking-wider font-semibold",
-            noColor,
+            "relative overflow-hidden rounded-[18px] border border-[rgba(66,45,25,0.1)]",
+            "bg-[linear-gradient(145deg,rgba(255,255,255,0.52),var(--card-accent-wash))]",
+            "aspect-[16/8.8] shadow-[0_1px_0_rgba(255,255,255,0.72)_inset,0_12px_26px_rgba(61,43,24,0.075)] lg:aspect-[16/7.9]",
           ].join(" ")}
         >
-          {String(no).padStart(2, "0")}
-        </span>
+          <div className="absolute inset-[5px] overflow-hidden rounded-[14px] bg-home-paper">
+            <div className="absolute inset-0 transition-transform duration-500 ease-[var(--home-easing)] group-hover:scale-[1.035]">
+              <Thumb game={game} skin={skinKey} />
+            </div>
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,240,0.05)_0%,rgba(20,17,14,0.12)_100%)] opacity-70" />
+          </div>
+
+          <span className="absolute left-3 top-3 rounded-full border border-white/55 bg-[rgba(255,250,240,0.78)] px-2.5 py-1 font-mono text-[10.5px] font-black leading-none tracking-[0.12em] text-home-ink shadow-[0_8px_18px_rgba(44,31,18,0.1)] backdrop-blur">
+            {String(no).padStart(2, "0")}
+          </span>
+        </div>
       </div>
 
-      <div className={["px-3.5 py-3.5 sm:px-4 sm:py-4 flex flex-1 flex-col", s.body].join(" ")}>
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-3.5 sm:px-[18px] sm:pb-[18px] lg:px-4 lg:pb-4 lg:pt-3">
+        <div className="mb-2 flex items-center gap-2 lg:mb-1.5">
+          <span className="h-px w-5 bg-[color:var(--card-accent)] opacity-70" />
+          <span className="font-mono text-[10.5px] font-black uppercase tracking-[0.16em] text-[color:var(--card-accent)]">
+            {labelFor(game, locale)}
+          </span>
+        </div>
+
         <h3
           className={[
-            "m-0 text-[18px] sm:text-[18.5px] leading-snug tracking-tight",
-            CARD_TITLE_FONT,
-            s.titleColor,
+            "m-0 font-serif font-bold normal-case tracking-tight text-home-ink",
+            "text-[18.5px] leading-[1.18] sm:text-[19px] lg:text-[18.5px]",
           ].join(" ")}
         >
           {t(game.ko.title, game.en.title)}
         </h3>
         <p
           className={[
-            "mt-1.5 text-[14.25px] sm:text-[14.75px] leading-relaxed",
+            "mt-2 text-[13.75px] font-medium leading-[1.55] text-home-ink-2/78 sm:text-[14px] lg:text-[13.5px]",
             "[word-break:keep-all] [overflow-wrap:anywhere]",
-            s.subColor,
           ].join(" ")}
         >
           {t(game.ko.sub, game.en.sub)}
         </p>
+
+        <div className="mt-auto flex items-end justify-between gap-3 pt-4 lg:pt-3">
+          {game.duration ? (
+            <span className="font-mono text-[11px] font-bold tracking-[0.08em] text-home-muted">
+              {t(game.duration.ko, game.duration.en)}
+            </span>
+          ) : (
+            <span aria-hidden className="h-px w-10 bg-home-hairline" />
+          )}
+          <span className="inline-flex h-9 items-center rounded-full border border-[color:var(--card-accent-soft)] bg-[rgba(255,255,255,0.52)] px-3 text-[12px] font-black text-home-ink shadow-[0_8px_18px_rgba(44,31,18,0.06)] transition-colors duration-300 group-hover:bg-[color:var(--card-accent)] group-hover:text-white lg:h-8 lg:text-[11.5px]">
+            {locale === "ko" ? "열기" : "Open"}
+          </span>
+        </div>
       </div>
     </Link>
   );

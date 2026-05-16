@@ -228,6 +228,10 @@ img {
   --home-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
   /* category-section background tones (subtle HSL shift off --home-bg) */
+  --cat-featured: #F7EFE1;
+  --cat-tests: #F2EDDF;
+  --cat-compatibility: #F6ECE8;
+  --cat-mini-games: #ECF0EA;
   --cat-play:  #F4EEDC;
   --cat-self:  #E8EFE6;
   --cat-sim:   #F5E8DC;
@@ -253,6 +257,10 @@ img {
 }
 
 /* Section background tinting — drop data-cat on each <section> */
+[data-home] section[data-cat="featured"] { background: linear-gradient(180deg, var(--cat-featured), rgba(247,239,225,0.56)); }
+[data-home] section[data-cat="tests"] { background: linear-gradient(180deg, var(--cat-tests), rgba(242,237,223,0.52)); }
+[data-home] section[data-cat="compatibility"] { background: linear-gradient(180deg, var(--cat-compatibility), rgba(246,236,232,0.52)); }
+[data-home] section[data-cat="mini-games"] { background: linear-gradient(180deg, var(--cat-mini-games), rgba(236,240,234,0.52)); }
 [data-home] section[data-cat="play"]  { background: var(--cat-play); }
 [data-home] section[data-cat="self"]  { background: var(--cat-self); }
 [data-home] section[data-cat="sim"]   { background: var(--cat-sim); }

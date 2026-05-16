@@ -160,7 +160,7 @@ export default function StoicControlTestClient(): ReactElement {
               <button type="button" onClick={start} className="primary">
                 {t(locale, "테스트 시작하기", "Start the test")}
               </button>
-              <p className="meta-line">{t(locale, "12문항 · 약 3분", "12 questions · about 3 min")}</p>
+              <p className="meta-line">{t(locale, "16문항 · 약 4분", "16 questions · about 4 min")}</p>
               <p className="notice">
                 {t(
                   locale,
@@ -174,7 +174,11 @@ export default function StoicControlTestClient(): ReactElement {
           <section className="stoic-card">
             <div className="progress-head">
               <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "질문", "Question")}</span>
-              <strong>{phase === "result" ? "12/12" : `${questionIndex + 1}/12`}</strong>
+              <strong>
+                {phase === "result"
+                  ? `${STOIC_QUESTIONS.length}/${STOIC_QUESTIONS.length}`
+                  : `${questionIndex + 1}/${STOIC_QUESTIONS.length}`}
+              </strong>
             </div>
             <div className="progress-bar" aria-hidden>
               <span style={{ width: `${progress}%` }} />

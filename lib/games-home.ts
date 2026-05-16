@@ -508,7 +508,7 @@ export const GAMES: Game[] = [
     en: { title: "Value Conflict Test", sub: "What two values are fighting inside you?", kicker: "Psychology Test" },
     type: "test", category: "tests",
     palette: P.paperGold, font: "serif", thumb: "/thumbnails-generated/value-conflict-painted.png",
-    skin: "paper", tone: 3, labels: ["new", "recommended", "share"], duration: { ko: "약 3분", en: "3 min" },
+    skin: "paper", tone: 3, labels: ["new", "recommended", "share"], duration: { ko: "약 4분", en: "4 min" },
   },
   {
     id: "thinking-pattern", href: "/tests/thinking-pattern", cat: "self", no: "18D",
@@ -516,7 +516,7 @@ export const GAMES: Game[] = [
     en: { title: "Thinking Pattern Test", sub: "Where does your thinking get twisted?", kicker: "Psychology Test" },
     type: "test", category: "tests",
     palette: P.paperGold, font: "serif", thumb: "/thumbnails-generated/thinking-pattern-painted.png",
-    skin: "paper", tone: 3, labels: ["new", "share"], duration: { ko: "약 3분", en: "3 min" },
+    skin: "paper", tone: 3, labels: ["new", "share"], duration: { ko: "약 4분", en: "4 min" },
   },
   {
     id: "stoic-control", href: "/tests/stoic-control", cat: "self", no: "18E",
@@ -524,7 +524,7 @@ export const GAMES: Game[] = [
     en: { title: "Stoic Control Test", sub: "What are you trying too hard to control?", kicker: "Philosophy Test" },
     type: "test", category: "tests",
     palette: P.paperGold, font: "serif", thumb: "/thumbnails-generated/stoic-control-painted.png",
-    skin: "paper", tone: 3, labels: ["new", "share"], duration: { ko: "약 3분", en: "3 min" },
+    skin: "paper", tone: 3, labels: ["new", "share"], duration: { ko: "약 4분", en: "4 min" },
   },
   {
     id: "joseon-couple", href: "/games/joseon-couple", cat: "self", no: "19",
@@ -548,7 +548,7 @@ export const GAMES: Game[] = [
     en: { title: "Defense Mechanism Test", sub: "How does your mind protect you when things feel heavy?", kicker: "Psychology Test" },
     type: "test", category: "tests",
     palette: P.paperGold, font: "serif", thumb: "/thumbnails-generated/defense-mechanism-painted.png",
-    skin: "paper", tone: 2, labels: ["new", "recommended", "share"], duration: { ko: "약 3분", en: "3 min" },
+    skin: "paper", tone: 2, labels: ["new", "recommended", "share"], duration: { ko: "약 4분", en: "4 min" },
   },
   {
     id: "meme-age", href: "/tests/meme-age", cat: "self", no: "22",
@@ -703,6 +703,8 @@ export const HOME_RAILS: HomeRail[] = [
 ];
 
 export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
+  "battle-what-if",
+  "ppalli",
   "scale",
   "deep",
   "timeline",
@@ -745,7 +747,6 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
     "aqua-fishing",
     "traffic",
     "ahmolla",
-    "ppalli",
     "silence",
     "password",
     "circle",
@@ -753,7 +754,6 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
     "timesense",
     "highnote",
     "ijy",
-    "battle-what-if",
   ],
 };
 

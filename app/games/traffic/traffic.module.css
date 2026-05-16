@@ -153,8 +153,8 @@
   position: relative;
   width: min(560px, calc(100vw - 96px));
   aspect-ratio: 1;
-  border-radius: 28px;
-  padding: 14px;
+  border-radius: 30px;
+  padding: 16px;
   box-sizing: border-box;
   margin: 8px auto 2px;
   user-select: none;
@@ -162,26 +162,26 @@
   touch-action: none;
   overscroll-behavior: contain;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025) 42%, rgba(0, 0, 0, 0.54)),
-    #11161b;
+    radial-gradient(circle at 22% 12%, rgba(255, 255, 255, 0.08), transparent 28%),
+    linear-gradient(145deg, #33383b 0%, #15191c 42%, #080b0d 100%);
   box-shadow:
-    0 26px 62px rgba(0, 0, 0, 0.5),
+    0 30px 70px rgba(0, 0, 0, 0.58),
     0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 2px 0 rgba(255, 255, 255, 0.13),
-    inset 0 -14px 36px rgba(0, 0, 0, 0.44);
+    inset 0 3px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -16px 34px rgba(0, 0, 0, 0.48);
 }
 
 .boardWrap::before {
   content: "";
   position: absolute;
-  inset: 14px;
-  border-radius: 21px;
+  inset: 16px;
+  border-radius: 22px;
   pointer-events: none;
-  background:
-    linear-gradient(to right, transparent calc((100% / 6) - 2px), rgba(0, 0, 0, 0.24) calc((100% / 6) - 2px), rgba(255, 255, 255, 0.055) calc((100% / 6) - 1px), transparent calc(100% / 6)),
-    linear-gradient(to bottom, transparent calc((100% / 6) - 2px), rgba(0, 0, 0, 0.22) calc((100% / 6) - 2px), rgba(255, 255, 255, 0.05) calc((100% / 6) - 1px), transparent calc(100% / 6));
-  background-size: calc(100% / 6) calc(100% / 6);
-  opacity: 0.8;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.11), transparent 18%, rgba(0, 0, 0, 0.28));
+  box-shadow:
+    inset 0 0 0 7px rgba(0, 0, 0, 0.26),
+    inset 0 14px 24px rgba(255, 255, 255, 0.03),
+    inset 0 -16px 28px rgba(0, 0, 0, 0.35);
   z-index: 1;
 }
 
@@ -189,145 +189,159 @@
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 21px;
+  border-radius: 22px;
   overflow: visible;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   overscroll-behavior: contain;
   background:
-    linear-gradient(90deg, transparent 0 calc(66.666% - 1px), rgba(239, 190, 109, 0.12) calc(66.666% - 1px) calc(66.666% + 1px), transparent calc(66.666% + 1px) 100%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(145deg, #252d31 0%, #20272b 48%, #171f23 100%);
+    linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(27, 31, 33, 0.96) calc(100% - 1px) 100%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.38) 2px, transparent 2px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.36) 2px, transparent 2px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.055) 3px, transparent 3px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 3px, transparent 3px),
+    linear-gradient(145deg, #30383a 0%, #242b2d 48%, #171d1f 100%);
   background-size:
     100% 100%,
     calc(100% / 6) calc(100% / 6),
     calc(100% / 6) calc(100% / 6),
+    calc(100% / 6) calc(100% / 6),
+    calc(100% / 6) calc(100% / 6),
     100% 100%;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.065),
-    inset 0 9px 20px rgba(255, 255, 255, 0.025),
-    inset 0 0 0 9px rgba(0, 0, 0, 0.12),
-    inset 0 -18px 38px rgba(0, 0, 0, 0.22);
+    inset 0 0 0 5px rgba(5, 8, 10, 0.78),
+    inset 0 0 0 6px rgba(255, 255, 255, 0.06),
+    inset 0 16px 24px rgba(255, 255, 255, 0.035),
+    inset 0 -20px 36px rgba(0, 0, 0, 0.34);
 }
 
 .grid::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 6px;
   border-radius: inherit;
   pointer-events: none;
   background:
-    linear-gradient(to right, transparent calc((100% / 6) - 3px), rgba(0, 0, 0, 0.24) calc((100% / 6) - 3px), rgba(255, 255, 255, 0.045) calc((100% / 6) - 1px), transparent calc(100% / 6)),
-    linear-gradient(to bottom, transparent calc((100% / 6) - 3px), rgba(0, 0, 0, 0.22) calc((100% / 6) - 3px), rgba(255, 255, 255, 0.04) calc((100% / 6) - 1px), transparent calc(100% / 6)),
-    linear-gradient(90deg, transparent 0 65.8%, rgba(225, 177, 91, 0.09) 65.8% 68.5%, transparent 68.5% 100%);
+    linear-gradient(to right, transparent calc((100% / 6) - 4px), rgba(0, 0, 0, 0.3) calc((100% / 6) - 4px), rgba(255, 255, 255, 0.035) calc((100% / 6) - 1px), transparent calc(100% / 6)),
+    linear-gradient(to bottom, transparent calc((100% / 6) - 4px), rgba(0, 0, 0, 0.28) calc((100% / 6) - 4px), rgba(255, 255, 255, 0.032) calc((100% / 6) - 1px), transparent calc(100% / 6));
   background-size:
     calc(100% / 6) calc(100% / 6),
-    calc(100% / 6) calc(100% / 6),
-    100% 100%;
-  opacity: 0.9;
+    calc(100% / 6) calc(100% / 6);
+  opacity: 0.85;
   z-index: 1;
 }
 
 .grid::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
+  right: -20px;
+  top: calc(2 * 100% / 6 + 7px);
+  width: 34px;
+  height: calc(100% / 6 - 14px);
+  border-radius: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, transparent 0 66.2%, rgba(233, 186, 103, 0.08) 66.2% 70%, transparent 70% 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 25%, rgba(0, 0, 0, 0.18));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(0, 0, 0, 0.18)),
+    #242b2d;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.22);
   z-index: 2;
 }
 
 .exitLane {
   position: absolute;
-  right: -62px;
-  top: calc(14px + (100% - 28px) * 2 / 6);
-  width: 82px;
-  height: calc((100% - 28px) / 6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0 16px 16px 0;
+  right: -86px;
+  top: calc(16px + (100% - 32px) * 2 / 6);
+  width: 108px;
+  height: calc((100% - 32px) / 6);
+  border-radius: 0 18px 18px 0;
   background:
-    linear-gradient(90deg, #20272b, #283136 58%, #20272b),
-    linear-gradient(0deg, transparent calc(50% - 1px), rgba(244, 208, 133, 0.36) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px));
-  color: rgba(255, 246, 232, 0.84);
+    linear-gradient(0deg, transparent calc(50% - 2px), rgba(244, 219, 150, 0.58) calc(50% - 2px) calc(50% + 2px), transparent calc(50% + 2px)),
+    linear-gradient(90deg, #242b2d 0%, #31393b 56%, #22282b 100%);
+  color: #fff1d5;
   font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
   pointer-events: none;
   box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 13px 28px rgba(0, 0, 0, 0.28),
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -5px 12px rgba(0, 0, 0, 0.24);
+  z-index: 0;
 }
 
 .exitLane::before {
   content: "";
   position: absolute;
-  left: -10px;
+  left: -24px;
   top: 0;
-  width: 12px;
+  width: 28px;
   height: 100%;
-  background: #20272b;
+  background: #242b2d;
 }
 
 .exitLane::after {
-  content: "→";
+  content: "";
   position: absolute;
-  right: 9px;
+  left: -8px;
+  top: -7px;
+  bottom: -7px;
+  width: 10px;
+  border-radius: 999px;
+  background: #111619;
+  box-shadow:
+    0 -9px 0 #111619,
+    0 9px 0 #111619;
+}
+
+.exitLabel {
+  position: absolute;
+  left: 26px;
+  right: 14px;
+  top: -28px;
+  display: block;
+  text-align: center;
+  color: rgba(255, 244, 220, 0.92);
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.exitLaneArrow {
+  position: absolute;
+  left: 38px;
   top: 50%;
-  transform: translateY(-52%);
-  color: rgba(255, 237, 194, 0.9);
-  font-size: 20px;
+  transform: translateY(-53%);
+  color: #ffe2a6;
+  font-size: 28px;
+  font-weight: 950;
+  line-height: 1;
   letter-spacing: 0;
-  text-shadow: 0 0 14px rgba(255, 195, 99, 0.26);
-}
-
-.exit {
-  position: absolute;
-  right: -50px;
-  top: calc(2 * 100% / 6);
-  width: 30px;
-  height: calc(100% / 6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffe2c2;
-  font-size: 17px;
-  font-weight: 900;
-  pointer-events: none;
-  text-shadow: 0 0 12px rgba(241, 181, 121, 0.28);
-  z-index: 5;
-}
-
-.exit span {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.48);
   animation: arrowPulse 1300ms ease-in-out infinite;
 }
 
 .car {
   position: absolute;
-  border-radius: 19px;
+  border-radius: 15px 19px 19px 15px;
   cursor: grab;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.055) 28%, rgba(0, 0, 0, 0.18) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.17), transparent 16% 84%, rgba(255, 255, 255, 0.12)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.07) 22%, rgba(0, 0, 0, 0.24) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2), transparent 22% 76%, rgba(255, 255, 255, 0.14)),
     var(--car-color, #4e7da7);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   transition:
     left 230ms cubic-bezier(0.22, 1, 0.36, 1),
     top 230ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 180ms ease,
     filter 180ms ease;
   box-shadow:
-    0 12px 14px rgba(0, 0, 0, 0.32),
-    0 4px 0 rgba(0, 0, 0, 0.2),
-    inset 0 2px 0 rgba(255, 255, 255, 0.32),
-    inset 0 -8px 16px rgba(0, 0, 0, 0.18);
+    0 13px 18px rgba(0, 0, 0, 0.36),
+    0 4px 0 rgba(0, 0, 0, 0.24),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -8px 14px rgba(0, 0, 0, 0.22);
   overflow: visible;
   isolation: isolate;
   z-index: 3;
@@ -336,43 +350,96 @@
 .car::before {
   content: "";
   position: absolute;
-  inset: 8px;
-  border-radius: 13px;
+  inset: 8px 13px 8px 18px;
+  border-radius: 11px 16px 16px 11px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04) 56%, rgba(0, 0, 0, 0.16)),
-    color-mix(in srgb, var(--car-color, #4e7da7) 82%, white 18%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.13)),
+    color-mix(in srgb, var(--car-color, #4e7da7) 86%, white 14%);
   pointer-events: none;
   z-index: 1;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    inset 0 -8px 12px rgba(0, 0, 0, 0.08);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.13);
 }
 
 .car::after {
   content: "";
   position: absolute;
   pointer-events: none;
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.18);
   box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .car[data-orient="h"]::after {
-  left: 30%;
-  right: 28%;
-  top: 50%;
+  left: 26%;
+  right: 20%;
+  top: 19%;
   height: 3px;
-  transform: translateY(-50%);
-  opacity: 0.28;
+  border-radius: 999px;
+  opacity: 0.2;
 }
 
 .car[data-orient="v"]::after {
-  top: 30%;
-  bottom: 28%;
-  left: 50%;
+  top: 20%;
+  bottom: 26%;
+  left: 19%;
   width: 3px;
-  transform: translateX(-50%);
-  opacity: 0.28;
+  border-radius: 999px;
+  opacity: 0.2;
+}
+
+.car[data-orient="v"] {
+  border-radius: 15px 15px 19px 19px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.07) 22%, rgba(0, 0, 0, 0.24) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 22% 76%, rgba(255, 255, 255, 0.14)),
+    var(--car-color, #4e7da7);
+}
+
+.car[data-orient="v"]::before {
+  inset: 18px 8px 13px;
+  border-radius: 11px 11px 16px 16px;
+}
+
+.car[data-length="3"] {
+  border-radius: 13px;
+}
+
+.car[data-length="3"]::before {
+  border-radius: 8px;
+}
+
+.car[data-length="3"][data-orient="h"] {
+  border-radius: 12px 17px 17px 12px;
+}
+
+.car[data-length="3"][data-orient="v"] {
+  border-radius: 12px 12px 17px 17px;
+}
+
+.car[data-length="3"][data-orient="h"] .bodyLine {
+  left: 22%;
+  right: 18%;
+  top: 34%;
+  bottom: auto;
+  width: auto;
+  height: 2px;
+  box-shadow:
+    0 11px 0 rgba(0, 0, 0, 0.14),
+    1px 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.car[data-length="3"][data-orient="v"] .bodyLine {
+  top: 22%;
+  bottom: 18%;
+  left: 34%;
+  right: auto;
+  width: 2px;
+  height: auto;
+  box-shadow:
+    11px 0 0 rgba(0, 0, 0, 0.14),
+    1px 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .car:active {
@@ -393,19 +460,26 @@
 }
 
 .car[data-player="true"] {
-  border-radius: 20px;
+  border-radius: 14px 21px 21px 14px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.23), rgba(255, 255, 255, 0.055) 28%, rgba(95, 14, 12, 0.22) 100%),
-    linear-gradient(90deg, rgba(100, 18, 15, 0.2), transparent 18% 82%, rgba(255, 255, 255, 0.14)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.07) 24%, rgba(92, 11, 10, 0.28) 100%),
+    linear-gradient(90deg, rgba(95, 14, 13, 0.22), transparent 21% 76%, rgba(255, 255, 255, 0.16)),
     var(--car-color, #d95a4f);
   border-color: rgba(255, 236, 226, 0.32);
   box-shadow:
-    0 0 0 2px rgba(255, 230, 215, 0.18),
-    0 0 18px rgba(217, 90, 79, 0.2),
-    0 14px 22px rgba(74, 13, 10, 0.32),
+    0 0 0 2px rgba(255, 230, 215, 0.12),
+    0 15px 24px rgba(74, 13, 10, 0.36),
     0 4px 0 rgba(74, 12, 8, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
     inset 0 -8px 18px rgba(98, 14, 11, 0.17);
+}
+
+.car[data-player="true"]::before {
+  inset: 8px 14px 8px 19px;
+  border-radius: 11px 18px 18px 11px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(111, 14, 12, 0.16)),
+    color-mix(in srgb, var(--car-color, #d95a4f) 88%, white 12%);
 }
 
 .car[data-bump="true"] {
@@ -427,80 +501,91 @@
 }
 
 .car[data-orient="h"] .carCabin {
-  top: 22%;
-  bottom: 22%;
-  left: 38%;
-  width: 34%;
-  grid-template-columns: 0.82fr 1.08fr;
+  top: 28%;
+  bottom: 28%;
+  left: 42%;
+  width: 25%;
+  grid-template-columns: 0.72fr 1fr;
 }
 
 .car[data-orient="v"] .carCabin {
-  left: 22%;
-  right: 22%;
-  top: 38%;
-  height: 34%;
-  grid-template-rows: 0.82fr 1.08fr;
+  left: 28%;
+  right: 28%;
+  top: 42%;
+  height: 25%;
+  grid-template-rows: 0.72fr 1fr;
+}
+
+.car[data-length="3"][data-orient="h"] .carCabin {
+  left: 44%;
+  width: 20%;
+}
+
+.car[data-length="3"][data-orient="v"] .carCabin {
+  top: 44%;
+  height: 20%;
 }
 
 .windshield,
 .rearWindow {
   display: block;
   background:
-    linear-gradient(135deg, rgba(92, 118, 130, 0.98), rgba(24, 39, 51, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 9px;
+    linear-gradient(135deg, #31404a, #14202a 68%, #0a1118);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 6px;
   pointer-events: none;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -2px 3px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.34),
     0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
 .rearWindow {
-  opacity: 0.86;
+  opacity: 1;
 }
 
 .car[data-orient="h"] .windshield {
   order: 2;
-  border-radius: 7px 14px 14px 7px;
+  border-radius: 5px 11px 11px 5px;
 }
 
 .car[data-orient="h"] .rearWindow {
   order: 1;
-  border-radius: 13px 7px 7px 13px;
+  border-radius: 10px 5px 5px 10px;
 }
 
 .car[data-orient="v"] .windshield {
   order: 1;
-  border-radius: 14px 14px 7px 7px;
+  border-radius: 11px 11px 5px 5px;
 }
 
 .car[data-orient="v"] .rearWindow {
   order: 2;
-  border-radius: 7px 7px 13px 13px;
+  border-radius: 5px 5px 10px 10px;
 }
 
 .bodyLine {
   position: absolute;
   pointer-events: none;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.18);
-  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18), rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.16));
+  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .car[data-orient="h"] .bodyLine {
-  left: 31%;
-  top: 24%;
-  bottom: 24%;
-  width: 3px;
+  left: 29%;
+  top: 20%;
+  bottom: 20%;
+  width: 2px;
   border-radius: 999px;
 }
 
 .car[data-orient="v"] .bodyLine {
-  top: 31%;
-  left: 24%;
-  right: 24%;
-  height: 3px;
+  top: 29%;
+  left: 20%;
+  right: 20%;
+  height: 2px;
   border-radius: 999px;
 }
 
@@ -516,7 +601,7 @@
 .headlights span,
 .tailLights span {
   display: block;
-  border-radius: 999px;
+  border-radius: 4px;
 }
 
 .headlights span {
@@ -530,17 +615,17 @@
 }
 
 .car[data-orient="h"] .headlights {
-  right: 6px;
-  top: 27%;
-  bottom: 27%;
+  right: 5px;
+  top: 29%;
+  bottom: 29%;
   width: 6px;
   flex-direction: column;
 }
 
 .car[data-orient="h"] .tailLights {
-  left: 6px;
-  top: 30%;
-  bottom: 30%;
+  left: 5px;
+  top: 32%;
+  bottom: 32%;
   width: 6px;
   flex-direction: column;
 }
@@ -548,20 +633,20 @@
 .car[data-orient="h"] .headlights span,
 .car[data-orient="h"] .tailLights span {
   width: 5px;
-  height: 11px;
+  height: 9px;
 }
 
 .car[data-orient="v"] .headlights {
-  left: 27%;
-  right: 27%;
-  top: 6px;
+  left: 29%;
+  right: 29%;
+  top: 5px;
   height: 6px;
 }
 
 .car[data-orient="v"] .tailLights {
-  left: 30%;
-  right: 30%;
-  bottom: 6px;
+  left: 32%;
+  right: 32%;
+  bottom: 5px;
   height: 6px;
 }
 
@@ -583,12 +668,12 @@
 .wheelTrackTop span,
 .wheelTrackBottom span {
   display: block;
-  border-radius: 999px;
+  border-radius: 5px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(2, 6, 10, 0.8)),
-    rgba(3, 7, 10, 0.78);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(2, 6, 10, 0.86)),
+    #071014;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 4px 8px rgba(0, 0, 0, 0.18);
 }
 
@@ -596,55 +681,55 @@
 .car[data-orient="h"] .wheelTrackBottom {
   left: 16%;
   right: 16%;
-  height: 9px;
+  height: 10px;
 }
 
 .car[data-orient="h"] .wheelTrackTop {
-  top: -2px;
+  top: 4px;
 }
 
 .car[data-orient="h"] .wheelTrackBottom {
-  bottom: -2px;
+  bottom: 4px;
 }
 
 .car[data-orient="h"] .wheelTrackTop span,
 .car[data-orient="h"] .wheelTrackBottom span {
   width: 25%;
   min-width: 14px;
-  height: 9px;
+  height: 10px;
 }
 
 .car[data-orient="v"] .wheelTrackTop,
 .car[data-orient="v"] .wheelTrackBottom {
   top: 16%;
   bottom: 16%;
-  width: 9px;
+  width: 10px;
   flex-direction: column;
 }
 
 .car[data-orient="v"] .wheelTrackTop {
-  left: -2px;
+  left: 4px;
 }
 
 .car[data-orient="v"] .wheelTrackBottom {
-  right: -2px;
+  right: 4px;
 }
 
 .car[data-orient="v"] .wheelTrackTop span,
 .car[data-orient="v"] .wheelTrackBottom span {
-  width: 9px;
+  width: 10px;
   height: 25%;
   min-height: 14px;
 }
 
 .exitArrow {
   position: absolute;
-  right: 12%;
+  right: 14%;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(255, 252, 235, 0.78);
+  color: rgba(255, 243, 210, 0.82);
   font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 900;
   line-height: 1;
   pointer-events: none;
@@ -654,17 +739,17 @@
 
 .meBadge {
   position: absolute;
-  left: 16%;
+  left: 15%;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 23px;
-  color: rgba(255, 251, 244, 0.7);
+  min-width: 22px;
+  color: rgba(255, 249, 238, 0.78);
   font-size: 8px;
   font-weight: 900;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   pointer-events: none;
   text-shadow: 0 2px 8px rgba(67, 14, 10, 0.34);
   z-index: 5;
@@ -1007,7 +1092,7 @@
   .winOverlay,
   .winCard,
   .confetti,
-  .exit span {
+  .exitLaneArrow {
     animation: none;
     transition: none;
   }
@@ -1054,14 +1139,14 @@
   }
 
   .boardWrap {
-    width: min(calc(100vw - 116px), calc(100svh - 306px), 560px);
-    min-width: min(264px, calc(100vw - 116px));
+    width: min(calc(100vw - 118px), calc(100svh - 306px), 560px);
+    min-width: min(258px, calc(100vw - 118px));
     border-radius: 24px;
-    padding: 9px;
+    padding: 10px;
   }
 
   .boardWrap::before {
-    inset: 9px;
+    inset: 10px;
     border-radius: 18px;
   }
 
@@ -1070,26 +1155,32 @@
   }
 
   .exitLane {
-    right: -38px;
-    top: calc(9px + (100% - 18px) * 2 / 6);
-    width: 46px;
-    height: calc((100% - 18px) / 6);
+    right: -58px;
+    top: calc(10px + (100% - 20px) * 2 / 6);
+    width: 78px;
+    height: calc((100% - 20px) / 6);
     border-radius: 0 14px 14px 0;
-    font-size: 8px;
   }
 
-  .exit {
-    right: -34px;
-    width: 22px;
-    font-size: 13px;
+  .exitLabel {
+    left: 18px;
+    right: 8px;
+    top: -21px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .exitLaneArrow {
+    left: 30px;
+    font-size: 22px;
   }
 
   .car {
-    border-radius: 14px;
+    border-radius: 11px 15px 15px 11px;
   }
 
   .car[data-player="true"] {
-    border-radius: 16px;
+    border-radius: 11px 16px 16px 11px;
   }
 
   .controls {

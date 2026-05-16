@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FISH_DATABASE, FISH_IMAGE_METADATA } from './fishData';
 import { spawnFish, drawFish, isBigCreature, BIG_CREATURE_TYPES, type FishInstance } from './fish_logic';
@@ -2158,6 +2159,29 @@ export default function AquaFishingGame() {
         userSelect: "none",
       }}
     >
+      <style>{`
+        .aqua-desktop-only-notice {
+          display: none;
+        }
+
+        @media (max-width: 900px), (max-height: 560px) {
+          .aqua-game-root {
+            touch-action: auto !important;
+            overflow-y: auto !important;
+            align-items: stretch !important;
+          }
+
+          .aqua-playable-layer {
+            display: none !important;
+          }
+
+          .aqua-desktop-only-notice {
+            display: flex;
+          }
+        }
+      `}</style>
+
+      <div className="aqua-playable-layer absolute inset-0">
       <canvas
         ref={canvasRef}
         className="block w-full h-full"
@@ -2359,6 +2383,9 @@ export default function AquaFishingGame() {
            </div>
          </div>
       )}
+      </div>
+
+      <DesktopOnlyNotice t={t} />
     </div>
   );
 }
@@ -2368,6 +2395,48 @@ export default function AquaFishingGame() {
    with touch buttons. Each button dispatches `aqua-fishing:input` events that
    the game loop's effect listens for and translates into the same `keys`
    state mutations the keyboard handler does. */
+function DesktopOnlyNotice({
+  t,
+}: {
+  t: (ko: string, en: string) => string;
+}) {
+  return (
+    <div className="aqua-desktop-only-notice min-h-full w-full items-center justify-center px-5 py-10 text-white">
+      <section className="relative w-full max-w-[430px] overflow-hidden rounded-[28px] border border-cyan-200/20 bg-slate-950/86 p-6 text-center shadow-[0_28px_90px_rgba(0,0,0,0.5)] backdrop-blur">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(14,165,233,0.28),transparent_46%),linear-gradient(180deg,rgba(255,255,255,0.08),transparent_36%)]" />
+        <div className="relative">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-200/30 bg-cyan-300/12 text-3xl font-black shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
+            PC
+          </div>
+          <h1 className="m-0 text-[28px] font-black leading-tight tracking-[-0.03em] text-white">
+            {t("PC에서 플레이해주세요", "Please play on desktop")}
+          </h1>
+          <p className="mx-auto mt-4 max-w-[32ch] whitespace-pre-line text-[16px] font-semibold leading-relaxed text-slate-200/82">
+            {t(
+              "심해낚시는 현재 마우스 조작에 최적화된 게임입니다.\n더 좋은 플레이 경험을 위해 PC 또는 노트북에서 이용해주세요.",
+              "Deep Sea Fishing is currently optimized for mouse controls.\nFor the best experience, please play on a desktop or laptop.",
+            )}
+          </p>
+          <div className="mt-6 flex flex-col gap-3">
+            <Link
+              href="/#mini-games"
+              className="inline-flex min-h-12 items-center justify-center rounded-full bg-cyan-300 px-5 text-[15px] font-black text-slate-950 no-underline shadow-[0_14px_34px_rgba(34,211,238,0.22)]"
+            >
+              {t("다른 놀이 보러가기", "Browse other plays")}
+            </Link>
+            <Link
+              href="/"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/16 bg-white/8 px-5 text-[14px] font-extrabold text-white no-underline"
+            >
+              {t("홈으로 돌아가기", "Back to home")}
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function AquaHelpPanel({
   t,
   isTouch,

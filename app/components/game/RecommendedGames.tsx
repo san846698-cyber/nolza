@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
 import { trackRecommendationClick } from "@/lib/analytics";
-import { GAMES } from "@/lib/games-home";
+import { GAMES, HOMEPAGE_HIDDEN_GAME_IDS } from "@/lib/games-home";
 import type { ContentType, Lang } from "@/lib/games-home";
 
 type RecommendedGamesProps = {
@@ -33,7 +33,7 @@ export default function RecommendedGames({
   const { locale, t } = useLocale();
   const chosenIds = ids?.length ? ids : DEFAULT_IDS;
   const games = chosenIds
-    .filter((id) => id !== currentId)
+    .filter((id) => id !== currentId && !HOMEPAGE_HIDDEN_GAME_IDS.has(id))
     .map((id) => GAMES.find((game) => game.id === id))
     .filter(Boolean)
     .slice(0, limit);

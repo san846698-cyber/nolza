@@ -27,10 +27,10 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
 
   return (
     <nav
-      className="sticky top-0 z-40 backdrop-blur bg-home-bg/90 border-b border-home-hairline"
+      className="sticky top-0 z-40 border-b border-home-hairline bg-home-bg/82 backdrop-blur-xl"
       aria-label="Jump to category"
     >
-      <div className="mx-auto max-w-col px-4 sm:px-6 lg:px-7 py-2 flex gap-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+      <div className="mx-auto flex max-w-col gap-2 overflow-x-auto px-4 py-2.5 sm:px-6 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
         {categories.map((c, i) => {
           const isActive = active === c.id;
           return (
@@ -39,17 +39,17 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
               href={`#${c.id}`}
               aria-current={isActive ? "true" : undefined}
               className={[
-                "inline-flex items-baseline gap-1.5 px-3 py-1.5 shrink-0 min-h-9",
-                "border rounded-full text-[13.5px] font-bold tracking-tight",
-                "whitespace-nowrap transition-colors no-underline",
+                "inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 lg:min-h-9 lg:px-3",
+                "border text-[13.5px] font-black tracking-tight lg:text-[13px]",
+                "whitespace-nowrap no-underline shadow-[0_8px_20px_rgba(20,17,14,0.04)] transition-[background,color,border-color,transform]",
                 isActive
-                  ? "bg-home-ink text-home-bg border-home-ink"
-                  : "bg-home-paper text-home-ink border-home-hairline hover:border-home-hairline-strong hover:bg-white",
+                  ? "border-home-ink bg-home-ink text-home-bg"
+                  : "border-home-hairline bg-white/58 text-home-ink hover:-translate-y-0.5 hover:border-home-hairline-strong hover:bg-white",
               ].join(" ")}
             >
               <span
                 className={[
-                  "font-fraunces italic font-normal text-[11px]",
+                  "font-mono text-[10.5px] font-black tracking-[0.08em]",
                   isActive ? "text-home-bg/60" : "text-home-muted",
                 ].join(" ")}
               >

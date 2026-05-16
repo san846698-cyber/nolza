@@ -399,7 +399,8 @@ export default function TrafficGame() {
 
         <div className={s.boardWrap} ref={boardRef}>
           <div className={s.exitLane} aria-hidden>
-            <span>{t("출구", "Exit")}</span>
+            <span className={s.exitLabel}>{t("출구", "Exit")}</span>
+            <b className={s.exitLaneArrow}>{"\u2192"}</b>
           </div>
           <div
             className={s.grid}
@@ -407,9 +408,6 @@ export default function TrafficGame() {
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
           >
-            <div className={s.exit} aria-hidden>
-              <span>→</span>
-            </div>
             {cars.map((car) => {
               const isPlayer = car.id === "R";
               const xPos = isPlayer && exiting ? GRID + 0.5 : car.x;
@@ -419,6 +417,7 @@ export default function TrafficGame() {
                   className={s.car}
                   data-player={isPlayer}
                   data-orient={car.orientation}
+                  data-length={car.length}
                   data-exiting={isPlayer && exiting}
                   data-dragging={draggingCarId === car.id}
                   data-bump={bumpCarId === car.id}

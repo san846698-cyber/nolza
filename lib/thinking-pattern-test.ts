@@ -456,6 +456,46 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       { id: "d", text: { ko: "요즘 계속 이럴 것 같아 걱정된다", en: "I worry that I will keep feeling this way." }, weights: { overgeneralization: 2, catastrophizing: 1 } },
     ],
   },
+  {
+    id: "seen-no-reply",
+    prompt: { ko: "메시지를 읽은 것 같은데 답장이 오지 않습니다. 가장 먼저 드는 생각은?", en: "It seems like your message was seen, but there is no reply. What thought comes first?" },
+    choices: [
+      { id: "a", text: { ko: "아직 사정을 모르니 조금 더 기다려본다", en: "I do not know the situation yet, so I wait a bit longer." }, weights: { "balanced-perspective": 2 } },
+      { id: "b", text: { ko: "나를 불편해해서 일부러 답하지 않는 것 같다", en: "It feels like they are not replying because they are uncomfortable with me." }, weights: { "mind-reading": 2 } },
+      { id: "c", text: { ko: "이 관계가 틀어지는 신호일까 봐 걱정된다", en: "I worry this may be a sign the relationship is going wrong." }, weights: { catastrophizing: 2 } },
+      { id: "d", text: { ko: "내가 뭔가 잘못 보냈나 계속 확인한다", en: "I keep checking whether I sent something wrong." }, weights: { personalization: 2 } },
+    ],
+  },
+  {
+    id: "mixed-result",
+    prompt: { ko: "결과가 나쁘진 않았지만 기대만큼 완벽하지는 않습니다. 당신은?", en: "The result is not bad, but it is not as perfect as you hoped. What do you do?" },
+    choices: [
+      { id: "a", text: { ko: "잘된 부분과 고칠 부분을 나눠서 본다", en: "I separate what went well from what can be improved." }, weights: { "balanced-perspective": 2 } },
+      { id: "b", text: { ko: "완벽하지 않으면 성공이라고 보기 어렵다", en: "If it is not perfect, it is hard to see it as a success." }, weights: { "all-or-nothing": 2 } },
+      { id: "c", text: { ko: "좋았던 점보다 부족한 점만 크게 보인다", en: "The weak points look much bigger than what went well." }, weights: { "discounting-positive": 2 } },
+      { id: "d", text: { ko: "이 정도는 당연히 해냈어야 한다고 느낀다", en: "I feel I should have been able to do at least this much." }, weights: { "should-statements": 2 } },
+    ],
+  },
+  {
+    id: "tired-tone",
+    prompt: { ko: "상대의 말투가 평소보다 차갑게 느껴집니다. 당신의 해석은?", en: "Someone's tone feels colder than usual. How do you interpret it?" },
+    choices: [
+      { id: "a", text: { ko: "그 사람의 컨디션이나 상황일 수도 있다고 본다", en: "I consider that it may be their condition or situation." }, weights: { "balanced-perspective": 2 } },
+      { id: "b", text: { ko: "나에게 실망했거나 화가 난 것 같다", en: "It seems like they are disappointed in me or angry." }, weights: { "mind-reading": 2 } },
+      { id: "c", text: { ko: "불편하게 느껴지니 실제로 문제가 있는 것 같다", en: "Because it feels uncomfortable, it seems like there really is a problem." }, weights: { "emotional-reasoning": 2 } },
+      { id: "d", text: { ko: "내가 뭘 잘못했는지부터 떠올린다", en: "I first think about what I may have done wrong." }, weights: { personalization: 2 } },
+    ],
+  },
+  {
+    id: "one-low-day",
+    prompt: { ko: "하루 종일 계획만큼 해내지 못했습니다. 밤에 드는 생각은?", en: "You did not get as much done today as planned. What thought comes up at night?" },
+    choices: [
+      { id: "a", text: { ko: "오늘은 쉬어가고 내일 할 일을 작게 정한다", en: "I let today be a slower day and set a small task for tomorrow." }, weights: { "balanced-perspective": 2 } },
+      { id: "b", text: { ko: "나는 늘 이런 식으로 흐트러지는 사람 같다", en: "It feels like I am always the kind of person who falls apart like this." }, weights: { overgeneralization: 2 } },
+      { id: "c", text: { ko: "이 정도도 못 하면 안 된다고 나를 다그친다", en: "I push myself, thinking I should not fail at even this much." }, weights: { "should-statements": 2 } },
+      { id: "d", text: { ko: "이러다 중요한 것들을 다 놓칠 것 같다", en: "I feel like I may end up losing everything important." }, weights: { catastrophizing: 2 } },
+    ],
+  },
 ];
 
 
