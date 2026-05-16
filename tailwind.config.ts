@@ -56,7 +56,7 @@ const config: Config = {
         pixel: ["var(--font-press-start)", "monospace"],
       },
       maxWidth: {
-        col: "780px",
+        col: "1120px",
       },
     },
   },

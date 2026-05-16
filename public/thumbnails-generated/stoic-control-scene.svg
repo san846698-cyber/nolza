@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254">
+  <defs>
+    <filter id="grain-stoic" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" seed="65" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.08"/></feComponentTransfer>
+    </filter>
+    <filter id="softShadow-stoic" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#1b130d" flood-opacity="0.22"/>
+    </filter>
+    <linearGradient id="gold-stoic" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2d38a"/>
+      <stop offset="0.55" stop-color="#c88a45"/>
+      <stop offset="1" stop-color="#7f5031"/>
+    </linearGradient>
+    <linearGradient id="blue-stoic" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c6d5e4"/>
+      <stop offset="1" stop-color="#5c7288"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="1254" height="1254" fill="#e9dcc8"/>
+  <radialGradient id="stoicGlow" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#fff6e3"/><stop offset="0.62" stop-color="#e9dcc8"/><stop offset="1" stop-color="#cbb99e"/></radialGradient>
+  <rect width="1254" height="1254" fill="url(#stoicGlow)"/>
+  <circle cx="1030" cy="220" r="190" fill="#7b8c92" opacity="0.14"/>
+  <circle cx="150" cy="1040" r="280" fill="#c9904e" opacity="0.12"/>
+  <rect width="1254" height="1254" opacity="0.55" filter="url(#grain-stoic)"/>
+  
+  <path d="M634 825 C160 660, 205 520, 240 315" fill="none" stroke="#70675d" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+    <g transform="translate(240 315)" opacity="0.72">
+      <path d="M-42 -34 C-10 -62 39 -52 52 -12 C66 30 25 58 -18 50 C-58 42 -72 -5 -42 -34Z" fill="#fff8ea" stroke="#4c4032" stroke-width="6"/>
+      <circle cx="8" cy="1" r="8" fill="#4c4032" opacity="0.45"/>
+    </g>
+<path d="M634 825 C305 668, 350 506, 385 250" fill="none" stroke="#70675d" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+    <g transform="translate(385 250)" opacity="0.72">
+      <path d="M-42 -34 C-10 -62 39 -52 52 -12 C66 30 25 58 -18 50 C-58 42 -72 -5 -42 -34Z" fill="#fff8ea" stroke="#4c4032" stroke-width="6"/>
+      <circle cx="8" cy="1" r="8" fill="#4c4032" opacity="0.45"/>
+    </g>
+<path d="M634 825 C440 676, 485 492, 520 330" fill="none" stroke="#70675d" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+    <g transform="translate(520 330)" opacity="0.72">
+      <path d="M-42 -34 C-10 -62 39 -52 52 -12 C66 30 25 58 -18 50 C-58 42 -72 -5 -42 -34Z" fill="#fff8ea" stroke="#4c4032" stroke-width="6"/>
+      <circle cx="8" cy="1" r="8" fill="#4c4032" opacity="0.45"/>
+    </g>
+<path d="M634 825 C570 684, 615 478, 650 215" fill="none" stroke="#c88a45" stroke-width="8" stroke-linecap="round" opacity="0.95"/>
+    <g transform="translate(650 215)" opacity="1">
+      <path d="M-42 -34 C-10 -62 39 -52 52 -12 C66 30 25 58 -18 50 C-58 42 -72 -5 -42 -34Z" fill="#f1c979" stroke="#4c4032" stroke-width="6"/>
+      <circle cx="8" cy="1" r="8" fill="#4c4032" opacity="0.45"/>
+    </g>
+<path d="M634 825 C700 692, 745 464, 780 345" fill="none" stroke="#70675d" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+    <g transform="translate(780 345)" opacity="0.72">
+      <path d="M-42 -34 C-10 -62 39 -52 52 -12 C66 30 25 58 -18 50 C-58 42 -72 -5 -42 -34Z" fill="#fff8ea" stroke="#4c4032" stroke-width="6"/>
+      <circle cx="8" cy="1" r="8" fill="#4c4032" opacity="0.45"/>
+    </g>
+<path d="M634 825 C830 700, 875 450, 910 265" fill="none" stroke="#70675d" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+    <g transform="translate(910 265)" opacity="0.72">
+      <path d="M-42 -34 C-10 -62 39 -52 52 -12 C66 30 25 58 -18 50 C-58 42 -72 -5 -42 -34Z" fill="#fff8ea" stroke="#4c4032" stroke-width="6"/>
+      <circle cx="8" cy="1" r="8" fill="#4c4032" opacity="0.45"/>
+    </g>
+<path d="M634 825 C950 708, 995 436, 1030 370" fill="none" stroke="#70675d" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+    <g transform="translate(1030 370)" opacity="0.72">
+      <path d="M-42 -34 C-10 -62 39 -52 52 -12 C66 30 25 58 -18 50 C-58 42 -72 -5 -42 -34Z" fill="#fff8ea" stroke="#4c4032" stroke-width="6"/>
+      <circle cx="8" cy="1" r="8" fill="#4c4032" opacity="0.45"/>
+    </g>
+  <g filter="url(#softShadow-stoic)">
+    <path d="M392 860 C468 792 538 754 614 768 C670 778 696 812 690 850 C682 902 618 922 560 900 C522 886 492 884 462 906 C430 930 394 916 378 894 C368 880 374 874 392 860Z" fill="#d6a66d" stroke="#4c3324" stroke-width="8"/>
+    <path d="M602 804 C655 774 724 760 784 788 C830 810 840 858 806 892 C760 938 694 910 652 876 C628 856 610 836 602 804Z" fill="#e1b883" stroke="#4c3324" stroke-width="8"/>
+    <path d="M526 834 C552 794 594 786 646 810" fill="none" stroke="#fff0cf" stroke-width="12" stroke-linecap="round" opacity="0.7"/>
+    <path d="M666 858 C714 886 760 878 790 842" fill="none" stroke="#6b422b" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
+  </g>
+  <g opacity="0.82">
+    <path d="M198 836 C342 904 500 946 653 946 C812 946 961 898 1082 812" fill="none" stroke="#7b8c92" stroke-width="8" stroke-linecap="round" opacity="0.28"/>
+    <path d="M226 910 C408 974 646 1010 1012 886" fill="none" stroke="#c88a45" stroke-width="6" stroke-linecap="round" opacity="0.2"/>
+  </g>
+</svg>

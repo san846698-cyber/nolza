@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { AdBottom } from "@/app/components/Ads";
 import { ShareCard } from "@/app/components/ShareCard";
+import { usePersistentTestSession } from "@/hooks/usePersistentTestSession";
 import {
   SIGNAL_COPY,
   SIGNAL_LOCALE_LABELS,
@@ -18,46 +19,135 @@ import {
 } from "@/lib/kr-jp-signal-test";
 
 type Phase = "intro" | "quiz" | "result";
+type SignalSession = {
+  phase: Phase;
+  perspective: PerspectiveId | null;
+  questionIndex: number;
+  answers: SignalChoice[];
+};
+
+const STORAGE_KEY = "nolza_locale";
+const SESSION_KEY = "nolza:test:kr-jp-signal:v1";
+const LOCALE_CHANGE_EVENT = "nolza:locale-change";
+const INITIAL_SESSION: SignalSession = {
+  phase: "intro",
+  perspective: null,
+  questionIndex: 0,
+  answers: [],
+};
 
 const relatedTests = [
-  { href: "/games/nunchi", title: "눈치 측정기", sub: "공기 읽기 실전력" },
-  { href: "/games/kbti", title: "KBTI", sub: "한국형 성격 테스트" },
-  { href: "/tests/meme-age", title: "밈 나이 테스트", sub: "인터넷 감성 연식" },
+  { href: "/tests/defense-mechanism", title: { ko: "방어기제 테스트", en: "Defense Mechanism Test", ja: "防衛機制診断" }, sub: { ko: "내 마음의 보호 방식", en: "How your mind protects you", ja: "心の守り方" } },
+  { href: "/games/friend-match", title: { ko: "친구 궁합", en: "Friend Match", ja: "友達相性" }, sub: { ko: "이름과 생년으로 보는 케미", en: "Name and birth-year chemistry", ja: "名前と生年で見る相性" } },
 ];
 
 const dimensionLabels: Record<keyof SignalScores, Record<SignalLocale, string>> = {
   signalSense: { ko: "과몰입 방지", en: "Signal sense", ja: "深読み防止" },
   cultureContext: { ko: "문화 맥락", en: "Culture context", ja: "文化文脈" },
-  directnessBalance: { ko: "직진/완곡 균형", en: "Directness balance", ja: "直球/遠回しバランス" },
-  overthinking: { ko: "추리 과열", en: "Overthinking", ja: "深読み過熱" },
+  directnessBalance: { ko: "직진/완곡 균형", en: "Directness balance", ja: "直球/遠回しのバランス" },
+  overthinking: { ko: "추리 과열", en: "Overthinking", ja: "深読み度" },
 };
 
+function verdictText(locale: SignalLocale, readingScore: number) {
+  if (locale === "ko") return readingScore >= 70 ? "안정적" : readingScore >= 48 ? "주의 깊음" : "로딩 중";
+  if (locale === "ja") return readingScore >= 70 ? "安定" : readingScore >= 48 ? "慎重" : "読解中";
+  return readingScore >= 70 ? "CLEAR" : readingScore >= 48 ? "MIXED" : "LOADING";
+}
+
+function publishLocale(locale: SignalLocale) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, locale);
+  } catch {
+    // Ignore private browsing storage failures.
+  }
+  try {
+    window.dispatchEvent(new CustomEvent(LOCALE_CHANGE_EVENT, { detail: locale }));
+  } catch {
+    // Older browsers can keep the page-local language without broadcast.
+  }
+}
+
+function initialLocale(): SignalLocale {
+  if (typeof window === "undefined") return "ko";
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored === "ko" || stored === "en" || stored === "ja") return stored;
+  } catch {
+    // ignore
+  }
+  return "ko";
+}
+
+function isSignalSession(value: unknown): value is SignalSession {
+  if (!value || typeof value !== "object") return false;
+  const session = value as Partial<SignalSession>;
+  const validPhase =
+    session.phase === "intro" ||
+    session.phase === "quiz" ||
+    session.phase === "result";
+  const validPerspective =
+    session.perspective === null ||
+    SIGNAL_PERSPECTIVES.some((item) => item.id === session.perspective);
+  const questionIndex = session.questionIndex;
+  return (
+    validPhase &&
+    validPerspective &&
+    Number.isInteger(questionIndex) &&
+    typeof questionIndex === "number" &&
+    questionIndex >= 0 &&
+    questionIndex < SIGNAL_SCENARIOS.length &&
+    Array.isArray(session.answers)
+  );
+}
+
 export default function KrJpSignalTestClient() {
-  const [locale, setLocale] = useState<SignalLocale>("ko");
-  const [phase, setPhase] = useState<Phase>("intro");
-  const [perspective, setPerspective] = useState<PerspectiveId | null>(null);
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<SignalChoice[]>([]);
+  const [locale, setLocaleState] = useState<SignalLocale>("ko");
+  const [session, setSession, resetSession] = usePersistentTestSession(
+    SESSION_KEY,
+    INITIAL_SESSION,
+    { validate: isSignalSession },
+  );
   const [selected, setSelected] = useState<SignalChoice | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
+  const { phase, perspective, questionIndex, answers } = session;
+
+  useEffect(() => {
+    setLocaleState(initialLocale());
+  }, []);
+
+  const setLocale = (next: SignalLocale) => {
+    setLocaleState(next);
+    publishLocale(next);
+  };
 
   const scenario = SIGNAL_SCENARIOS[questionIndex];
   const result = useMemo(() => calculateSignalResult(answers, perspective), [answers, perspective]);
 
+  const setPerspective = (value: PerspectiveId) => {
+    setSession((current) => ({ ...current, perspective: value }));
+  };
+
   const start = () => {
-    setAnswers([]);
     setSelected(null);
-    setQuestionIndex(0);
     setShareCopied(false);
-    setPhase("quiz");
+    resetSession({
+      phase: "quiz",
+      perspective,
+      questionIndex: 0,
+      answers: [],
+    });
   };
 
   const restart = () => {
-    setPhase("intro");
-    setAnswers([]);
     setSelected(null);
-    setQuestionIndex(0);
     setShareCopied(false);
+    resetSession({
+      phase: "intro",
+      perspective,
+      questionIndex: 0,
+      answers: [],
+    });
   };
 
   const choose = (choice: SignalChoice) => {
@@ -66,16 +156,20 @@ export default function KrJpSignalTestClient() {
 
   const next = () => {
     if (!selected) return;
-    const nextAnswers = [...answers, selected];
-    setAnswers(nextAnswers);
+    const choice = selected;
     setSelected(null);
-
-    if (questionIndex >= SIGNAL_SCENARIOS.length - 1) {
-      setPhase("result");
-      return;
-    }
-
-    setQuestionIndex((index) => index + 1);
+    setSession((current) => {
+      if (current.phase !== "quiz") return current;
+      const nextAnswers = [...current.answers, choice];
+      if (current.questionIndex >= SIGNAL_SCENARIOS.length - 1) {
+        return { ...current, answers: nextAnswers, phase: "result" };
+      }
+      return {
+        ...current,
+        answers: nextAnswers,
+        questionIndex: current.questionIndex + 1,
+      };
+    });
   };
 
   const shareResult = async () => {
@@ -101,7 +195,7 @@ export default function KrJpSignalTestClient() {
   };
 
   return (
-    <main className="signal-page">
+    <main className="signal-page" lang={locale}>
       <div className="ambient" aria-hidden>
         <span className="orb orb-a" />
         <span className="orb orb-b" />
@@ -186,6 +280,9 @@ function Intro({
 
       <div className="dm-preview" aria-hidden>
         <div className="bubble left">また今度ね</div>
+        <div className="translation-chip">
+          {SIGNAL_COPY.meaningLabel[locale]} · {locale === "ko" ? "다음에 보자" : locale === "ja" ? "また別の機会に" : "Maybe next time"}
+        </div>
         <div className="bubble right">언제 밥 한번 먹자</div>
         <div className="typing">
           <span />
@@ -250,7 +347,15 @@ function Quiz({
 
       <article className="question-card">
         <span className="theme">{scenario.theme[locale]}</span>
-        <h2>{scenario.situation[locale]}</h2>
+        <p className="situation">{scenario.situation[locale]}</p>
+        <div className="phrase-card">
+          <blockquote>{scenario.phrase}</blockquote>
+          <p>
+            <span>{SIGNAL_COPY.meaningLabel[locale]}</span>
+            {scenario.meaning[locale]}
+          </p>
+        </div>
+        <h2>{scenario.question[locale]}</h2>
         <div className="choices">
           {scenario.choices.map((choiceItem) => {
             const isSelected = selected?.id === choiceItem.id;
@@ -309,6 +414,7 @@ function Result({
       <ShareCard
         filename={`nolza-kr-jp-signal-${result.id}`}
         buttonLabel={{ ko: SIGNAL_COPY.saveImage.ko, en: SIGNAL_COPY.saveImage.en }}
+        locale={locale === "ko" ? "ko" : "en"}
       >
         {() => (
           <article className="result-card">
@@ -326,7 +432,7 @@ function Result({
               </div>
               <div>
                 <span>{locale === "ko" ? "판정" : locale === "ja" ? "判定" : "Verdict"}</span>
-                <strong>{readingScore >= 70 ? "CLEAR" : readingScore >= 48 ? "MIXED" : "LOADING"}</strong>
+                <strong>{verdictText(locale, readingScore)}</strong>
               </div>
             </div>
 
@@ -338,7 +444,7 @@ function Result({
                 <p>{result.strength[locale]}</p>
               </section>
               <section>
-                <span>{locale === "ko" ? "약점" : locale === "ja" ? "弱み" : "Weak point"}</span>
+                <span>{locale === "ko" ? "약점" : locale === "ja" ? "弱点" : "Weak point"}</span>
                 <p>{result.weakPoint[locale]}</p>
               </section>
             </div>
@@ -383,8 +489,8 @@ function Result({
         <div>
           {relatedTests.map((item) => (
             <Link key={item.href} href={item.href}>
-              <strong>{item.title}</strong>
-              <span>{item.sub}</span>
+              <strong>{item.title[locale]}</strong>
+              <span>{item.sub[locale]}</span>
             </Link>
           ))}
         </div>
@@ -403,6 +509,7 @@ const styles = `
       radial-gradient(circle at 16% 8%, rgba(251, 191, 36, 0.17), transparent 34%),
       radial-gradient(circle at 86% 18%, rgba(125, 211, 252, 0.16), transparent 30%),
       linear-gradient(135deg, #12111a 0%, #201d30 48%, #111827 100%);
+    font-family: var(--font-inter), var(--font-noto-sans-kr), "Noto Sans JP", system-ui, sans-serif;
   }
   .ambient {
     position: fixed;
@@ -471,13 +578,13 @@ const styles = `
     border: 1px solid rgba(255, 255, 255, 0.12);
   }
   .locale-switch button {
-    min-height: 36px;
+    min-height: 38px;
     padding: 0 12px;
     border: 0;
     border-radius: 999px;
     background: transparent;
     color: rgba(247, 243, 234, 0.72);
-    font-weight: 800;
+    font-weight: 850;
     cursor: pointer;
   }
   .locale-switch button.active {
@@ -517,8 +624,8 @@ const styles = `
   h1 {
     max-width: 760px;
     margin: 18px 0 14px;
-    font-size: clamp(2.45rem, 8vw, 5.8rem);
-    line-height: 0.96;
+    font-size: clamp(2.3rem, 8vw, 5.4rem);
+    line-height: 1.02;
     letter-spacing: 0;
   }
   .hero > p {
@@ -545,6 +652,8 @@ const styles = `
     border-radius: 18px;
     font-weight: 900;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+    word-break: keep-all;
+    overflow-wrap: anywhere;
   }
   .bubble.left {
     background: rgba(255, 255, 255, 0.12);
@@ -554,6 +663,18 @@ const styles = `
     margin-top: 12px;
     color: #17151f;
     background: linear-gradient(135deg, #fbbf24, #7dd3fc);
+  }
+  .translation-chip {
+    width: fit-content;
+    max-width: 92%;
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: rgba(247, 243, 234, 0.78);
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.82rem;
+    font-weight: 800;
   }
   .typing {
     width: 70px;
@@ -634,13 +755,16 @@ const styles = `
   .choices strong {
     display: block;
     font-size: 1rem;
-    line-height: 1.45;
+    line-height: 1.5;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
   }
   .perspectives small,
   .choices small {
     display: block;
     margin-top: 8px;
     color: rgba(247, 243, 234, 0.62);
+    font-size: 0.82rem;
     font-weight: 700;
     line-height: 1.5;
   }
@@ -692,11 +816,58 @@ const styles = `
   .question-card {
     padding: clamp(22px, 4vw, 36px);
   }
+  .situation {
+    margin: 12px 0 14px;
+    color: rgba(247, 243, 234, 0.78);
+    font-size: clamp(1rem, 2.4vw, 1.12rem);
+    font-weight: 800;
+    line-height: 1.7;
+  }
+  .phrase-card {
+    margin: 0 0 20px;
+    padding: 16px;
+    border-radius: 22px;
+    background: rgba(8, 13, 27, 0.48);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .phrase-card blockquote {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 10px;
+    padding: 13px 16px;
+    border-radius: 18px 18px 18px 6px;
+    color: #17151f;
+    background: linear-gradient(135deg, #fef3c7, #bae6fd);
+    font-size: clamp(1.18rem, 4vw, 1.6rem);
+    font-weight: 950;
+    line-height: 1.45;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  .phrase-card p {
+    margin: 0;
+    color: rgba(247, 243, 234, 0.78);
+    font-weight: 800;
+    line-height: 1.65;
+  }
+  .phrase-card p span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    margin-right: 8px;
+    padding: 0 9px;
+    border-radius: 999px;
+    color: #17151f;
+    background: #fbbf24;
+    font-size: 0.76rem;
+    font-weight: 950;
+  }
   .question-card h2 {
     margin: 12px 0 22px;
-    font-size: clamp(1.38rem, 4vw, 2.35rem);
-    line-height: 1.35;
+    font-size: clamp(1.34rem, 4vw, 2.1rem);
+    line-height: 1.4;
     letter-spacing: 0;
+    word-break: keep-all;
   }
   .choices {
     display: grid;
@@ -760,8 +931,8 @@ const styles = `
   }
   .result-card h2 {
     margin: 18px 0 8px;
-    font-size: clamp(2.1rem, 8vw, 4.7rem);
-    line-height: 1;
+    font-size: clamp(2rem, 8vw, 4.4rem);
+    line-height: 1.08;
     letter-spacing: 0;
   }
   .subtitle,
@@ -880,6 +1051,13 @@ const styles = `
     .hero {
       min-height: auto;
       padding-top: 30px;
+    }
+    .locale-switch {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .locale-switch button {
+      flex: 1;
     }
     .perspectives,
     .choices,

@@ -31,6 +31,8 @@ type Props = {
   buttonStyle?: CSSProperties;
   /** Optional className applied to the button. */
   buttonClassName?: string;
+  /** Show the built-in image save/share button. Hidden by default on result pages. */
+  showButton?: boolean;
   /** Pixel scale (2 = retina). Larger = bigger file. */
   pixelRatio?: number;
   /** Background color used when the captured node has no opaque bg. */
@@ -44,6 +46,7 @@ export function ShareCard({
   locale = "ko",
   buttonStyle,
   buttonClassName,
+  showButton = false,
   pixelRatio = 2,
   backgroundColor,
   children,
@@ -145,6 +148,7 @@ export function ShareCard({
   return (
     <>
       {children({ cardRef, saving })}
+      {showButton ? (
       <button
         type="button"
         onClick={handleClick}
@@ -174,6 +178,7 @@ export function ShareCard({
         {!saving && done == null && <span aria-hidden>⬇</span>}
         {label}
       </button>
+      ) : null}
     </>
   );
 }

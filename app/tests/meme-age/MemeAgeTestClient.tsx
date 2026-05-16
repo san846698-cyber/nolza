@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { AdBottom } from "@/app/components/Ads";
 import { ShareCard } from "@/app/components/ShareCard";
+import { usePersistentTestSession } from "@/hooks/usePersistentTestSession";
 import {
+  ERA_LABELS,
   MEME_QUESTIONS,
   calculateMemeResult,
   type MemeAnswer,
@@ -13,6 +15,18 @@ import {
 } from "@/lib/meme-age-test";
 
 type Phase = "intro" | "quiz" | "result";
+type MemeSession = {
+  phase: Phase;
+  questionIndex: number;
+  answers: MemeAnswer[];
+};
+
+const SESSION_KEY = "nolza:test:meme-age:v2";
+const INITIAL_SESSION: MemeSession = {
+  phase: "intro",
+  questionIndex: 0,
+  answers: [],
+};
 
 const C = {
   bg: "#16112a",
@@ -27,41 +41,90 @@ const C = {
 const RECOMMENDED = [
   { href: "/games/kbti", title: "KBTI", sub: "한국형 성격 테스트" },
   { href: "/games/whatgeneration", title: "세대 테스트", sub: "나는 어느 감성 세대?" },
-  { href: "/games/nunchi", title: "눈치 측정기", sub: "공기 읽기 실전력" },
+  { href: "/tests/defense-mechanism", title: "방어기제 테스트", sub: "내 마음의 보호 방식" },
 ];
 
+function isMemeSession(value: unknown): value is MemeSession {
+  if (!value || typeof value !== "object") return false;
+  const session = value as Partial<MemeSession>;
+  const validPhase =
+    session.phase === "intro" ||
+    session.phase === "quiz" ||
+    session.phase === "result";
+  const questionIndex = session.questionIndex;
+  return (
+    validPhase &&
+    Number.isInteger(questionIndex) &&
+    typeof questionIndex === "number" &&
+    questionIndex >= 0 &&
+    questionIndex < MEME_QUESTIONS.length &&
+    Array.isArray(session.answers) &&
+    session.answers.every((answer) => (
+      answer &&
+      typeof answer === "object" &&
+      typeof (answer as Partial<MemeAnswer>).id === "string" &&
+      typeof (answer as Partial<MemeAnswer>).correct === "boolean" &&
+      typeof (answer as Partial<MemeAnswer>).era === "string"
+    ))
+  );
+}
+
 export default function MemeAgeTestClient() {
-  const [phase, setPhase] = useState<Phase>("intro");
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<MemeAnswer[]>([]);
+  const [session, setSession, resetSession] = usePersistentTestSession(
+    SESSION_KEY,
+    INITIAL_SESSION,
+    { validate: isMemeSession },
+  );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
+  const answerPendingRef = useRef(false);
+  const answerTimerRef = useRef<number | null>(null);
+  const { phase, questionIndex, answers } = session;
 
   const currentQuestion = MEME_QUESTIONS[questionIndex];
   const progress = ((questionIndex + (phase === "result" ? 1 : 0)) / MEME_QUESTIONS.length) * 100;
   const calculated = useMemo(() => calculateMemeResult(answers), [answers]);
+  const currentStreak = useMemo(() => getCurrentStreak(answers), [answers]);
+  const bestStreak = useMemo(() => getBestStreak(answers), [answers]);
+
+  useEffect(() => {
+    return () => {
+      if (answerTimerRef.current !== null) {
+        window.clearTimeout(answerTimerRef.current);
+      }
+    };
+  }, []);
 
   const start = () => {
-    setAnswers([]);
+    if (answerTimerRef.current !== null) window.clearTimeout(answerTimerRef.current);
+    answerTimerRef.current = null;
     setSelectedId(null);
-    setQuestionIndex(0);
+    answerPendingRef.current = false;
     setShareCopied(false);
-    setPhase("quiz");
+    resetSession({ phase: "quiz", questionIndex: 0, answers: [] });
   };
 
   const chooseAnswer = (answer: MemeAnswer) => {
-    if (selectedId) return;
+    if (selectedId || answerPendingRef.current) return;
+    answerPendingRef.current = true;
     setSelectedId(answer.id);
-    window.setTimeout(() => {
-      const nextAnswers = [...answers, answer];
-      setAnswers(nextAnswers);
+    answerTimerRef.current = window.setTimeout(() => {
+      setSession((current) => {
+        if (current.phase !== "quiz") return current;
+        const nextAnswers = [...current.answers, answer];
+        if (current.questionIndex >= MEME_QUESTIONS.length - 1) {
+          return { ...current, answers: nextAnswers, phase: "result" };
+        }
+        return {
+          ...current,
+          answers: nextAnswers,
+          questionIndex: current.questionIndex + 1,
+        };
+      });
       setSelectedId(null);
-      if (questionIndex >= MEME_QUESTIONS.length - 1) {
-        setPhase("result");
-        return;
-      }
-      setQuestionIndex((index) => index + 1);
-    }, 220);
+      answerPendingRef.current = false;
+      answerTimerRef.current = null;
+    }, 1050);
   };
 
   const shareResult = async () => {
@@ -114,6 +177,7 @@ export default function MemeAgeTestClient() {
             question={currentQuestion}
             index={questionIndex}
             progress={progress}
+            streak={currentStreak}
             selectedId={selectedId}
             onChoose={chooseAnswer}
           />
@@ -121,6 +185,11 @@ export default function MemeAgeTestClient() {
           <ResultScreen
             result={calculated.result}
             scores={calculated.scores}
+            correctCount={calculated.correctCount}
+            accuracy={calculated.accuracy}
+            strongestEra={calculated.strongestEra}
+            weakestEra={calculated.weakestEra}
+            bestStreak={bestStreak}
             onReplay={start}
             onShare={shareResult}
             shareCopied={shareCopied}
@@ -156,10 +225,11 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
       <div className="meme-chip">12문항 · 저작권 안전 텍스트 퀴즈</div>
       <h1>당신의 밈 나이는 몇 살?</h1>
       <p>
-        디시, 싸이월드, 급식체, 쇼츠 밈까지.
+        디시, 싸이월드, 급식체, 숏폼 밈까지.
         <br />
-        당신은 어느 시대 인터넷 사람인지 테스트해보세요.
+        당신은 어느 시대 인터넷 사람인지 맞혀보세요.
       </p>
+      <p className="meme-note">설문이 아닙니다. 직접 맞히면서 당신의 인터넷 세대를 확인해보세요.</p>
       <button type="button" className="meme-primary btn-press" onClick={onStart}>
         밈 나이 테스트 시작하기
       </button>
@@ -177,15 +247,22 @@ function QuizScreen({
   question,
   index,
   progress,
+  streak,
   selectedId,
   onChoose,
 }: {
   question: (typeof MEME_QUESTIONS)[number];
   index: number;
   progress: number;
+  streak: number;
   selectedId: string | null;
   onChoose: (answer: MemeAnswer) => void;
 }) {
+  const selected = question.answers.find((answer) => answer.id === selectedId);
+  const feedbackText = selected?.feedback
+    .replace(/^정답!\s*/, "")
+    .replace(/^아쉽다!\s*/, "");
+
   return (
     <section className="quiz-wrap">
       <div className="progress-card">
@@ -201,12 +278,21 @@ function QuizScreen({
       <article className="question-card">
         <span>{question.mood}</span>
         <h2>{question.question}</h2>
+        <p className="meme-clue">{question.clue}</p>
+        <div className="streak-line">
+          <b>ROUND {index + 1}</b>
+          <b>STREAK {streak}</b>
+        </div>
         <div className="answers">
           {question.answers.map((answer) => (
             <button
               key={answer.id}
               type="button"
-              className={selectedId === answer.id ? "selected" : ""}
+              className={[
+                selectedId === answer.id ? "selected" : "",
+                selectedId && answer.correct ? "is-correct" : "",
+                selectedId === answer.id && !answer.correct ? "is-wrong" : "",
+              ].filter(Boolean).join(" ")}
               onClick={() => onChoose(answer)}
               disabled={Boolean(selectedId)}
             >
@@ -215,6 +301,12 @@ function QuizScreen({
             </button>
           ))}
         </div>
+        {selected ? (
+          <div className={selected.correct ? "feedback correct" : "feedback wrong"} role="status">
+            <strong>{selected.correct ? "정답!" : "아쉽다!"}</strong>
+            <span>{feedbackText}</span>
+          </div>
+        ) : null}
       </article>
     </section>
   );
@@ -223,12 +315,22 @@ function QuizScreen({
 function ResultScreen({
   result,
   scores,
+  correctCount,
+  accuracy,
+  strongestEra,
+  weakestEra,
+  bestStreak,
   onReplay,
   onShare,
   shareCopied,
 }: {
   result: MemeAgeResult;
-  scores: Record<MemeEraId, number>;
+  scores: Record<Exclude<MemeEraId, "omnivore">, number>;
+  correctCount: number;
+  accuracy: number;
+  strongestEra: Exclude<MemeEraId, "omnivore">;
+  weakestEra: Exclude<MemeEraId, "omnivore">;
+  bestStreak: number;
   onReplay: () => void;
   onShare: () => void;
   shareCopied: boolean;
@@ -248,6 +350,29 @@ function ResultScreen({
             <h2>{result.name}</h2>
             <p className="meme-age">{result.memeAge}</p>
             <p className="description">{result.description}</p>
+
+            <div className="result-stats">
+              <article>
+                <span>정답률</span>
+                <strong>{accuracy}%</strong>
+                <p>{correctCount}/{MEME_QUESTIONS.length}문항 정답</p>
+              </article>
+              <article>
+                <span>최고 연속 정답</span>
+                <strong>{bestStreak}</strong>
+                <p>밈 감각 콤보</p>
+              </article>
+              <article>
+                <span>가장 강한 시대</span>
+                <strong>{ERA_LABELS[strongestEra]}</strong>
+                <p>가장 잘 알아본 감성</p>
+              </article>
+              <article>
+                <span>약한 시대</span>
+                <strong>{ERA_LABELS[weakestEra]}</strong>
+                <p>다음 복습 구간</p>
+              </article>
+            </div>
 
             <div className="trait-list">
               {result.traits.map((trait) => (
@@ -276,8 +401,8 @@ function ResultScreen({
             <div className="score-board">
               {Object.entries(scores).map(([key, value]) => (
                 <div key={key}>
-                  <span>{key}</span>
-                  <i style={{ width: `${Math.min(100, value * 12)}%` }} />
+                  <span>{ERA_LABELS[key as Exclude<MemeEraId, "omnivore">]}</span>
+                  <i style={{ width: `${Math.min(100, value * 34)}%` }} />
                 </div>
               ))}
             </div>
@@ -314,6 +439,29 @@ function ResultScreen({
       </nav>
     </section>
   );
+}
+
+function getCurrentStreak(answers: MemeAnswer[]) {
+  let streak = 0;
+  for (let i = answers.length - 1; i >= 0; i -= 1) {
+    if (!answers[i].correct) break;
+    streak += 1;
+  }
+  return streak;
+}
+
+function getBestStreak(answers: MemeAnswer[]) {
+  let best = 0;
+  let current = 0;
+  answers.forEach((answer) => {
+    if (answer.correct) {
+      current += 1;
+      best = Math.max(best, current);
+    } else {
+      current = 0;
+    }
+  });
+  return best;
 }
 
 const styles = `
@@ -481,6 +629,12 @@ const styles = `
     line-height: 1.75;
     font-weight: 800;
   }
+  .meme-intro .meme-note {
+    margin-top: 12px;
+    color: rgba(69,255,176,0.88);
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
   .meme-primary,
   .action {
     min-height: 54px;
@@ -561,6 +715,26 @@ const styles = `
     line-height: 1.2;
     letter-spacing: 0;
   }
+  .meme-clue {
+    margin: -8px 0 18px;
+    border: 2px dashed rgba(29,18,50,0.24);
+    border-radius: 18px;
+    background: rgba(69,255,176,0.12);
+    padding: 14px 16px;
+    color: rgba(29,18,50,0.74);
+    font-size: clamp(1rem, 2.5vw, 1.12rem);
+    line-height: 1.6;
+    font-weight: 850;
+  }
+  .streak-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: rgba(29,18,50,0.56);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+  }
   .answers {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -582,6 +756,14 @@ const styles = `
     background: #ffe45e;
     transform: translateY(-2px);
   }
+  .answers button.is-correct {
+    background: #45ffb0;
+    box-shadow: inset 0 0 0 3px rgba(29,18,50,0.16);
+  }
+  .answers button.is-wrong {
+    background: #ffd3e6;
+    opacity: 0.86;
+  }
   .answers button:disabled {
     cursor: default;
   }
@@ -597,6 +779,31 @@ const styles = `
     margin-top: 8px;
     color: rgba(29,18,50,0.62);
     font-weight: 800;
+  }
+  .feedback {
+    margin-top: 16px;
+    display: grid;
+    gap: 4px;
+    border: 2px solid #1d1232;
+    border-radius: 18px;
+    padding: 14px 16px;
+    color: #1d1232;
+    font-weight: 900;
+    animation: feedback-pop 180ms ease-out;
+  }
+  .feedback.correct {
+    background: #45ffb0;
+  }
+  .feedback.wrong {
+    background: #ffd3e6;
+  }
+  .feedback span {
+    color: rgba(29,18,50,0.72);
+    line-height: 1.55;
+  }
+  @keyframes feedback-pop {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
   .result-card {
     position: relative;
@@ -651,6 +858,38 @@ const styles = `
     flex-wrap: wrap;
     gap: 8px;
     margin: 18px 0;
+  }
+  .result-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 20px 0 18px;
+  }
+  .result-stats article {
+    border: 2px solid rgba(29,18,50,0.16);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.66);
+    padding: 14px;
+  }
+  .result-stats span {
+    display: block;
+    color: rgba(29,18,50,0.54);
+    font-size: 0.72rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+  }
+  .result-stats strong {
+    display: block;
+    margin-top: 7px;
+    font-size: clamp(1.25rem, 4vw, 2rem);
+    line-height: 1.1;
+  }
+  .result-stats p {
+    margin: 6px 0 0;
+    color: rgba(29,18,50,0.62);
+    font-size: 0.78rem;
+    font-weight: 850;
+    line-height: 1.4;
   }
   .trait-list span {
     border: 2px solid #1d1232;
@@ -774,6 +1013,7 @@ const styles = `
       flex-direction: column;
     }
     .answers,
+    .result-stats,
     .split-grid,
     .recommended div {
       grid-template-columns: 1fr;

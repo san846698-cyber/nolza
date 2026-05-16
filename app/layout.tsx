@@ -11,6 +11,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { AdSideRails } from "./components/Ads";
+import Analytics from "./components/Analytics";
 import LocaleToggle from "./components/LocaleToggle";
 import SiteFooter from "./components/SiteFooter";
 
@@ -98,6 +99,9 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: ["/opengraph-image"],
   },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export default function RootLayout({
@@ -126,6 +130,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        <Analytics />
         <LocaleToggle />
         {children}
         <SiteFooter />

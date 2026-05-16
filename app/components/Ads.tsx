@@ -65,6 +65,7 @@ function pushAd() {
 function pageTypeForPath(pathname: string): AdPageType {
   if (pathname === "/") return "homepage";
   if (pathname.includes("/share-card")) return "result";
+  if (pathname.startsWith("/tests/")) return "test";
   if (!pathname.startsWith("/games/")) return "content";
   if (SIMULATION_GAME_PATHS.has(pathname)) return "simulation";
   if (TEST_GAME_PATHS.has(pathname)) return "test";
@@ -219,8 +220,8 @@ export function AdSideRails() {
       const railGutter = 24;
       const minimumSafeWidth = contentMax + railWidth * 2 + railGutter * 5;
       setViewportAllowsRails(
-        viewportWidth >= Math.max(1760, minimumSafeWidth) &&
-          viewportHeight >= 760,
+        viewportWidth >= Math.max(1920, minimumSafeWidth) &&
+          viewportHeight >= 800,
       );
     };
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254">
+  <defs>
+    <filter id="grain-value" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" seed="65" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.08"/></feComponentTransfer>
+    </filter>
+    <filter id="softShadow-value" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#1b130d" flood-opacity="0.22"/>
+    </filter>
+    <linearGradient id="gold-value" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2d38a"/>
+      <stop offset="0.55" stop-color="#c88a45"/>
+      <stop offset="1" stop-color="#7f5031"/>
+    </linearGradient>
+    <linearGradient id="blue-value" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c6d5e4"/>
+      <stop offset="1" stop-color="#5c7288"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="1254" height="1254" fill="#eadcc3"/>
+  <linearGradient id="valueSky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3d8"/><stop offset="0.52" stop-color="#e8dcc8"/><stop offset="1" stop-color="#b8c9d5"/></linearGradient>
+  <rect width="1254" height="1254" fill="url(#valueSky)"/>
+  <circle cx="222" cy="246" r="122" fill="#f0c16b" opacity="0.25"/>
+  <circle cx="1000" cy="220" r="210" fill="#86a3ba" opacity="0.16"/>
+  <rect width="1254" height="1254" opacity="0.55" filter="url(#grain-value)"/>
+  
+  <g filter="url(#softShadow-value)">
+    <path d="M620 712 C526 815 404 910 250 1058 L548 1058 C610 942 633 832 642 720Z" fill="#b18352" opacity="0.9"/>
+    <path d="M640 710 C724 824 828 930 1004 1058 L704 1058 C658 940 640 834 640 710Z" fill="#748ea5" opacity="0.9"/>
+    <path d="M621 710 C588 842 536 958 452 1058 L802 1058 C720 956 668 842 640 710Z" fill="#d7c0a0" opacity="0.82"/>
+    <path d="M644 703 C552 798 438 900 314 1030" stroke="#fff6df" stroke-width="10" stroke-linecap="round" opacity="0.55" fill="none"/>
+    <path d="M650 704 C736 802 852 908 970 1018" stroke="#fff6df" stroke-width="10" stroke-linecap="round" opacity="0.55" fill="none"/>
+  </g>
+  <g filter="url(#softShadow-value)">
+    <path d="M245 698 H432 V850 H245Z" fill="#fff8ea" stroke="#4d3a2b" stroke-width="8"/>
+    <path d="M219 704 L338 604 L457 704Z" fill="#a36a39" stroke="#4d3a2b" stroke-width="8"/>
+    <rect x="316" y="762" width="48" height="88" rx="8" fill="#4d3a2b" opacity="0.75"/>
+    <rect x="263" y="728" width="40" height="38" rx="6" fill="#b7cad8" opacity="0.8"/>
+    <rect x="377" y="728" width="40" height="38" rx="6" fill="#b7cad8" opacity="0.8"/>
+    <path d="M820 688 C892 606 986 566 1094 558" stroke="#51718a" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <path d="M838 752 C920 710 1012 702 1106 726" stroke="#c9904e" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.8"/>
+    <circle cx="978" cy="582" r="52" fill="#f0c16b" opacity="0.78"/>
+  </g>
+  <g filter="url(#softShadow-value)">
+    <path d="M610 538 H646 V722 H610Z" fill="#4b3a2d"/>
+    <path d="M490 530 L620 456 L620 604Z" fill="#fff8ea" stroke="#4b3a2d" stroke-width="8"/>
+    <path d="M764 528 L636 456 L636 604Z" fill="#fff8ea" stroke="#4b3a2d" stroke-width="8"/>
+    <path d="M582 666 C582 608 620 562 670 566 C720 570 754 620 746 674 C736 742 700 786 638 786 C592 786 582 724 582 666Z" fill="#3e332b"/>
+    <circle cx="650" cy="522" r="54" fill="#3e332b"/>
+    <path d="M620 822 C628 770 670 736 710 760 C744 780 746 840 708 870 C670 902 610 886 620 822Z" fill="#3e332b"/>
+  </g>
+</svg>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254">
+  <defs>
+    <filter id="grain-thinking" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" seed="104" result="noise"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.08"/></feComponentTransfer>
+    </filter>
+    <filter id="softShadow-thinking" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#1b130d" flood-opacity="0.22"/>
+    </filter>
+    <linearGradient id="gold-thinking" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2d38a"/>
+      <stop offset="0.55" stop-color="#c88a45"/>
+      <stop offset="1" stop-color="#7f5031"/>
+    </linearGradient>
+    <linearGradient id="blue-thinking" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c6d5e4"/>
+      <stop offset="1" stop-color="#5c7288"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="1254" height="1254" fill="#eadcc6"/>
+  <radialGradient id="thinkGlow" cx="35%" cy="28%" r="55%"><stop offset="0" stop-color="#fff5df"/><stop offset="0.65" stop-color="#eadcc6"/><stop offset="1" stop-color="#d4c2a8"/></radialGradient>
+  <rect width="1254" height="1254" fill="url(#thinkGlow)"/>
+  <circle cx="220" cy="190" r="140" fill="#f3c76c" opacity="0.18"/>
+  <circle cx="1040" cy="1000" r="260" fill="#7e96ac" opacity="0.14"/>
+  <rect width="1254" height="1254" opacity="0.55" filter="url(#grain-thinking)"/>
+  
+  <g filter="url(#softShadow-thinking)">
+    <path d="M260 258 C405 142 665 142 802 276 C918 390 894 575 758 662 C605 760 372 718 264 586 C177 479 165 334 260 258Z" fill="#fff8ea" stroke="#4c4032" stroke-width="10"/>
+    <path d="M340 392 C450 330 562 474 690 390" fill="none" stroke="#a36d3f" stroke-width="20" stroke-linecap="round" opacity="0.75"/>
+    <path d="M330 520 C430 615 558 430 706 545" fill="none" stroke="#617f9b" stroke-width="18" stroke-linecap="round" opacity="0.72"/>
+    <path d="M390 302 C504 272 588 330 676 294" fill="none" stroke="#d5a753" stroke-width="13" stroke-linecap="round" opacity="0.75"/>
+    <path d="M414 626 C530 574 616 684 720 616" fill="none" stroke="#4c4032" stroke-width="10" stroke-linecap="round" opacity="0.38"/>
+    <circle cx="260" cy="695" r="34" fill="#fff8ea" stroke="#4c4032" stroke-width="8"/>
+    <circle cx="185" cy="765" r="20" fill="#fff8ea" stroke="#4c4032" stroke-width="7"/>
+  </g>
+  <g filter="url(#softShadow-thinking)">
+    <circle cx="650" cy="645" r="168" fill="none" stroke="#3c332a" stroke-width="24" opacity="0.92"/>
+    <circle cx="650" cy="645" r="128" fill="#dce7ef" opacity="0.36" stroke="#fff8ea" stroke-width="6"/>
+    <path d="M760 756 L928 924" stroke="#3c332a" stroke-width="42" stroke-linecap="round"/>
+    <path d="M784 780 L890 886" stroke="#f2d38a" stroke-width="14" stroke-linecap="round" opacity="0.75"/>
+  </g>
+  <g filter="url(#softShadow-thinking)">
+    <path d="M710 1064 C730 935 830 830 948 832 C1060 834 1134 926 1122 1064Z" fill="#383027"/>
+    <path d="M818 806 C810 714 878 642 964 648 C1042 654 1096 722 1082 802 C1066 886 1008 930 924 922 C858 916 824 876 818 806Z" fill="#44392e"/>
+    <path d="M923 692 C1000 700 1042 752 1032 806 C1024 848 980 870 928 858" fill="none" stroke="#f6dfb3" stroke-width="22" stroke-linecap="round" opacity="0.82"/>
+    <path d="M832 969 C700 890 658 776 686 652" fill="none" stroke="#44392e" stroke-width="36" stroke-linecap="round"/>
+    <circle cx="681" cy="641" r="24" fill="#44392e"/>
+  </g>
+</svg>

@@ -604,6 +604,7 @@ export default function ScaleGame() {
           line-height: 1;
           cursor: pointer;
           backdrop-filter: blur(18px);
+          transform: translateY(-50%);
         }
         .nav-button:disabled {
           opacity: 0.25;
@@ -709,7 +710,7 @@ export default function ScaleGame() {
             inset: 74px 0 178px;
           }
           .scale-axis {
-            bottom: 176px;
+            bottom: 236px;
           }
           .active-panel {
             grid-template-columns: 1fr;
@@ -720,10 +721,17 @@ export default function ScaleGame() {
             font-size: 34px;
           }
           .nav-button {
-            top: auto;
-            bottom: 148px;
+            top: 48%;
+            bottom: auto;
             width: 42px;
             height: 42px;
+            font-size: 28px;
+          }
+          .nav-button-left {
+            left: 10px;
+          }
+          .nav-button-right {
+            right: 10px;
           }
           .scale-cards {
             grid-template-columns: 1fr;

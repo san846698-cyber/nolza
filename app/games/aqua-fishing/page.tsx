@@ -711,6 +711,79 @@ export default function AquaFishingGame() {
       tension: 0,
     };
 
+    let activePointerId: number | null = null;
+    let pointerSteerTargetX: number | null = null;
+
+    const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+
+    const updatePointerSteerTarget = (clientX: number) => {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width) return;
+      const cssX = clamp(clientX - rect.left, 18, Math.max(18, rect.width - 18));
+      const canvasX = cssX * (canvas.width / rect.width);
+      pointerSteerTargetX = camX + (canvasX - canvas.width / 2) / Math.max(zoom, 0.001);
+    };
+
+    const releaseCanvasPointer = (pointerId?: number) => {
+      if (pointerId !== undefined && activePointerId !== null && pointerId !== activePointerId) return;
+      activePointerId = null;
+      pointerSteerTargetX = null;
+      keys.Space = false;
+    };
+
+    const handleCanvasPointerDown = (e: PointerEvent) => {
+      if (!e.isPrimary || e.button > 0) return;
+      e.preventDefault();
+      activePointerId = e.pointerId;
+      updatePointerSteerTarget(e.clientX);
+      if (!keys.Space) keys.spaceTaps++;
+      keys.Space = true;
+      try {
+        canvas.setPointerCapture(e.pointerId);
+      } catch {
+        // Some older mobile browsers may not support capture on canvas.
+      }
+    };
+
+    const handleCanvasPointerMove = (e: PointerEvent) => {
+      if (activePointerId !== e.pointerId) return;
+      e.preventDefault();
+      updatePointerSteerTarget(e.clientX);
+    };
+
+    const handleCanvasPointerUp = (e: PointerEvent) => {
+      if (activePointerId !== e.pointerId) return;
+      e.preventDefault();
+      releaseCanvasPointer(e.pointerId);
+      try {
+        canvas.releasePointerCapture(e.pointerId);
+      } catch {
+        // Capture may already be gone after a browser-level cancellation.
+      }
+    };
+
+    const handleCanvasPointerCancel = (e: PointerEvent) => {
+      if (activePointerId !== e.pointerId) return;
+      e.preventDefault();
+      releaseCanvasPointer(e.pointerId);
+    };
+
+    const handleCanvasLostPointerCapture = (e: PointerEvent) => {
+      releaseCanvasPointer(e.pointerId);
+    };
+
+    const releaseAllCanvasInput = () => {
+      releaseCanvasPointer();
+    };
+
+    canvas.addEventListener('pointerdown', handleCanvasPointerDown, { passive: false });
+    canvas.addEventListener('pointermove', handleCanvasPointerMove, { passive: false });
+    canvas.addEventListener('pointerup', handleCanvasPointerUp, { passive: false });
+    canvas.addEventListener('pointercancel', handleCanvasPointerCancel, { passive: false });
+    canvas.addEventListener('lostpointercapture', handleCanvasLostPointerCapture);
+    window.addEventListener('blur', releaseAllCanvasInput);
+    document.addEventListener('visibilitychange', releaseAllCanvasInput);
+
     const rhythm = {
       active: false,
       cursor: 0,
@@ -882,20 +955,33 @@ export default function AquaFishingGame() {
 
       // Boat Logic
       let moving = false;
-      if (keys.A) { boat.vx = -300; moving = true; }
-      if (keys.D) { boat.vx = 300; moving = true; }
+      if (activePointerId !== null && pointerSteerTargetX !== null) {
+        const steerDelta = pointerSteerTargetX - boat.x;
+        const steerSpeed = 760 + boatStats.speed * 100;
+        const step = clamp(steerDelta, -steerSpeed * dt, steerSpeed * dt);
+        boat.x += step;
+        boat.vx = step / Math.max(dt, 0.001);
+        moving = Math.abs(steerDelta) > 2;
+      } else {
+        if (keys.A) { boat.vx = -300; moving = true; }
+        if (keys.D) { boat.vx = 300; moving = true; }
+      }
 
       if (moving && time - lastBoatSoundTime > 0.4) {
           playSound('boat');
           lastBoatSoundTime = time;
       }
 
-      if (!moving) {
+      if (!moving && activePointerId === null) {
         boat.vx *= 0.85;
         if (Math.abs(boat.vx) < 5) boat.vx = 0;
       }
 
-      boat.x += (boat.vx + windSpeed) * dt;
+      if (activePointerId === null) {
+        boat.x += (boat.vx + windSpeed) * dt;
+      } else {
+        boat.x += windSpeed * dt;
+      }
 
       const waveIntensity = 1 + weatherIntensity * 1.5;
       const getWaveCurrent = (x: number, t: number) => {
@@ -2044,6 +2130,13 @@ export default function AquaFishingGame() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('aqua-fishing:input', handleAquaInput);
+      canvas.removeEventListener('pointerdown', handleCanvasPointerDown);
+      canvas.removeEventListener('pointermove', handleCanvasPointerMove);
+      canvas.removeEventListener('pointerup', handleCanvasPointerUp);
+      canvas.removeEventListener('pointercancel', handleCanvasPointerCancel);
+      canvas.removeEventListener('lostpointercapture', handleCanvasLostPointerCapture);
+      window.removeEventListener('blur', releaseAllCanvasInput);
+      document.removeEventListener('visibilitychange', releaseAllCanvasInput);
       cancelAnimationFrame(animationFrameId);
       stopAllAudio();
     };
@@ -2068,8 +2161,13 @@ export default function AquaFishingGame() {
       <canvas
         ref={canvasRef}
         className="block w-full h-full"
+        data-touch-action="none"
+        aria-label={t("낚시 게임 영역", "Fishing game area")}
         style={{
           touchAction: "none",
+          overscrollBehavior: "contain",
+          WebkitUserSelect: "none",
+          userSelect: "none",
           WebkitTapHighlightColor: "transparent",
         }}
       />
@@ -2399,8 +2497,9 @@ function AquaHelpPanel({
         <ControlGroup
           title={t("모바일", "Mobile")}
           items={[
-            t("좌우 버튼으로 배 이동", "Use left/right buttons to move"),
-            t("낚시 버튼을 길게 눌러 줄 내리기", "Hold the fishing button to lower the line"),
+            t("게임 화면을 누르고 있으면 내려가고, 손을 떼면 올라옵니다.", "Hold the game area to descend, release to reel up."),
+            t("누른 채 좌우로 드래그해서 낚싯바늘을 움직이세요.", "Drag left or right while holding to move the hook."),
+            t("좌우/낚시 버튼은 보조 조작으로 사용할 수 있어요.", "The left/right and fishing buttons are fallback controls."),
             t("타이밍에 맞춰 떼거나 다시 눌러 낚아채기", "Release or tap at the right timing to catch"),
             t("상점/도감 버튼 사용", "Use the shop/dex buttons"),
           ]}

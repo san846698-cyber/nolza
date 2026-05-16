@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
+import { trackRecommendationClick } from "@/lib/analytics";
 import Thumb from "./Thumb";
 import type { Game, Skin } from "@/lib/games-home";
 
@@ -9,18 +10,18 @@ type SkinRecipe = {
   border: string;
   radius: string;
   body: string;
-  titleFont: string;
   titleColor: string;
   subColor: string;
   shadow: string;
 };
+
+const CARD_TITLE_FONT = "font-serif font-bold normal-case";
 
 const SKIN_STYLES: Record<Skin, SkinRecipe> = {
   paper: {
     border: "border border-home-hairline bg-home-paper text-home-ink",
     radius: "rounded-none",
     body: "border-t border-home-hairline bg-black/[0.02]",
-    titleFont: "font-serif font-bold",
     titleColor: "text-home-ink",
     subColor: "text-home-ink-2",
     shadow:
@@ -30,7 +31,6 @@ const SKIN_STYLES: Record<Skin, SkinRecipe> = {
     border: "border-2 border-home-ink text-home-ink",
     radius: "rounded-none",
     body: "border-t-2 border-home-ink bg-home-ink text-home-bg",
-    titleFont: "font-serif font-black uppercase",
     titleColor: "text-home-bg",
     subColor: "text-home-bg/70",
     shadow:
@@ -40,7 +40,6 @@ const SKIN_STYLES: Record<Skin, SkinRecipe> = {
     border: "border border-dashed border-home-ink-2 text-home-ink",
     radius: "rounded-[18px]",
     body: "border-t border-dashed border-home-ink-2/40 bg-transparent",
-    titleFont: "font-hand font-bold",
     titleColor: "text-home-ink",
     subColor: "text-home-ink-2",
     shadow: "shadow-none hover:-rotate-1",
@@ -49,7 +48,6 @@ const SKIN_STYLES: Record<Skin, SkinRecipe> = {
     border: "border-2 border-skin-pixel-accent bg-skin-pixel-bg text-skin-pixel-fg",
     radius: "rounded-none",
     body: "border-t-2 border-skin-pixel-accent bg-skin-pixel-bg",
-    titleFont: "font-pixel",
     titleColor: "text-skin-pixel-fg",
     subColor: "text-skin-pixel-accent",
     shadow:
@@ -59,7 +57,6 @@ const SKIN_STYLES: Record<Skin, SkinRecipe> = {
     border: "border border-dotted border-home-ink-2 bg-skin-mono text-home-ink",
     radius: "rounded-none",
     body: "border-t border-dotted border-home-ink-2/50 bg-transparent",
-    titleFont: "font-mono font-bold uppercase",
     titleColor: "text-home-ink",
     subColor: "text-home-muted",
     shadow: "shadow-none",
@@ -68,7 +65,6 @@ const SKIN_STYLES: Record<Skin, SkinRecipe> = {
     border: "border-0 bg-skin-sticker text-home-ink",
     radius: "rounded-2xl",
     body: "border-t border-home-hairline",
-    titleFont: "font-serif font-bold",
     titleColor: "text-home-ink",
     subColor: "text-home-ink-2",
     shadow:
@@ -106,22 +102,23 @@ export default function GameTile({ game, no }: { game: Game; no: number }) {
   return (
     <Link
       href={game.href}
+      onClick={() => trackRecommendationClick("homepage", game.id, game.type)}
       className={[
-        "group relative flex flex-col overflow-hidden no-underline",
+        "group relative flex flex-col overflow-hidden no-underline min-h-[288px] sm:min-h-[306px]",
         toneBg,
         s.border,
         s.radius,
         s.shadow,
-        "transition-[transform,box-shadow] duration-300",
+        "transition-[transform,box-shadow,border-color] duration-300 focus-visible:ring-2 focus-visible:ring-home-injoo focus-visible:ring-offset-4 focus-visible:ring-offset-home-bg",
       ].join(" ")}
     >
-      <div className="relative aspect-square overflow-hidden">
-        <div className="absolute inset-[12%] transition-transform duration-500 group-hover:scale-[1.04]">
+      <div className="relative aspect-[16/9.3] overflow-hidden">
+        <div className="absolute inset-[7%] transition-transform duration-500 group-hover:scale-[1.035]">
           <Thumb game={game} skin={skinKey} />
         </div>
         <span
           className={[
-            "absolute top-2 left-3 font-mono text-[10px] tracking-wider font-medium",
+            "absolute top-2.5 left-3 font-mono text-[10.5px] sm:text-[11px] tracking-wider font-semibold",
             noColor,
           ].join(" ")}
         >
@@ -129,11 +126,11 @@ export default function GameTile({ game, no }: { game: Game; no: number }) {
         </span>
       </div>
 
-      <div className={["px-3.5 py-3", s.body].join(" ")}>
+      <div className={["px-3.5 py-3.5 sm:px-4 sm:py-4 flex flex-1 flex-col", s.body].join(" ")}>
         <h3
           className={[
-            "m-0 text-[15px] sm:text-[16px] leading-tight tracking-tight",
-            s.titleFont,
+            "m-0 text-[18px] sm:text-[18.5px] leading-snug tracking-tight",
+            CARD_TITLE_FONT,
             s.titleColor,
           ].join(" ")}
         >
@@ -141,7 +138,7 @@ export default function GameTile({ game, no }: { game: Game; no: number }) {
         </h3>
         <p
           className={[
-            "mt-1 text-[12px] leading-snug",
+            "mt-1.5 text-[14.25px] sm:text-[14.75px] leading-relaxed",
             "[word-break:keep-all] [overflow-wrap:anywhere]",
             s.subColor,
           ].join(" ")}

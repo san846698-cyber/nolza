@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "한국어 말투",
     "DM 해석",
     "nolza fun",
-    "심리테스트",
+    "재미 테스트",
   ],
   alternates: {
     canonical: "/tests/kr-jp-signal",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "이거 호감임? 문화차이임?",
-    description: "12개 상황으로 알아보는 한일 문화 신호 판독 테스트.",
+    description: "12개 상황으로 알아보는 한일 문화 신호 읽기 테스트.",
     images: ["/tests/kr-jp-signal/opengraph-image"],
   },
 };

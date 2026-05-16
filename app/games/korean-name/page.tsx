@@ -31,7 +31,16 @@ type Gender = "male" | "female";
 
 type GeneratedName = {
   display: string;
+  displayEn?: string;
   pronunciation: string;
+  vibeKo?: string;
+  vibeEn?: string;
+  impressionKo?: string;
+  impressionEn?: string;
+  placeKo?: string;
+  placeEn?: string;
+  profileKo?: string;
+  profileEn?: string;
 };
 
 type Celebrity = {
@@ -48,8 +57,15 @@ type Country = {
   ttsLang: string;
   malePool: GeneratedName[];
   femalePool: GeneratedName[];
+  familyPool?: NamePart[];
   celebrities: Celebrity[];
   personalities: string[];
+};
+
+type NamePart = {
+  display: string;
+  pronunciation: string;
+  displayEn?: string;
 };
 
 /* ============================================================================
@@ -63,6 +79,160 @@ function seededIndex(input: string, salt: string, poolSize: number): number {
   for (let i = 0; i < s.length; i++) seed = (seed + s.charCodeAt(i)) | 0;
   return Math.abs(seed) % poolSize;
 }
+
+function pickSeeded<T>(items: T[], input: string, salt: string): T {
+  return items[seededIndex(input, salt, items.length)];
+}
+
+const KO_FAMILY: NamePart[] = [
+  { display: "김", pronunciation: "Kim" },
+  { display: "이", pronunciation: "Lee" },
+  { display: "박", pronunciation: "Park" },
+  { display: "최", pronunciation: "Choi" },
+  { display: "정", pronunciation: "Jung" },
+  { display: "강", pronunciation: "Kang" },
+  { display: "조", pronunciation: "Cho" },
+  { display: "윤", pronunciation: "Yoon" },
+  { display: "장", pronunciation: "Jang" },
+  { display: "임", pronunciation: "Lim" },
+  { display: "한", pronunciation: "Han" },
+  { display: "오", pronunciation: "Oh" },
+  { display: "서", pronunciation: "Seo" },
+  { display: "신", pronunciation: "Shin" },
+  { display: "권", pronunciation: "Kwon" },
+  { display: "황", pronunciation: "Hwang" },
+  { display: "안", pronunciation: "Ahn" },
+  { display: "송", pronunciation: "Song" },
+  { display: "류", pronunciation: "Ryu" },
+  { display: "홍", pronunciation: "Hong" },
+];
+
+const JP_SURNAMES: NamePart[] = [
+  { display: "佐藤", pronunciation: "Sato" },
+  { display: "鈴木", pronunciation: "Suzuki" },
+  { display: "高橋", pronunciation: "Takahashi" },
+  { display: "田中", pronunciation: "Tanaka" },
+  { display: "伊藤", pronunciation: "Ito" },
+  { display: "渡辺", pronunciation: "Watanabe" },
+  { display: "山本", pronunciation: "Yamamoto" },
+  { display: "中村", pronunciation: "Nakamura" },
+  { display: "小林", pronunciation: "Kobayashi" },
+  { display: "加藤", pronunciation: "Kato" },
+  { display: "吉田", pronunciation: "Yoshida" },
+  { display: "山田", pronunciation: "Yamada" },
+  { display: "佐々木", pronunciation: "Sasaki" },
+  { display: "山口", pronunciation: "Yamaguchi" },
+  { display: "松本", pronunciation: "Matsumoto" },
+];
+
+const JP_MALE_NATIVE: NamePart[] = [
+  { display: "陽翔", pronunciation: "Haruto" },
+  { display: "悠斗", pronunciation: "Yuto" },
+  { display: "颯太", pronunciation: "Sota" },
+  { display: "蓮", pronunciation: "Ren" },
+  { display: "湊", pronunciation: "Minato" },
+  { display: "陸", pronunciation: "Riku" },
+  { display: "晴希", pronunciation: "Haruki" },
+  { display: "悠真", pronunciation: "Yuma" },
+  { display: "海斗", pronunciation: "Kaito" },
+  { display: "蒼太", pronunciation: "Souta" },
+];
+
+const JP_FEMALE_NATIVE: NamePart[] = [
+  { display: "結衣", pronunciation: "Yui" },
+  { display: "葵", pronunciation: "Aoi" },
+  { display: "陽菜", pronunciation: "Hina" },
+  { display: "桜", pronunciation: "Sakura" },
+  { display: "芽衣", pronunciation: "Mei" },
+  { display: "凛", pronunciation: "Rin" },
+  { display: "心春", pronunciation: "Koharu" },
+  { display: "美緒", pronunciation: "Mio" },
+  { display: "花", pronunciation: "Hana" },
+  { display: "朱莉", pronunciation: "Akari" },
+];
+
+const CN_SURNAMES: NamePart[] = [
+  { display: "王", pronunciation: "Wang" },
+  { display: "李", pronunciation: "Li" },
+  { display: "张", pronunciation: "Zhang" },
+  { display: "刘", pronunciation: "Liu" },
+  { display: "陈", pronunciation: "Chen" },
+  { display: "杨", pronunciation: "Yang" },
+  { display: "赵", pronunciation: "Zhao" },
+  { display: "黄", pronunciation: "Huang" },
+  { display: "周", pronunciation: "Zhou" },
+  { display: "吴", pronunciation: "Wu" },
+  { display: "徐", pronunciation: "Xu" },
+  { display: "孙", pronunciation: "Sun" },
+  { display: "胡", pronunciation: "Hu" },
+  { display: "朱", pronunciation: "Zhu" },
+  { display: "林", pronunciation: "Lin" },
+];
+
+const US_LAST_NAMES: NamePart[] = [
+  { display: "Smith", pronunciation: "Smith" },
+  { display: "Johnson", pronunciation: "Johnson" },
+  { display: "Williams", pronunciation: "Williams" },
+  { display: "Brown", pronunciation: "Brown" },
+  { display: "Jones", pronunciation: "Jones" },
+  { display: "Miller", pronunciation: "Miller" },
+  { display: "Davis", pronunciation: "Davis" },
+  { display: "Garcia", pronunciation: "Garcia" },
+  { display: "Rodriguez", pronunciation: "Rodriguez" },
+  { display: "Wilson", pronunciation: "Wilson" },
+  { display: "Anderson", pronunciation: "Anderson" },
+  { display: "Taylor", pronunciation: "Taylor" },
+  { display: "Thomas", pronunciation: "Thomas" },
+  { display: "Moore", pronunciation: "Moore" },
+  { display: "Martin", pronunciation: "Martin" },
+];
+
+const ES_LAST_NAMES: NamePart[] = [
+  { display: "García", pronunciation: "Garcia" },
+  { display: "Rodríguez", pronunciation: "Rodriguez" },
+  { display: "González", pronunciation: "Gonzalez" },
+  { display: "Fernández", pronunciation: "Fernandez" },
+  { display: "López", pronunciation: "Lopez" },
+  { display: "Martínez", pronunciation: "Martinez" },
+  { display: "Sánchez", pronunciation: "Sanchez" },
+  { display: "Pérez", pronunciation: "Perez" },
+  { display: "Gómez", pronunciation: "Gomez" },
+  { display: "Martín", pronunciation: "Martin" },
+  { display: "Jiménez", pronunciation: "Jimenez" },
+  { display: "Ruiz", pronunciation: "Ruiz" },
+];
+
+const BR_LAST_NAMES: NamePart[] = [
+  { display: "Silva", pronunciation: "Silva" },
+  { display: "Santos", pronunciation: "Santos" },
+  { display: "Oliveira", pronunciation: "Oliveira" },
+  { display: "Souza", pronunciation: "Souza" },
+  { display: "Pereira", pronunciation: "Pereira" },
+  { display: "Costa", pronunciation: "Costa" },
+  { display: "Rodrigues", pronunciation: "Rodrigues" },
+  { display: "Almeida", pronunciation: "Almeida" },
+  { display: "Lima", pronunciation: "Lima" },
+  { display: "Gomes", pronunciation: "Gomes" },
+  { display: "Ribeiro", pronunciation: "Ribeiro" },
+  { display: "Carvalho", pronunciation: "Carvalho" },
+  { display: "Fernandes", pronunciation: "Fernandes" },
+];
+
+const BR_MALE_COMPOUND: NamePart[] = [
+  { display: "João Pedro", pronunciation: "João Pedro" },
+  { display: "Pedro Henrique", pronunciation: "Pedro Henrique" },
+  { display: "João Miguel", pronunciation: "João Miguel" },
+  { display: "Luiz Felipe", pronunciation: "Luiz Felipe" },
+  { display: "Lucas Gabriel", pronunciation: "Lucas Gabriel" },
+];
+
+const BR_FEMALE_COMPOUND: NamePart[] = [
+  { display: "Maria Clara", pronunciation: "Maria Clara" },
+  { display: "Ana Luiza", pronunciation: "Ana Luiza" },
+  { display: "Maria Eduarda", pronunciation: "Maria Eduarda" },
+  { display: "Ana Beatriz", pronunciation: "Ana Beatriz" },
+  { display: "Maria Julia", pronunciation: "Maria Julia" },
+];
 
 /* ============================================================================
    🇰🇷 Korea
@@ -627,11 +797,162 @@ type Profile = {
   personality: string;
 };
 
+const COUNTRY_STORY: Record<CountryCode, {
+  vibeKo: string[];
+  vibeEn: string[];
+  impressionKo: string[];
+  impressionEn: string[];
+  placeKo: string[];
+  placeEn: string[];
+  profileKo: string[];
+  profileEn: string[];
+}> = {
+  kr: {
+    vibeKo: ["단정하고 신뢰감 있는 이름", "요즘 감각과 익숙함이 함께 있는 이름", "차분하지만 존재감이 남는 이름"],
+    vibeEn: ["A neat, trustworthy name", "A familiar modern Korean name", "Calm, current, and easy to remember"],
+    impressionKo: ["처음에는 조용해 보여도 금방 믿음이 가는 사람", "말보다 행동이 먼저 보이는 사람", "자연스럽게 주변을 챙기는 사람"],
+    impressionEn: ["Quiet at first, but easy to trust", "Someone whose actions speak first", "A person who naturally looks after people"],
+    placeKo: ["서울 성수동", "부산 전포동", "전주 한옥마을 근처"],
+    placeEn: ["Seongsu-dong, Seoul", "Jeonpo-dong, Busan", "near Jeonju Hanok Village"],
+    profileKo: ["한국에서 태어났다면 당신은 익숙한 자리에서도 자기만의 취향을 또렷하게 남기는 사람으로 기억되었을지 모릅니다."],
+    profileEn: ["If born in Korea, you might be remembered as someone with a clear personal taste even in familiar everyday places."],
+  },
+  jp: {
+    vibeKo: ["차분하지만 또렷한 인상이 있는 이름", "섬세하고 오래 기억되는 이름", "도시적인 조용함이 느껴지는 이름"],
+    vibeEn: ["Calm, clear, and memorable", "Delicate without feeling fragile", "Quietly urban and thoughtful"],
+    impressionKo: ["말수는 많지 않지만 묘하게 기억에 남는 사람", "좋아하는 것에는 오래 집중하는 사람", "거리감은 있지만 무심하지 않은 사람"],
+    impressionEn: ["Not loud, yet strangely memorable", "Someone who stays with what they love", "Reserved, but not indifferent"],
+    placeKo: ["도쿄 시모키타자와", "교토 가모가와 근처", "후쿠오카 다이묘"],
+    placeEn: ["Shimokitazawa, Tokyo", "near the Kamo River in Kyoto", "Daimyo, Fukuoka"],
+    profileKo: ["일본에서 태어났다면 당신은 조용한 골목 카페를 자주 가고, 좋아하는 것에는 오래 집중하는 사람으로 기억되었을지 모릅니다."],
+    profileEn: ["If born in Japan, you might be the kind of person who returns to the same quiet cafe and gives long attention to what you love."],
+  },
+  cn: {
+    vibeKo: ["깔끔하고 힘이 있는 이름", "현실감과 성실함이 느껴지는 이름", "분명한 목표가 있을 것 같은 이름"],
+    vibeEn: ["Clean, grounded, and strong", "Practical and steady", "A name with a sense of direction"],
+    impressionKo: ["일을 맡기면 끝까지 해낼 것 같은 사람", "사람을 오래 보고 판단하는 사람", "차분하게 자기 길을 넓히는 사람"],
+    impressionEn: ["Someone who finishes what they take on", "A careful judge of people", "Someone who steadily widens their path"],
+    placeKo: ["상하이 징안", "베이징 차오양", "항저우 시후 근처"],
+    placeEn: ["Jing'an, Shanghai", "Chaoyang, Beijing", "near West Lake, Hangzhou"],
+    profileKo: ["중국에서 태어났다면 당신은 빠르게 변하는 도시 안에서도 자기 기준을 잃지 않는 사람으로 보였을지 모릅니다."],
+    profileEn: ["If born in China, you might seem like someone who keeps a personal standard even in a fast-changing city."],
+  },
+  us: {
+    vibeKo: ["친근하고 현대적인 이름", "자연스럽고 기억하기 쉬운 이름", "밝지만 과하지 않은 이름"],
+    vibeEn: ["Friendly and modern", "Natural and easy to remember", "Bright without trying too hard"],
+    impressionKo: ["처음 보는 사람도 편하게 만드는 사람", "자기 의견을 부드럽게 말할 줄 아는 사람", "새로운 곳에 빨리 적응하는 사람"],
+    impressionEn: ["Someone who makes strangers comfortable", "A person who says what they think without making it heavy", "Someone who adapts quickly to new places"],
+    placeKo: ["뉴욕 브루클린", "시애틀 캐피톨힐", "오스틴 사우스 콩그레스"],
+    placeEn: ["Brooklyn, New York", "Capitol Hill, Seattle", "South Congress, Austin"],
+    profileKo: ["미국에서 태어났다면 당신은 동네 카페에서 처음 만난 사람과도 자연스럽게 대화를 시작하는 사람으로 보였을지 모릅니다."],
+    profileEn: ["If born in the United States, you might be the person who can start a natural conversation with someone at a neighborhood cafe."],
+  },
+  es: {
+    vibeKo: ["따뜻하고 선명한 리듬이 있는 이름", "고전적이지만 낡지 않은 이름", "가족과 친구 사이에 잘 어울리는 이름"],
+    vibeEn: ["Warm, rhythmic, and clear", "Classic without feeling old-fashioned", "A name that sits well among friends and family"],
+    impressionKo: ["표현은 분명하지만 마음은 부드러운 사람", "좋아하는 것을 숨기지 않는 사람", "사람들과 함께 있을 때 더 빛나는 사람"],
+    impressionEn: ["Expressive, but warm at heart", "Someone who does not hide what they love", "A person who shines more with others"],
+    placeKo: ["마드리드 말라사냐", "바르셀로나 그라시아", "세비야 산타크루스"],
+    placeEn: ["Malasaña, Madrid", "Gracia, Barcelona", "Santa Cruz, Seville"],
+    profileKo: ["스페인에서 태어났다면 당신은 느긋한 오후와 긴 대화 속에서 사람들에게 편안한 기억으로 남았을지 모릅니다."],
+    profileEn: ["If born in Spain, you might be remembered through long conversations and unhurried afternoons."],
+  },
+  br: {
+    vibeKo: ["밝고 따뜻하며 사람들과 잘 어울리는 이름", "부드럽지만 생기가 있는 이름", "편안한 미소가 떠오르는 이름"],
+    vibeEn: ["Warm, bright, and social", "Soft, lively, and familiar", "A name that feels like an easy smile"],
+    impressionKo: ["처음 보는 사람도 편하게 만드는 사람", "분위기를 자연스럽게 풀어주는 사람", "가까운 사람을 오래 아끼는 사람"],
+    impressionEn: ["Someone who makes new people feel at ease", "A person who loosens the room naturally", "Someone loyal to the people close to them"],
+    placeKo: ["상파울루 빌라 마달레나", "리우데자네이루 보타포구", "살바도르 바라"],
+    placeEn: ["Vila Madalena, São Paulo", "Botafogo, Rio de Janeiro", "Barra, Salvador"],
+    profileKo: ["브라질에서 태어났다면 당신은 작은 모임도 따뜻하게 만드는 사람으로, 오래 알고 싶은 이름으로 기억되었을지 모릅니다."],
+    profileEn: ["If born in Brazil, you might be remembered as someone who makes even a small gathering feel warmer."],
+  },
+};
+
+function composeLocalName(country: Country, input: string, gender: Gender): GeneratedName {
+  const givenPool = gender === "male" ? country.malePool : country.femalePool;
+  const given = pickSeeded(givenPool, input, `${country.code}:${gender}:given`);
+  const story = COUNTRY_STORY[country.code];
+  const storyPick = (items: string[], salt: string) => pickSeeded(items, input, `${country.code}:${salt}`);
+  const withStory = (base: GeneratedName): GeneratedName => ({
+    ...base,
+    vibeKo: storyPick(story.vibeKo, "vibe-ko"),
+    vibeEn: storyPick(story.vibeEn, "vibe-en"),
+    impressionKo: storyPick(story.impressionKo, "impression-ko"),
+    impressionEn: storyPick(story.impressionEn, "impression-en"),
+    placeKo: storyPick(story.placeKo, "place-ko"),
+    placeEn: storyPick(story.placeEn, "place-en"),
+    profileKo: storyPick(story.profileKo, "profile-ko"),
+    profileEn: storyPick(story.profileEn, "profile-en"),
+  });
+
+  if (country.code === "kr") {
+    const family = pickSeeded(KO_FAMILY, input, "kr:family");
+    return withStory({
+      display: `${family.display}${given.display}`,
+      displayEn: `${family.pronunciation} ${given.pronunciation}`,
+      pronunciation: `${family.pronunciation} ${given.pronunciation}`,
+    });
+  }
+
+  if (country.code === "jp") {
+    const surname = pickSeeded(JP_SURNAMES, input, "jp:surname");
+    const nativeGiven = pickSeeded(
+      gender === "male" ? JP_MALE_NATIVE : JP_FEMALE_NATIVE,
+      input,
+      `jp:${gender}:native-given`,
+    );
+    return withStory({
+      display: `${surname.display} ${nativeGiven.display}`,
+      displayEn: `${surname.pronunciation} ${nativeGiven.pronunciation}`,
+      pronunciation: `${surname.pronunciation} ${nativeGiven.pronunciation}`,
+    });
+  }
+
+  if (country.code === "cn") {
+    const surname = pickSeeded(CN_SURNAMES, input, "cn:surname");
+    return withStory({
+      display: `${surname.display}${given.display}`,
+      displayEn: `${surname.pronunciation} ${given.pronunciation}`,
+      pronunciation: `${surname.pronunciation} ${given.pronunciation}`,
+    });
+  }
+
+  if (country.code === "us") {
+    const surname = pickSeeded(US_LAST_NAMES, input, "us:surname");
+    return withStory({
+      display: `${given.display} ${surname.display}`,
+      pronunciation: `${given.display} ${surname.display}`,
+    });
+  }
+
+  if (country.code === "es") {
+    const surname = pickSeeded(ES_LAST_NAMES, input, "es:surname");
+    return withStory({
+      display: `${given.display} ${surname.display}`,
+      pronunciation: `${given.display} ${surname.display}`,
+    });
+  }
+
+  if (country.code === "br") {
+    const useCompound = seededIndex(input, `br:${gender}:compound`, 3) !== 0;
+    const first = useCompound
+      ? pickSeeded(gender === "male" ? BR_MALE_COMPOUND : BR_FEMALE_COMPOUND, input, `br:${gender}:compound-name`)
+      : given;
+    const surname = pickSeeded(BR_LAST_NAMES, input, "br:surname");
+    return withStory({
+      display: `${first.display} ${surname.display}`,
+      pronunciation: `${first.display} ${surname.display}`,
+    });
+  }
+
+  return withStory(given);
+}
+
 function buildProfile(country: Country, input: string, gender: Gender): Profile {
-  const pool = gender === "male" ? country.malePool : country.femalePool;
   return {
     country,
-    name: pool[seededIndex(input, country.code + ":" + gender + ":name", pool.length)],
+    name: composeLocalName(country, input, gender),
     celebrity: country.celebrities[seededIndex(input, country.code + ":celeb", country.celebrities.length)],
     personality: country.personalities[seededIndex(input, country.code + ":pers", country.personalities.length)],
   };
@@ -747,13 +1068,15 @@ export default function KoreanNamePage(): ReactElement {
     const p = currentProfile;
     const text = t(
       `내가 ${p.country.koName}에서 태어났다면:\n` +
-        `${p.name.display} (${p.name.pronunciation})\n` +
-        `${p.personality}\n` +
+        `${p.name.display}${p.name.pronunciation ? ` (${p.name.pronunciation})` : ""}\n` +
+        `${p.name.vibeKo ?? p.personality}\n` +
+        `${p.name.profileKo ?? p.personality}\n` +
         `나의 ${p.country.koName} 도플갱어: ${p.celebrity.name}\n` +
         `나는? → nolza.fun/games/korean-name`,
-      `If I were born in ${p.country.koName}:\n` +
-        `${p.name.display} (${p.name.pronunciation})\n` +
-        `${p.personality}\n` +
+      `If I were born in ${p.country.enName}:\n` +
+        `${p.name.displayEn ?? p.name.display}${p.name.pronunciation ? ` (${p.name.pronunciation})` : ""}\n` +
+        `${p.name.vibeEn ?? p.personality}\n` +
+        `${p.name.profileEn ?? p.personality}\n` +
         `My doppelgänger: ${p.celebrity.name}\n` +
         `Try yours → nolza.fun/games/korean-name`,
     );
@@ -1211,7 +1534,13 @@ function BigCard({
   onSpeak: () => void;
   locale?: "ko" | "en";
 }): ReactElement {
-  const { country, name, personality, celebrity } = profile;
+  const { country, name, celebrity } = profile;
+  const displayName = locale === "en" && name.displayEn ? name.displayEn : name.display;
+  const reading = name.displayEn && name.displayEn !== name.display ? name.displayEn : name.pronunciation;
+  const vibe = locale === "ko" ? name.vibeKo : name.vibeEn;
+  const impression = locale === "ko" ? name.impressionKo : name.impressionEn;
+  const place = locale === "ko" ? name.placeKo : name.placeEn;
+  const shortProfile = locale === "ko" ? name.profileKo : name.profileEn;
   return (
     <div
       style={{
@@ -1270,7 +1599,7 @@ function BigCard({
             minWidth: 0,
           }}
         >
-          {name.display}
+          {displayName}
         </div>
         {ttsAvailable && (
           <button
@@ -1311,20 +1640,37 @@ function BigCard({
           marginTop: -6,
         }}
       >
-        &ldquo;{name.pronunciation}&rdquo;
+        &ldquo;{reading}&rdquo;
       </div>
 
       <div
         style={{
           fontFamily: "var(--font-noto-sans-kr), sans-serif",
-          fontSize: 16,
+          fontSize: 15,
           color: "rgba(31,27,22,0.8)",
-          lineHeight: 1.65,
+          lineHeight: 1.75,
           paddingTop: 10,
           borderTop: `1px dashed ${RULE}`,
+          display: "grid",
+          gap: 12,
         }}
       >
-        {personality}
+        <ProfileRow
+          label={locale === "ko" ? "이름 분위기" : "Name vibe"}
+          value={vibe ?? ""}
+        />
+        <ProfileRow
+          label={locale === "ko" ? "현지 첫인상" : "First impression"}
+          value={impression ?? ""}
+        />
+        <ProfileRow
+          label={locale === "ko" ? "어울리는 도시" : "Fitting city"}
+          value={place ?? ""}
+        />
+        <ProfileRow
+          label={locale === "ko" ? "짧은 프로필" : "Short profile"}
+          value={shortProfile ?? ""}
+        />
       </div>
 
       <div
@@ -1368,6 +1714,34 @@ function BigCard({
 /* ============================================================================
    Small UI helpers
    ============================================================================ */
+
+function ProfileRow({ label, value }: { label: string; value: string }): ReactElement {
+  return (
+    <div>
+      <div
+        style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: 11,
+          letterSpacing: "0.18em",
+          color: ACCENT,
+          fontWeight: 800,
+          textTransform: "uppercase",
+          marginBottom: 4,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          color: "rgba(31,27,22,0.82)",
+          wordBreak: "keep-all",
+        }}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
 
 const titleStyle: React.CSSProperties = {
   fontSize: 32,

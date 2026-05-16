@@ -626,26 +626,6 @@ function ResultScreen({
           justifyContent: "center",
         }}
       >
-        <a
-          href={shareCardUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            padding: "12px 24px",
-            background: ACCENT,
-            border: `1px solid ${ACCENT}`,
-            borderRadius: 999,
-            color: BG,
-            fontFamily: SERIF,
-            fontSize: 16,
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            textDecoration: "none",
-            cursor: "pointer",
-          }}
-        >
-          {t("이미지로 저장", "Save as image")}
-        </a>
         <Pill onClick={onShare}>
           {copied ? t("링크 복사됨", "Link copied") : t("링크 공유", "Share link")}
         </Pill>
@@ -1467,33 +1447,6 @@ function ShareCardPanel({
           justifyContent: "center",
         }}
       >
-        <a
-          href={shareCardUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            padding: "12px 24px",
-            background: ACCENT,
-            border: `1px solid ${ACCENT}`,
-            borderRadius: 999,
-            color: BG,
-            fontFamily: SERIF,
-            fontSize: 16,
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            textDecoration: "none",
-            cursor: "pointer",
-            transition: "opacity 150ms",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.opacity = "0.85";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.opacity = "1";
-          }}
-        >
-          {t("이미지로 저장", "Save as image")}
-        </a>
         <button
           onClick={onShare}
           style={{

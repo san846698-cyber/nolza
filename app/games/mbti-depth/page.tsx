@@ -521,7 +521,7 @@ function ResultView({
             />
             <RecommendedGames
               currentId="mbti-depth"
-              ids={["kbti", "attachment", "nunchi"]}
+              ids={["kbti", "attachment", "defense-mechanism"]}
               title={{ ko: "다음에 해볼 진단", en: "Try these next" }}
             />
           </div>

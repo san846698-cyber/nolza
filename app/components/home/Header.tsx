@@ -9,22 +9,22 @@ export function HomeHeader() {
 
   return (
     <header className="bg-home-bg border-b border-dashed border-home-hairline">
-      <div className="mx-auto max-w-col px-4 sm:px-6 py-5 sm:py-7 flex items-end justify-between gap-4 min-h-[80px]">
+      <div className="mx-auto flex w-full max-w-col items-end justify-between gap-3.5 px-4 py-4 sm:px-6 sm:py-6 lg:px-7 min-h-[80px]">
         <Link
           href="#top"
-          className="inline-flex items-baseline gap-1 leading-none no-underline"
+          className="inline-flex shrink-0 items-baseline gap-1 leading-none no-underline"
         >
-          <span className="font-serif font-bold text-[40px] sm:text-[56px] tracking-[-0.04em] text-home-ink">
+          <span className="font-serif font-bold text-[40px] sm:text-[52px] tracking-[-0.04em] text-home-ink">
             놀자
           </span>
-          <span className="font-fraunces italic font-light text-[20px] sm:text-[26px] text-home-injoo tracking-tight">
+          <span className="font-fraunces italic font-light text-[21px] sm:text-[25px] text-home-injoo tracking-tight">
             .fun
           </span>
         </Link>
 
-        <div className="flex items-center gap-3 shrink-0 pb-1.5">
-          <span className="hidden sm:inline font-fraunces italic font-light text-[15px] text-home-ink-2 leading-tight">
-            {t("심심할 때 클릭하는 곳", "stuff to click when bored")}
+        <div className="ml-auto flex shrink-0 items-center gap-3.5 pb-1">
+          <span className="hidden sm:inline max-w-[34ch] font-fraunces italic font-light text-[15px] text-home-ink-2 leading-snug">
+            {t("이상하게 나를 잘 맞히는 테스트 놀이터", "Fun tests that feel weirdly accurate.")}
           </span>
           <button
             type="button"
@@ -32,7 +32,7 @@ export function HomeHeader() {
             aria-label={
               locale === "ko" ? "Switch to English" : "Switch to Korean"
             }
-            className="font-inter text-[11px] font-semibold tracking-[0.1em] px-3 py-2 border border-home-hairline-strong bg-transparent text-home-ink hover:bg-[rgba(20,17,14,0.04)] transition-colors whitespace-nowrap"
+            className="font-inter text-[12px] font-bold tracking-[0.1em] px-3 py-2 min-h-9 border border-home-hairline-strong bg-transparent text-home-ink hover:bg-[rgba(20,17,14,0.04)] transition-colors whitespace-nowrap"
           >
             {locale === "ko" ? "한 / EN" : "EN / 한"}
           </button>

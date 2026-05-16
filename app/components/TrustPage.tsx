@@ -5,19 +5,28 @@ export function TrustPage({
   eyebrow,
   title,
   subtitle,
+  backLabel = "← Back to Nolza.fun",
+  lang,
+  actions,
   children,
 }: {
   eyebrow: string;
   title: string;
   subtitle: string;
+  backLabel?: string;
+  lang?: string;
+  actions?: ReactNode;
   children: ReactNode;
 }) {
   return (
-    <main className="trust-page">
+    <main className="trust-page" lang={lang}>
       <div className="trust-shell">
-        <Link className="trust-back" href="/">
-          ← Back to Nolza.fun
-        </Link>
+        <div className="trust-topbar">
+          <Link className="trust-back" href="/">
+            {backLabel}
+          </Link>
+          {actions}
+        </div>
         <header className="trust-hero">
           <p>{eyebrow}</p>
           <h1>{title}</h1>

@@ -13,6 +13,7 @@ import {
 import { AdMobileSticky } from "../../components/Ads";
 import { ShareCard } from "../../components/ShareCard";
 import { useLocale } from "@/hooks/useLocale";
+import { trackResultView, trackRetryClick, trackShareClick, trackTestStart } from "@/lib/analytics";
 
 /* ============================================================================
    Theme — fortune-teller's chamber: deep navy + gold + crimson
@@ -849,6 +850,12 @@ export default function SajuPage(): ReactElement {
     });
   }, [phase]);
 
+  useEffect(() => {
+    if (result) {
+      trackResultView("saju", `${result.day.stem.element}-${result.dominant}`);
+    }
+  }, [result]);
+
   /* ── Step 1 handlers ─────────────────────────────────────────────────── */
 
   const pickKorean = useCallback(() => {
@@ -903,6 +910,7 @@ export default function SajuPage(): ReactElement {
         return;
       }
       const r = calcSaju(y, m - 1, d, h);
+      trackTestStart("saju", "Saju Reading");
       setResult(r);
       setPhase("result");
     },
@@ -912,6 +920,7 @@ export default function SajuPage(): ReactElement {
   /* ── Reset ───────────────────────────────────────────────────────────── */
 
   const handleReset = useCallback(() => {
+    trackRetryClick("saju", "fortune");
     setPhase("lang");
     setIsKorean(null);
     setForeignName("");
@@ -926,6 +935,7 @@ export default function SajuPage(): ReactElement {
 
   const onShare = useCallback(async () => {
     if (!result) return;
+    trackShareClick("saju", "fortune", `${result.day.stem.element}-${result.dominant}`);
     const reading = DAY_STEM_READINGS[result.day.stem.ko];
     const ext = buildExtendedReading(result);
     // First sentence of the overview as the "타고난 기질" hook.
@@ -951,7 +961,7 @@ export default function SajuPage(): ReactElement {
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [result, form.name]);
+  }, [result, t]);
 
   /* ── Step indicator ──────────────────────────────────────────────────── */
 

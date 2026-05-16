@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import MemeAgeTestClient from "./MemeAgeTestClient";
 
-const title = "당신의 밈 나이는 몇 살? | 한국 인터넷 밈 테스트";
+const title = "밈 나이 테스트 | 한국 인터넷 밈 추리 퀴즈";
 const description =
-  "디시, 싸이월드, 급식체, 쇼츠 밈까지. 12문제로 알아보는 나의 한국 인터넷 밈 나이 테스트.";
+  "싸이월드 감성부터 2010년대 드립, 숏폼 밈까지. 12라운드 텍스트 퀴즈로 알아보는 나의 인터넷 세대.";
 
 export const metadata: Metadata = {
   title,
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   keywords: [
     "한국 밈 테스트",
     "밈 나이 테스트",
+    "밈 퀴즈",
     "인터넷 밈",
     "밈력고사",
     "nolza fun",
@@ -21,9 +22,9 @@ export const metadata: Metadata = {
     canonical: "/tests/meme-age",
   },
   openGraph: {
-    title: "당신의 밈 나이는 몇 살?",
+    title: "밈 나이 테스트",
     description:
-      "12문제로 알아보는 나의 한국 인터넷 밈 나이. 친구들과 결과를 비교해보세요.",
+      "12라운드 텍스트 퀴즈로 맞혀보는 나의 한국 인터넷 밈 나이. 친구들과 결과를 비교해보세요.",
     url: "/tests/meme-age",
     siteName: "nolza.fun",
     type: "website",
@@ -32,9 +33,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "당신의 밈 나이는 몇 살?",
+    title: "밈 나이 테스트",
     description:
-      "12문제로 알아보는 나의 한국 인터넷 밈 나이. 친구들과 결과를 비교해보세요.",
+      "12라운드 텍스트 퀴즈로 맞혀보는 나의 한국 인터넷 밈 나이. 친구들과 결과를 비교해보세요.",
     images: ["/tests/meme-age/opengraph-image"],
   },
 };

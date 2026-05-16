@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
 import { AdBottom } from "@/app/components/Ads";
 import { ShareCard } from "@/app/components/ShareCard";
+import { trackResultView, trackRetryClick, trackShareClick, trackTestStart } from "@/lib/analytics";
+import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 import {
   PAIR_COPY,
   type PairCopy,
@@ -59,6 +61,7 @@ function growthScore(a: number, b: number) {
 
 /* ---------------- 모드 / 입력 ---------------- */
 type Person = { name: string; year: string };
+type FriendSharePayload = { v: 1; a: Person; b: Person };
 
 function clampYear(y: string): number | null {
   const n = parseInt(y, 10);
@@ -68,11 +71,7 @@ function clampYear(y: string): number | null {
 }
 
 function encodeShareUrl(a: Person, b: Person): string {
-  if (typeof window === "undefined") return "";
-  const params = new URLSearchParams();
-  params.set("a", `${a.name},${a.year}`);
-  params.set("b", `${b.name},${b.year}`);
-  return `${window.location.origin}/games/friend-match?${params.toString()}`;
+  return buildShareUrl("/games/friend-match", { v: 1, a, b } satisfies FriendSharePayload);
 }
 
 /* ---------------- 카운트업 훅 ---------------- */
@@ -106,20 +105,45 @@ function FriendMatchInner() {
   const [b, setB] = useState<Person>({ name: "", year: "" });
   const [submitted, setSubmitted] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const [isSharedResult, setIsSharedResult] = useState(false);
 
   // URL 파라미터로 들어온 경우 자동 결과
   useEffect(() => {
-    const ap = params.get("a");
-    const bp = params.get("b");
-    if (ap && bp) {
-      const [an, ay] = ap.split(",");
-      const [bn, by] = bp.split(",");
-      if (an && ay && bn && by && clampYear(ay) && clampYear(by)) {
-        setA({ name: an, year: ay });
-        setB({ name: bn, year: by });
-        setSubmitted(true);
+    let restored: { a: Person; b: Person } | null = null;
+    const shared = decodeSharePayload<FriendSharePayload>(params.get("s"));
+    if (
+      shared?.v === 1 &&
+      shared.a?.name &&
+      shared.b?.name &&
+      clampYear(shared.a.year) &&
+      clampYear(shared.b.year)
+    ) {
+      restored = {
+        a: { name: shared.a.name, year: shared.a.year },
+        b: { name: shared.b.name, year: shared.b.year },
+      };
+    } else {
+      const ap = params.get("a");
+      const bp = params.get("b");
+      if (ap && bp) {
+        const [an, ay] = ap.split(",");
+        const [bn, by] = bp.split(",");
+        if (an && ay && bn && by && clampYear(ay) && clampYear(by)) {
+          restored = {
+            a: { name: an, year: ay },
+            b: { name: bn, year: by },
+          };
+        }
       }
     }
+    if (!restored) return;
+    const restoreId = window.setTimeout(() => {
+      setA(restored.a);
+      setB(restored.b);
+      setSubmitted(true);
+      setIsSharedResult(true);
+    }, 0);
+    return () => window.clearTimeout(restoreId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -160,9 +184,17 @@ function FriendMatchInner() {
     };
   }, [submitted, yearA, yearB]);
 
+  useEffect(() => {
+    if (result) {
+      trackResultView("friend-match", result.archetype.enTitle);
+    }
+  }, [result]);
+
   const handleSubmit = () => {
     if (!canSubmit) return;
+    trackTestStart("friend-match", "Friend Match");
     const url = encodeShareUrl(a, b);
+    setIsSharedResult(false);
     setSubmitted(true);
     // URL을 갱신하여 새로고침/공유에도 결과가 남도록.
     if (typeof window !== "undefined") {
@@ -172,7 +204,9 @@ function FriendMatchInner() {
   };
 
   const handleReset = () => {
+    trackRetryClick("friend-match", "compatibility");
     setSubmitted(false);
+    setIsSharedResult(false);
     setA({ name: "", year: "" });
     setB({ name: "", year: "" });
     setShareCopied(false);
@@ -181,6 +215,7 @@ function FriendMatchInner() {
 
   const handleShare = async () => {
     if (!result) return;
+    trackShareClick("friend-match", "compatibility", result.archetype.enTitle);
     const url = encodeShareUrl(a, b);
     const title = t(
       `${a.name}와 ${b.name}: ${result.archetype.title} (${result.total}점)`,
@@ -282,6 +317,7 @@ function FriendMatchInner() {
             onShare={handleShare}
             onReset={handleReset}
             shareCopied={shareCopied}
+            isSharedResult={isSharedResult}
             t={t}
             locale={locale}
           />
@@ -874,6 +910,7 @@ function ResultView({
   onShare,
   onReset,
   shareCopied,
+  isSharedResult,
   t,
   locale,
 }: {
@@ -883,6 +920,7 @@ function ResultView({
   onShare: () => void;
   onReset: () => void;
   shareCopied: boolean;
+  isSharedResult: boolean;
   t: (ko: string, en: string) => string;
   locale: "ko" | "en";
 }) {
@@ -971,6 +1009,26 @@ function ResultView({
         <div ref={cardRef} style={{ background: C.bg, paddingBottom: 8 }}>
       {/* 상단 — 두 이름 + 종합 점수 */}
       <section style={{ textAlign: "center", margin: "8px 0 32px" }}>
+        {isSharedResult && (
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "7px 13px",
+              borderRadius: 999,
+              border: `1px solid ${C.line}`,
+              color: C.goldSoft,
+              background: "rgba(201,168,76,0.10)",
+              fontFamily: FONT_SANS,
+              fontSize: 12,
+              fontWeight: 700,
+              marginBottom: 14,
+            }}
+          >
+            {t("공유된 결과", "Shared Result")}
+          </div>
+        )}
         <div
           style={{
             fontFamily: FONT_SERIF,
@@ -1263,7 +1321,7 @@ function ResultView({
             fontFamily: FONT_SANS,
           }}
         >
-          ↻ {t("다시 하기", "Try again")}
+          {isSharedResult ? t("나도 해보기", "Try it myself") : t("다시 하기", "Try again")}
         </button>
       </div>
 

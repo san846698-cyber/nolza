@@ -85,6 +85,9 @@ export default function ResultScreen({
         url={shareUrl}
         onReplay={onReplay}
         replayLabel={replayLabel}
+        contentId={currentGameId}
+        contentType="result"
+        resultName={title}
       />
 
       <RecommendedGames currentId={currentGameId} ids={recommendedIds} />

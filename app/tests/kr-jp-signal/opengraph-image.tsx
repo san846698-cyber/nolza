@@ -49,30 +49,6 @@ export default function Image() {
         />
         <div
           style={{
-            position: "absolute",
-            right: 90,
-            top: 92,
-            width: 260,
-            height: 86,
-            borderRadius: 30,
-            border: "2px solid rgba(255,255,255,0.18)",
-            background: "rgba(255,255,255,0.08)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            right: 160,
-            top: 126,
-            width: 130,
-            height: 5,
-            borderRadius: 999,
-            background: "rgba(255,255,255,0.36)",
-            boxShadow: "0 18px 0 rgba(255,255,255,0.22)",
-          }}
-        />
-        <div
-          style={{
             width: "100%",
             height: "100%",
             display: "flex",
@@ -104,7 +80,6 @@ export default function Image() {
               fontSize: 82,
               lineHeight: 1.08,
               fontWeight: 900,
-              letterSpacing: "-0.02em",
             }}
           >
             이거 호감임?
@@ -134,10 +109,10 @@ export default function Image() {
             }}
           >
             <span style={{ padding: "12px 18px", borderRadius: 18, background: "#fbbf24", color: "#17151f" }}>
-              12 SCENARIOS
+              TRANSLATED PHRASES
             </span>
             <span style={{ padding: "12px 18px", borderRadius: 18, background: "#7dd3fc", color: "#17151f" }}>
-              NO AI API
+              12 SCENARIOS
             </span>
           </div>
         </div>

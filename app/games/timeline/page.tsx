@@ -1228,8 +1228,8 @@ export default function TimelinePage(): ReactElement {
         style={{
           position: "relative",
           zIndex: 1,
-          padding: "0 20px 200px",
-          maxWidth: 1100,
+          padding: "0 24px 180px",
+          maxWidth: 1180,
           margin: "0 auto",
         }}
       >
@@ -1261,6 +1261,7 @@ export default function TimelinePage(): ReactElement {
               registerRef={(node) => {
                 cardRefs.current[item.idx] = node;
               }}
+              active={item.idx === activeIdx}
             />
           );
         })}
@@ -1275,6 +1276,10 @@ export default function TimelinePage(): ReactElement {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes tlDotPulse {
+  0%, 100% { box-shadow: 0 0 0 5px rgba(0,0,0,0.65), 0 0 0 0 rgba(251,191,36,0.22), 0 0 20px rgba(251,191,36,0.35); }
+  50% { box-shadow: 0 0 0 5px rgba(0,0,0,0.65), 0 0 0 12px rgba(251,191,36,0.06), 0 0 30px rgba(251,191,36,0.62); }
+}
 @keyframes tlSlideUp {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1288,11 +1293,32 @@ export default function TimelinePage(): ReactElement {
   opacity: 1;
   transform: translateY(0);
 }
+.tl-card[data-active="true"] {
+  transform: translateY(-2px);
+}
+.tl-card[data-active="true"] article {
+  border-color: rgba(251,191,36,0.34) !important;
+  box-shadow: 0 22px 70px rgba(0,0,0,0.5), 0 0 0 1px rgba(251,191,36,0.08), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+.tl-row[data-active="true"] .tl-dot {
+  animation: tlDotPulse 1.8s ease-in-out infinite;
+  transform: translateX(-50%) scale(1.08) !important;
+}
+.tl-row[data-active="true"] .tl-connector {
+  opacity: 0.75 !important;
+  transform: scaleX(1) !important;
+}
 @media (min-width: 901px) {
-  .tl-track {
-    padding-left: 296px !important;
-    max-width: none !important;
-    margin: 0 !important;
+  .tl-row[data-side="left"] .tl-connector {
+    right: calc(50% + 8px);
+    transform-origin: right center;
+  }
+  .tl-row[data-side="right"] .tl-connector {
+    left: calc(50% + 8px);
+    transform-origin: left center;
+  }
+  .tl-row[data-final="true"] .tl-connector {
+    display: none;
   }
 }
 @media (max-width: 900px) {
@@ -1303,8 +1329,44 @@ export default function TimelinePage(): ReactElement {
     display: flex !important;
   }
   .tl-spine {
-    left: 16px !important;
+    left: 22px !important;
     transform: none !important;
+  }
+  .tl-row {
+    display: block !important;
+    justify-content: flex-start !important;
+    margin: 22px 0 !important;
+  }
+  .tl-row .tl-dot {
+    left: 22px !important;
+    transform: translateX(-50%) !important;
+  }
+  .tl-row .tl-connector {
+    left: 22px !important;
+    width: 28px !important;
+    transform-origin: left center;
+  }
+  .tl-row .tl-card {
+    width: calc(100% - 54px) !important;
+    max-width: none !important;
+    margin-left: 54px !important;
+    margin-right: 0 !important;
+  }
+  .tl-row[data-final="true"] .tl-card {
+    width: calc(100% - 54px) !important;
+  }
+  .tl-row article {
+    text-align: left !important;
+    padding: 20px 18px !important;
+    border-radius: 14px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl-card,
+  .tl-row .tl-dot,
+  .tl-connector {
+    animation: none !important;
+    transition: none !important;
   }
 }
 `,
@@ -1339,29 +1401,30 @@ function SidePanel({
         className="tl-side"
         style={{
           position: "fixed",
-          left: 32,
-          top: "50%",
-          transform: "translateY(-50%)",
+          left: "max(24px, calc(50% - 600px))",
+          top: 112,
           zIndex: 25,
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
-          gap: 16,
-          padding: "22px 24px",
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(12px)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 18,
-          minWidth: 220,
+          gap: 10,
+          padding: "14px 15px",
+          background: "linear-gradient(180deg, rgba(8,8,8,0.76), rgba(8,8,8,0.52))",
+          backdropFilter: "blur(14px)",
+          border: "1px solid rgba(255,255,255,0.11)",
+          borderRadius: 16,
+          width: 120,
+          boxShadow: "0 18px 44px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.07)",
         }}
       >
         <div
           style={{
             fontFamily: INTER,
-            fontSize: 13,
-            letterSpacing: "0.32em",
-            color: "rgba(255,255,255,0.45)",
+            fontSize: 10,
+            letterSpacing: "0.16em",
+            color: "rgba(255,255,255,0.62)",
             fontWeight: 700,
+            lineHeight: 1.4,
           }}
         >
           {locale === "ko" ? era : ERA_LABEL_EN[era].toUpperCase()}
@@ -1369,11 +1432,11 @@ function SidePanel({
         <div
           style={{
             fontFamily: INTER,
-            fontSize: 28,
+            fontSize: 18,
             fontWeight: 800,
             color: ACCENT,
             letterSpacing: "-0.01em",
-            lineHeight: 1.05,
+            lineHeight: 1.18,
             transition: "color 0.4s ease",
           }}
         >
@@ -1381,11 +1444,26 @@ function SidePanel({
         </div>
         <div
           style={{
-            width: 4,
-            height: 220,
-            background: "rgba(255,255,255,0.08)",
-            borderRadius: 4,
+            fontSize: 12,
+            lineHeight: 1.45,
+            color: "rgba(255,255,255,0.68)",
+            fontFamily: locale === "ko" ? KSANS : INTER,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {locale === "ko" ? event.title.ko : event.title.en}
+        </div>
+        <div
+          style={{
+            width: "100%",
+            height: 4,
+            background: "rgba(255,255,255,0.12)",
+            borderRadius: 999,
             position: "relative",
+            overflow: "hidden",
           }}
         >
           <div
@@ -1393,19 +1471,19 @@ function SidePanel({
               position: "absolute",
               top: 0,
               left: 0,
-              width: "100%",
-              height: `${progress * 100}%`,
+              width: `${progress * 100}%`,
+              height: "100%",
               background: ACCENT,
-              borderRadius: 4,
-              transition: "height 0.2s ease",
+              borderRadius: 999,
+              transition: "width 0.2s ease",
             }}
           />
         </div>
         <div
           style={{
             fontFamily: INTER,
-            fontSize: 13,
-            color: "rgba(255,255,255,0.45)",
+            fontSize: 11,
+            color: "rgba(255,255,255,0.58)",
             letterSpacing: "0.05em",
           }}
         >
@@ -1643,19 +1721,27 @@ function EventRow({
   side,
   locale,
   registerRef,
+  active,
 }: {
   event: Event;
   side: "left" | "right";
   locale: "ko" | "en";
   registerRef: (node: HTMLDivElement | null) => void;
+  active: boolean;
 }): ReactElement {
+  const isFinal = event.year === 2025;
   return (
     <div
+      className="tl-row"
+      data-side={side}
+      data-active={active}
+      data-final={isFinal}
       style={{
         position: "relative",
-        display: "flex",
-        justifyContent: side === "left" ? "flex-start" : "flex-end",
-        margin: "32px 0",
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1fr) 112px minmax(0, 1fr)",
+        alignItems: "start",
+        margin: isFinal ? "72px 0 56px" : "30px 0",
       }}
     >
       {/* Connector dot on the spine */}
@@ -1664,45 +1750,46 @@ function EventRow({
         style={{
           position: "absolute",
           left: "50%",
-          top: 32,
+          top: isFinal ? -6 : 34,
           transform: "translateX(-50%)",
-          width: 14,
-          height: 14,
+          width: isFinal ? 18 : 13,
+          height: isFinal ? 18 : 13,
           borderRadius: "50%",
           background: ACCENT,
-          boxShadow: `0 0 0 4px rgba(0,0,0,0.5), 0 0 16px ${ACCENT}88`,
+          boxShadow: `0 0 0 5px rgba(0,0,0,0.62), 0 0 20px ${ACCENT}66`,
           zIndex: 3,
         }}
         className="tl-dot"
+      />
+      <span
+        aria-hidden
+        className="tl-connector"
+        style={{
+          position: "absolute",
+          top: 40,
+          width: "min(42px, 4vw)",
+          height: 1,
+          background: `linear-gradient(90deg, transparent, ${ACCENT}aa, transparent)`,
+          opacity: 0.36,
+          transform: "scaleX(0.82)",
+          transition: "opacity 0.35s ease, transform 0.35s ease",
+          zIndex: 2,
+        }}
       />
 
       <div
         ref={registerRef}
         className="tl-card"
+        data-active={active}
         style={{
-          width: "calc(50% - 32px)",
-          maxWidth: 460,
-          marginLeft: side === "left" ? 0 : "auto",
-          marginRight: side === "right" ? 0 : "auto",
+          gridColumn: isFinal ? "1 / -1" : side === "left" ? "1" : "3",
+          justifySelf: isFinal ? "center" : side === "left" ? "end" : "start",
+          width: "100%",
+          maxWidth: isFinal ? 620 : 420,
         }}
       >
-        <EventCard event={event} side={side} locale={locale} />
+        <EventCard event={event} side={isFinal ? "center" : side} locale={locale} isFinal={isFinal} />
       </div>
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-@media (max-width: 900px) {
-  .tl-card {
-    width: calc(100% - 48px) !important;
-    margin-left: 48px !important;
-    margin-right: 0 !important;
-    max-width: none !important;
-  }
-}
-`,
-        }}
-      />
     </div>
   );
 }
@@ -1711,55 +1798,75 @@ function EventCard({
   event,
   side,
   locale,
+  isFinal = false,
 }: {
   event: Event;
-  side: "left" | "right";
+  side: "left" | "right" | "center";
   locale: "ko" | "en";
+  isFinal?: boolean;
 }): ReactElement {
   return (
     <article
       style={{
         position: "relative",
-        background: "rgba(0,0,0,0.5)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 18,
-        padding: "26px 26px",
-        backdropFilter: "blur(10px)",
-        boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
-        textAlign: side === "left" ? "left" : "right",
+        background: isFinal
+          ? "linear-gradient(145deg, rgba(251,191,36,0.16), rgba(0,0,0,0.58) 42%, rgba(0,0,0,0.72))"
+          : "linear-gradient(145deg, rgba(255,255,255,0.07), rgba(0,0,0,0.55) 42%, rgba(0,0,0,0.68))",
+        border: isFinal ? `1px solid ${ACCENT}55` : "1px solid rgba(255,255,255,0.1)",
+        borderRadius: 16,
+        padding: isFinal ? "30px 30px" : "24px 24px",
+        backdropFilter: "blur(12px)",
+        boxShadow: isFinal
+          ? `0 24px 80px rgba(0,0,0,0.52), 0 0 44px ${ACCENT}18, inset 0 1px 0 rgba(255,255,255,0.09)`
+          : "0 16px 48px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.06)",
+        textAlign: side === "center" ? "center" : side,
+        overflow: "hidden",
       }}
     >
       <div
+        aria-hidden
         style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(120deg, transparent 0 30%, rgba(255,255,255,0.05) 45%, transparent 62%), radial-gradient(circle at 80% 0%, rgba(251,191,36,0.11), transparent 34%)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "relative",
           fontFamily: INTER,
-          fontSize: 14,
-          letterSpacing: "0.3em",
+          fontSize: 13,
+          letterSpacing: "0.22em",
           color: ACCENT,
           fontWeight: 700,
-          marginBottom: 8,
+          marginBottom: 9,
         }}
       >
         {locale === "ko" ? event.display.ko : event.display.en}
       </div>
       <h2
         style={{
+          position: "relative",
           fontFamily: SERIF,
-          fontSize: "clamp(22px, 3vw, 30px)",
+          fontSize: isFinal ? "clamp(28px, 4vw, 42px)" : "clamp(21px, 2.4vw, 29px)",
           fontWeight: 700,
           margin: 0,
-          lineHeight: 1.25,
+          lineHeight: 1.28,
           letterSpacing: "-0.01em",
           color: "#f5f5f5",
-          marginBottom: 14,
+          marginBottom: 13,
         }}
       >
         {locale === "ko" ? event.title.ko : event.title.en}
       </h2>
       <p
         style={{
+          position: "relative",
           fontSize: 16,
-          lineHeight: 1.7,
-          color: "rgba(255,255,255,0.82)",
+          lineHeight: 1.78,
+          color: "rgba(255,255,255,0.86)",
           margin: 0,
           marginBottom: 14,
           fontFamily: locale === "ko" ? KSANS : INTER,
@@ -1769,21 +1876,22 @@ function EventCard({
       </p>
       <div
         style={{
+          position: "relative",
           display: "flex",
           alignItems: "flex-start",
           gap: 10,
-          padding: "10px 14px",
-          background: "rgba(251,191,36,0.08)",
-          border: "1px solid rgba(251,191,36,0.18)",
+          padding: "11px 14px",
+          background: "rgba(251,191,36,0.1)",
+          border: "1px solid rgba(251,191,36,0.2)",
           borderRadius: 10,
-          fontSize: 16,
-          lineHeight: 1.6,
-          color: "rgba(255,255,255,0.78)",
+          fontSize: 15,
+          lineHeight: 1.65,
+          color: "rgba(255,255,255,0.82)",
           fontFamily: locale === "ko" ? KSANS : INTER,
           textAlign: "left",
         }}
       >
-        <span aria-hidden style={{ flex: "0 0 auto", fontSize: 16 }}>💡</span>
+        <span aria-hidden style={{ flex: "0 0 auto", fontSize: 14, color: ACCENT }}>✦</span>
         <span>{locale === "ko" ? event.fact.ko : event.fact.en}</span>
       </div>
     </article>

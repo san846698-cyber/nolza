@@ -1096,7 +1096,7 @@ function ResultView({
               onReplay={onRestart}
               replayLabel={t("다시 하기", "Try again")}
             />
-            <RecommendedGames currentId="kbti" ids={["mbti-depth", "attachment", "nunchi"]} />
+            <RecommendedGames currentId="kbti" ids={["mbti-depth", "attachment", "defense-mechanism"]} />
             <AdBottom />
           </div>
         </div>

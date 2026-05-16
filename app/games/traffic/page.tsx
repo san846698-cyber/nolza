@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocale } from "@/hooks/useLocale";
+import { trackGameComplete, trackGameStart, trackShareClick } from "@/lib/analytics";
 import { LEVELS, GRID, EXIT_ROW, type Car } from "@/lib/traffic/levels";
 import { solve } from "@/lib/traffic/solver";
 import s from "./traffic.module.css";
@@ -31,6 +32,39 @@ function saveBest(b: Record<number, number>) {
 
 function cloneCars(cars: Car[]): Car[] {
   return cars.map((c) => ({ ...c }));
+}
+
+const CAR_COLORS: Record<string, string> = {
+  "#ef4444": "#d95a4f",
+  "#3b82f6": "#4e7da7",
+  "#22c55e": "#40936d",
+  "#eab308": "#b98c37",
+  "#a855f7": "#8068b8",
+  "#f97316": "#c87943",
+  "#06b6d4": "#3d91a1",
+  "#ec4899": "#b86a8d",
+  "#8b5cf6": "#756db7",
+  "#10b981": "#3f927c",
+  "#f59e0b": "#c38b35",
+  "#14b8a6": "#3c9389",
+  "#84cc16": "#86a84a",
+  "#d946ef": "#9e69ad",
+  "#0ea5e9": "#438bae",
+  "#6366f1": "#626fae",
+  "#f43f5e": "#c85d6c",
+  "#a3e635": "#9bb75a",
+};
+
+function carStyle(car: Car, isPlayer: boolean, xPos: number): CSSProperties {
+  const wCells = car.orientation === "h" ? car.length : 1;
+  const hCells = car.orientation === "v" ? car.length : 1;
+  return {
+    left: `calc(${xPos} * 100% / ${GRID} + 3px)`,
+    top: `calc(${car.y} * 100% / ${GRID} + 3px)`,
+    width: `calc(${wCells} * 100% / ${GRID} - 6px)`,
+    height: `calc(${hCells} * 100% / ${GRID} - 6px)`,
+    "--car-color": isPlayer ? CAR_COLORS["#ef4444"] : CAR_COLORS[car.color] ?? car.color,
+  } as CSSProperties;
 }
 
 /** Compute the inclusive [min, max] valid axis position for a car, given other cars. */
@@ -221,6 +255,7 @@ export default function TrafficGame() {
     if (!car) return;
     const finalPos = car.orientation === "h" ? car.x : car.y;
     if (finalPos !== d.origPos) {
+      if (moves === 0) trackGameStart("traffic", "Traffic Hell");
       setMoves((m) => m + 1);
       playMoveSound();
       // Win check: player car at exit
@@ -240,6 +275,7 @@ export default function TrafficGame() {
 
   function triggerWin() {
     setExiting(true);
+    trackGameComplete("traffic", { level: level.id, score: moves + 1 });
     playWinSound();
     setTimeout(() => {
       setWon(true);
@@ -283,6 +319,7 @@ export default function TrafficGame() {
   }
 
   async function share() {
+    trackShareClick("traffic", "game", `level-${level.id}`);
     const url = "https://nolza.fun/games/traffic";
     const my = moves;
     const text = t(
@@ -362,7 +399,7 @@ export default function TrafficGame() {
 
         <div className={s.boardWrap} ref={boardRef}>
           <div className={s.exitLane} aria-hidden>
-            <span>{t("출구", "EXIT")}</span>
+            <span>{t("출구", "Exit")}</span>
           </div>
           <div
             className={s.grid}
@@ -376,8 +413,6 @@ export default function TrafficGame() {
             {cars.map((car) => {
               const isPlayer = car.id === "R";
               const xPos = isPlayer && exiting ? GRID + 0.5 : car.x;
-              const wCells = car.orientation === "h" ? car.length : 1;
-              const hCells = car.orientation === "v" ? car.length : 1;
               return (
                 <div
                   key={car.id}
@@ -387,28 +422,31 @@ export default function TrafficGame() {
                   data-exiting={isPlayer && exiting}
                   data-dragging={draggingCarId === car.id}
                   data-bump={bumpCarId === car.id}
-                  style={{
-                    left: `calc(${xPos} * 100% / ${GRID} + 3px)`,
-                    top: `calc(${car.y} * 100% / ${GRID} + 3px)`,
-                    width: `calc(${wCells} * 100% / ${GRID} - 6px)`,
-                    height: `calc(${hCells} * 100% / ${GRID} - 6px)`,
-                    background: car.color,
-                  }}
+                  style={carStyle(car, isPlayer, xPos)}
                   onPointerDown={(e) => onPointerDown(e, car)}
                 >
-                  <div className={s.carGlow} />
-                  <div className={s.windshield} />
-                  <div className={s.hood} />
-                  <div className={s.wheels}>
-                    <span />
-                    <span />
+                  <div className={s.wheelTrackTop} aria-hidden>
                     <span />
                     <span />
                   </div>
-                  <div className={s.headlights}>
+                  <div className={s.wheelTrackBottom} aria-hidden>
                     <span />
                     <span />
                   </div>
+                  <div className={s.carCabin} aria-hidden>
+                    <span className={s.windshield} />
+                    <span className={s.rearWindow} />
+                  </div>
+                  <div className={s.bodyLine} aria-hidden />
+                  <div className={s.headlights} aria-hidden>
+                    <span />
+                    <span />
+                  </div>
+                  <div className={s.tailLights} aria-hidden>
+                    <span />
+                    <span />
+                  </div>
+                  {isPlayer && <div className={s.exitArrow} aria-hidden>→</div>}
                   {isPlayer && <div className={s.meBadge}>ME</div>}
                 </div>
               );
