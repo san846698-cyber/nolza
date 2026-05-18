@@ -445,8 +445,6 @@ export default function TrafficGame() {
                     <span />
                     <span />
                   </div>
-                  {isPlayer && <div className={s.exitArrow} aria-hidden>→</div>}
-                  {isPlayer && <div className={s.meBadge}>ME</div>}
                 </div>
               );
             })}
@@ -476,20 +474,24 @@ export default function TrafficGame() {
             onClick={prevLevel}
             disabled={levelIdx === 0}
           >
-            <span>‹</span>{t("이전", "Prev")}
+            <span className={s.btnIcon} aria-hidden>‹</span>
+            <span className={s.btnLabel}>{t("이전", "Prev")}</span>
           </button>
           <button type="button" className={s.btn} onClick={reset}>
-            <span>↺</span>{t("다시", "Retry")}
+            <span className={s.btnIcon} aria-hidden>↺</span>
+            <span className={s.btnLabel}>{t("다시", "Retry")}</span>
           </button>
           <button type="button" className={s.btn} onClick={toggleHint}>
-            <span>?</span>{t("힌트", "Hint")}
+            <span className={s.btnIcon} aria-hidden>?</span>
+            <span className={s.btnLabel}>{t("힌트", "Hint")}</span>
           </button>
           <button
             type="button"
             className={s.btn}
             onClick={() => setShowSelect(true)}
           >
-            <span>▦</span>{t("레벨", "Levels")}
+            <span className={s.btnIcon} aria-hidden>▦</span>
+            <span className={s.btnLabel}>{t("레벨", "Levels")}</span>
           </button>
           <button
             type="button"
@@ -497,7 +499,8 @@ export default function TrafficGame() {
             onClick={nextLevel}
             disabled={levelIdx >= LEVELS.length - 1}
           >
-            {t("다음", "Next")}<span>›</span>
+            <span className={s.btnLabel}>{t("다음", "Next")}</span>
+            <span className={s.btnIcon} aria-hidden>›</span>
           </button>
         </div>
       </main>

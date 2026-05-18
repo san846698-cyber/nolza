@@ -13,7 +13,7 @@ type RecommendedGamesProps = {
   limit?: number;
 };
 
-const DEFAULT_IDS = ["kbti", "circle", "react", "password", "ijy", "timesense", "average"];
+const DEFAULT_IDS = ["kbti", "circle", "react", "password", "timesense", "average"];
 
 function ctaFor(type: ContentType | undefined, locale: Lang) {
   if (type === "game") return locale === "ko" ? "플레이하기" : "Play";

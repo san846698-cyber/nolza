@@ -153,8 +153,8 @@ export default function ThinkingPatternTestClient(): ReactElement {
               <p className="description">
                 {t(
                   locale,
-                  "같은 상황도 어떤 생각 습관을 거치느냐에 따라 훨씬 더 무겁게 느껴질 수 있습니다. 당신의 생각이 자주 꼬이는 지점을 재미로 확인해보세요.",
-                  "The same situation can feel much heavier depending on the thinking habit it passes through. Check where your thoughts tend to twist, just for self-reflection.",
+                  "애매한 순간에 생각이 어디로 먼저 흐르는지 가볍게 확인해보세요.",
+                  "See where your thoughts tend to go first in ambiguous moments.",
                 )}
               </p>
               <button type="button" onClick={start} className="primary">
@@ -164,8 +164,8 @@ export default function ThinkingPatternTestClient(): ReactElement {
               <p className="notice">
                 {t(
                   locale,
-                  "이 테스트는 진단이 아닌 재미용 자기이해 콘텐츠입니다.",
-                  "This is for entertainment and self-reflection only. It is not a diagnosis.",
+                  "이 테스트는 전문적인 진단이 아닌, 심리학/철학 개념을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
+                  "This is not a professional diagnosis. It is an entertainment and self-reflection experience based on psychology/philosophy concepts.",
                 )}
               </p>
             </div>
@@ -529,6 +529,16 @@ function ResultView({
         <p className="one-liner">{text(locale, result.oneLiner)}</p>
       </div>
       <p className="result-description">{text(locale, result.description)}</p>
+      <div className="result-box result-basis">
+        <span>{t(locale, "테스트 기준", "How this test works")}</span>
+        <p>
+          {t(
+            locale,
+            "이 테스트는 심리학/철학 개념을 일상 상황으로 쉽게 풀어낸 자기이해 콘텐츠입니다. 결과는 참고용이며 전문적인 진단이나 상담을 대체하지 않습니다.",
+            "This test translates psychology/philosophy concepts into everyday situations. Results are for self-reflection only and do not replace professional diagnosis or counseling.",
+          )}
+        </p>
+      </div>
       <div className="result-grid">
         <div className="result-box">
           <span>{t(locale, "생각이 이렇게 흐를 수 있어요", "How It Can Flow")}</span>

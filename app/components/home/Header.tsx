@@ -53,20 +53,6 @@ export function HomeHeader() {
               "Psychology, relationships, fortune-style fun, and mini games built for quick play and easy sharing.",
             )}
           </p>
-          <div className="mt-5 flex flex-wrap gap-2.5">
-            <a
-              href="#featured"
-              className="inline-flex min-h-10 items-center rounded-full bg-home-ink px-4.5 text-[13.5px] font-black text-home-bg no-underline shadow-[0_14px_30px_rgba(20,17,14,0.18)] transition-transform hover:-translate-y-0.5 sm:px-5 sm:text-[14px]"
-            >
-              {t("추천부터 보기", "Start with featured")}
-            </a>
-            <a
-              href="#tests"
-              className="inline-flex min-h-10 items-center rounded-full border border-home-hairline-strong bg-white/60 px-4.5 text-[13.5px] font-black text-home-ink no-underline transition-colors hover:bg-white sm:px-5 sm:text-[14px]"
-            >
-              {t("테스트 둘러보기", "Browse tests")}
-            </a>
-          </div>
         </div>
 
         <div className="rounded-[24px] border border-home-hairline bg-white/48 p-3.5 shadow-[0_20px_54px_rgba(55,38,20,0.09)] backdrop-blur sm:p-4">

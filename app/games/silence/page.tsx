@@ -155,6 +155,7 @@ export default function SilenceGame() {
   };
 
   const showResult = attempts >= 1;
+  const visibleTimer = timer > 0.05 ? `${timer.toFixed(1)}s` : t("시작됨", "Started");
 
   return (
     <main
@@ -186,7 +187,9 @@ export default function SilenceGame() {
             {t("아무것도 하지 마세요", "Do nothing")}
           </div>
           <div style={{ fontSize: 16, marginTop: 6, color: "#bbb" }}>
-            {t("해냈습니다", "You did it")}
+            {showResult
+              ? t("기록이 멈췄습니다", "Attempt ended")
+              : t("움직이면 기록이 끝나요", "Move and the attempt ends")}
           </div>
         </div>
 
@@ -200,7 +203,7 @@ export default function SilenceGame() {
             fontFamily: "var(--font-inter)",
           }}
         >
-          {timer.toFixed(1)}s
+          {visibleTimer}
         </div>
       </div>
 
@@ -262,7 +265,7 @@ export default function SilenceGame() {
           letterSpacing: "0.03em",
         }}
       >
-        best: {best.toFixed(1)}s
+        best: {best > 0 ? `${best.toFixed(1)}s` : "—"}
       </div>
 
       <AdMobileSticky />

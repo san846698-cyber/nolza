@@ -86,9 +86,9 @@ const ROLE_OPTIONS: RoleOption[] = [
   },
   {
     value: "random",
-    ko: "상관없음 / 랜덤",
+    ko: "랜덤",
     en: "Random",
-    hintKo: "성별 고정 없이 드라마틱하게",
+    hintKo: "고정 없이 드라마틱하게",
     hintEn: "Playful, not fixed",
   },
   {
@@ -940,23 +940,23 @@ function PersonEditor({
               aria-pressed={selected}
               style={{
                 textAlign: "left",
-                minHeight: 78,
+                minHeight: 88,
                 borderRadius: 8,
                 border: `1px solid ${selected ? ROSE : LINE}`,
                 background: selected
                   ? "linear-gradient(135deg, rgba(242,198,189,0.2), rgba(255,255,255,0.08))"
                   : "rgba(255,255,255,0.04)",
                 color: INK,
-                padding: "12px 12px",
+                padding: "14px 14px",
                 cursor: "pointer",
                 boxShadow: selected ? "0 10px 26px rgba(242,198,189,0.12)" : "none",
                 touchAction: "manipulation",
               }}
             >
-              <span style={{ display: "block", fontWeight: 900, fontSize: 15 }}>
+              <span style={{ display: "block", fontWeight: 900, fontSize: 16, lineHeight: 1.25 }}>
                 {loc === "ko" ? option.ko : option.en}
               </span>
-              <span style={{ display: "block", marginTop: 5, color: SUBTLE, fontSize: 12, lineHeight: 1.35 }}>
+              <span style={{ display: "block", marginTop: 7, color: SUBTLE, fontSize: 12, lineHeight: 1.35 }}>
                 {loc === "ko" ? option.hintKo : option.hintEn}
               </span>
             </button>

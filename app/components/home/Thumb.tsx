@@ -6,6 +6,7 @@ import RewindMotif from "./motifs/Rewind";
 import ReactMotif from "./motifs/React";
 import KbtiMotif from "./motifs/Kbti";
 import IjyMotif from "./motifs/Ijy";
+import SceneChoiceMotif from "./motifs/SceneChoice";
 
 const REGISTRY: Record<string, React.FC<{ skin: Skin }>> = {
   scale: ScaleMotif,
@@ -14,6 +15,7 @@ const REGISTRY: Record<string, React.FC<{ skin: Skin }>> = {
   react: ReactMotif,
   kbti: KbtiMotif,
   ijy: IjyMotif,
+  "scene-choice": SceneChoiceMotif,
 };
 
 export default function Thumb({ game, skin }: { game: Game; skin: Skin }) {

@@ -163,8 +163,8 @@ export default function CrushTypeTestClient(): ReactElement {
               <p className="notice">{t(locale, "이 테스트는 재미용입니다. 실제 상대의 마음을 판단하지 않아요.", "This test is for fun. It does not determine anyone's real feelings.")}</p>
             </div>
             <div className="signal-art" aria-hidden>
-              <span className="bubble bubble-one">...</span>
-              <span className="bubble bubble-two">?</span>
+              <span className="bubble bubble-one" />
+              <span className="bubble bubble-two" />
               <span className="thread" />
               <span className="heart" />
             </div>

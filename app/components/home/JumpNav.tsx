@@ -27,10 +27,10 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
 
   return (
     <nav
-      className="sticky top-0 z-40 border-b border-home-hairline bg-home-bg/82 backdrop-blur-xl"
+      className="sticky top-0 z-40 border-b border-home-hairline bg-home-bg/88 shadow-[0_12px_34px_rgba(55,38,20,0.055)] backdrop-blur-xl"
       aria-label="Jump to category"
     >
-      <div className="mx-auto flex max-w-col gap-2 overflow-x-auto px-4 py-2.5 sm:px-6 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+      <div className="mx-auto flex max-w-col gap-3 overflow-x-auto px-4 py-3.5 sm:gap-3.5 sm:px-6 sm:py-4 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
         {categories.map((c, i) => {
           const isActive = active === c.id;
           return (
@@ -39,18 +39,18 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
               href={`#${c.id}`}
               aria-current={isActive ? "true" : undefined}
               className={[
-                "inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 lg:min-h-9 lg:px-3",
-                "border text-[13.5px] font-black tracking-tight lg:text-[13px]",
-                "whitespace-nowrap no-underline shadow-[0_8px_20px_rgba(20,17,14,0.04)] transition-[background,color,border-color,transform]",
+                "inline-flex min-h-12 shrink-0 items-center gap-2.5 rounded-full px-5 py-2.5 sm:min-h-[54px] sm:px-6 lg:min-h-[52px] lg:px-6",
+                "border text-[15px] font-black tracking-tight sm:text-[15.5px] lg:text-[15px]",
+                "whitespace-nowrap no-underline shadow-[0_10px_24px_rgba(55,38,20,0.065)] transition-[background,color,border-color,transform,box-shadow]",
                 isActive
-                  ? "border-home-ink bg-home-ink text-home-bg"
-                  : "border-home-hairline bg-white/58 text-home-ink hover:-translate-y-0.5 hover:border-home-hairline-strong hover:bg-white",
+                  ? "border-home-ink bg-home-ink text-home-bg shadow-[0_16px_34px_rgba(20,17,14,0.18)]"
+                  : "border-home-hairline-strong bg-white/70 text-home-ink hover:-translate-y-0.5 hover:border-home-ink/35 hover:bg-white hover:shadow-[0_16px_34px_rgba(55,38,20,0.11)]",
               ].join(" ")}
             >
               <span
                 className={[
-                  "font-mono text-[10.5px] font-black tracking-[0.08em]",
-                  isActive ? "text-home-bg/60" : "text-home-muted",
+                  "font-mono text-[11px] font-black tracking-[0.1em]",
+                  isActive ? "text-home-bg/62" : "text-home-injoo/80",
                 ].join(" ")}
               >
                 {String(i + 1).padStart(2, "0")}

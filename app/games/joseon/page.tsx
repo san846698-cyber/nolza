@@ -257,10 +257,24 @@ function pick<T>(items: readonly T[], seed: number, offset: number): T {
 }
 
 function isNameLike(value: string): boolean {
-  const trimmed = value.trim();
+  const trimmed = value.trim().replace(/\s+/g, " ");
   if (!trimmed || trimmed.length > 24) return false;
-  if (!/[\p{Script=Hangul}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}A-Za-z0-9]/u.test(trimmed)) return false;
-  if (/^[\u3131-\u318e\u1100-\u11ff\u1160-\u11ff\s\W_]+$/u.test(trimmed)) return false;
+
+  if (/^[\u3131-\u318e\u1100-\u11ff\s]+$/u.test(trimmed)) return false;
+  if (/^[ㅋㅎ\s]+$/u.test(trimmed)) return false;
+  if (/^[0-9\s]+$/.test(trimmed)) return false;
+
+  const words = trimmed.split(" ");
+  if (words.length > 2) return false;
+  if (words.some((word) => word.length > 18)) return false;
+
+  const allowedChars = trimmed.match(/[\uac00-\ud7a3\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}A-Za-z0-9 ._-]/gu) ?? [];
+  if (allowedChars.length !== trimmed.length) return false;
+  if (!/[\uac00-\ud7a3\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}A-Za-z]/u.test(trimmed)) return false;
+
+  const symbolCount = (trimmed.match(/[ ._-]/g) ?? []).length;
+  if (symbolCount > Math.max(2, Math.floor(trimmed.length / 3))) return false;
+
   return true;
 }
 
@@ -338,7 +352,7 @@ export default function JoseonLifePage(): ReactElement {
   const submit = () => {
     const trimmed = name.trim();
     if (!isNameLike(trimmed)) {
-      setError(t("이름처럼 보이는 닉네임을 입력해주세요.", "Please enter a name-like nickname."));
+      setError(t("이름 또는 닉네임처럼 보이는 단어를 입력해주세요.", "Please enter a word that looks like a name or nickname."));
       return;
     }
     setError("");
@@ -450,7 +464,9 @@ export default function JoseonLifePage(): ReactElement {
         </section>
       )}
       <AdBottom />
-      <RecommendedGames currentId="joseon" ids={["crush-type", "joseon-couple", "friend-match"]} />
+      {result && (
+        <RecommendedGames currentId="joseon" ids={["crush-type", "joseon-couple", "friend-match"]} />
+      )}
       <AdMobileSticky />
       <style jsx>{`
         .joseon-life {

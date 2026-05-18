@@ -252,11 +252,11 @@
 
 .exitLane {
   position: absolute;
-  right: -86px;
+  right: -96px;
   top: calc(16px + (100% - 32px) * 2 / 6);
-  width: 108px;
+  width: 118px;
   height: calc((100% - 32px) / 6);
-  border-radius: 0 18px 18px 0;
+  border-radius: 0 16px 16px 0;
   background:
     linear-gradient(0deg, transparent calc(50% - 2px), rgba(244, 219, 150, 0.58) calc(50% - 2px) calc(50% + 2px), transparent calc(50% + 2px)),
     linear-gradient(90deg, #242b2d 0%, #31393b 56%, #22282b 100%);
@@ -296,9 +296,9 @@
 
 .exitLabel {
   position: absolute;
-  left: 26px;
-  right: 14px;
-  top: -28px;
+  left: 24px;
+  right: 12px;
+  top: calc(100% + 9px);
   display: block;
   text-align: center;
   color: rgba(255, 244, 220, 0.92);
@@ -311,7 +311,7 @@
 
 .exitLaneArrow {
   position: absolute;
-  left: 38px;
+  left: 48px;
   top: 50%;
   transform: translateY(-53%);
   color: #ffe2a6;
@@ -325,13 +325,13 @@
 
 .car {
   position: absolute;
-  border-radius: 15px 19px 19px 15px;
+  border-radius: 10px 17px 17px 10px;
   cursor: grab;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.07) 22%, rgba(0, 0, 0, 0.24) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.2), transparent 22% 76%, rgba(255, 255, 255, 0.14)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08) 24%, rgba(0, 0, 0, 0.26) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent 18% 76%, rgba(255, 255, 255, 0.16)),
     var(--car-color, #4e7da7);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition:
     left 230ms cubic-bezier(0.22, 1, 0.36, 1),
     top 230ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -350,11 +350,11 @@
 .car::before {
   content: "";
   position: absolute;
-  inset: 8px 13px 8px 18px;
-  border-radius: 11px 16px 16px 11px;
+  inset: 9px 15px 9px 22px;
+  border-radius: 8px 14px 14px 8px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(0, 0, 0, 0.13)),
-    color-mix(in srgb, var(--car-color, #4e7da7) 86%, white 14%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.14)),
+    color-mix(in srgb, var(--car-color, #4e7da7) 88%, white 12%);
   pointer-events: none;
   z-index: 1;
   box-shadow:
@@ -390,7 +390,7 @@
 }
 
 .car[data-orient="v"] {
-  border-radius: 15px 15px 19px 19px;
+  border-radius: 10px 10px 17px 17px;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.07) 22%, rgba(0, 0, 0, 0.24) 100%),
     linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 22% 76%, rgba(255, 255, 255, 0.14)),
@@ -398,8 +398,8 @@
 }
 
 .car[data-orient="v"]::before {
-  inset: 18px 8px 13px;
-  border-radius: 11px 11px 16px 16px;
+  inset: 22px 9px 15px;
+  border-radius: 8px 8px 14px 14px;
 }
 
 .car[data-length="3"] {
@@ -460,7 +460,7 @@
 }
 
 .car[data-player="true"] {
-  border-radius: 14px 21px 21px 14px;
+  border-radius: 10px 19px 19px 10px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.07) 24%, rgba(92, 11, 10, 0.28) 100%),
     linear-gradient(90deg, rgba(95, 14, 13, 0.22), transparent 21% 76%, rgba(255, 255, 255, 0.16)),
@@ -475,8 +475,8 @@
 }
 
 .car[data-player="true"]::before {
-  inset: 8px 14px 8px 19px;
-  border-radius: 11px 18px 18px 11px;
+  inset: 9px 16px 9px 23px;
+  border-radius: 8px 16px 16px 8px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(111, 14, 12, 0.16)),
     color-mix(in srgb, var(--car-color, #d95a4f) 88%, white 12%);
@@ -722,42 +722,9 @@
   min-height: 14px;
 }
 
-.exitArrow {
-  position: absolute;
-  right: 14%;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(255, 243, 210, 0.82);
-  font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
-  font-size: 13px;
-  font-weight: 900;
-  line-height: 1;
-  pointer-events: none;
-  text-shadow: 0 1px 8px rgba(73, 12, 9, 0.45);
-  z-index: 5;
-}
-
-.meBadge {
-  position: absolute;
-  left: 15%;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 22px;
-  color: rgba(255, 249, 238, 0.78);
-  font-size: 8px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  pointer-events: none;
-  text-shadow: 0 2px 8px rgba(67, 14, 10, 0.34);
-  z-index: 5;
-}
-
 .controls {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
@@ -766,6 +733,7 @@
 .btn,
 .btnPrimary {
   min-height: 46px;
+  min-width: 102px;
   border-radius: 999px;
   cursor: pointer;
   font-family: inherit;
@@ -789,6 +757,26 @@
   color: #fff8ed;
   padding: 11px 18px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btnIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.btnLabel {
+  display: inline-block;
+  line-height: 1;
 }
 
 .btn:hover:not(:disabled),
@@ -1155,9 +1143,9 @@
   }
 
   .exitLane {
-    right: -58px;
+    right: -66px;
     top: calc(10px + (100% - 20px) * 2 / 6);
-    width: 78px;
+    width: 86px;
     height: calc((100% - 20px) / 6);
     border-radius: 0 14px 14px 0;
   }
@@ -1165,13 +1153,13 @@
   .exitLabel {
     left: 18px;
     right: 8px;
-    top: -21px;
+    top: calc(100% + 6px);
     font-size: 11px;
     letter-spacing: 0.06em;
   }
 
   .exitLaneArrow {
-    left: 30px;
+    left: 34px;
     font-size: 22px;
   }
 
@@ -1191,6 +1179,7 @@
   .btnPrimary {
     min-height: 46px;
     padding: 10px 12px;
+    min-width: 92px;
     flex: 1 1 calc(50% - 8px);
   }
 

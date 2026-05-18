@@ -516,24 +516,24 @@ export default function KbtiPage(): ReactElement {
         }
         .kbti-page .result-actions__btn--primary {
           border-color: ${ACCENT};
-          background: ${ACCENT};
-          color: #fff;
+          background: linear-gradient(135deg, ${ACCENT} 0%, #a60f2b 54%, #d89a50 100%);
+          color: #fffaf0;
         }
         .kbti-page .result-actions__btn--share {
           border-color: ${ACCENT};
-          color: ${ACCENT};
+          color: #fffaf0;
         }
         .kbti-page .recommended-games__head,
         .kbti-page .recommended-games__item {
           color: ${INK};
         }
         .kbti-page .recommended-games__item {
-          border-color: rgba(255, 255, 255, 0.12);
-          background: rgba(255, 255, 255, 0.055);
+          border-color: rgba(255, 255, 255, 0.14);
+          background: rgba(255, 255, 255, 0.075);
         }
         .kbti-page .recommended-games__head small,
         .kbti-page .recommended-games__item em {
-          color: ${ACCENT};
+          color: #fff7e8;
         }
         @media (max-width: 640px) {
           .kbti-stage {

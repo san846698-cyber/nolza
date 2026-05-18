@@ -50,9 +50,9 @@ const relatedTests = [
     sub: { ko: "나는 왜 이렇게 사랑할까", en: "Why do I love this way?" },
   },
   {
-    href: "/games/dilemma",
-    title: { ko: "도덕 딜레마", en: "Moral Dilemma" },
-    sub: { ko: "내 선택의 기준 보기", en: "See what guides your choices" },
+    href: "/tests/value-conflict",
+    title: { ko: "가치관 갈등 테스트", en: "Value Conflict Test" },
+    sub: { ko: "결정을 어렵게 만드는 가치 보기", en: "See what makes decisions harder" },
   },
 ];
 
@@ -516,6 +516,15 @@ function Result({
               <p>{result.gentlePractice[locale]}</p>
             </section>
           </div>
+        </section>
+
+        <section className="deep-section test-basis">
+          <span>{locale === "ko" ? "테스트 기준" : "How this test works"}</span>
+          <p>
+            {locale === "ko"
+              ? "이 테스트는 심리학/철학 개념을 일상 상황으로 쉽게 풀어낸 자기이해 콘텐츠입니다. 결과는 참고용이며 전문적인 진단이나 상담을 대체하지 않습니다."
+              : "This test translates psychology/philosophy concepts into everyday situations. Results are for self-reflection only and do not replace professional diagnosis or counseling."}
+          </p>
         </section>
 
         <section className="score-section">
@@ -1063,6 +1072,9 @@ const styles = `
       linear-gradient(135deg, rgba(248, 239, 226, 0.105), color-mix(in srgb, var(--accent) 16%, transparent)),
       rgba(0, 0, 0, 0.16);
     border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  }
+  .test-basis {
+    margin-top: 16px;
   }
   .score-section {
     margin-top: 26px;

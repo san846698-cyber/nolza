@@ -141,13 +141,13 @@ export default function ValueConflictTestClient(): ReactElement {
         {phase === "intro" ? (
           <section className="value-hero">
             <div className="hero-copy">
-              <p className="eyebrow">{t(locale, "가치관 갈등 테스트", "Value Conflict Test")}</p>
-              <h1>{t(locale, "당신 안에서 충돌하는 두 가지 가치는?", "What Two Values Are Fighting Inside You?")}</h1>
+              <p className="eyebrow">{t(locale, "심리 테스트", "Psychology Test")}</p>
+              <h1>{t(locale, "가치관 갈등 테스트", "Value Conflict Test")}</h1>
               <p className="subtitle">
                 {t(
                   locale,
-                  "결정을 어렵게 만드는 마음속 가치의 충돌을 알아보세요.",
-                  "Discover the inner value conflict that makes decisions harder.",
+                  "당신 안에서 충돌하는 두 가지 가치는?",
+                  "What two values are fighting inside you?",
                 )}
               </p>
               <p className="description">
@@ -161,7 +161,13 @@ export default function ValueConflictTestClient(): ReactElement {
                 {t(locale, "테스트 시작하기", "Start the test")}
               </button>
               <p className="meta-line">{t(locale, "16문항 · 약 4분", "16 questions · about 4 min")}</p>
-              <p className="notice">{t(locale, "이 테스트는 재미용 자기이해 콘텐츠입니다.", "This test is for entertainment and self-reflection only.")}</p>
+              <p className="notice">
+                {t(
+                  locale,
+                  "이 테스트는 전문적인 진단이 아닌, 심리학/철학 개념을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
+                  "This is not a professional diagnosis. It is an entertainment and self-reflection experience based on psychology/philosophy concepts.",
+                )}
+              </p>
             </div>
           </section>
         ) : (
@@ -576,6 +582,16 @@ function ResultView({
         <p className="one-liner">{text(locale, result.oneLiner)}</p>
       </div>
       <p className="result-description">{text(locale, result.description)}</p>
+      <div className="result-feature result-basis">
+        <span>{t(locale, "테스트 기준", "How this test works")}</span>
+        <p>
+          {t(
+            locale,
+            "이 테스트는 심리학/철학 개념을 일상 상황으로 쉽게 풀어낸 자기이해 콘텐츠입니다. 결과는 참고용이며 전문적인 진단이나 상담을 대체하지 않습니다.",
+            "This test translates psychology/philosophy concepts into everyday situations. Results are for self-reflection only and do not replace professional diagnosis or counseling.",
+          )}
+        </p>
+      </div>
       <div className="result-depth">
         <div className="result-feature">
           <span>{t(locale, "당신 안의 갈등 구조", "Your Inner Conflict Pattern")}</span>

@@ -352,19 +352,22 @@ function ResultView({
 }) {
   const dims: DimResult[] = [result.E, result.S, result.T, result.J];
   const tagline = comboTagline(result, locale);
-  const summary = t(
-    `${result.code}는 '${tagline}' 쪽에 가깝습니다. 핵심은 ${LEVELS[result.E.side][result.E.level].title.ko}, ${LEVELS[result.S.side][result.S.level].title.ko}, ${LEVELS[result.T.side][result.T.level].title.ko}, ${LEVELS[result.J.side][result.J.level].title.ko}의 조합이에요. 그래서 겉보기보다 훨씬 입체적이고, 잘 맞는 환경에서는 집중력과 판단력이 꽤 선명하게 드러납니다.`,
-    `${result.code} leans into '${tagline}'. The core blend is ${LEVELS[result.E.side][result.E.level].title.en}, ${LEVELS[result.S.side][result.S.level].title.en}, ${LEVELS[result.T.side][result.T.level].title.en}, and ${LEVELS[result.J.side][result.J.level].title.en}. You are more layered than a four-letter code suggests, and the right environment brings out real clarity.`,
-  );
+  const summary = mainTypeSummary(result, locale);
+  const axisCards = dims.map((d) => ({
+    dim: d,
+    info: LEVELS[d.side][d.level],
+    copy: axisShortCopy(d, locale),
+  }));
   const strengthLine = firstSentence(
     LEVELS[result.T.side][result.T.level].hiddenStrength[locale],
   );
   const watchLine = firstSentence(
     LEVELS[result.J.side][result.J.level].factCheck[locale],
   );
+  const friendLines = friendCommentLines(result, locale);
   const shareText = t(
-    `내 MBTI 심층분석 결과: ${result.code} / 강점: ${strengthLine} / 주의할 점: ${watchLine}\n설명이 너무 구체적이라 좀 찔림...\nhttps://nolza.fun/games/mbti-depth`,
-    `My deep MBTI result: ${result.code} / Strength: ${strengthLine} / Watch-out: ${watchLine}\nThis is oddly specific...\nhttps://nolza.fun/games/mbti-depth`,
+    `나는 MBTI 심층 분석에서 ${result.code} · ${tagline} 나왔다.\n${result.detail} 조합이라는데 꽤 맞는 듯.\n너도 해봐.\nhttps://nolza.fun/games/mbti-depth`,
+    `I got ${result.code} · ${tagline} on the Deep MBTI Analysis.\nApparently my mix is ${result.detail}, and it feels pretty accurate.\nTry yours too.\nhttps://nolza.fun/games/mbti-depth`,
   );
 
   return (
@@ -389,24 +392,30 @@ function ResultView({
             }
             .mbti-depth-result .result-actions__btn--primary {
               border-color: #ff3b30;
-              background: #ff3b30;
-              color: #fff;
+              background: linear-gradient(135deg, #ff654f 0%, #d93d2f 48%, #d89a50 100%);
+              color: #fffaf0;
             }
             .mbti-depth-result .result-actions__btn--share {
               border-color: #ff3b30;
-              color: #ff3b30;
+              color: #fffaf0;
             }
             .mbti-depth-result .recommended-games__head,
             .mbti-depth-result .recommended-games__item {
               color: #f4f4f4;
             }
+            .mbti-depth-result .recommended-games {
+              border-color: rgba(255, 255, 255, 0.16);
+              background:
+                radial-gradient(circle at 18% 0%, rgba(255, 59, 48, 0.18), transparent 25rem),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.045));
+            }
             .mbti-depth-result .recommended-games__item {
-              border-color: rgba(255, 255, 255, 0.12);
-              background: rgba(255, 255, 255, 0.055);
+              border-color: rgba(255, 255, 255, 0.14);
+              background: rgba(255, 255, 255, 0.075);
             }
             .mbti-depth-result .recommended-games__head small,
             .mbti-depth-result .recommended-games__item em {
-              color: #ff3b30;
+              color: #fff7e8;
             }
           `}</style>
 
@@ -418,9 +427,6 @@ function ResultView({
               <div className="mt-4 font-serif text-6xl font-black tracking-normal text-white md:text-8xl">
                 {result.code}
               </div>
-              <div className="mt-3 font-mono text-sm text-gray-300 md:text-base">
-                {result.detail}
-              </div>
               <div className="mt-5 font-serif text-xl font-bold italic leading-snug text-accent md:text-2xl">
                 “{tagline}”
               </div>
@@ -429,11 +435,68 @@ function ResultView({
               </p>
             </div>
 
-            <div className="mt-5 grid gap-3">
-              {dims.map((d) => (
-                <DimensionBar key={d.dimension} dim={d} locale={locale} t={t} />
-              ))}
-            </div>
+            <section className="mt-6 rounded-2xl border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
+              <div className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">
+                {t("결과를 읽는 방법", "How to read this result")}
+              </div>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-gray-300 md:text-base">
+                <p>
+                  {t(
+                    `${result.code}는 당신의 큰 방향을 보여줍니다. ${result.detail}는 각 축 안에서 당신이 어떤 방식으로 그 성향을 보이는지 더 자세히 나눈 세부 코드입니다.`,
+                    `${result.code} shows your broad direction. ${result.detail} breaks each letter into a more specific subtype for that axis.`,
+                  )}
+                </p>
+                <p>
+                  {t(
+                    "예를 들어 I라고 해서 모두 같은 내향은 아닙니다. I1은 경계선에 가까운 내향이고, I2는 혼자 있어야 에너지가 회복되는 충전형 내향에 가깝습니다.",
+                    "For example, not every I is the same kind of introversion. I1 is closer to a borderline introvert, while I2 is a recharging introvert who needs alone time to recover.",
+                  )}
+                </p>
+                <p>
+                  {t(
+                    "퍼센트는 정답률이 아니라 한쪽으로 얼마나 기울었는지 보여주는 참고값입니다. 낮은 기울기는 틀렸다는 뜻이 아니라, 반대 성향도 상황에 따라 함께 나타날 수 있다는 뜻입니다.",
+                    "Percentages are not accuracy scores. They show how strongly you tilted toward one side. A lower tilt does not mean the result is wrong; it means the opposite side may also show up depending on the situation.",
+                  )}
+                </p>
+                <p>
+                  {t(
+                    "경계선이란 한쪽 성향이 압도적으로 강한 것이 아니라, 상황에 따라 반대 성향도 꽤 자주 나타난다는 뜻입니다.",
+                    "Borderline means one side is not overwhelmingly strong, and the opposite tendency can appear fairly often depending on context.",
+                  )}
+                </p>
+              </div>
+            </section>
+
+            <section className="mt-6">
+              <div className="mb-3 flex items-end justify-between gap-3">
+                <h2 className="font-serif text-xl font-bold text-white md:text-2xl">
+                  {t("당신의 4가지 핵심 축", "Your four core axes")}
+                </h2>
+                <span className="hidden text-xs font-semibold text-gray-500 sm:inline">
+                  {result.detail}
+                </span>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                {axisCards.map(({ dim, info, copy }) => (
+                  <section key={dim.dimension} className="rounded-2xl border border-border bg-card p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="font-mono text-xl font-black text-accent">
+                        {dim.side}{dim.level}
+                      </div>
+                      <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-gray-500">
+                        {dimensionLabel(dim.dimension, t)}
+                      </div>
+                    </div>
+                    <h3 className="mt-2 font-serif text-lg font-bold text-white">
+                      {info.title[locale]}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-300">
+                      {copy.short}
+                    </p>
+                  </section>
+                ))}
+              </div>
+            </section>
 
             <div className="mt-6 grid gap-3 md:grid-cols-2">
               <InsightCard
@@ -450,7 +513,10 @@ function ResultView({
               />
               <InsightCard
                 label={t("관계 스타일", "Relationship style")}
-                body={`${LEVELS[result.E.side][result.E.level].persona[locale]}\n\n${LEVELS[result.T.side][result.T.level].persona[locale]}`}
+                body={t(
+                  `${result.E.side}${result.E.level} 성향 때문에 사람을 만나는 방식에는 에너지 조절이 중요하고, ${result.T.side}${result.T.level} 성향 때문에 마음과 판단 기준을 함께 살피는 편입니다.`,
+                  `Your ${result.E.side}${result.E.level} pattern makes energy management important in relationships, while your ${result.T.side}${result.T.level} pattern means you read both feelings and judgment standards.`,
+                )}
               />
               <InsightCard
                 label={t("스트레스 받을 때", "Under stress")}
@@ -471,6 +537,7 @@ function ResultView({
             <div className="mt-6 grid gap-6">
               {dims.map((d) => {
                 const info = LEVELS[d.side][d.level];
+                const copy = axisShortCopy(d, locale);
                 return (
                   <div
                     key={d.dimension}
@@ -490,12 +557,17 @@ function ResultView({
                     </h3>
 
                     <DetailBlock
-                      kicker={t("이런 사람이에요", "Who you are")}
-                      body={info.persona[locale]}
+                      kicker={t("이 뜻이에요", "What this means")}
+                      body={copy.meaning}
                       tone="neutral"
                     />
                     <DetailBlock
-                      kicker={t("현실 팩폭", "Reality check")}
+                      kicker={t("겉으로는 이렇게 보여요", "How it appears")}
+                      body={copy.appears}
+                      tone="neutral"
+                    />
+                    <DetailBlock
+                      kicker={t("현실 체크", "Reality check")}
                       body={info.factCheck[locale]}
                       tone="warn"
                     />
@@ -508,6 +580,35 @@ function ResultView({
                 );
               })}
             </div>
+
+            <section className="mt-6">
+              <div className="mb-3 flex items-end justify-between gap-3">
+                <h2 className="font-serif text-xl font-bold text-white md:text-2xl">
+                  {t("방향성 참고값", "Direction reference")}
+                </h2>
+                <span className="text-xs font-semibold text-gray-500">
+                  {t("정답률이 아니라 기울기입니다", "Tilt, not an accuracy score")}
+                </span>
+              </div>
+              <div className="grid gap-3">
+                {dims.map((d) => (
+                  <DimensionBar key={d.dimension} dim={d} locale={locale} t={t} />
+                ))}
+              </div>
+            </section>
+
+            <section className="mt-6 rounded-2xl border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
+              <div className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">
+                {t("친구가 보면 할 말", "What a friend might say")}
+              </div>
+              <div className="mt-4 grid gap-3">
+                {friendLines.map((line) => (
+                  <p key={line} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm leading-relaxed text-gray-200 md:text-base">
+                    “{line}”
+                  </p>
+                ))}
+              </div>
+            </section>
           </div>
 
           <div className="mt-7 flex flex-col items-center gap-5">
@@ -522,7 +623,7 @@ function ResultView({
             <RecommendedGames
               currentId="mbti-depth"
               ids={["kbti", "attachment", "defense-mechanism"]}
-              title={{ ko: "다음에 해볼 진단", en: "Try these next" }}
+              title={{ ko: "이 테스트도 해보세요", en: "Try These Next" }}
             />
           </div>
         </section>
@@ -534,6 +635,170 @@ function ResultView({
 function firstSentence(text: string): string {
   const normalized = text.replace(/\s+/g, " ").trim();
   return normalized.match(/^.*?[.!?](\s|$)/)?.[0].trim() ?? normalized;
+}
+
+function mainTypeSummary(result: FullResult, locale: "ko" | "en"): string {
+  const energy = result.E.side === "I"
+    ? {
+        ko: "혼자 있거나 익숙한 사람과 있을 때 에너지를 회복하고",
+        en: "You recover energy through solitude or familiar company",
+      }
+    : {
+        ko: "사람들과 연결될 때 에너지가 살아나고",
+        en: "You come alive through connection with people",
+      };
+  const perception = result.S.side === "N"
+    ? {
+        ko: "눈앞의 사실보다 그 안에 숨은 의미와 가능성을 먼저 봅니다",
+        en: "and you notice hidden meaning and possibility before plain facts.",
+      }
+    : {
+        ko: "추상적인 가능성보다 지금 보이는 사실과 실제 흐름을 먼저 봅니다",
+        en: "and you notice concrete facts and practical flow before abstract possibility.",
+      };
+  const decision = result.T.side === "F"
+    ? {
+        ko: "판단할 때는 논리도 보지만, 최종적으로는 사람과 의미를 쉽게 배제하지 않는 편입니다.",
+        en: "When deciding, you use logic too, but you do not easily leave people and meaning out of the final call.",
+      }
+    : {
+        ko: "판단할 때는 마음도 보지만, 최종적으로는 기준과 구조를 분명히 하려는 편입니다.",
+        en: "When deciding, you notice feelings too, but you usually try to clarify standards and structure.",
+      };
+  const lifestyle = result.J.side === "P"
+    ? {
+        ko: "계획은 필요할 때 세우되, 가능성을 열어둔 채 움직일 때 더 자연스럽습니다.",
+        en: "You can plan when needed, but you feel more natural when possibilities stay open.",
+      }
+    : {
+        ko: "가능성을 보더라도, 결국 정리된 계획과 예측 가능한 흐름이 있을 때 더 안정됩니다.",
+        en: "Even when you see possibilities, you feel steadier with a clear plan and predictable flow.",
+      };
+
+  return locale === "ko"
+    ? `${energy.ko}, ${perception.ko}. ${decision.ko} ${lifestyle.ko}`
+    : `${energy.en}, ${perception.en} ${decision.en} ${lifestyle.en}`;
+}
+
+function axisShortCopy(dim: DimResult, locale: "ko" | "en") {
+  const code = `${dim.side}${dim.level}`;
+  const isBorderline = dim.level === 1;
+  const ko: Record<string, { short: string; meaning: string; appears: string }> = {
+    E: {
+      short: isBorderline ? "사람에게 열려 있지만 혼자 있는 시간도 필요한 타입" : "사람과 연결될 때 에너지가 살아나는 타입",
+      meaning: "외부 자극과 대화 속에서 생각이 정리되고 에너지가 살아납니다.",
+      appears: "활발해 보일 수 있지만, 모든 사람에게 같은 속도로 가까워지는 것은 아닙니다.",
+    },
+    I: {
+      short: isBorderline ? "혼자만의 시간이 필요하지만 사람을 피하는 것은 아닌 타입" : "혼자 있어야 에너지가 회복되는 타입",
+      meaning: "조용한 시간은 단순한 휴식이 아니라 마음과 생각을 다시 충전하는 방식입니다.",
+      appears: "사람을 싫어하는 것이 아니라, 만남 뒤에는 회복 시간이 필요해 보일 수 있습니다.",
+    },
+    S: {
+      short: isBorderline ? "현실 감각과 가능성 사이를 오가는 타입" : "구체적인 사실과 실제 흐름을 먼저 보는 타입",
+      meaning: "눈앞에 있는 정보, 경험, 실제로 작동하는 방식을 중요하게 봅니다.",
+      appears: "뜬구름 잡는 말보다 바로 확인 가능한 근거를 찾는 사람처럼 보일 수 있습니다.",
+    },
+    N: {
+      short: isBorderline ? "가능성을 보지만 현실 감각도 함께 쓰는 타입" : "가능성과 의미를 먼저 떠올리는 타입",
+      meaning: "보이는 것 자체보다 그 안에 숨어 있는 패턴, 의미, 다음 가능성을 먼저 떠올립니다.",
+      appears: "대화 중에 연결고리를 빠르게 만들고, 아직 일어나지 않은 경우의 수를 자주 말할 수 있습니다.",
+    },
+    T: {
+      short: isBorderline ? "분석과 공감을 함께 쓰는 타입" : "기준과 논리로 판단을 정리하는 타입",
+      meaning: "판단할 때 감정에 휩쓸리기보다 기준, 원인, 결과를 먼저 확인하려 합니다.",
+      appears: "차갑다기보다 정리하려는 사람처럼 보일 수 있고, 감정 표현이 늦게 따라올 수 있습니다.",
+    },
+    F: {
+      short: isBorderline ? "공감과 분석을 함께 쓰는 타입" : "사람과 의미를 중심에 두고 판단하는 타입",
+      meaning: "결정할 때 효율만큼이나 사람의 마음, 관계의 맥락, 의미를 중요하게 봅니다.",
+      appears: "부드럽고 배려 깊어 보이지만, 속으로는 꽤 현실적인 기준도 함께 세울 수 있습니다.",
+    },
+    J: {
+      short: isBorderline ? "정리하고 싶지만 즉흥성도 꽤 남아 있는 타입" : "계획과 마감선이 있을 때 안정되는 타입",
+      meaning: "할 일을 정리하고 예측 가능한 흐름을 만들 때 마음이 편해집니다.",
+      appears: "주변에서는 준비성이 있어 보일 수 있지만, 계획이 흔들리면 피로가 빨리 올라올 수 있습니다.",
+    },
+    P: {
+      short: isBorderline ? "열어두고 싶지만 필요할 땐 정리도 하는 타입" : "가능성을 열어두며 움직이는 타입",
+      meaning: "처음부터 닫힌 결론을 내리기보다, 상황을 보면서 선택지를 조정하는 쪽이 자연스럽습니다.",
+      appears: "유연하고 즉흥적으로 보일 수 있지만, 정리되지 않은 상태가 길어지면 본인도 지칠 수 있습니다.",
+    },
+  };
+  const en: Record<string, { short: string; meaning: string; appears: string }> = {
+    E: {
+      short: isBorderline ? "Open to people, but still needs personal space" : "Energized by connection and outside stimulation",
+      meaning: "Your thoughts and energy often come alive through conversation, activity, and outside input.",
+      appears: "You may seem outgoing, but you do not necessarily become close to everyone at the same speed.",
+    },
+    I: {
+      short: isBorderline ? "Needs alone time without avoiding people entirely" : "Recovers energy through time alone",
+      meaning: "Quiet time is not just rest for you; it is how your mind and energy reset.",
+      appears: "You may not dislike people, but you can need recovery time after social plans.",
+    },
+    S: {
+      short: isBorderline ? "Moves between practicality and possibility" : "Notices concrete facts and practical flow first",
+      meaning: "You value what is visible, proven, experienced, and likely to work in real life.",
+      appears: "You may look for evidence before buying into abstract ideas.",
+    },
+    N: {
+      short: isBorderline ? "Sees possibility while keeping some practical sense" : "Notices possibility and meaning first",
+      meaning: "You often notice patterns, symbols, future angles, and hidden meaning before the obvious facts.",
+      appears: "You may connect ideas quickly and talk about possibilities that have not happened yet.",
+    },
+    T: {
+      short: isBorderline ? "Uses both analysis and empathy" : "Organizes decisions through logic and standards",
+      meaning: "You try to check standards, causes, and consequences before getting swept up in emotion.",
+      appears: "You may seem composed or direct, with emotional expression arriving later.",
+    },
+    F: {
+      short: isBorderline ? "Uses both empathy and analysis" : "Decides with people and meaning in view",
+      meaning: "Efficiency matters, but people, relational context, and meaning are hard for you to leave out.",
+      appears: "You may seem warm and considerate while still holding practical standards inside.",
+    },
+    J: {
+      short: isBorderline ? "Likes some order, but still has room for spontaneity" : "Feels steadier with plans and deadlines",
+      meaning: "Your mind relaxes when tasks are organized and the next step is predictable.",
+      appears: "You may look prepared, but sudden changes can drain you faster than people expect.",
+    },
+    P: {
+      short: isBorderline ? "Keeps options open, but can organize when needed" : "Moves by keeping possibilities open",
+      meaning: "You prefer adjusting choices as the situation unfolds rather than closing the answer too early.",
+      appears: "You can look flexible and spontaneous, though long-term disorder can still tire you out.",
+    },
+  };
+
+  return (locale === "ko" ? ko : en)[dim.side] ?? {
+    short: code,
+    meaning: code,
+    appears: code,
+  };
+}
+
+function friendCommentLines(result: FullResult, locale: "ko" | "en"): string[] {
+  const linesKo = [
+    result.E.side === "I"
+      ? "너 혼자 있는 시간 없으면 바로 방전되잖아."
+      : "너 사람 만나면 갑자기 에너지 올라오는 편이잖아.",
+    result.S.side === "N"
+      ? "아이디어는 많은데 정리까지 가는 데 시간이 걸릴 때가 있어."
+      : "너는 말보다 실제로 되는지부터 확인하려고 하잖아.",
+    result.T.side === "F"
+      ? "감성적인데 가끔 의외로 현실적으로 판단해."
+      : "차분하게 분석하는데, 은근히 사람 마음도 신경 써.",
+  ];
+  const linesEn = [
+    result.E.side === "I"
+      ? "You run out of battery fast when you do not get alone time."
+      : "You suddenly light up when you are around people.",
+    result.S.side === "N"
+      ? "You have a lot of ideas, but organizing them can take a while."
+      : "You always want to know whether it actually works first.",
+    result.T.side === "F"
+      ? "You are emotional, but sometimes surprisingly practical."
+      : "You analyze calmly, but you still notice how people feel.",
+  ];
+  return locale === "ko" ? linesKo : linesEn;
 }
 
 function DimensionBar({
@@ -548,7 +813,15 @@ function DimensionBar({
   const info = LEVELS[dim.side][dim.level];
   const strength = Math.min(100, Math.round((Math.abs(dim.rawAvg) / 4) * 100));
   const [left, right] = dimensionEnds(dim.dimension, t);
+  const leftValue = Math.round(((dim.rawAvg + 4) / 8) * 100);
+  const rightValue = 100 - leftValue;
   const leansLeft = ["E", "S", "T", "J"].includes(dim.side);
+  const tilt = strength < 38
+    ? t("약한 기울기", "soft tilt")
+    : strength < 63
+    ? t("중간 기울기", "moderate tilt")
+    : t("뚜렷한 기울기", "clear tilt");
+  const sideName = sideLabel(dim.side, t);
 
   return (
     <div className="rounded-2xl border border-border bg-card p-4">
@@ -559,11 +832,15 @@ function DimensionBar({
           </div>
           <div className="mt-1 text-base font-bold text-white">
             {dim.side}
-            {dim.level} · {info.title[locale]}
+            {dim.level} · {sideName} {t("쪽", "side")} {tilt}
           </div>
+          <p className="mt-1 text-xs leading-relaxed text-gray-400">
+            {info.title[locale]} · {t("숫자는 정답률이 아니라 이 축에서 한쪽으로 기운 정도입니다.", "This number is not an accuracy score; it shows how much this axis tilted.")}
+          </p>
         </div>
-        <div className="font-mono text-sm font-bold text-accent">
-          {strength}%
+        <div className="shrink-0 text-right font-mono text-xs font-bold text-gray-300">
+          <div>{left} {leftValue}%</div>
+          <div>{right} {rightValue}%</div>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-[auto_1fr_auto] items-center gap-3 text-[11px] font-semibold text-gray-500">
@@ -617,6 +894,23 @@ function dimensionEnds(
     case "SN": return [t("감각", "S"), t("직관", "N")];
     case "TF": return [t("사고", "T"), t("감정", "F")];
     case "JP": return [t("판단", "J"), t("인식", "P")];
+  }
+}
+
+function sideLabel(
+  side: string,
+  t: (ko: string, en: string) => string,
+): string {
+  switch (side) {
+    case "E": return t("외향", "E");
+    case "I": return t("내향", "I");
+    case "S": return t("감각", "S");
+    case "N": return t("직관", "N");
+    case "T": return t("사고", "T");
+    case "F": return t("감정", "F");
+    case "J": return t("판단", "J");
+    case "P": return t("인식", "P");
+    default: return side;
   }
 }
 

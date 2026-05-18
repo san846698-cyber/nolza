@@ -21,6 +21,8 @@ export type DefenseAnswer = {
 
 export type DefenseQuestion = {
   id: string;
+  targetDimension: string;
+  rationale: string;
   scene: LocalizedText;
   question: LocalizedText;
   answers: DefenseAnswer[];
@@ -66,8 +68,8 @@ export const DEFENSE_COPY = {
   },
   start: { ko: "테스트 시작하기", en: "Start the test" },
   disclaimer: {
-    ko: "이 테스트는 진단이 아닌 재미용 자기이해 콘텐츠입니다.",
-    en: "This is for entertainment and self-reflection only. It is not a diagnosis.",
+    ko: "이 테스트는 전문적인 진단이 아닌, 심리학/철학 개념을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
+    en: "This is not a professional diagnosis. It is an entertainment and self-reflection experience based on psychology/philosophy concepts.",
   },
   questionCount: { ko: "질문", en: "Question" },
   resultLoading: { ko: "당신의 보호 방식을 정리하는 중...", en: "Organizing your protection pattern..." },
@@ -551,183 +553,890 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
 
 export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
   {
-    id: "friend-hurt",
-    scene: { ko: "친구가 별생각 없이 한 말에 살짝 기분이 상했습니다.", en: "A friend says something casually, and it hurts your feelings a little." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "웃으며 농담으로 넘기지만 속으로는 조금 남는다", en: "I laugh it off with a joke, though it stays with me a little." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "상대도 별뜻 없었을 거라고 보고 일단 넘긴다", en: "I assume they probably meant nothing by it and let it pass for now." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "잠깐 거리를 두고 마음을 가라앉힌다", en: "I take a little distance and let my feelings settle." }, scores: { avoidance: 1, suppression: 1 } },
-      { id: "d", text: { ko: "왜 그 말이 신경 쓰였는지 차분히 생각해본다", en: "I calmly think about why that comment bothered me." }, scores: { intellectualization: 2 } },
-    ],
+    "id": "dm_01",
+    "targetDimension": "humor/rationalization/avoidance/intellectualization",
+    "rationale": "Mild social hurt reveals the first protective move without naming defense styles.",
+    "scene": {
+      "ko": "친구가 별생각 없이 한 말이 마음에 남았습니다. 그날 밤 단체방은 평소처럼 웃고 떠듭니다.",
+      "en": "A friend says something casually, and it stays with you. That night, the group chat is still joking as usual."
+    },
+    "question": {
+      "ko": "당신에게 가장 가까운 반응은?",
+      "en": "What reaction feels closest?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "평소처럼 받아주지만 답장이 조금 짧아진다.",
+          "en": "I reply as usual, but my messages get a little shorter."
+        },
+        "scores": {
+          "suppression": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "분위기를 깨기 싫어 더 가볍게 농담한다.",
+          "en": "I joke even more lightly because I do not want to break the mood."
+        },
+        "scores": {
+          "humor": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "별 의미 없었을 거라고 보고 금방 넘기려 한다.",
+          "en": "I tell myself it probably meant nothing and try to move on."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "왜 그 말이 걸렸는지 혼자 차분히 되짚어본다.",
+          "en": "I calmly replay why that comment bothered me."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      }
+    ]
   },
   {
-    id: "criticism",
-    scene: { ko: "열심히 준비한 일에 대해 예상보다 차가운 평가를 들었습니다.", en: "You receive colder feedback than expected on something you prepared carefully." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "괜히 웃으며 '역시 쉽지 않네' 하고 넘긴다", en: "I smile and say, 'Yeah, it is not easy,' to lighten it." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "평가가 나온 이유를 머릿속으로 정리한다", en: "I organize the reasons for the feedback in my head." }, scores: { intellectualization: 2 } },
-      { id: "c", text: { ko: "당분간 그 일 이야기는 하고 싶지 않다", en: "I do not want to talk about it for a while." }, scores: { avoidance: 2 } },
-      { id: "d", text: { ko: "쓸 수 있는 부분만 골라 다음 계획에 반영한다", en: "I take only the useful parts and apply them to the next plan." }, scores: { sublimation: 2 } },
-    ],
+    "id": "dm_02",
+    "targetDimension": "humor/rationalization/avoidance/intellectualization",
+    "rationale": "Feedback after effort creates disappointment while keeping all answer options socially plausible.",
+    "scene": {
+      "ko": "열심히 준비한 발표가 끝난 뒤, 상대가 “나쁘진 않은데 기대보다는 평범했어”라고 말했습니다. 분위기는 어색하지 않지만 그 말이 남습니다.",
+      "en": "After a presentation you worked hard on, someone says, “It was not bad, just more ordinary than I expected.” The mood is not awkward, but the words stay."
+    },
+    "question": {
+      "ko": "그날 저녁 당신에게 가장 가까운 모습은?",
+      "en": "What are you most likely to do that evening?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "“역시 내가 너무 기대했나 봐” 하며 웃긴 이야기처럼 바꿔 말한다.",
+          "en": "I turn it into a funny story, like “I guess I hyped myself up too much.”"
+        },
+        "scores": {
+          "humor": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "상대가 나쁘게 말한 건 아닐 거라고 이유를 찾아본다.",
+          "en": "I look for reasons why they probably did not mean it badly."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "당분간 그 발표 이야기는 꺼내고 싶지 않다.",
+          "en": "I do not want to bring up that presentation for a while."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "어떤 부분이 평범해 보였는지 혼자 차분히 분석한다.",
+          "en": "I calmly analyze what may have looked ordinary."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      }
+    ]
   },
   {
-    id: "group-chat",
-    scene: { ko: "단체 대화방에서 내 말이 어색하게 넘어가고 아무도 반응하지 않았습니다.", en: "In a group chat, your message passes awkwardly and nobody responds." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "바로 다른 농담을 던져 분위기를 바꾼다", en: "I throw in another joke to change the mood." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "사람들이 바빴을 수도 있다고 보고 크게 의미를 두지 않는다", en: "I assume people may have been busy and do not read too much into it." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "대화방을 잠시 안 보고 다른 일을 한다", en: "I stop looking at the chat for a while and do something else." }, scores: { avoidance: 2 } },
-      { id: "d", text: { ko: "내가 어떤 말을 해서 분위기가 바뀌었는지 되짚어본다", en: "I review what I said and how the mood changed." }, scores: { intellectualization: 2 } },
-    ],
+    "id": "dm_03",
+    "targetDimension": "projection/reactionFormation/suppression/rationalization",
+    "rationale": "Ambiguous short replies invite interpretation, overcompensation, or contained hurt.",
+    "scene": {
+      "ko": "가까운 사람이 평소보다 짧게 답했습니다. 바쁜 날일 수도 있지만, 어딘가 차갑게 느껴집니다.",
+      "en": "Someone close replies more briefly than usual. They may be busy, but it feels a little cold."
+    },
+    "question": {
+      "ko": "가장 자연스러운 반응은?",
+      "en": "What feels most natural?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "내 불편함이 티 나지 않게 평소보다 더 밝게 답한다.",
+          "en": "I reply even brighter than usual so my discomfort does not show."
+        },
+        "scores": {
+          "reactionFormation": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "내가 예민한 걸 수도 있다고 생각하며 감정을 눌러둔다.",
+          "en": "I think I may be being sensitive and hold the feeling down."
+        },
+        "scores": {
+          "suppression": 2,
+          "rationalization": 1
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "상대가 이미 나를 불편해하는 것 같다고 느낀다.",
+          "en": "It feels like the other person is already uncomfortable with me."
+        },
+        "scores": {
+          "projection": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "바쁠 가능성이 크다고 보고 오늘은 더 묻지 않는다.",
+          "en": "I assume they may be busy and do not ask more today."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      }
+    ]
   },
   {
-    id: "postponed-plan",
-    scene: { ko: "가까운 사람이 약속을 가볍게 미뤘고, 당신은 조금 서운했습니다.", en: "Someone close casually postpones a plan, and you feel a bit disappointed." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "'나 버려졌네?'처럼 장난스럽게 표현한다", en: "I joke, like 'Wow, I have been abandoned.'" }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "상대에게도 사정이 있었을 거라고 생각한다", en: "I think they probably had their own reason." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "괜찮다고 말하고 혼자 시간을 보낸다", en: "I say it is okay and spend time alone." }, scores: { suppression: 1, avoidance: 1 } },
-      { id: "d", text: { ko: "서운한 이유를 정리한 뒤 필요하면 차분히 말한다", en: "I sort out why I feel hurt and calmly say it if needed." }, scores: { intellectualization: 1, sublimation: 1 } },
-    ],
+    "id": "dm_04",
+    "targetDimension": "sublimation/suppression/avoidance/intellectualization",
+    "rationale": "Deadline pressure shows whether discomfort becomes action, containment, distance, or analysis.",
+    "scene": {
+      "ko": "마감이 가까운데 마음은 이미 지쳐 있습니다. 주변에서는 “이번 건 네가 잘하잖아”라고 기대합니다.",
+      "en": "A deadline is close, and you already feel drained. People around you say, “You are good at this one.”"
+    },
+    "question": {
+      "ko": "그 순간 가장 가까운 행동은?",
+      "en": "What action feels closest in that moment?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "일단 감정은 접어두고 오늘 할 수 있는 만큼만 쪼갠다.",
+          "en": "I set the feeling aside and break today’s work into manageable pieces."
+        },
+        "scores": {
+          "suppression": 1,
+          "intellectualization": 1
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "답답함을 동력 삼아 결과물을 더 다듬는다.",
+          "en": "I use the frustration as fuel to refine the work."
+        },
+        "scores": {
+          "sublimation": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "잠깐 다른 일을 하며 그 생각에서 벗어나려 한다.",
+          "en": "I do something else for a while to get away from the thought."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "무엇이 부담인지 항목별로 정리해야 진정된다.",
+          "en": "I calm down only after listing exactly what is making it feel heavy."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      }
+    ]
   },
   {
-    id: "embarrassing-mistake",
-    scene: { ko: "실수한 뒤 얼굴이 뜨거워질 만큼 민망한 순간이 있었습니다.", en: "After making a mistake, you feel embarrassed enough for your face to heat up." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "먼저 웃기게 말해서 상황을 가볍게 만든다", en: "I make a funny comment first to lighten the situation." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "누구나 실수할 수 있다고 스스로 납득시킨다", en: "I remind myself that anyone can make mistakes." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "그 장면을 떠올리지 않으려고 다른 일에 집중한다", en: "I focus on something else so I do not replay the scene." }, scores: { suppression: 2 } },
-      { id: "d", text: { ko: "다음에는 어떻게 하면 덜 실수할지 정리한다", en: "I figure out how to make it less likely next time." }, scores: { sublimation: 2 } },
-    ],
+    "id": "dm_05",
+    "targetDimension": "reactionFormation/projection/humor/suppression",
+    "rationale": "Boundary crossing evokes hidden anger, politeness, joking, or projected blame.",
+    "scene": {
+      "ko": "누군가 부탁을 했는데 사실상 선을 넘는 요청입니다. 거절하면 분위기가 불편해질 것 같습니다.",
+      "en": "Someone asks for a favor that quietly crosses your boundary. Saying no may make the mood uncomfortable."
+    },
+    "question": {
+      "ko": "가장 가까운 반응은?",
+      "en": "What reaction feels closest?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "농담 섞어 “그건 좀 빡센데?”라고 말해본다.",
+          "en": "I say playfully, “That one is kind of a lot.”"
+        },
+        "scores": {
+          "humor": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "괜찮은 척 더 친절하게 굴다가 나중에 피곤해진다.",
+          "en": "I act extra kind as if it is fine, then feel tired later."
+        },
+        "scores": {
+          "reactionFormation": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "상대가 내 상황을 전혀 생각하지 않는다고 느낀다.",
+          "en": "It feels like they are not considering my situation at all."
+        },
+        "scores": {
+          "projection": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "불편하지만 표정에는 최대한 드러내지 않는다.",
+          "en": "I feel uncomfortable but try not to show it."
+        },
+        "scores": {
+          "suppression": 2
+        }
+      }
+    ]
   },
   {
-    id: "task-pressure",
-    scene: { ko: "해야 할 일이 너무 많아 마음이 압박감으로 꽉 찼습니다.", en: "You have so much to do that your mind feels packed with pressure." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "힘든 와중에도 농담하면서 버틴다", en: "I keep going by joking even while it is hard." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "지금 힘든 건 당연하다고 이유를 정리한다", en: "I organize why it makes sense that I feel overwhelmed." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "잠깐 미루고 아무 생각 안 하려고 한다", en: "I put it off briefly and try not to think." }, scores: { avoidance: 2 } },
-      { id: "d", text: { ko: "목록을 만들고 우선순위를 정한다", en: "I make a list and set priorities." }, scores: { intellectualization: 1, sublimation: 1 } },
-    ],
+    "id": "dm_06",
+    "targetDimension": "sublimation/rationalization/avoidance/humor",
+    "rationale": "Embarrassment in public is a compact scenario for protective coping.",
+    "scene": {
+      "ko": "사람들 앞에서 작은 실수를 했고, 몇 명이 웃었습니다. 악의는 없어 보이지만 얼굴이 뜨거워집니다.",
+      "en": "You make a small mistake in front of people, and a few laugh. It does not seem malicious, but your face gets hot."
+    },
+    "question": {
+      "ko": "이후 당신에게 가장 가까운 모습은?",
+      "en": "What are you most likely to do after?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "“오늘 예능감 있네”처럼 먼저 웃어넘긴다.",
+          "en": "I laugh first, saying something like “I am very entertaining today.”"
+        },
+        "scores": {
+          "humor": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "누구나 실수한다고 생각하며 장면을 줄이려 한다.",
+          "en": "I remind myself everyone makes mistakes and try to shrink the scene."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "다음에는 같은 실수를 안 하게 작은 규칙을 만든다.",
+          "en": "I make a small rule so I do not repeat it next time."
+        },
+        "scores": {
+          "sublimation": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "그 자리를 빨리 벗어나고 싶어진다.",
+          "en": "I want to leave the situation quickly."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      }
+    ]
   },
   {
-    id: "boundary-request",
-    scene: { ko: "누군가 당신의 선을 넘는 부탁을 했고, 거절하기가 불편했습니다.", en: "Someone asks for something that crosses your boundary, and saying no feels uncomfortable." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "장난스럽게 돌려 말하며 분위기를 부드럽게 만든다", en: "I say it indirectly with a playful tone to soften the mood." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "상대 사정은 이해하지만, 가능한 범위를 차분히 말한다", en: "I understand their situation but calmly say what I can actually do." }, scores: { rationalization: 1, intellectualization: 1 } },
-      { id: "c", text: { ko: "답장을 늦추거나 상황을 피한다", en: "I delay replying or avoid the situation." }, scores: { avoidance: 2 } },
-      { id: "d", text: { ko: "오히려 괜찮은 척하며 더 친절하게 군다", en: "I act extra kind as if it is totally fine." }, scores: { reactionFormation: 2 } },
-    ],
+    "id": "dm_07",
+    "targetDimension": "projection/intellectualization/suppression/reactionFormation",
+    "rationale": "Being misunderstood separates explanation, contained emotion, projection, and opposite behavior.",
+    "scene": {
+      "ko": "상대가 당신의 말을 다르게 받아들였습니다. 바로 설명하고 싶지만 감정도 같이 올라옵니다.",
+      "en": "Someone takes your words differently than intended. You want to explain, but emotion rises too."
+    },
+    "question": {
+      "ko": "가장 먼저 하게 되는 쪽은?",
+      "en": "What do you tend to do first?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "오해가 생긴 지점을 차분히 정리해 말하려 한다.",
+          "en": "I try to calmly explain where the misunderstanding started."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "감정이 티 나지 않게 잠깐 말을 아낀다.",
+          "en": "I hold back for a moment so my emotion does not show."
+        },
+        "scores": {
+          "suppression": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "상대가 애초에 나를 안 좋게 보려는 것 같다고 느낀다.",
+          "en": "It feels like they were already trying to see me negatively."
+        },
+        "scores": {
+          "projection": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "괜히 더 부드럽게 굴며 불편하지 않은 척한다.",
+          "en": "I act even softer, as if I am not uncomfortable."
+        },
+        "scores": {
+          "reactionFormation": 2
+        }
+      }
+    ]
   },
   {
-    id: "short-reply",
-    scene: { ko: "상대의 짧은 답장 때문에 마음이 불안해졌습니다.", en: "A short reply from someone makes you feel uneasy." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "'아 나 차인 듯?' 하고 농담처럼 말한다", en: "I joke, 'Wow, I got rejected.'" }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "바빠서 짧게 답했을 거라고 생각한다", en: "I think they probably replied briefly because they were busy." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "답장을 더 보내지 않고 잠시 물러난다", en: "I do not send another message and step back for a while." }, scores: { avoidance: 1, suppression: 1 } },
-      { id: "d", text: { ko: "답장 패턴을 떠올리며 의미를 분석한다", en: "I analyze the meaning by thinking of their reply patterns." }, scores: { intellectualization: 2 } },
-    ],
+    "id": "dm_08",
+    "targetDimension": "avoidance/suppression/rationalization/sublimation",
+    "rationale": "Disappointment from changed plans tests distancing, containment, explanation, and productive redirection.",
+    "scene": {
+      "ko": "기대하던 약속이 가볍게 미뤄졌습니다. 상대는 미안해하지만 당신은 생각보다 서운합니다.",
+      "en": "A plan you looked forward to is casually postponed. They apologize, but you feel more disappointed than expected."
+    },
+    "question": {
+      "ko": "당신에게 가까운 반응은?",
+      "en": "What reaction feels closest?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "괜찮다고 말하고 혼자 조용히 식힌다.",
+          "en": "I say it is okay and cool down alone."
+        },
+        "scores": {
+          "suppression": 1,
+          "avoidance": 1
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "상대도 사정이 있었을 거라고 납득하려 한다.",
+          "en": "I try to understand that they probably had their reasons."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "당분간 먼저 약속 얘기를 꺼내고 싶지 않다.",
+          "en": "I do not want to bring up plans first for a while."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "비어버린 시간을 내가 미뤄둔 일에 써버린다.",
+          "en": "I use the freed-up time for something I had been postponing."
+        },
+        "scores": {
+          "sublimation": 2
+        }
+      }
+    ]
   },
   {
-    id: "disappointed-person",
-    scene: { ko: "믿었던 사람이 당신의 기대와 다르게 행동했습니다.", en: "Someone you trusted acts differently from what you expected." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "실망한 마음을 농담처럼 말한다", en: "I express disappointment as a joke." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "그 사람 입장에서는 그럴 수 있다고 이유를 찾는다", en: "I look for why it may have made sense from their side." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "당분간 거리를 두며 마음을 정리한다", en: "I take distance for a while and sort out my feelings." }, scores: { avoidance: 1, suppression: 1 } },
-      { id: "d", text: { ko: "내가 어떤 기대를 했는지 먼저 분석한다", en: "I first analyze what expectation I had." }, scores: { intellectualization: 2 } },
-    ],
+    "id": "dm_09",
+    "targetDimension": "intellectualization/humor/projection/rationalization",
+    "rationale": "Silent reaction to an idea gives multiple non-obvious defensive paths.",
+    "scene": {
+      "ko": "회의에서 낸 의견에 반응이 거의 없었습니다. 누군가 반대하진 않았지만 공기가 잠깐 멈춘 것 같습니다.",
+      "en": "You share an idea in a meeting and almost no one reacts. Nobody disagrees, but the room seems to pause."
+    },
+    "question": {
+      "ko": "가장 먼저 드는 쪽은?",
+      "en": "What comes up first?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "말이 너무 진지했나 싶어 가볍게 한마디를 덧붙인다.",
+          "en": "I add a light comment because maybe I sounded too serious."
+        },
+        "scores": {
+          "humor": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "사람들이 생각할 시간이 필요했을 거라고 본다.",
+          "en": "I assume people may have needed time to think."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "내 의견을 별로라고 여긴 것 같아 마음이 굳는다.",
+          "en": "I tense up because it feels like they thought my idea was weak."
+        },
+        "scores": {
+          "projection": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "어떤 맥락에서 반응이 멈췄는지 구조를 다시 본다.",
+          "en": "I review the context to understand why the reaction stopped."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      }
+    ]
   },
   {
-    id: "hide-pain",
-    scene: { ko: "힘든 일이 있었지만 주변 사람들에게 티 내고 싶지 않았습니다.", en: "Something hard happened, but you do not want people around you to notice." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "더 밝게 농담하면서 평소처럼 행동한다", en: "I act brighter and joke around as usual." }, scores: { humor: 1, reactionFormation: 2 } },
-      { id: "b", text: { ko: "지금은 말하지 않는 게 낫다고 스스로 납득한다", en: "I convince myself it is better not to talk about it right now." }, scores: { rationalization: 2, suppression: 1 } },
-      { id: "c", text: { ko: "연락을 줄이고 혼자 있으려 한다", en: "I reduce contact and try to be alone." }, scores: { avoidance: 2 } },
-      { id: "d", text: { ko: "감정보다 상황을 먼저 정리하려고 한다", en: "I try to organize the situation before the emotion." }, scores: { intellectualization: 2 } },
-    ],
+    "id": "dm_10",
+    "targetDimension": "sublimation/suppression/avoidance/reactionFormation",
+    "rationale": "Private sadness with immediate obligations tests what the user does with emotional energy.",
+    "scene": {
+      "ko": "속상한 일이 있었지만 바로 해야 할 일이 남아 있습니다. 주변에는 티 내고 싶지 않습니다.",
+      "en": "Something upsetting happened, but there is still something you need to do. You do not want people around you to notice."
+    },
+    "question": {
+      "ko": "당신에게 가장 가까운 모습은?",
+      "en": "What are you most likely to do?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "일단 감정은 접어두고 해야 할 일부터 끝낸다.",
+          "en": "I put the feeling aside and finish what needs to be done first."
+        },
+        "scores": {
+          "suppression": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "그 에너지를 정리, 운동, 작업 같은 데로 돌린다.",
+          "en": "I channel that energy into organizing, exercise, or work."
+        },
+        "scores": {
+          "sublimation": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "평소보다 더 밝게 굴며 아무 일 없는 척한다.",
+          "en": "I act brighter than usual as if nothing happened."
+        },
+        "scores": {
+          "reactionFormation": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "가능하면 연락을 줄이고 혼자 있고 싶다.",
+          "en": "If possible, I reduce contact and want to be alone."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      }
+    ]
   },
   {
-    id: "misunderstood",
-    scene: { ko: "누군가 당신을 오해했고, 해명하고 싶지만 감정이 먼저 올라왔습니다.", en: "Someone misunderstands you, and you want to explain, but your emotions rise first." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "농담 섞어서 분위기를 풀고 말한다", en: "I mix in humor to soften the mood before explaining." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "상대가 그렇게 생각한 이유도 있을 거라고 본다", en: "I assume they may have had a reason to think that." }, scores: { rationalization: 2 } },
-      { id: "c", text: { ko: "일단 대화를 피하고 시간이 지난 뒤 말한다", en: "I avoid the conversation for now and talk later." }, scores: { avoidance: 2 } },
-      { id: "d", text: { ko: "오해가 생긴 지점을 차분히 정리한다", en: "I calmly organize where the misunderstanding started." }, scores: { intellectualization: 2 } },
-    ],
+    "id": "dm_11",
+    "targetDimension": "rationalization/projection/intellectualization/suppression",
+    "rationale": "Social comparison invites protective explanations without asking about envy.",
+    "scene": {
+      "ko": "당신이 원하던 기회를 다른 사람이 먼저 얻었습니다. 축하할 일인데 마음 한쪽이 복잡합니다.",
+      "en": "Someone else gets an opportunity you wanted first. It is good news, but part of you feels complicated."
+    },
+    "question": {
+      "ko": "가장 가까운 반응은?",
+      "en": "What reaction feels closest?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "내가 아직 준비가 덜 됐던 거라고 이유를 찾는다.",
+          "en": "I tell myself I probably was not ready enough yet."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "그 사람이 은근히 나를 의식할 것 같다고 느낀다.",
+          "en": "It feels like they may be quietly aware of me."
+        },
+        "scores": {
+          "projection": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "부러운 마음은 접어두고 축하부터 한다.",
+          "en": "I set the envy aside and congratulate them first."
+        },
+        "scores": {
+          "suppression": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "내가 원했던 게 정확히 무엇인지 다시 정리한다.",
+          "en": "I reorganize what exactly I had wanted."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      }
+    ]
   },
   {
-    id: "work-through-sadness",
-    scene: { ko: "속상한 마음이 있는데도 당장 해야 할 일이 남아 있습니다.", en: "You feel upset, but there is still something you need to do right now." },
-    question: { ko: "당신의 가장 가까운 반응은?", en: "What reaction feels closest?" },
-    answers: [
-      { id: "a", text: { ko: "농담이라도 하면서 분위기를 버틴다", en: "I use even small jokes to get through the mood." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "지금은 할 일을 먼저 하는 게 맞다고 생각한다", en: "I think it makes sense to handle what must be done first." }, scores: { rationalization: 1, suppression: 1 } },
-      { id: "c", text: { ko: "감정은 잠시 밀어두고 아예 안 보려 한다", en: "I push the feeling aside and try not to look at it." }, scores: { suppression: 2 } },
-      { id: "d", text: { ko: "마음이 흔들리는 이유와 할 일을 분리해서 본다", en: "I separate why my heart is shaken from what I need to do." }, scores: { intellectualization: 2 } },
-    ],
+    "id": "dm_12",
+    "targetDimension": "humor/avoidance/reactionFormation/sublimation",
+    "rationale": "Awkward conflict lets humor, retreat, overkindness, and repair-oriented action compete.",
+    "scene": {
+      "ko": "작은 의견 차이로 분위기가 굳었습니다. 다들 큰 문제는 아닌 척하지만 공기가 어색합니다.",
+      "en": "A small disagreement makes the mood stiff. Everyone acts like it is not a big deal, but the air is awkward."
+    },
+    "question": {
+      "ko": "당신이 가장 하기 쉬운 행동은?",
+      "en": "What are you most likely to do?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "짧은 농담으로 공기를 조금 풀어본다.",
+          "en": "I use a short joke to loosen the air a little."
+        },
+        "scores": {
+          "humor": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "일단 그 대화에서 빠져나와 시간을 둔다.",
+          "en": "I step away from that conversation for now and give it time."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "방금 전보다 더 친절하게 굴며 아무렇지 않은 척한다.",
+          "en": "I act even kinder than before as if nothing happened."
+        },
+        "scores": {
+          "reactionFormation": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "불편한 에너지를 문제 해결 쪽으로 돌린다.",
+          "en": "I turn the uncomfortable energy toward solving the issue."
+        },
+        "scores": {
+          "sublimation": 2
+        }
+      }
+    ]
   },
   {
-    id: "meeting-silence",
-    scene: { ko: "회의에서 의견을 냈는데 반응이 거의 없습니다.", en: "You share an idea in a meeting, but there is almost no reaction." },
-    question: { ko: "당신에게 가장 가까운 반응은?", en: "What reaction feels closest to you?" },
-    answers: [
-      { id: "a", text: { ko: "필요한 피드백이 있는지 차분히 확인한다", en: "I calmly check whether there is any useful feedback." }, scores: { intellectualization: 1, sublimation: 1 } },
-      { id: "b", text: { ko: "가볍게 농담해서 어색함을 줄인다", en: "I make a light joke to soften the awkwardness." }, scores: { humor: 2 } },
-      { id: "c", text: { ko: "다들 생각할 시간이 필요했을 거라고 본다", en: "I assume people may have needed time to think." }, scores: { rationalization: 2 } },
-      { id: "d", text: { ko: "그 장면을 더 떠올리지 않으려고 다른 일로 넘긴다", en: "I move to another task so I do not keep replaying it." }, scores: { avoidance: 1, suppression: 1 } },
-    ],
+    "id": "dm_13",
+    "targetDimension": "suppression/intellectualization/rationalization/projection",
+    "rationale": "A lingering family comment evokes restrained emotion, analysis, explanation, or projected intent.",
+    "scene": {
+      "ko": "가족의 한마디가 예상보다 오래 마음에 남습니다. 대놓고 상처 주려던 말은 아닌 것 같습니다.",
+      "en": "A family member’s comment stays longer than expected. It probably was not meant to hurt you directly."
+    },
+    "question": {
+      "ko": "보통 당신은 어떻게 하나요?",
+      "en": "What do you usually do?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "괜찮은 척하고 그 자리에서는 넘긴다.",
+          "en": "I act fine and let it pass in the moment."
+        },
+        "scores": {
+          "suppression": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "그 말이 왜 건드렸는지 혼자 정리한다.",
+          "en": "I privately sort out why it touched me."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "원래 그런 식으로 말하는 사람이라고 생각한다.",
+          "en": "I think that is just how they talk."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "나를 낮게 보는 마음이 있었던 것 같다고 느낀다.",
+          "en": "It feels like there was some part of them looking down on me."
+        },
+        "scores": {
+          "projection": 2
+        }
+      }
+    ]
   },
   {
-    id: "family-comment",
-    scene: { ko: "가족의 한마디가 예상보다 오래 마음에 남습니다.", en: "A family member's comment stays with you longer than expected." },
-    question: { ko: "당신은 보통 어떻게 하나요?", en: "What do you usually do?" },
-    answers: [
-      { id: "a", text: { ko: "어떤 부분이 건드려졌는지 정리한 뒤 필요하면 말한다", en: "I sort out what it touched in me and speak if needed." }, scores: { intellectualization: 1, sublimation: 1 } },
-      { id: "b", text: { ko: "오히려 괜찮은 척하며 더 밝게 군다", en: "I act brighter, as if I am completely fine." }, scores: { reactionFormation: 2 } },
-      { id: "c", text: { ko: "나쁘게 말하려던 건 아닐 거라고 생각한다", en: "I tell myself they probably did not mean it badly." }, scores: { rationalization: 2 } },
-      { id: "d", text: { ko: "잠시 거리를 두고 마음을 가라앉힌다", en: "I take a little space and let my feelings settle." }, scores: { avoidance: 1, suppression: 1 } },
-    ],
+    "id": "dm_14",
+    "targetDimension": "sublimation/avoidance/humor/reactionFormation",
+    "rationale": "Unexpected rejection tests whether pain becomes action, distance, lightness, or opposite behavior.",
+    "scene": {
+      "ko": "가볍게 제안한 일이 거절되었습니다. 이유는 이해되지만 괜히 민망하고 아쉽습니다.",
+      "en": "A casual suggestion you made gets declined. The reason makes sense, but you still feel embarrassed and disappointed."
+    },
+    "question": {
+      "ko": "가장 가까운 반응은?",
+      "en": "What reaction feels closest?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "“거절당했다”는 식으로 가볍게 웃어넘긴다.",
+          "en": "I lightly joke, “I got rejected.”"
+        },
+        "scores": {
+          "humor": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "비슷한 제안을 당분간 하지 않게 된다.",
+          "en": "I avoid making similar suggestions for a while."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "아쉬운 에너지를 다른 계획을 세우는 데 쓴다.",
+          "en": "I use the disappointed energy to make another plan."
+        },
+        "scores": {
+          "sublimation": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "전혀 아쉽지 않은 것처럼 더 쿨하게 군다.",
+          "en": "I act extra cool, as if I am not disappointed at all."
+        },
+        "scores": {
+          "reactionFormation": 2
+        }
+      }
+    ]
   },
   {
-    id: "small-conflict",
-    scene: { ko: "작은 의견 차이로 분위기가 굳어졌습니다.", en: "A small disagreement makes the mood tense." },
-    question: { ko: "가장 자연스러운 행동은?", en: "What action feels most natural?" },
-    answers: [
-      { id: "a", text: { ko: "짧은 농담으로 긴장을 조금 낮춘다", en: "I use a brief joke to lower the tension a little." }, scores: { humor: 2 } },
-      { id: "b", text: { ko: "감정은 잠시 두고 핵심만 차분히 확인한다", en: "I set the emotion aside briefly and calmly check the main point." }, scores: { suppression: 1, intellectualization: 1 } },
-      { id: "c", text: { ko: "다른 사람들이 나를 탓하는 것처럼 느껴진다", en: "It feels like others are blaming me." }, scores: { projection: 2 } },
-      { id: "d", text: { ko: "불편한 에너지를 문제 해결 쪽으로 돌린다", en: "I channel the uncomfortable energy into solving the issue." }, scores: { sublimation: 2 } },
-    ],
+    "id": "dm_15",
+    "targetDimension": "intellectualization/suppression/rationalization/sublimation",
+    "rationale": "Receiving mixed evaluation reveals whether user processes emotion through logic, containment, meaning, or action.",
+    "scene": {
+      "ko": "칭찬과 아쉬운 피드백을 함께 들었습니다. 좋은 말도 있었지만 부족한 한 부분이 계속 떠오릅니다.",
+      "en": "You receive praise and critical feedback together. There were good words too, but one weak part keeps returning."
+    },
+    "question": {
+      "ko": "그 뒤 당신에게 가까운 쪽은?",
+      "en": "What are you most likely to do after?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "감정은 잠시 미루고 피드백을 항목별로 정리한다.",
+          "en": "I postpone the emotion and organize the feedback by category."
+        },
+        "scores": {
+          "intellectualization": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "좋은 말도 있었으니 괜찮다고 스스로 납득한다.",
+          "en": "I tell myself it is okay because there was praise too."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "속상함은 티 내지 않고 다음 수정에 반영한다.",
+          "en": "I do not show the hurt and apply it to the next revision."
+        },
+        "scores": {
+          "suppression": 1,
+          "sublimation": 1
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "그 한 부분을 개선할 구체적인 연습을 바로 만든다.",
+          "en": "I immediately create a specific practice to improve that one part."
+        },
+        "scores": {
+          "sublimation": 2
+        }
+      }
+    ]
   },
   {
-    id: "envy-good-news",
-    scene: { ko: "내가 원하던 기회를 누군가 먼저 얻었습니다.", en: "Someone gets an opportunity you wanted first." },
-    question: { ko: "당신의 마음은 어디에 가까운가요?", en: "Where does your mind go first?" },
-    answers: [
-      { id: "a", text: { ko: "축하하면서도 부러운 마음을 조용히 알아차린다", en: "I congratulate them while quietly noticing my envy." }, scores: { intellectualization: 1, suppression: 1 } },
-      { id: "b", text: { ko: "농담처럼 넘기며 분위기를 가볍게 만든다", en: "I joke about it and keep the mood light." }, scores: { humor: 2 } },
-      { id: "c", text: { ko: "당분간 그 사람 소식을 덜 보려고 한다", en: "I try to see less of their updates for a while." }, scores: { avoidance: 2 } },
-      { id: "d", text: { ko: "내가 할 수 있는 다음 계획으로 에너지를 옮긴다", en: "I move that energy into my own next plan." }, scores: { sublimation: 2 } },
-    ],
-  },
+    "id": "dm_16",
+    "targetDimension": "projection/reactionFormation/avoidance/rationalization",
+    "rationale": "A changed social rhythm invites hidden threat reading, opposite behavior, withdrawal, or explanation.",
+    "scene": {
+      "ko": "친한 사람과의 대화 리듬이 예전 같지 않습니다. 특별한 사건은 없었지만 거리감이 느껴집니다.",
+      "en": "The rhythm with someone close does not feel like before. Nothing specific happened, but you sense distance."
+    },
+    "question": {
+      "ko": "가장 가까운 반응은?",
+      "en": "What reaction feels closest?"
+    },
+    "answers": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "상대가 마음이 식은 것 같다고 느낀다.",
+          "en": "It feels like their feelings have cooled."
+        },
+        "scores": {
+          "projection": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "아무렇지 않은 척 더 밝고 다정하게 군다.",
+          "en": "I act brighter and warmer as if nothing is wrong."
+        },
+        "scores": {
+          "reactionFormation": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "잠깐 거리를 두고 상황을 더 지켜본다.",
+          "en": "I take a little distance and watch the situation longer."
+        },
+        "scores": {
+          "avoidance": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "요즘 서로 바빴을 수 있다고 생각한다.",
+          "en": "I think we may both have been busy lately."
+        },
+        "scores": {
+          "rationalization": 2
+        }
+      }
+    ]
+  }
 ];
-
 
 export function calculateDefenseResult(answers: DefenseAnswer[]) {
   const scores = DEFENSE_RESULT_ORDER.reduce<Record<DefenseMechanismId, number>>(

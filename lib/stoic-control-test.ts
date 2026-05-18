@@ -1,4 +1,5 @@
 export type StoicControlId =
+  | "present-action"
   | "others-opinion"
   | "future"
   | "emotions"
@@ -20,6 +21,8 @@ export type StoicChoice = {
 
 export type StoicQuestion = {
   id: string;
+  targetDimension: string;
+  rationale: string;
   prompt: LocalText;
   choices: StoicChoice[];
 };
@@ -43,6 +46,38 @@ export type StoicAnswer = {
 };
 
 export const STOIC_RESULTS: StoicResult[] = [
+  {
+    id: "present-action",
+    title: { ko: "지금 할 수 있는 행동으로 돌아오는 사람", en: "Returning to Present Action" },
+    oneLiner: {
+      ko: "불안한 순간에도 지금 선택할 수 있는 작은 행동을 찾는 사람",
+      en: "Even under stress, you look for the small action available now.",
+    },
+    description: {
+      ko: "당신은 불확실한 상황에서 모든 것을 붙잡기보다, 지금 손에 있는 행동으로 마음을 돌리려는 편입니다. 결과나 평가를 완전히 내려놓는 것은 아니지만, 멈춰 있기보다 다음 한 걸음을 정하면 조금 안정됩니다.",
+      en: "In uncertain moments, you tend to return to what can be done now instead of trying to hold everything at once. You do not ignore outcomes or opinions, but choosing a next step helps you feel steadier.",
+    },
+    cannotControl: {
+      ko: "상대의 반응, 최종 결과, 우연한 변수, 이미 지나간 장면.",
+      en: "Other people's reactions, final outcomes, chance variables, and scenes that have already passed.",
+    },
+    canChoose: {
+      ko: "지금 확인할 정보, 오늘의 작은 행동, 다음에 건넬 말, 내가 지킬 태도.",
+      en: "Information you can check now, a small action today, the next words you choose, and the attitude you keep.",
+    },
+    reflection: {
+      ko: "통제할 수 없는 것을 전부 내려놓기는 어렵지만, 지금 할 수 있는 일 하나는 마음을 현재로 데려옵니다.",
+      en: "It is hard to let go of everything outside your control, but one available action can bring your mind back to the present.",
+    },
+    hint: {
+      ko: "불안이 커질 때는 “지금 내가 실제로 할 수 있는 가장 작은 행동은?”이라고 물어보세요.",
+      en: "When anxiety grows, ask: \"What is the smallest thing I can actually do now?\"",
+    },
+    shareLine: {
+      ko: "나는 스토아 철학 테스트에서 지금 할 수 있는 행동으로 돌아오는 사람 유형이 나왔다.",
+      en: "My Stoic Control result is Returning to Present Action.",
+    },
+  },
   {
     id: "others-opinion",
     title: { ko: "타인의 평가를 통제하려는 사람", en: "Trying to Control How Others See You" },
@@ -271,225 +306,871 @@ export const STOIC_RESULTS: StoicResult[] = [
 
 export const STOIC_QUESTIONS: StoicQuestion[] = [
   {
-    id: "waiting-result",
-    prompt: {
-      ko: "중요한 결과를 기다리는 중입니다. 가장 먼저 가까운 반응은?",
-      en: "You are waiting for an important result. What reaction feels closest first?",
+    "id": "sc_01",
+    "targetDimension": "present-action/future/others-opinion/perfect-self",
+    "rationale": "A disrupted plan reveals what the user tries to control first under pressure.",
+    "prompt": {
+      "ko": "계획했던 일이 갑자기 틀어졌습니다. 사람들이 이미 결과를 기다리고 있는 상황입니다.\n\n당신에게 가장 가까운 반응은?",
+      "en": "Something you planned suddenly goes off track. People are already waiting for the result.\n\nWhat reaction feels closest?"
     },
-    choices: [
-      { id: "a", text: { ko: "지금 내가 할 수 있는 것부터 정리한다", en: "I organize what I can do right now." }, weights: { outcome: 1 } },
-      { id: "b", text: { ko: "결과가 어떻게 나올지 계속 시뮬레이션한다", en: "I keep running scenarios about how it might turn out." }, weights: { future: 2 } },
-      { id: "c", text: { ko: "사람들이 나를 어떻게 볼지 신경 쓰인다", en: "I worry about how people will see me." }, weights: { "others-opinion": 2 } },
-      { id: "d", text: { ko: "부족했던 부분이 자꾸 떠오른다", en: "I keep thinking about what I may have lacked." }, weights: { "perfect-self": 1, outcome: 1 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "지금 내가 다시 정할 수 있는 부분부터 본다.",
+          "en": "I first look at what I can decide again right now."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "앞으로 일이 계속 꼬일까 봐 여러 경우를 돌려본다.",
+          "en": "I run through scenarios in case things keep going wrong."
+        },
+        "weights": {
+          "future": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "사람들이 나를 어떻게 볼지 신경 쓰인다.",
+          "en": "I worry about how people will see me."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "이런 일에 흔들리는 내가 답답해서 스스로를 다그친다.",
+          "en": "I scold myself for being shaken by this."
+        },
+        "weights": {
+          "emotions": 1,
+          "perfect-self": 1
+        }
+      }
+    ]
   },
   {
-    id: "plan-changed",
-    prompt: {
-      ko: "계획했던 일이 갑자기 틀어졌습니다. 무엇이 가장 불편한가요?",
-      en: "A plan suddenly changes. What feels most uncomfortable?",
+    "id": "sc_02",
+    "targetDimension": "present-action/outcome/future/others-opinion",
+    "rationale": "Waiting for feedback separates controllable next action from outcome control.",
+    "prompt": {
+      "ko": "중요한 피드백을 기다리는 중입니다. 아직 할 수 있는 답은 없고, 시간만 지나갑니다.\n\n가장 먼저 신경 쓰이는 것은?",
+      "en": "You are waiting for important feedback. There is no answer yet, and time keeps passing.\n\nWhat bothers you first?"
     },
-    choices: [
-      { id: "a", text: { ko: "바뀐 상황에 맞춰 다음 선택을 생각한다", en: "I think about the next choice that fits the changed situation." }, weights: { future: 1 } },
-      { id: "b", text: { ko: "앞으로 더 꼬이면 어떡하지 먼저 걱정된다", en: "I first worry about what if things keep going wrong." }, weights: { future: 2 } },
-      { id: "c", text: { ko: "준비한 과정이 의미 없어지는 것 같아 속상하다", en: "I feel upset that my preparation may become meaningless." }, weights: { outcome: 2 } },
-      { id: "d", text: { ko: "당황한 티가 날까 봐 신경 쓰인다", en: "I worry that people will notice I am flustered." }, weights: { "others-opinion": 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "기다리는 동안 할 수 있는 다음 작은 일을 정한다.",
+          "en": "I choose one small next action I can do while waiting."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "결과가 기대와 다르면 어떻게 할지 머릿속이 바쁘다.",
+          "en": "My mind gets busy with what I will do if the result disappoints me."
+        },
+        "weights": {
+          "outcome": 2,
+          "future": 1
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "평가하는 사람이 나를 어떻게 판단할지가 걸린다.",
+          "en": "I worry how the evaluator will judge me."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "앞으로의 흐름이 어디로 갈지 계속 계산한다.",
+          "en": "I keep calculating where things may go from here."
+        },
+        "weights": {
+          "future": 2
+        }
+      }
+    ]
   },
   {
-    id: "misunderstood",
-    prompt: {
-      ko: "누군가 당신을 오해한 것 같습니다. 가장 먼저 드는 생각은?",
-      en: "Someone seems to have misunderstood you. What thought comes first?",
+    "id": "sc_03",
+    "targetDimension": "emotions/perfect-self/present-action/past",
+    "rationale": "Emotional rise tests whether the target of control is feeling, image, action, or past wording.",
+    "prompt": {
+      "ko": "대화 중 감정이 예상보다 크게 올라왔습니다. 상대는 아직 차분하게 말하고 있습니다.\n\n가장 가까운 반응은?",
+      "en": "During a conversation, your emotion rises more than expected. The other person is still speaking calmly.\n\nWhat reaction feels closest?"
     },
-    choices: [
-      { id: "a", text: { ko: "필요하면 차분히 설명하면 된다고 생각한다", en: "I think I can explain calmly if needed." }, weights: { relationships: 1 } },
-      { id: "b", text: { ko: "그 사람이 나를 이상하게 볼까 봐 걱정된다", en: "I worry they will see me strangely." }, weights: { "others-opinion": 2 } },
-      { id: "c", text: { ko: "그때 말을 다르게 했어야 했다고 되짚는다", en: "I replay how I should have said it differently." }, weights: { past: 2 } },
-      { id: "d", text: { ko: "감정이 올라오지 않게 스스로를 눌러본다", en: "I try to hold myself down so emotion does not rise." }, weights: { emotions: 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "감정이 티 나지 않게 바로 눌러야 할 것 같다.",
+          "en": "I feel I need to press the emotion down immediately."
+        },
+        "weights": {
+          "emotions": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "이 정도로 흔들리면 안 된다고 나를 다그친다.",
+          "en": "I scold myself that I should not be this shaken."
+        },
+        "weights": {
+          "perfect-self": 2,
+          "emotions": 1
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "잠깐 멈추고 다음 말을 어떻게 할지 고른다.",
+          "en": "I pause briefly and choose what to say next."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "조금 전 말을 다르게 했어야 했나 되감는다.",
+          "en": "I rewind whether I should have said the earlier words differently."
+        },
+        "weights": {
+          "past": 2
+        }
+      }
+    ]
   },
   {
-    id: "late-reply",
-    prompt: {
-      ko: "가까운 사람이 평소보다 답장이 늦습니다. 가장 먼저 드는 생각은?",
-      en: "Someone close replies later than usual. What thought comes first?",
+    "id": "sc_04",
+    "targetDimension": "relationships/others-opinion/future/present-action",
+    "rationale": "Late reply tests relationship flow control versus current action.",
+    "prompt": {
+      "ko": "가까운 사람이 평소보다 늦게 답합니다. 특별한 이유는 아직 모릅니다.\n\n무엇이 가장 불편한가요?",
+      "en": "Someone close replies later than usual. You do not know the reason yet.\n\nWhat feels most uncomfortable?"
     },
-    choices: [
-      { id: "a", text: { ko: "바쁜가 보다 하고 크게 의미를 두지 않는다", en: "I assume they may be busy and do not read too much into it." }, weights: { relationships: 1 } },
-      { id: "b", text: { ko: "앞으로 계속 이렇게 될까 봐 불안하다", en: "I worry it may keep being like this." }, weights: { future: 2 } },
-      { id: "c", text: { ko: "그 사람이 나를 어떻게 생각하는지 신경 쓰인다", en: "I wonder what they think of me." }, weights: { "others-opinion": 1, relationships: 1 } },
-      { id: "d", text: { ko: "이런 일에 흔들리는 내 감정이 불편하다", en: "I feel uncomfortable that I am affected by this." }, weights: { emotions: 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "관계의 분위기가 달라졌을까 봐 신경 쓰인다.",
+          "en": "I worry the relationship mood may have changed."
+        },
+        "weights": {
+          "relationships": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "상대가 나를 어떻게 생각하는지 자꾸 궁금하다.",
+          "en": "I keep wondering what they think of me."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "앞으로도 계속 이런 식이면 어쩌나 생각한다.",
+          "en": "I think about what if it keeps being like this."
+        },
+        "weights": {
+          "future": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "오늘 내가 할 일을 먼저 해두고 나중에 확인한다.",
+          "en": "I do what I need to do today and check later."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      }
+    ]
   },
   {
-    id: "mistake",
-    prompt: {
-      ko: "사람들 앞에서 작은 실수를 했습니다. 무엇이 가장 신경 쓰이나요?",
-      en: "You make a small mistake in front of people. What bothers you most?",
+    "id": "sc_05",
+    "targetDimension": "past/perfect-self/others-opinion/present-action",
+    "rationale": "Public mistake offers multiple control targets around image, past, and recovery.",
+    "prompt": {
+      "ko": "사람들 앞에서 작은 실수를 했습니다. 상황은 지나갔지만 장면이 반복해서 떠오릅니다.\n\n가장 먼저 붙잡게 되는 것은?",
+      "en": "You make a small mistake in front of people. The moment has passed, but the scene keeps replaying.\n\nWhat do you hold onto first?"
     },
-    choices: [
-      { id: "a", text: { ko: "한 번의 실수일 뿐이라고 보고 다음을 생각한다", en: "I see it as one mistake and think about what comes next." }, weights: { outcome: 1 } },
-      { id: "b", text: { ko: "사람들이 그 장면을 어떻게 기억할지 걱정된다", en: "I worry how people will remember that moment." }, weights: { "others-opinion": 2 } },
-      { id: "c", text: { ko: "왜 그랬는지 장면을 계속 되감는다", en: "I keep rewinding why I did that." }, weights: { past: 2 } },
-      { id: "d", text: { ko: "실수 없는 사람처럼 보이고 싶었다는 생각이 든다", en: "I realize I wanted to look like someone who does not make mistakes." }, weights: { "perfect-self": 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "그 순간으로 돌아가 고치고 싶어진다.",
+          "en": "I want to go back and fix that moment."
+        },
+        "weights": {
+          "past": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "실수 없는 사람처럼 보이고 싶었다는 생각이 든다.",
+          "en": "I realize I wanted to look like someone who does not make mistakes."
+        },
+        "weights": {
+          "perfect-self": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "사람들이 그 장면을 어떻게 기억할지 신경 쓰인다.",
+          "en": "I worry how people will remember that moment."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "다음에 덜 흔들리도록 하나만 정리한다.",
+          "en": "I note one thing that can help me be steadier next time."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      }
+    ]
   },
   {
-    id: "future-unknown",
-    prompt: {
-      ko: "앞일이 잘 보이지 않는 시기입니다. 당신은 보통 어떻게 반응하나요?",
-      en: "You are in a season where the future is unclear. How do you usually respond?",
+    "id": "sc_06",
+    "targetDimension": "future/present-action/emotions/perfect-self",
+    "rationale": "Unclear season tests future scenario control versus present practice.",
+    "prompt": {
+      "ko": "앞으로 몇 달이 어떻게 흘러갈지 잘 보이지 않습니다. 정해진 답이 없어서 마음이 산만합니다.\n\n가장 가까운 모습은?",
+      "en": "You cannot clearly see how the next few months will unfold. With no fixed answer, your mind feels scattered.\n\nWhat are you most likely to do?"
     },
-    choices: [
-      { id: "a", text: { ko: "오늘 할 수 있는 작은 준비부터 해본다", en: "I start with one small preparation I can do today." }, weights: { future: 1 } },
-      { id: "b", text: { ko: "가능한 경우의 수를 머릿속에서 계속 계산한다", en: "I keep calculating all possible outcomes in my head." }, weights: { future: 2 } },
-      { id: "c", text: { ko: "불안해하지 말아야 한다고 스스로를 다그친다", en: "I push myself not to feel anxious." }, weights: { emotions: 2 } },
-      { id: "d", text: { ko: "완벽히 준비되지 않으면 움직이면 안 될 것 같다", en: "I feel I should not move until I am perfectly ready." }, weights: { "perfect-self": 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "가능한 경우의 수를 계속 머릿속에서 돌려본다.",
+          "en": "I keep running possible scenarios in my head."
+        },
+        "weights": {
+          "future": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "오늘 확인할 수 있는 정보 하나부터 본다.",
+          "en": "I start with one piece of information I can check today."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "불안하지 않아야 한다고 스스로를 조인다.",
+          "en": "I tighten up, thinking I should not feel anxious."
+        },
+        "weights": {
+          "emotions": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "완전히 준비되기 전에는 움직이면 안 될 것 같다.",
+          "en": "It feels like I should not move until I am fully ready."
+        },
+        "weights": {
+          "perfect-self": 2
+        }
+      }
+    ]
   },
   {
-    id: "relationship-distance",
-    prompt: {
-      ko: "가까운 사람과의 분위기가 예전 같지 않습니다. 당신은 보통 어떻게 반응하나요?",
-      en: "The mood with someone close does not feel the same as before. How do you usually react?",
+    "id": "sc_07",
+    "targetDimension": "relationships/past/present-action/emotions",
+    "rationale": "Relationship distance tests desire to control relational flow and past causes.",
+    "prompt": {
+      "ko": "친한 사람과의 분위기가 전보다 조금 멀어진 것 같습니다. 정확한 사건은 떠오르지 않습니다.\n\n가장 가까운 반응은?",
+      "en": "The mood with someone close feels a bit farther than before. No exact event comes to mind.\n\nWhat reaction feels closest?"
     },
-    choices: [
-      { id: "a", text: { ko: "아직 판단할 정보가 부족하다고 보고 조금 지켜본다", en: "I wait a little because there may not be enough information yet." }, weights: { relationships: 1 } },
-      { id: "b", text: { ko: "관계가 멀어지는 신호는 아닌지 걱정된다", en: "I worry it may be a sign the relationship is drifting." }, weights: { relationships: 2 } },
-      { id: "c", text: { ko: "내가 뭘 잘못했는지 지난 대화를 떠올린다", en: "I replay old conversations to see what I did wrong." }, weights: { past: 1, relationships: 1 } },
-      { id: "d", text: { ko: "아무렇지 않은 척 감정을 숨긴다", en: "I hide my feelings and act unaffected." }, weights: { emotions: 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "관계가 다시 예전처럼 돌아와야 마음이 놓일 것 같다.",
+          "en": "I feel I will relax only if the relationship returns to how it was."
+        },
+        "weights": {
+          "relationships": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "지난 대화에서 뭘 잘못했는지 되짚는다.",
+          "en": "I replay past conversations to find what I did wrong."
+        },
+        "weights": {
+          "past": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "지금 확인할 수 있는 말 한마디를 조심스럽게 건넨다.",
+          "en": "I carefully say one thing I can check right now."
+        },
+        "weights": {
+          "present-action": 2,
+          "relationships": 1
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "신경 쓰이는 마음 자체를 빨리 없애고 싶다.",
+          "en": "I want the feeling of caring about it to disappear quickly."
+        },
+        "weights": {
+          "emotions": 2
+        }
+      }
+    ]
   },
   {
-    id: "past-regret",
-    prompt: {
-      ko: "실수한 장면이 자꾸 떠오릅니다. 당신의 가장 가까운 반응은?",
-      en: "A mistake keeps coming back to mind. What reaction feels closest?",
+    "id": "sc_08",
+    "targetDimension": "outcome/present-action/others-opinion/future",
+    "rationale": "Effort-result mismatch separates process orientation from outcome control.",
+    "prompt": {
+      "ko": "노력한 만큼 결과가 나오지 않았습니다. 과정은 분명 있었지만 숫자는 기대보다 낮습니다.\n\n무엇이 가장 붙잡히나요?",
+      "en": "The result does not match your effort. The process was real, but the number is lower than expected.\n\nWhat holds your mind most?"
     },
-    choices: [
-      { id: "a", text: { ko: "이미 지난 일이라 보고 다음에 다르게 해보려 한다", en: "I see it as something already past and try to do differently next time." }, weights: { past: 1 } },
-      { id: "b", text: { ko: "그때로 돌아가 고치고 싶다는 생각이 든다", en: "I wish I could go back and fix it." }, weights: { past: 2 } },
-      { id: "c", text: { ko: "그 일 때문에 지금의 결과까지 망가진 것 같다", en: "It feels like that moment damaged the current outcome too." }, weights: { outcome: 1, past: 1 } },
-      { id: "d", text: { ko: "그때도 더 완벽했어야 했다고 나를 몰아붙인다", en: "I push myself that I should have been better even then." }, weights: { "perfect-self": 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "결과가 낮으면 과정도 의미가 줄어드는 것 같다.",
+          "en": "If the result is low, the process feels less meaningful too."
+        },
+        "weights": {
+          "outcome": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "과정에서 남은 것과 다음 행동을 분리해서 본다.",
+          "en": "I separate what remains from the process and what action comes next."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "주변이 내 노력을 알아줄지 신경 쓰인다.",
+          "en": "I care whether people will recognize my effort."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "다음 결과도 이렇게 나오면 어쩌나 걱정된다.",
+          "en": "I worry the next result may come out like this too."
+        },
+        "weights": {
+          "future": 2
+        }
+      }
+    ]
   },
   {
-    id: "public-work",
-    prompt: {
-      ko: "내 작업이나 선택이 사람들에게 공개됩니다. 무엇이 가장 신경 쓰이나요?",
-      en: "Your work or choice will be seen by others. What matters most to you?",
+    "id": "sc_09",
+    "targetDimension": "present-action/outcome/perfect-self/emotions",
+    "rationale": "Boundary message tests controllable wording versus perfect self and emotional control.",
+    "prompt": {
+      "ko": "누군가에게 가능한 범위를 말해야 합니다. 상대가 실망할 수도 있지만 계속 맞춰주긴 어렵습니다.\n\n가장 가까운 반응은?",
+      "en": "You need to tell someone what you can realistically do. They may be disappointed, but you cannot keep adjusting to everything.\n\nWhat reaction feels closest?"
     },
-    choices: [
-      { id: "a", text: { ko: "내가 납득할 만큼 했는지 먼저 확인한다", en: "I first check whether I did it in a way I can stand behind." }, weights: { outcome: 1 } },
-      { id: "b", text: { ko: "사람들이 나를 어떤 사람으로 볼지 신경 쓰인다", en: "I care what kind of person people will think I am." }, weights: { "others-opinion": 2 } },
-      { id: "c", text: { ko: "결과가 기대만큼 나오지 않으면 어떡할지 걱정된다", en: "I worry what if the result does not meet expectations." }, weights: { outcome: 2 } },
-      { id: "d", text: { ko: "부족한 모습이 드러나면 안 된다는 압박이 크다", en: "I feel pressure not to reveal anything lacking." }, weights: { "perfect-self": 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "내가 선택할 수 있는 범위를 차분히 말한다.",
+          "en": "I calmly state the range I can choose."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "상대가 어떤 반응을 보일지 결과가 계속 걸린다.",
+          "en": "I keep worrying about what reaction will result."
+        },
+        "weights": {
+          "outcome": 2,
+          "relationships": 1
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "완벽한 문장을 찾느라 말을 미루게 된다.",
+          "en": "I delay speaking while searching for the perfect wording."
+        },
+        "weights": {
+          "perfect-self": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "불편한 감정이 올라오지 않게 먼저 눌러본다.",
+          "en": "I first try to press down the uncomfortable emotion."
+        },
+        "weights": {
+          "emotions": 2
+        }
+      }
+    ]
   },
   {
-    id: "emotion-rises",
-    prompt: {
-      ko: "대화 중 감정이 예상보다 크게 올라옵니다. 가장 가까운 생각은?",
-      en: "During a conversation, your emotions rise more than expected. What thought feels closest?",
+    "id": "sc_10",
+    "targetDimension": "past/future/present-action/perfect-self",
+    "rationale": "Old choice scenario tests past rewriting and future spillover.",
+    "prompt": {
+      "ko": "예전 선택 하나가 문득 떠오릅니다. 지금 당장 바꿀 수는 없지만 마음이 복잡해집니다.\n\n가장 가까운 생각은?",
+      "en": "An old choice suddenly comes to mind. You cannot change it now, but your mind gets complicated.\n\nWhat thought feels closest?"
     },
-    choices: [
-      { id: "a", text: { ko: "잠깐 멈추고 말하는 방식을 고르려 한다", en: "I pause for a moment and choose how to speak." }, weights: { emotions: 1 } },
-      { id: "b", text: { ko: "감정이 티 나지 않게 바로 정리하려 한다", en: "I try to organize it immediately so it does not show." }, weights: { emotions: 2 } },
-      { id: "c", text: { ko: "이렇게 흔들리면 안 된다고 스스로를 다그친다", en: "I scold myself for being this shaken." }, weights: { emotions: 1, "perfect-self": 1 } },
-      { id: "d", text: { ko: "내 감정을 상대가 어떻게 볼지 걱정된다", en: "I worry how the other person will see my emotion." }, weights: { "others-opinion": 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "그때로 돌아가 다르게 고르고 싶어진다.",
+          "en": "I want to go back and choose differently."
+        },
+        "weights": {
+          "past": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "그 선택이 앞으로도 계속 영향을 줄까 봐 걱정된다.",
+          "en": "I worry that choice may keep affecting the future."
+        },
+        "weights": {
+          "future": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "지금 배울 점과 오늘 할 일을 나눠본다.",
+          "en": "I separate what I can learn from it and what I can do today."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "그때의 나도 더 완벽했어야 했다고 느낀다.",
+          "en": "I feel my past self should have been more perfect."
+        },
+        "weights": {
+          "perfect-self": 2
+        }
+      }
+    ]
   },
   {
-    id: "effort",
-    prompt: {
-      ko: "내가 노력한 만큼 결과가 나오지 않았습니다. 가장 신경 쓰이는 부분은?",
-      en: "The result did not match your effort. What bothers you most?",
+    "id": "sc_11",
+    "targetDimension": "others-opinion/outcome/present-action/relationships",
+    "rationale": "Visible work scenario captures social evaluation and final outcome control.",
+    "prompt": {
+      "ko": "당신의 작업물이 여러 사람에게 공개됩니다. 이미 제출해야 하는 시간은 정해져 있습니다.\n\n가장 신경 쓰이는 것은?",
+      "en": "Your work will be shown to several people. The submission time is already set.\n\nWhat bothers you most?"
     },
-    choices: [
-      { id: "a", text: { ko: "아쉬워도 과정에서 얻은 것을 먼저 정리한다", en: "Even if I feel disappointed, I first organize what I gained from the process." }, weights: { outcome: 1 } },
-      { id: "b", text: { ko: "결과가 좋지 않으면 과정도 의미 없어 보인다", en: "If the result is not good, the process feels meaningless too." }, weights: { outcome: 2 } },
-      { id: "c", text: { ko: "다른 사람들이 내 노력을 인정해줄지 신경 쓰인다", en: "I care whether other people will recognize my effort." }, weights: { "others-opinion": 2 } },
-      { id: "d", text: { ko: "아직 부족한 점만 계속 보인다", en: "I keep seeing only what is still lacking." }, weights: { "perfect-self": 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "사람들이 나를 어떤 사람으로 볼지 신경 쓰인다.",
+          "en": "I worry what kind of person people will think I am."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "최종 결과가 기대에 못 미칠까 봐 붙잡힌다.",
+          "en": "I get stuck on whether the final result will meet expectations."
+        },
+        "weights": {
+          "outcome": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "부족하더라도 마감 안에서 할 수 있는 보완을 정한다.",
+          "en": "Even if it is lacking, I choose what I can improve within the deadline."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "반응에 따라 관계나 이미지가 달라질까 봐 걱정된다.",
+          "en": "I worry reactions may change my image or relationships."
+        },
+        "weights": {
+          "relationships": 1,
+          "others-opinion": 1
+        }
+      }
+    ]
   },
   {
-    id: "quiet-night",
-    prompt: {
-      ko: "밤에 혼자 있을 때 생각이 길어집니다. 가장 자주 돌아오는 생각은?",
-      en: "At night alone, your thoughts get longer. What returns most often?",
+    "id": "sc_12",
+    "targetDimension": "emotions/present-action/future/past",
+    "rationale": "Quiet night scenario tests default mental control target when alone.",
+    "prompt": {
+      "ko": "밤에 혼자 있으니 생각이 길어집니다. 특별한 사건은 없는데 마음이 쉽게 멈추지 않습니다.\n\n가장 자주 돌아오는 쪽은?",
+      "en": "At night alone, your thoughts get longer. Nothing specific happened, but your mind does not stop easily.\n\nWhat returns most often?"
     },
-    choices: [
-      { id: "a", text: { ko: "오늘은 여기까지라고 생각하고 쉬려고 한다", en: "I tell myself this is enough for today and try to rest." }, weights: { emotions: 1 } },
-      { id: "b", text: { ko: "이미 지나간 말과 선택이 다시 떠오른다", en: "Words and choices that already passed return to mind." }, weights: { past: 2 } },
-      { id: "c", text: { ko: "내일 이후에 벌어질 가능성을 계속 생각한다", en: "I keep thinking about what might happen tomorrow and after." }, weights: { future: 2 } },
-      { id: "d", text: { ko: "사람들과의 미묘한 거리나 분위기가 마음에 남는다", en: "Subtle distance or mood with people stays with me." }, weights: { relationships: 2 } },
-    ],
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "이 감정을 빨리 정리하고 잠들고 싶다.",
+          "en": "I want to organize this feeling quickly and sleep."
+        },
+        "weights": {
+          "emotions": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "오늘은 여기까지라고 정하고 작은 루틴을 한다.",
+          "en": "I decide today is enough and do a small routine."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "내일 이후 벌어질 가능성을 계속 생각한다.",
+          "en": "I keep thinking about what might happen tomorrow and after."
+        },
+        "weights": {
+          "future": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "이미 지나간 말이나 선택이 다시 떠오른다.",
+          "en": "Words or choices that already passed return to mind."
+        },
+        "weights": {
+          "past": 2
+        }
+      }
+    ]
   },
   {
-    id: "feedback-wait",
-    prompt: { ko: "중요한 피드백을 기다리는 중입니다. 당신은 주로 어디에 마음이 가나요?", en: "You are waiting for important feedback. Where does your mind usually go?" },
-    choices: [
-      { id: "a", text: { ko: "지금 할 수 있는 다음 행동을 하나 정한다", en: "I choose one next action I can take now." }, weights: { outcome: 1, future: 1 } },
-      { id: "b", text: { ko: "상대가 나를 어떻게 평가할지 계속 떠올린다", en: "I keep imagining how they will evaluate me." }, weights: { "others-opinion": 2 } },
-      { id: "c", text: { ko: "앞으로 일이 어떻게 흘러갈지 계속 계산한다", en: "I keep calculating how things may unfold from here." }, weights: { future: 2 } },
-      { id: "d", text: { ko: "불안해하는 내 마음부터 통제하려고 한다", en: "I first try to control my anxious feelings." }, weights: { emotions: 2 } },
-    ],
+    "id": "sc_13",
+    "targetDimension": "present-action/relationships/emotions/others-opinion",
+    "rationale": "Cancelled plan tests response to disappointment and relational uncertainty.",
+    "prompt": {
+      "ko": "기대하던 약속이 취소되었습니다. 상대의 사정은 이해되지만 아쉬움은 남습니다.\n\n가장 가까운 반응은?",
+      "en": "A plan you were looking forward to is cancelled. You understand their reason, but disappointment remains.\n\nWhat reaction feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "아쉬움은 인정하고 오늘 시간을 어떻게 쓸지 정한다.",
+          "en": "I admit the disappointment and decide how to use today’s time."
+        },
+        "weights": {
+          "present-action": 2,
+          "emotions": 1
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "나를 덜 중요하게 생각하는 건 아닌지 신경 쓰인다.",
+          "en": "I worry they may not see me as important."
+        },
+        "weights": {
+          "relationships": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "내가 아쉬워하는 모습 자체가 싫다.",
+          "en": "I dislike seeing myself disappointed."
+        },
+        "weights": {
+          "emotions": 2,
+          "perfect-self": 1
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "섭섭해하면 부담스러운 사람으로 보일까 걱정된다.",
+          "en": "I worry I may look burdensome if I show disappointment."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      }
+    ]
   },
   {
-    id: "boundary-text",
-    prompt: { ko: "누군가에게 가능한 범위를 말해야 합니다. 가장 가까운 반응은?", en: "You need to tell someone what you can and cannot do. What feels closest?" },
-    choices: [
-      { id: "a", text: { ko: "내가 선택할 수 있는 범위를 차분히 말한다", en: "I calmly state the range I can choose." }, weights: { relationships: 1, outcome: 1 } },
-      { id: "b", text: { ko: "이기적으로 보일까 봐 계속 신경 쓰인다", en: "I keep worrying that I may look selfish." }, weights: { "others-opinion": 2 } },
-      { id: "c", text: { ko: "완벽한 문장을 찾느라 말을 미루게 된다", en: "I delay speaking while looking for the perfect wording." }, weights: { "perfect-self": 2 } },
-      { id: "d", text: { ko: "비슷한 상황에서 어긋났던 기억이 떠오른다", en: "I remember a similar situation that went wrong." }, weights: { past: 2 } },
-    ],
+    "id": "sc_14",
+    "targetDimension": "future/outcome/present-action/others-opinion",
+    "rationale": "Uncertain offer scenario tests future and outcome control versus next action.",
+    "prompt": {
+      "ko": "새로운 제안이 왔지만 조건이 아직 불확실합니다. 마음은 끌리지만 확답하기 어렵습니다.\n\n가장 먼저 하는 쪽은?",
+      "en": "A new offer comes in, but the conditions are still unclear. You are interested, but it is hard to answer firmly.\n\nWhat do you do first?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "조건이 어떻게 변할지 경우의 수를 계속 계산한다.",
+          "en": "I keep calculating how the conditions might change."
+        },
+        "weights": {
+          "future": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "최종 선택이 틀릴까 봐 결과가 먼저 걱정된다.",
+          "en": "I worry first that the final choice may be wrong."
+        },
+        "weights": {
+          "outcome": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "지금 확인할 질문을 정리해서 물어본다.",
+          "en": "I organize the questions I can ask now."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "다른 사람들이 이 선택을 어떻게 볼지 떠오른다.",
+          "en": "I think about how others would see this choice."
+        },
+        "weights": {
+          "others-opinion": 2
+        }
+      }
+    ]
   },
   {
-    id: "cancelled-plan",
-    prompt: { ko: "기대하던 약속이 갑자기 취소됐습니다. 당신은?", en: "A plan you were looking forward to is suddenly cancelled. What do you do?" },
-    choices: [
-      { id: "a", text: { ko: "아쉬움은 두고, 오늘 저녁을 어떻게 보낼지 정한다", en: "I let the disappointment be there and decide how to spend the evening." }, weights: { future: 1, emotions: 1 } },
-      { id: "b", text: { ko: "상대가 나를 덜 중요하게 보는 건 아닌지 걱정된다", en: "I worry they may not see me as important." }, weights: { relationships: 2, "others-opinion": 1 } },
-      { id: "c", text: { ko: "앞으로도 계속 이렇게 될까 봐 신경 쓰인다", en: "I worry this may keep happening in the future." }, weights: { future: 2 } },
-      { id: "d", text: { ko: "서운한 티가 나지 않게 감정을 눌러본다", en: "I try to hold down my feelings so disappointment does not show." }, weights: { emotions: 2 } },
-    ],
+    "id": "sc_15",
+    "targetDimension": "perfect-self/emotions/past/present-action",
+    "rationale": "Self-disappointment tests perfect self, emotion control, past replay, and action.",
+    "prompt": {
+      "ko": "오늘의 내가 마음에 들지 않습니다. 특별히 큰 잘못은 없지만 기대한 모습과 다릅니다.\n\n가장 가까운 반응은?",
+      "en": "You do not like yourself today. Nothing huge went wrong, but you are different from what you expected.\n\nWhat reaction feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "더 괜찮은 모습이어야 했다고 스스로를 몰아붙인다.",
+          "en": "I push myself that I should have been a better version."
+        },
+        "weights": {
+          "perfect-self": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "이런 기분부터 빨리 없애야 할 것 같다.",
+          "en": "I feel I need to get rid of this mood quickly."
+        },
+        "weights": {
+          "emotions": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "오늘 어디서부터 어긋났는지 되감는다.",
+          "en": "I rewind where the day started going off."
+        },
+        "weights": {
+          "past": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "내일 나아질 수 있는 작은 행동 하나를 정한다.",
+          "en": "I choose one small action that can make tomorrow better."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      }
+    ]
   },
   {
-    id: "old-choice",
-    prompt: { ko: "예전 선택이 문득 떠오르며 마음이 복잡해집니다. 당신은?", en: "An old choice suddenly returns to mind and makes you feel complicated. What do you do?" },
-    choices: [
-      { id: "a", text: { ko: "이미 지난 일에서 배울 점과 지금 할 일을 나눈다", en: "I separate what I can learn from the past from what I can do now." }, weights: { past: 1, outcome: 1 } },
-      { id: "b", text: { ko: "그때 다르게 했어야 했다는 장면을 계속 돌려본다", en: "I keep replaying how I should have done it differently." }, weights: { past: 2 } },
-      { id: "c", text: { ko: "그 선택이 앞으로도 영향을 줄까 봐 걱정된다", en: "I worry that choice may keep affecting the future." }, weights: { future: 2 } },
-      { id: "d", text: { ko: "그때의 내가 더 완벽했어야 한다고 느낀다", en: "I feel that my past self should have been more perfect." }, weights: { "perfect-self": 2 } },
-    ],
-  },
+    "id": "sc_16",
+    "targetDimension": "present-action/future/relationships/outcome",
+    "rationale": "Team uncertainty closes with practical present action versus external flow control.",
+    "prompt": {
+      "ko": "팀 일정이 흔들리고 각자 말이 조금씩 다릅니다. 당장 모든 것을 정리하기는 어렵습니다.\n\n당신에게 가장 가까운 모습은?",
+      "en": "A team schedule is unstable, and everyone is saying slightly different things. It is hard to organize everything immediately.\n\nWhat are you most likely to do?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "지금 확인 가능한 담당, 시간, 다음 단계만 먼저 정리한다.",
+          "en": "I first clarify only the owner, time, and next step that can be checked now."
+        },
+        "weights": {
+          "present-action": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "앞으로 더 꼬일 가능성이 계속 떠오른다.",
+          "en": "I keep seeing ways this could get more tangled later."
+        },
+        "weights": {
+          "future": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "사람들 사이 흐름이 틀어질까 봐 신경 쓰인다.",
+          "en": "I worry the flow between people may become strained."
+        },
+        "weights": {
+          "relationships": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "최종 결과가 엉망이 될까 봐 마음이 붙잡힌다.",
+          "en": "My mind gets stuck on whether the final result will be messy."
+        },
+        "weights": {
+          "outcome": 2
+        }
+      }
+    ]
+  }
 ];
+
 export function calculateStoicResult(answers: StoicAnswer[]): StoicResult {
-  const scores = new Map<StoicControlId, number>();
-  for (const result of STOIC_RESULTS) scores.set(result.id, 0);
+  const scores = STOIC_RESULTS.reduce<Record<StoicControlId, number>>(
+    (acc, result) => {
+      acc[result.id] = 0;
+      return acc;
+    },
+    {} as Record<StoicControlId, number>,
+  );
+  const lastWeightedHit = STOIC_RESULTS.reduce<Record<StoicControlId, number>>(
+    (acc, result) => {
+      acc[result.id] = -1;
+      return acc;
+    },
+    {} as Record<StoicControlId, number>,
+  );
 
-  for (const answer of answers) {
-    for (const [id, value] of Object.entries(answer.weights) as Array<[StoicControlId, number]>) {
-      scores.set(id, (scores.get(id) ?? 0) + value);
-    }
-  }
+  answers.forEach((answer, index) => {
+    let highestWeight = 0;
+    Object.values(answer.weights).forEach((value) => {
+      highestWeight = Math.max(highestWeight, value ?? 0);
+    });
 
-  let winner = STOIC_RESULTS[0];
-  let bestScore = -Infinity;
-  for (const result of STOIC_RESULTS) {
-    const score = scores.get(result.id) ?? 0;
-    if (score > bestScore) {
-      winner = result;
-      bestScore = score;
-    }
-  }
-  return winner;
+    Object.entries(answer.weights).forEach(([key, value]) => {
+      const id = key as StoicControlId;
+      scores[id] += value ?? 0;
+      if ((value ?? 0) === highestWeight) lastWeightedHit[id] = index;
+    });
+  });
+
+  const winner = STOIC_RESULTS.reduce<StoicControlId>((best, result) => {
+    const id = result.id;
+    if (scores[id] > scores[best]) return id;
+    if (scores[id] < scores[best]) return best;
+    if (lastWeightedHit[id] > lastWeightedHit[best]) return id;
+    return best;
+  }, STOIC_RESULTS[0].id);
+
+  return STOIC_RESULTS.find((result) => result.id === winner) ?? STOIC_RESULTS[0];
 }
 
 export function getStoicResultById(id: string | null | undefined): StoicResult | null {
-  if (!id) return null;
   return STOIC_RESULTS.find((result) => result.id === id) ?? null;
 }

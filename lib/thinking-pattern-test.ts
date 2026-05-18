@@ -22,6 +22,8 @@ export type ThinkingChoice = {
 
 export type ThinkingQuestion = {
   id: string;
+  targetDimension: string;
+  rationale: string;
   prompt: LocalText;
   choices: ThinkingChoice[];
 };
@@ -337,167 +339,823 @@ export const THINKING_RESULTS: ThinkingResult[] = [
 
 export const THINKING_QUESTIONS: ThinkingQuestion[] = [
   {
-    id: "late-reply",
-    prompt: { ko: "친구가 평소보다 답장이 늦습니다. 가장 먼저 가까운 생각은?", en: "A friend replies later than usual. What thought comes closest first?" },
-    choices: [
-      { id: "a", text: { ko: "나중에 답하겠지 하고 내 할 일을 한다", en: "I assume they will reply later and keep doing my own thing." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "내가 뭔가 잘못했나 먼저 걱정된다", en: "I first worry that I may have done something wrong." }, weights: { personalization: 2, "mind-reading": 1 } },
-      { id: "c", text: { ko: "바쁜 걸 수도 있지만 묘하게 신경 쓰인다", en: "They may be busy, but it still bothers me a little." }, weights: { "emotional-reasoning": 2 } },
-      { id: "d", text: { ko: "답장이 늦은 이유를 여러 가지로 계속 추측한다", en: "I keep guessing different reasons for the late reply." }, weights: { "mind-reading": 2, catastrophizing: 1 } },
-    ],
+    "id": "tp_01",
+    "targetDimension": "balanced-perspective/personalization/catastrophizing/emotional-reasoning",
+    "rationale": "Delayed reply with mixed evidence measures automatic interpretation without direct trait wording.",
+    "prompt": {
+      "ko": "오랜만에 친구에게 진지한 고민을 보냈습니다. 반나절이 지났고, 친구는 다른 단체방에는 짧게 반응한 것 같습니다.\n\n당신에게 가장 가까운 반응은?",
+      "en": "You send a serious concern to a friend after a long time. Half a day passes, and they seem to have reacted briefly in another group chat.\n\nWhat reaction feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "바쁠 수도 있으니 오늘은 더 기다려본다.",
+          "en": "They may be busy, so I wait a little longer today."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "내가 너무 무겁게 보냈나 싶어 메시지를 다시 읽어본다.",
+          "en": "I reread my message, wondering if I made it too heavy."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "앞으로 중요한 얘기를 해도 아무도 받아주지 않을 것 같아 가라앉는다.",
+          "en": "I sink into the thought that nobody will receive important things from me."
+        },
+        "weights": {
+          "catastrophizing": 2,
+          "overgeneralization": 1
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "지금 기분이 상한 걸 보면 친구가 나를 피하는 게 맞는 것처럼 느껴진다.",
+          "en": "Because I feel hurt, it seems like they really are avoiding me."
+        },
+        "weights": {
+          "emotional-reasoning": 2
+        }
+      }
+    ]
   },
   {
-    id: "cold-feedback",
-    prompt: { ko: "열심히 한 일에 대해 예상보다 차가운 피드백을 들었습니다. 당신의 반응은?", en: "You receive colder feedback than expected on something you worked hard on. How do you react?" },
-    choices: [
-      { id: "a", text: { ko: "감정은 잠깐 두고, 쓸 수 있는 피드백만 골라본다", en: "I pause my feelings and look for the useful parts of the feedback." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "결국 실패한 거라고 느껴진다", en: "It feels like I failed altogether." }, weights: { "all-or-nothing": 2 } },
-      { id: "c", text: { ko: "그 사람이 나를 별로 좋게 보지 않는 것 같다", en: "It feels like they do not see me positively." }, weights: { "mind-reading": 2 } },
-      { id: "d", text: { ko: "왜 더 완벽하게 준비하지 못했는지 자책한다", en: "I blame myself for not preparing more perfectly." }, weights: { "should-statements": 2, personalization: 1 } },
-    ],
+    "id": "tp_02",
+    "targetDimension": "balanced-perspective/all-or-nothing/mind-reading/discounting-positive",
+    "rationale": "Mixed feedback reveals whether nuance, social guessing, or perfection filters dominate.",
+    "prompt": {
+      "ko": "열심히 한 작업에 “좋은데 조금만 더 정리되면 좋겠다”는 말을 들었습니다.\n\n가장 먼저 남는 생각은?",
+      "en": "You hear, “This is good, but it could be organized a bit more,” about work you tried hard on.\n\nWhat thought stays first?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "좋았던 부분과 고칠 부분을 나눠서 본다.",
+          "en": "I separate what worked from what needs revision."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "정리되지 않았다는 말이 들리니 전체가 실패처럼 느껴진다.",
+          "en": "Hearing that it was not organized makes the whole thing feel like a failure."
+        },
+        "weights": {
+          "all-or-nothing": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "상대가 사실은 별로라고 생각했을 것 같다.",
+          "en": "It feels like they actually thought it was not good."
+        },
+        "weights": {
+          "mind-reading": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "좋다는 말보다 부족하다는 부분만 계속 보인다.",
+          "en": "The weak part keeps standing out more than the praise."
+        },
+        "weights": {
+          "discounting-positive": 2
+        }
+      }
+    ]
   },
   {
-    id: "group-silence",
-    prompt: { ko: "단체 대화방에서 내 말에 반응이 거의 없었습니다. 가장 가까운 생각은?", en: "In a group chat, almost nobody reacts to what you said. What thought comes closest?" },
-    choices: [
-      { id: "a", text: { ko: "내 말이 분위기를 망친 것 같다", en: "It feels like I ruined the mood." }, weights: { personalization: 2 } },
-      { id: "b", text: { ko: "사람들이 바빴을 수도 있다고 보고 다음 흐름을 기다린다", en: "I assume people may be busy and wait for the conversation to move on." }, weights: { "balanced-perspective": 2 } },
-      { id: "c", text: { ko: "다들 나를 어색하게 생각하는 것 같다", en: "It feels like everyone finds me awkward." }, weights: { "mind-reading": 2, overgeneralization: 1 } },
-      { id: "d", text: { ko: "한 번 이런 일이 있으면 앞으로도 계속 그럴 것 같다", en: "If it happened once, it feels like it will keep happening." }, weights: { overgeneralization: 2 } },
-    ],
+    "id": "tp_03",
+    "targetDimension": "balanced-perspective/mind-reading/personalization/overgeneralization",
+    "rationale": "Group silence is ambiguous and reduces obvious ideal-self responding.",
+    "prompt": {
+      "ko": "단체방에 보낸 말에 잠깐 반응이 없습니다. 곧 다른 얘기로 넘어가긴 했지만, 그 순간이 남습니다.\n\n가장 가까운 생각은?",
+      "en": "Your message in a group chat gets no reaction for a moment. The chat soon moves on, but that moment stays.\n\nWhat thought comes closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "타이밍이 안 맞았을 수도 있다고 본다.",
+          "en": "I think the timing may simply have been off."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "사람들이 나를 어색하게 생각한 것 같다.",
+          "en": "It feels like people found me awkward."
+        },
+        "weights": {
+          "mind-reading": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "내가 분위기를 끊은 것 같아 마음이 쓰인다.",
+          "en": "I worry that I broke the mood."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "이런 일이 또 반복될 것 같아 다음 말이 조심스러워진다.",
+          "en": "It feels like this will happen again, so I become careful next time."
+        },
+        "weights": {
+          "overgeneralization": 2
+        }
+      }
+    ]
   },
   {
-    id: "small-mistake",
-    prompt: { ko: "사람들 앞에서 작은 실수를 했습니다. 머릿속에 가장 먼저 남는 생각은?", en: "You make a small mistake in front of others. What thought stays first?" },
-    choices: [
-      { id: "a", text: { ko: "민망하지만 작은 실수라고 보고 다시 흐름을 잡는다", en: "It is embarrassing, but I treat it as a small mistake and get back on track." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "사람들이 그 장면을 계속 기억할 것 같다", en: "It feels like people will keep remembering that moment." }, weights: { "mind-reading": 2 } },
-      { id: "c", text: { ko: "나는 이런 데서 늘 약한 것 같다", en: "It feels like I am always bad at situations like this." }, weights: { overgeneralization: 2 } },
-      { id: "d", text: { ko: "실수하지 말았어야 한다고 계속 되뇌인다", en: "I keep telling myself I should not have made that mistake." }, weights: { "should-statements": 2 } },
-    ],
+    "id": "tp_04",
+    "targetDimension": "balanced-perspective/should-statements/emotional-reasoning/catastrophizing",
+    "rationale": "A changed plan tests uncertainty tolerance and rules about how one should react.",
+    "prompt": {
+      "ko": "기대했던 일정이 갑자기 바뀌었습니다. 큰 손해는 없지만 마음이 어수선합니다.\n\n가장 가까운 반응은?",
+      "en": "A schedule you were looking forward to suddenly changes. Nothing major is lost, but your mind feels unsettled.\n\nWhat reaction feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "아쉽지만 바뀐 조건에서 가능한 선택지를 본다.",
+          "en": "I feel disappointed, then look at the options under the new conditions."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "이 정도 변화에 흔들리면 안 된다고 나를 다그친다.",
+          "en": "I push myself, thinking I should not be shaken by this much."
+        },
+        "weights": {
+          "should-statements": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "마음이 이렇게 불편한 걸 보면 뭔가 잘못된 것 같다.",
+          "en": "Because I feel this uncomfortable, it seems something is wrong."
+        },
+        "weights": {
+          "emotional-reasoning": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "앞으로도 계속 꼬일까 봐 여러 경우를 돌려본다.",
+          "en": "I run through scenarios, worrying things may keep going wrong."
+        },
+        "weights": {
+          "catastrophizing": 2
+        }
+      }
+    ]
   },
   {
-    id: "ambiguous-face",
-    prompt: { ko: "상대의 표정이 평소보다 굳어 보였습니다. 당신의 생각은?", en: "Someone's expression looks stiffer than usual. What do you think?" },
-    choices: [
-      { id: "a", text: { ko: "내가 뭔가 잘못 말했나 떠올린다", en: "I wonder whether I said something wrong." }, weights: { personalization: 2 } },
-      { id: "b", text: { ko: "그 사람 컨디션일 수도 있다고 보고 더 지켜본다", en: "I consider that it may be their condition and wait for more context." }, weights: { "balanced-perspective": 2 } },
-      { id: "c", text: { ko: "나를 불편해하는 신호처럼 느껴진다", en: "It feels like a sign that they are uncomfortable with me." }, weights: { "mind-reading": 2, "emotional-reasoning": 1 } },
-      { id: "d", text: { ko: "괜히 불안하니까 실제로 문제가 있는 것 같다", en: "Because I feel anxious, it seems like something is actually wrong." }, weights: { "emotional-reasoning": 2 } },
-    ],
+    "id": "tp_05",
+    "targetDimension": "balanced-perspective/personalization/mind-reading/emotional-reasoning",
+    "rationale": "A quiet friend gives ambiguous social data that supports multiple plausible readings.",
+    "prompt": {
+      "ko": "친구가 오늘따라 조용합니다. 나에게만 그런 건지, 그냥 피곤한 건지 애매합니다.\n\n당신에게 가까운 생각은?",
+      "en": "A friend is quieter than usual today. It is unclear whether it is about you or they are just tired.\n\nWhat thought feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "오늘 컨디션일 수 있으니 조금 더 지켜본다.",
+          "en": "It may be their condition today, so I watch a little longer."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "내가 뭔가 잘못 말했나 먼저 떠올린다.",
+          "en": "I first wonder if I said something wrong."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "나를 불편해하는 신호처럼 느껴진다.",
+          "en": "It feels like a signal that they are uncomfortable with me."
+        },
+        "weights": {
+          "mind-reading": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "불편하게 느껴지니 실제로 관계에 문제가 있는 것 같다.",
+          "en": "Because it feels uncomfortable, it seems there is actually a relationship problem."
+        },
+        "weights": {
+          "emotional-reasoning": 2
+        }
+      }
+    ]
   },
   {
-    id: "deadline-stress",
-    prompt: { ko: "해야 할 일이 몰려서 마음이 급해졌습니다. 가장 가까운 반응은?", en: "Tasks pile up and you feel rushed. What reaction comes closest?" },
-    choices: [
-      { id: "a", text: { ko: "이러다 전부 망칠 것 같다는 생각이 든다", en: "I feel like I am going to mess everything up." }, weights: { catastrophizing: 2 } },
-      { id: "b", text: { ko: "할 수 있는 일부터 작게 나눠서 처리한다", en: "I break it down and handle what I can do first." }, weights: { "balanced-perspective": 2 } },
-      { id: "c", text: { ko: "이 정도도 못 하면 안 된다고 나를 몰아붙인다", en: "I push myself, thinking I should be able to handle even this." }, weights: { "should-statements": 2 } },
-      { id: "d", text: { ko: "지금 느끼는 압박감이 상황 전체를 더 크게 보이게 한다", en: "The pressure I feel makes the whole situation look bigger." }, weights: { "emotional-reasoning": 2 } },
-    ],
+    "id": "tp_06",
+    "targetDimension": "balanced-perspective/discounting-positive/all-or-nothing/should-statements",
+    "rationale": "Receiving praise tests whether positive information can be integrated.",
+    "prompt": {
+      "ko": "누군가 당신이 한 일을 칭찬했습니다. 그런데 당신 눈에는 부족한 부분도 보입니다.\n\n가장 가까운 반응은?",
+      "en": "Someone praises something you did. But you can still see the weak parts.\n\nWhat reaction feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "어색해도 고맙다고 받고, 부족한 점은 따로 본다.",
+          "en": "Even if it feels awkward, I accept it and look at improvements separately."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "그 정도는 누구나 할 수 있는 일이라고 생각한다.",
+          "en": "I think anyone could have done that much."
+        },
+        "weights": {
+          "discounting-positive": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "완벽하지 않으니 잘했다고 보기 어렵다.",
+          "en": "Since it was not perfect, it is hard to see it as good."
+        },
+        "weights": {
+          "all-or-nothing": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "칭찬받기 전에 더 잘했어야 했다고 느낀다.",
+          "en": "I feel I should have done better before being praised."
+        },
+        "weights": {
+          "should-statements": 2
+        }
+      }
+    ]
   },
   {
-    id: "praise",
-    prompt: { ko: "누군가 당신을 칭찬했습니다. 가장 가까운 반응은?", en: "Someone praises you. What reaction comes closest?" },
-    choices: [
-      { id: "a", text: { ko: "어색해도 고맙다고 받고 넘긴다", en: "Even if it feels awkward, I accept it and say thank you." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "그 정도는 누구나 할 수 있는 일이라고 생각한다", en: "I think anyone could have done that much." }, weights: { "discounting-positive": 2 } },
-      { id: "c", text: { ko: "진심인지 예의상 하는 말인지 먼저 의심한다", en: "I first wonder if they mean it or are just being polite." }, weights: { "mind-reading": 2 } },
-      { id: "d", text: { ko: "잘한 것보다 부족했던 부분이 먼저 떠오른다", en: "I first think of what was lacking rather than what went well." }, weights: { "discounting-positive": 2, "should-statements": 1 } },
-    ],
+    "id": "tp_07",
+    "targetDimension": "balanced-perspective/catastrophizing/overgeneralization/personalization",
+    "rationale": "A single failed attempt tests expansion from event to global meaning.",
+    "prompt": {
+      "ko": "며칠 준비한 일이 예상보다 잘 풀리지 않았습니다. 완전히 망한 건 아니지만 기대와 다릅니다.\n\n밤에 가장 가까운 생각은?",
+      "en": "Something you prepared for days does not go as expected. It is not a total disaster, but it differs from your hopes.\n\nWhat thought comes closest at night?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "어긋난 부분을 보고 다음 조정을 생각한다.",
+          "en": "I look at what went off and think about the next adjustment."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "이 흐름이면 다음 일도 안 좋게 갈 것 같다.",
+          "en": "If this is the flow, the next thing may go badly too."
+        },
+        "weights": {
+          "catastrophizing": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "역시 나는 이런 걸 계속 잘 못하는 편인 것 같다.",
+          "en": "It feels like I am always bad at this kind of thing."
+        },
+        "weights": {
+          "overgeneralization": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "내가 더 잘했으면 막을 수 있었을 것 같다.",
+          "en": "It feels like I could have prevented it if I had done better."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      }
+    ]
   },
   {
-    id: "plan-failed",
-    prompt: { ko: "계획했던 일이 뜻대로 되지 않았습니다. 당신의 생각은?", en: "A plan does not go the way you hoped. What do you think?" },
-    choices: [
-      { id: "a", text: { ko: "역시 나는 이런 일을 잘 못하는 것 같다", en: "It feels like I am just not good at this kind of thing." }, weights: { overgeneralization: 2 } },
-      { id: "b", text: { ko: "다음에도 비슷하게 안 될 것 같아 걱정된다", en: "I worry that it will go similarly badly next time." }, weights: { catastrophizing: 2 } },
-      { id: "c", text: { ko: "계획이 틀어진 부분만 보고 다시 조정한다", en: "I look at the part that changed and adjust the plan." }, weights: { "balanced-perspective": 2 } },
-      { id: "d", text: { ko: "내가 더 잘했으면 막을 수 있었을 것 같다", en: "It feels like I could have prevented it if I had done better." }, weights: { personalization: 2 } },
-    ],
+    "id": "tp_08",
+    "targetDimension": "balanced-perspective/mind-reading/emotional-reasoning/should-statements",
+    "rationale": "Public mistake can trigger inferred judgment, emotional proof, or self-rules.",
+    "prompt": {
+      "ko": "사람들 앞에서 작은 실수를 했습니다. 누군가는 거의 신경 쓰지 않는 것 같지만, 장면이 떠오릅니다.\n\n가장 가까운 생각은?",
+      "en": "You make a small mistake in front of people. Some seem barely aware of it, but the scene returns to mind.\n\nWhat thought comes closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "민망하지만 작은 실수였다고 보고 넘어간다.",
+          "en": "It is embarrassing, but I treat it as a small mistake and move on."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "사람들이 그 장면을 계속 기억할 것 같다.",
+          "en": "It feels like people will keep remembering that scene."
+        },
+        "weights": {
+          "mind-reading": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "부끄러운 걸 보면 정말 크게 실수한 것 같다.",
+          "en": "Because I feel embarrassed, it seems like I really messed up badly."
+        },
+        "weights": {
+          "emotional-reasoning": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "그 정도 실수는 하지 말았어야 했다고 반복한다.",
+          "en": "I keep repeating that I should not have made even that mistake."
+        },
+        "weights": {
+          "should-statements": 2
+        }
+      }
+    ]
   },
   {
-    id: "left-out",
-    prompt: { ko: "친구들이 나 없이 만난 걸 나중에 알았습니다. 가장 가까운 생각은?", en: "You later find out friends met without you. What thought comes closest?" },
-    choices: [
-      { id: "a", text: { ko: "나를 일부러 뺀 것 같다는 생각이 든다", en: "It feels like they intentionally left me out." }, weights: { "mind-reading": 2 } },
-      { id: "b", text: { ko: "아직 이유를 모르니 먼저 확인해본다", en: "I do not know the reason yet, so I check before deciding." }, weights: { "balanced-perspective": 2 } },
-      { id: "c", text: { ko: "한 번 빠졌으니 앞으로도 멀어질 것 같다", en: "Since I was left out once, it feels like we will keep drifting apart." }, weights: { overgeneralization: 2, catastrophizing: 1 } },
-      { id: "d", text: { ko: "내가 불편한 사람이어서 그런 것 같다", en: "It feels like it happened because I am uncomfortable to be around." }, weights: { personalization: 2 } },
-    ],
+    "id": "tp_09",
+    "targetDimension": "balanced-perspective/personalization/mind-reading/catastrophizing",
+    "rationale": "Unclear invitation exclusion captures common automatic social interpretations.",
+    "prompt": {
+      "ko": "친구들이 당신 없이 만난 걸 나중에 알았습니다. 특별히 숨긴 것 같지는 않지만 마음이 걸립니다.\n\n가장 가까운 생각은?",
+      "en": "You later learn friends met without you. It does not seem intentionally hidden, but it bothers you.\n\nWhat thought feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "상황을 모르니 바로 의미를 정하지 않는다.",
+          "en": "I do not know the full situation, so I do not decide what it means yet."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "내가 불편한 사람이라 빠진 것 같다고 느낀다.",
+          "en": "It feels like I was left out because I am uncomfortable to be around."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "일부러 나를 빼고 싶었던 것 같다.",
+          "en": "It feels like they intentionally wanted to leave me out."
+        },
+        "weights": {
+          "mind-reading": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "관계가 이대로 멀어질 신호일까 봐 걱정된다.",
+          "en": "I worry this may be a sign the relationship is drifting."
+        },
+        "weights": {
+          "catastrophizing": 2
+        }
+      }
+    ]
   },
   {
-    id: "conflict",
-    prompt: { ko: "가까운 사람과 의견이 부딪혔습니다. 당신의 머릿속은?", en: "You clash with someone close to you. What happens in your head?" },
-    choices: [
-      { id: "a", text: { ko: "관계가 예전처럼 돌아가지 못할까 봐 걱정된다", en: "I worry the relationship may not go back to how it was." }, weights: { catastrophizing: 2 } },
-      { id: "b", text: { ko: "내가 참았어야 했나 생각한다", en: "I wonder if I should have just held it in." }, weights: { "should-statements": 2, personalization: 1 } },
-      { id: "c", text: { ko: "대화가 흔들릴 수도 있다고 보고 시간을 두고 정리한다", en: "I accept that conversations can get tense and take time to sort it out." }, weights: { "balanced-perspective": 2 } },
-      { id: "d", text: { ko: "이 사람이 나를 좋게 보지 않게 된 것 같다", en: "It feels like this person no longer sees me positively." }, weights: { "mind-reading": 2 } },
-    ],
+    "id": "tp_10",
+    "targetDimension": "balanced-perspective/all-or-nothing/discounting-positive/overgeneralization",
+    "rationale": "Mixed outcome tests rigid evaluation and positive discounting.",
+    "prompt": {
+      "ko": "결과가 나쁘진 않은데 기대만큼 좋지도 않습니다. 주변은 괜찮다고 하지만 당신은 애매합니다.\n\n가장 가까운 반응은?",
+      "en": "The result is not bad, but not as good as you hoped. Others say it is fine, but you feel unsure.\n\nWhat reaction feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "괜찮은 부분과 아쉬운 부분을 함께 본다.",
+          "en": "I look at both the okay parts and the disappointing parts."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "기대에 못 미치면 성공이라고 하기 어렵다.",
+          "en": "If it did not meet expectations, it is hard to call it a success."
+        },
+        "weights": {
+          "all-or-nothing": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "괜찮았다는 말은 잘 안 들어오고 부족한 점만 남는다.",
+          "en": "The “it was fine” part does not land; only the flaws remain."
+        },
+        "weights": {
+          "discounting-positive": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "늘 마지막에 이렇게 애매해지는 것 같다.",
+          "en": "It feels like things always end up this lukewarm for me."
+        },
+        "weights": {
+          "overgeneralization": 2
+        }
+      }
+    ]
   },
   {
-    id: "new-try",
-    prompt: { ko: "새로운 일을 시작하려고 합니다. 가장 먼저 드는 생각은?", en: "You are about to start something new. What thought comes first?" },
-    choices: [
-      { id: "a", text: { ko: "처음부터 잘할 필요는 없다고 보고 작게 시작한다", en: "I remind myself I do not need to be good from the start and begin small." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "잘하지 못하면 시작한 의미가 없을 것 같다", en: "If I cannot do it well, it feels like there is no point starting." }, weights: { "all-or-nothing": 2 } },
-      { id: "c", text: { ko: "준비가 충분하지 않으면 시작하면 안 될 것 같다", en: "It feels like I should not start unless I am fully prepared." }, weights: { "should-statements": 2 } },
-      { id: "d", text: { ko: "조금 잘해도 부족한 점만 보일 것 같다", en: "Even if I do somewhat well, I feel like I will only see what is lacking." }, weights: { "discounting-positive": 2 } },
-    ],
+    "id": "tp_11",
+    "targetDimension": "balanced-perspective/emotional-reasoning/catastrophizing/personalization",
+    "rationale": "Tired-day interpretation tests thought habit under low resources.",
+    "prompt": {
+      "ko": "오늘은 유난히 예민하고 지친 날입니다. 평소라면 넘겼을 말도 크게 느껴집니다.\n\n어떤 해석이 가장 가깝나요?",
+      "en": "Today you feel unusually sensitive and tired. Words you would usually pass over feel bigger.\n\nWhich interpretation feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "오늘 컨디션의 영향도 있다고 보고 무리하지 않는다.",
+          "en": "I see that my condition may be affecting it and try not to push too hard."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "이렇게 힘든 걸 보면 정말 문제가 큰 것 같다.",
+          "en": "Because I feel this bad, the problem must be serious."
+        },
+        "weights": {
+          "emotional-reasoning": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "앞으로도 계속 이런 상태일까 봐 걱정된다.",
+          "en": "I worry I will keep feeling like this."
+        },
+        "weights": {
+          "catastrophizing": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "내가 너무 예민해서 상황을 어렵게 만든 것 같다.",
+          "en": "It feels like I made the situation hard by being too sensitive."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      }
+    ]
   },
   {
-    id: "tired-day",
-    prompt: { ko: "오늘 유난히 예민하고 지친 날입니다. 당신의 해석은?", en: "Today you feel especially sensitive and tired. How do you interpret it?" },
-    choices: [
-      { id: "a", text: { ko: "피곤한 날이라 그럴 수 있다고 보고 무리하지 않는다", en: "I see it as a tired day and try not to push too hard." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "내가 너무 약한 사람 같아서 신경 쓰인다", en: "It bothers me because I feel like I am too weak." }, weights: { "should-statements": 2, personalization: 1 } },
-      { id: "c", text: { ko: "이 감정이 강하니 뭔가 큰 문제가 있는 것 같다", en: "Because the feeling is strong, it seems like there must be a big problem." }, weights: { "emotional-reasoning": 2 } },
-      { id: "d", text: { ko: "요즘 계속 이럴 것 같아 걱정된다", en: "I worry that I will keep feeling this way." }, weights: { overgeneralization: 2, catastrophizing: 1 } },
-    ],
+    "id": "tp_12",
+    "targetDimension": "balanced-perspective/should-statements/all-or-nothing/discounting-positive",
+    "rationale": "Starting something new tests rigid standards before action.",
+    "prompt": {
+      "ko": "새로운 일을 시작하려는데 아직 서툴 게 뻔합니다. 그래도 해보고 싶은 마음은 있습니다.\n\n가장 가까운 생각은?",
+      "en": "You are about to start something new, and you will obviously be clumsy at first. Still, you want to try.\n\nWhat thought feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "처음부터 잘할 필요는 없으니 작게 시작한다.",
+          "en": "I do not need to be good from the start, so I begin small."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "준비가 충분하지 않으면 시작하면 안 될 것 같다.",
+          "en": "If I am not fully prepared, it feels like I should not start."
+        },
+        "weights": {
+          "should-statements": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "잘 못 할 거면 시작 의미가 줄어드는 것 같다.",
+          "en": "If I cannot do it well, starting feels less meaningful."
+        },
+        "weights": {
+          "all-or-nothing": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "조금 해내도 부족한 점만 보일 것 같다.",
+          "en": "Even if I do somewhat well, I feel like I will only see what is lacking."
+        },
+        "weights": {
+          "discounting-positive": 2
+        }
+      }
+    ]
   },
   {
-    id: "seen-no-reply",
-    prompt: { ko: "메시지를 읽은 것 같은데 답장이 오지 않습니다. 가장 먼저 드는 생각은?", en: "It seems like your message was seen, but there is no reply. What thought comes first?" },
-    choices: [
-      { id: "a", text: { ko: "아직 사정을 모르니 조금 더 기다려본다", en: "I do not know the situation yet, so I wait a bit longer." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "나를 불편해해서 일부러 답하지 않는 것 같다", en: "It feels like they are not replying because they are uncomfortable with me." }, weights: { "mind-reading": 2 } },
-      { id: "c", text: { ko: "이 관계가 틀어지는 신호일까 봐 걱정된다", en: "I worry this may be a sign the relationship is going wrong." }, weights: { catastrophizing: 2 } },
-      { id: "d", text: { ko: "내가 뭔가 잘못 보냈나 계속 확인한다", en: "I keep checking whether I sent something wrong." }, weights: { personalization: 2 } },
-    ],
+    "id": "tp_13",
+    "targetDimension": "balanced-perspective/mind-reading/personalization/emotional-reasoning",
+    "rationale": "Cold tone offers ambiguous evidence and four plausible interpretations.",
+    "prompt": {
+      "ko": "상대의 말투가 평소보다 차갑게 느껴졌습니다. 문장만 보면 특별히 공격적이진 않습니다.\n\n가장 가까운 해석은?",
+      "en": "Someone’s tone feels colder than usual. The words themselves are not especially aggressive.\n\nWhat interpretation feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "말투만으로 판단하기엔 정보가 부족하다고 본다.",
+          "en": "I think tone alone is not enough information to decide."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "나에게 실망했거나 화난 것 같다.",
+          "en": "It seems like they are disappointed in me or angry."
+        },
+        "weights": {
+          "mind-reading": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "내가 뭔가 건드린 게 있었나부터 생각한다.",
+          "en": "I first think about whether I touched a nerve somehow."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "불편하게 느껴지니 실제로 문제가 있는 것 같다.",
+          "en": "Because it feels uncomfortable, there must be a real problem."
+        },
+        "weights": {
+          "emotional-reasoning": 2
+        }
+      }
+    ]
   },
   {
-    id: "mixed-result",
-    prompt: { ko: "결과가 나쁘진 않았지만 기대만큼 완벽하지는 않습니다. 당신은?", en: "The result is not bad, but it is not as perfect as you hoped. What do you do?" },
-    choices: [
-      { id: "a", text: { ko: "잘된 부분과 고칠 부분을 나눠서 본다", en: "I separate what went well from what can be improved." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "완벽하지 않으면 성공이라고 보기 어렵다", en: "If it is not perfect, it is hard to see it as a success." }, weights: { "all-or-nothing": 2 } },
-      { id: "c", text: { ko: "좋았던 점보다 부족한 점만 크게 보인다", en: "The weak points look much bigger than what went well." }, weights: { "discounting-positive": 2 } },
-      { id: "d", text: { ko: "이 정도는 당연히 해냈어야 한다고 느낀다", en: "I feel I should have been able to do at least this much." }, weights: { "should-statements": 2 } },
-    ],
+    "id": "tp_14",
+    "targetDimension": "balanced-perspective/overgeneralization/should-statements/catastrophizing",
+    "rationale": "A low-productivity day tests globalizing, rule pressure, and future threat.",
+    "prompt": {
+      "ko": "하루 종일 계획만큼 해내지 못했습니다. 완전히 쉰 것도 아니고, 성과가 큰 것도 아닙니다.\n\n밤에 가까운 생각은?",
+      "en": "You did not get as much done today as planned. You did not fully rest either, and the output was not big.\n\nWhat thought comes up at night?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "오늘은 느린 날이었다고 보고 내일 할 작은 일을 정한다.",
+          "en": "I treat today as a slower day and set one small task for tomorrow."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "나는 늘 이렇게 흐트러지는 사람 같다.",
+          "en": "It feels like I am always someone who falls apart like this."
+        },
+        "weights": {
+          "overgeneralization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "이 정도는 해냈어야 한다고 나를 몰아붙인다.",
+          "en": "I push myself, thinking I should have done at least this much."
+        },
+        "weights": {
+          "should-statements": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "이러다 중요한 것들을 전부 놓칠까 봐 불안하다.",
+          "en": "I worry I may end up losing all the important things."
+        },
+        "weights": {
+          "catastrophizing": 2
+        }
+      }
+    ]
   },
   {
-    id: "tired-tone",
-    prompt: { ko: "상대의 말투가 평소보다 차갑게 느껴집니다. 당신의 해석은?", en: "Someone's tone feels colder than usual. How do you interpret it?" },
-    choices: [
-      { id: "a", text: { ko: "그 사람의 컨디션이나 상황일 수도 있다고 본다", en: "I consider that it may be their condition or situation." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "나에게 실망했거나 화가 난 것 같다", en: "It seems like they are disappointed in me or angry." }, weights: { "mind-reading": 2 } },
-      { id: "c", text: { ko: "불편하게 느껴지니 실제로 문제가 있는 것 같다", en: "Because it feels uncomfortable, it seems like there really is a problem." }, weights: { "emotional-reasoning": 2 } },
-      { id: "d", text: { ko: "내가 뭘 잘못했는지부터 떠올린다", en: "I first think about what I may have done wrong." }, weights: { personalization: 2 } },
-    ],
+    "id": "tp_15",
+    "targetDimension": "balanced-perspective/personalization/mind-reading/discounting-positive",
+    "rationale": "Small praise from authority tests self-blame, social inference, and positive integration.",
+    "prompt": {
+      "ko": "상사가 짧게 “수고했어요”라고 말했습니다. 표정은 평범했고, 긴 피드백은 없었습니다.\n\n가장 가까운 생각은?",
+      "en": "A supervisor briefly says, “Good work.” Their expression is neutral, and there is no long feedback.\n\nWhat thought feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "짧아도 긍정적인 말로 받아들이고 다음 일을 본다.",
+          "en": "Even if it is brief, I take it as positive and move to the next task."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "더 말이 없는 걸 보면 뭔가 부족했나 싶다.",
+          "en": "Because there is nothing more, I wonder if something was lacking."
+        },
+        "weights": {
+          "personalization": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "예의상 한 말일 가능성이 먼저 떠오른다.",
+          "en": "I first think it may have just been politeness."
+        },
+        "weights": {
+          "mind-reading": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "잘한 부분보다 더 완성도 높일 점이 먼저 보인다.",
+          "en": "I notice what could be improved before what went well."
+        },
+        "weights": {
+          "discounting-positive": 2
+        }
+      }
+    ]
   },
   {
-    id: "one-low-day",
-    prompt: { ko: "하루 종일 계획만큼 해내지 못했습니다. 밤에 드는 생각은?", en: "You did not get as much done today as planned. What thought comes up at night?" },
-    choices: [
-      { id: "a", text: { ko: "오늘은 쉬어가고 내일 할 일을 작게 정한다", en: "I let today be a slower day and set a small task for tomorrow." }, weights: { "balanced-perspective": 2 } },
-      { id: "b", text: { ko: "나는 늘 이런 식으로 흐트러지는 사람 같다", en: "It feels like I am always the kind of person who falls apart like this." }, weights: { overgeneralization: 2 } },
-      { id: "c", text: { ko: "이 정도도 못 하면 안 된다고 나를 다그친다", en: "I push myself, thinking I should not fail at even this much." }, weights: { "should-statements": 2 } },
-      { id: "d", text: { ko: "이러다 중요한 것들을 다 놓칠 것 같다", en: "I feel like I may end up losing everything important." }, weights: { catastrophizing: 2 } },
-    ],
-  },
+    "id": "tp_16",
+    "targetDimension": "balanced-perspective/catastrophizing/all-or-nothing/overgeneralization",
+    "rationale": "Conflict aftermath tests whether one scene becomes a fixed story.",
+    "prompt": {
+      "ko": "가까운 사람과 의견이 부딪혔습니다. 대화는 끝났지만 마음은 아직 조용하지 않습니다.\n\n가장 가까운 생각은?",
+      "en": "You clash with someone close. The conversation is over, but your mind is not quiet yet.\n\nWhat thought feels closest?"
+    },
+    "choices": [
+      {
+        "id": "a",
+        "text": {
+          "ko": "관계에서 이런 대화도 생길 수 있다고 보고 시간을 둔다.",
+          "en": "I accept that relationships can have these conversations and give it time."
+        },
+        "weights": {
+          "balanced-perspective": 2
+        }
+      },
+      {
+        "id": "b",
+        "text": {
+          "ko": "관계가 예전처럼 돌아가지 않을까 봐 걱정된다.",
+          "en": "I worry the relationship may not return to how it was."
+        },
+        "weights": {
+          "catastrophizing": 2
+        }
+      },
+      {
+        "id": "c",
+        "text": {
+          "ko": "한 번 부딪혔으니 이미 어긋난 것처럼 느껴진다.",
+          "en": "Because we clashed once, it feels like something is already broken."
+        },
+        "weights": {
+          "all-or-nothing": 2
+        }
+      },
+      {
+        "id": "d",
+        "text": {
+          "ko": "역시 가까워지면 결국 이런 일이 생기는 것 같다.",
+          "en": "It feels like this always happens when people get close."
+        },
+        "weights": {
+          "overgeneralization": 2
+        }
+      }
+    ]
+  }
 ];
-
 
 export function calculateThinkingResult(answers: ThinkingAnswer[]): ThinkingResult {
   const scores = new Map<ThinkingPatternId, number>();

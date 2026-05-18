@@ -503,6 +503,22 @@ export const GAMES: Game[] = [
     skin: "paper", tone: 3, labels: ["new", "share"], duration: { ko: "약 3분", en: "3 min" },
   },
   {
+    id: "scene-choice", href: "/tests/scene-choice", cat: "self", no: "18C",
+    ko: { title: "무의식 장면 테스트", sub: "낯선 장면 속에서 당신의 마음은 무엇을 먼저 볼까?", kicker: "심리 테스트" },
+    en: { title: "The Scene You Notice First", sub: "What does your mind notice first in an unfamiliar scene?", kicker: "Psychology Test" },
+    type: "test", category: "tests",
+    palette: P.paperGold, font: "serif",
+    skin: "paper", tone: 3, art: "scene-choice", labels: ["new", "recommended", "share"], duration: { ko: "약 4분", en: "4 min" },
+  },
+  {
+    id: "breaking-point", href: "/tests/breaking-point", cat: "self", no: "18D",
+    ko: { title: "당신이 선을 넘게 되는 순간", sub: "평소의 내가 차갑게 변하는 지점은 어디일까?", kicker: "심리 테스트" },
+    en: { title: "The Moment You Cross the Line", sub: "What makes your usual self become colder or more distant?", kicker: "Psychology Test" },
+    type: "test", category: "tests",
+    palette: P.paperGold, font: "serif",
+    skin: "paper", tone: 4, labels: ["new", "recommended", "share"], duration: { ko: "약 4분", en: "4 min" },
+  },
+  {
     id: "value-conflict", href: "/tests/value-conflict", cat: "self", no: "18C",
     ko: { title: "가치관 갈등 테스트", sub: "당신 안에서 가장 자주 충돌하는 두 가지 가치는?", kicker: "심리 테스트" },
     en: { title: "Value Conflict Test", sub: "What two values are fighting inside you?", kicker: "Psychology Test" },
@@ -656,8 +672,8 @@ export const GAMES: Game[] = [
   },
   {
     id: "korean-name", href: "/games/korean-name", cat: "world", no: "35",
-    ko: { title: "한국 이름 생성기", sub: "당신만의 한글 이름", kicker: "이름의 의미" },
-    en: { title: "Korean Name Generator", sub: "Your own name in Hangul", kicker: "What names mean" },
+    ko: { title: "다른 나라에서 태어났다면?", sub: "한국, 일본, 미국, 브라질에서의 또 다른 이름과 분위기", kicker: "이름 분위기 테스트" },
+    en: { title: "Born in Another Country?", sub: "Another name and vibe in Korea, Japan, the U.S., and Brazil", kicker: "Name vibe test" },
     type: "test", category: "tests",
     palette: P.paperGold, font: "sans", thumb: "/thumbnails-generated/korean-name.png",
     skin: "hand", tone: 1,
@@ -682,7 +698,7 @@ export const HOME_RAILS: HomeRail[] = [
     titleEn: "Today's Picks",
     subKo: "처음 왔다면 여기서 시작하세요. 결과를 보고 바로 공유하고 싶은 테스트들입니다.",
     subEn: "Start here if you are new. These results are built to send to someone.",
-    gameIds: ["saju", "value-conflict", "joseon-couple", "defense-mechanism"],
+    gameIds: ["breaking-point", "saju", "value-conflict", "defense-mechanism"],
   },
   {
     id: "quick",
@@ -690,7 +706,7 @@ export const HOME_RAILS: HomeRail[] = [
     titleEn: "Quick Psychology Tests",
     subKo: "부담 없이 시작하지만 결과는 묘하게 오래 남는 테스트.",
     subEn: "Low friction, strangely memorable results.",
-    gameIds: ["stoic-control", "thinking-pattern", "value-conflict", "defense-mechanism", "attachment", "mbti-depth", "dilemma", "kbti"],
+    gameIds: ["breaking-point", "scene-choice", "stoic-control", "thinking-pattern", "value-conflict", "defense-mechanism", "attachment", "mbti-depth", "kbti"],
   },
   {
     id: "share",
@@ -717,22 +733,29 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
   "meme-age",
   "kr-jp-signal",
   "nunchi",
+  "dilemma",
+  "highnote",
+  "ijy",
+  "spendpresident",
 ]);
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   featured: [
+    "breaking-point",
+    "scene-choice",
     "saju",
     "defense-mechanism",
     "joseon-couple",
   ],
   tests: [
+    "breaking-point",
+    "scene-choice",
     "stoic-control",
     "thinking-pattern",
     "value-conflict",
     "defense-mechanism",
     "attachment",
     "mbti-depth",
-    "dilemma",
     "kbti",
     "joseon",
     "korean-name",
@@ -752,8 +775,6 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
     "circle",
     "react",
     "timesense",
-    "highnote",
-    "ijy",
   ],
 };
 
