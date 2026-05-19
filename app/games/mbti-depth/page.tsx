@@ -84,7 +84,7 @@ export default function MbtiDepthGame() {
   const current = QUESTIONS[qIdx];
 
   return (
-    <main className="min-h-screen bg-bg pb-32">
+    <main className="mbti-depth-page min-h-screen bg-bg pb-32">
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">

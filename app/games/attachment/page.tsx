@@ -238,7 +238,11 @@ export default function AttachmentPage(): ReactElement {
   }, [typeId, locale]);
 
   const pageBg =
-    phase === "result" && typeId ? TYPE_THEME[typeId].bg : BG;
+    phase === "result" && typeId
+      ? TYPE_THEME[typeId].bg
+      : phase === "intro"
+        ? "radial-gradient(circle at 50% 18%, rgba(124, 111, 255, 0.18), transparent 34rem), radial-gradient(circle at 18% 84%, rgba(255, 183, 197, 0.22), transparent 26rem), linear-gradient(135deg, #fffaf5 0%, #f7f1ff 48%, #f7fbff 100%)"
+        : BG;
 
   return (
     <main
@@ -253,6 +257,7 @@ export default function AttachmentPage(): ReactElement {
       }}
     >
       <Link
+        className="att-home-link"
         href="/"
         aria-label={t("놀자.fun으로 돌아가기", "Back to Nolza.fun")}
         style={{
@@ -261,20 +266,22 @@ export default function AttachmentPage(): ReactElement {
           top: 20,
           zIndex: 50,
           display: "inline-flex",
-          height: 40,
-          width: 40,
+          minHeight: 40,
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 999,
-          fontSize: 22,
+          padding: "0 14px",
+          fontSize: 13,
+          fontWeight: 800,
           color: "rgba(42,42,42,0.6)",
           textDecoration: "none",
           background: "rgba(255,255,255,0.7)",
           backdropFilter: "blur(6px)",
           border: `1px solid ${RULE}`,
+          fontFamily: INTER,
         }}
       >
-        ←
+        {t("← Nolza.fun으로 돌아가기", "← Back to Nolza.fun")}
       </Link>
 
       {phase === "quiz" && target ? (
@@ -420,10 +427,42 @@ export default function AttachmentPage(): ReactElement {
   position: relative;
   z-index: 1;
 }
+.att-info-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 26px;
+}
+.att-info-chips span {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(79,70,229,0.16);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.58);
+  color: rgba(61,54,137,0.82);
+  padding: 0 13px;
+  font-family: ${INTER};
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 24px rgba(79,70,229,0.06);
+}
 @media (max-width: 640px) {
   .att-intro-title {
-    font-size: 36px !important;
-    letter-spacing: -1px !important;
+    font-size: clamp(38px, 11vw, 50px) !important;
+    letter-spacing: -0.03em !important;
+  }
+  .att-info-chips {
+    gap: 8px;
+    margin-top: 22px;
+  }
+  .att-info-chips span {
+    min-height: 32px;
+    padding: 0 11px;
+    font-size: 11.5px;
   }
 }
 
@@ -824,14 +863,10 @@ function Intro({
       <div
         className="att-intro-content"
         style={{
-          maxWidth: 720,
+          maxWidth: 880,
           width: "100%",
           textAlign: "center",
-          padding: "clamp(32px, 6vw, 60px)",
-          border: "1px solid rgba(42,42,42,0.08)",
-          borderRadius: 28,
-          background: "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))",
-          boxShadow: "0 24px 70px rgba(31,41,55,0.08)",
+          padding: "clamp(54px, 8vw, 96px) clamp(20px, 5vw, 44px)",
         }}
       >
         <div
@@ -839,11 +874,12 @@ function Intro({
           style={{
             ["--i" as string]: "0",
             color: ACCENT,
-            fontSize: 16,
+            fontSize: 13,
             letterSpacing: "0.32em",
-            fontWeight: 700,
-            marginBottom: 28,
+            fontWeight: 850,
+            marginBottom: 22,
             fontFamily: INTER,
+            textTransform: "uppercase",
           }}
         >
           ATTACHMENT · {t("애착 유형 테스트", "ATTACHMENT STYLE TEST")}
@@ -852,13 +888,15 @@ function Intro({
           className="att-reveal att-intro-title"
           style={{
             ["--i" as string]: "1",
-            fontSize: 56,
+            fontSize: "clamp(44px, 7.2vw, 78px)",
             fontWeight: 800,
-            letterSpacing: "-2px",
-            lineHeight: 1.15,
+            letterSpacing: "-0.03em",
+            lineHeight: 1.08,
             margin: 0,
             color: INK,
             fontFamily: SERIF,
+            wordBreak: "keep-all",
+            overflowWrap: "normal",
           }}
         >
           {t("당신의 애착 유형은?", "What's Your Attachment Style?")}
@@ -867,12 +905,14 @@ function Intro({
           className="att-reveal"
           style={{
             ["--i" as string]: "2",
-            fontSize: 20,
-            color: "#6b7280",
-            marginTop: 16,
+            fontSize: "clamp(17px, 2.4vw, 22px)",
+            color: "rgba(42,42,42,0.68)",
+            margin: "18px auto 0",
             marginBottom: 0,
             lineHeight: 1.6,
-            fontFamily: SERIF,
+            fontFamily: INTER,
+            maxWidth: 620,
+            wordBreak: "keep-all",
           }}
         >
           {t(
@@ -881,25 +921,36 @@ function Intro({
           )}
         </p>
 
+        <div
+          className="att-reveal att-info-chips"
+          style={{ ["--i" as string]: "3" }}
+          aria-label={t("테스트 정보", "Test info")}
+        >
+          <span>{t(`${TOTAL_QUESTIONS}문항`, `${TOTAL_QUESTIONS} questions`)}</span>
+          <span>{t("약 5분", "About 5 min")}</span>
+          <span>{t("관계 패턴", "Relationship pattern")}</span>
+        </div>
+
         <button
           type="button"
           onClick={onStart}
           className="att-reveal"
           style={{
-            ["--i" as string]: "3",
-            background: ACCENT,
+            ["--i" as string]: "4",
+            background: "linear-gradient(135deg, #6d5df6, #4f46e5)",
             color: "#fff",
             border: "none",
-            padding: "20px 48px",
+            padding: "17px 44px",
             borderRadius: 999,
-            fontSize: 20,
-            fontWeight: 600,
-            letterSpacing: "0.08em",
+            fontSize: 17,
+            fontWeight: 850,
+            letterSpacing: "0.02em",
             cursor: "pointer",
-            fontFamily: SERIF,
-            marginTop: 48,
+            fontFamily: INTER,
+            marginTop: 28,
             boxShadow: "0 14px 36px rgba(79,70,229,0.32)",
             transition: "transform 0.15s ease, box-shadow 0.15s ease",
+            minHeight: 54,
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-2px)";
@@ -916,16 +967,34 @@ function Intro({
         <p
           className="att-reveal"
           style={{
-            ["--i" as string]: "4",
-            marginTop: 20,
+            ["--i" as string]: "5",
+            marginTop: 18,
             marginBottom: 0,
             fontSize: 15,
-            color: "rgba(42,42,42,0.5)",
+            color: "rgba(42,42,42,0.56)",
             letterSpacing: "0.04em",
             fontFamily: INTER,
           }}
         >
           {t(`${TOTAL_QUESTIONS}문항 · 약 5분`, `${TOTAL_QUESTIONS} questions · 5 min`)}
+        </p>
+        <p
+          className="att-reveal"
+          style={{
+            ["--i" as string]: "6",
+            maxWidth: 620,
+            margin: "14px auto 0",
+            color: "rgba(42,42,42,0.48)",
+            fontFamily: INTER,
+            fontSize: 13,
+            lineHeight: 1.7,
+            wordBreak: "keep-all",
+          }}
+        >
+          {t(
+            "이 테스트는 전문적인 진단이 아닌, 관계 속 반응 패턴을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
+            "This is not a professional diagnosis. It is an entertainment and self-reflection experience based on relationship response patterns.",
+          )}
         </p>
       </div>
     </>

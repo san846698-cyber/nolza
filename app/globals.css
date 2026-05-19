@@ -3546,3 +3546,138 @@ body {
     font-size: 0.74rem !important;
   }
 }
+
+/* Centered-stage refinement for test intros without hero artwork. */
+.defense-page .hero,
+.thinking-hero,
+.value-hero,
+.stoic-hero,
+.crush-test .hero-card,
+.breaking-page .intro,
+.scene-page .intro {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.thinking-hero,
+.value-hero,
+.stoic-hero {
+  flex-direction: column !important;
+}
+
+.defense-page .hero-content,
+.thinking-hero .hero-copy,
+.value-hero .hero-copy,
+.stoic-hero .hero-copy,
+.crush-test .hero-copy,
+.breaking-page .intro,
+.scene-page .intro {
+  width: min(100%, 900px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+.thinking-hero .hero-copy,
+.value-hero .hero-copy,
+.stoic-hero .hero-copy,
+.breaking-page .intro {
+  margin-left: auto !important;
+}
+
+.defense-page .intro-chips,
+.thinking-hero .intro-chips,
+.value-hero .intro-chips,
+.stoic-hero .intro-chips,
+.crush-test .intro-chips,
+.breaking-page .intro-chips,
+.scene-page .intro-chips {
+  justify-content: center !important;
+}
+
+.defense-page .hero h1,
+.thinking-hero h1,
+.value-hero h1,
+.stoic-hero h1,
+.crush-test .hero-card h1,
+.breaking-page .intro h1,
+.scene-page .intro h1,
+.kbti-page h1,
+.mbti-depth-page h1 {
+  max-width: min(100%, 980px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  line-break: strict !important;
+  text-wrap: balance;
+}
+
+.thinking-hero h1,
+.value-hero h1,
+.stoic-hero h1,
+.crush-test .hero-card h1 {
+  font-size: clamp(3.25rem, 8vw, 5.9rem) !important;
+}
+
+.defense-page .hero p,
+.thinking-hero .subtitle,
+.thinking-hero .description,
+.value-hero .subtitle,
+.value-hero .description,
+.stoic-hero .subtitle,
+.stoic-hero .description,
+.crush-test .subtitle,
+.crush-test .description,
+.breaking-page .intro .subtitle,
+.breaking-page .intro .description,
+.scene-page .intro .subtitle,
+.scene-page .intro .description {
+  max-width: 720px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.defense-page .primary,
+.thinking-hero .primary,
+.value-hero .primary,
+.stoic-hero .primary,
+.crush-test .primary,
+.breaking-page .primary,
+.scene-page .primary {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+@media (max-width: 640px) {
+  .defense-page .hero-content,
+  .thinking-hero .hero-copy,
+  .value-hero .hero-copy,
+  .stoic-hero .hero-copy,
+  .crush-test .hero-copy,
+  .breaking-page .intro,
+  .scene-page .intro {
+    width: 100% !important;
+  }
+
+  .defense-page .hero h1,
+  .thinking-hero h1,
+  .value-hero h1,
+  .stoic-hero h1,
+  .crush-test .hero-card h1,
+  .breaking-page .intro h1,
+  .scene-page .intro h1,
+  .kbti-page h1,
+  .mbti-depth-page h1 {
+    max-width: 11.5em !important;
+    font-size: clamp(2.4rem, 10.5vw, 3.5rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  .intro-chips {
+    justify-content: center !important;
+  }
+}
