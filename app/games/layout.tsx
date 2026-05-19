@@ -106,6 +106,7 @@ export default function GamesLayout({
         <Link
           href="/"
           aria-label={brandText(locale)}
+          className="game-shell-floating-brand"
           style={{
             ...floatingBtnBase,
             top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
@@ -124,6 +125,7 @@ export default function GamesLayout({
         <Link
           href="/"
           aria-label={homeBackLabel(locale)}
+          className="game-shell-floating-back"
           style={{
             ...floatingBtnBase,
             top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
@@ -138,6 +140,7 @@ export default function GamesLayout({
         </Link>
         <button
           type="button"
+          className="game-shell-floating-toggle"
           onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
           aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
           style={{

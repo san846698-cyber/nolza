@@ -1220,6 +1220,24 @@ img {
   .game-shell-toggle { padding: 7px 12px; font-size: 12px; }
 }
 
+@media (max-width: 480px) {
+  .game-shell-floating-brand {
+    display: none !important;
+  }
+
+  .game-shell-floating-back {
+    max-width: calc(100vw - 108px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .game-shell-floating-toggle {
+    left: auto !important;
+    right: max(12px, calc(env(safe-area-inset-right, 0px) + 8px)) !important;
+  }
+}
+
 /* Shared game intro/result primitives. These are intentionally plain enough
    to sit inside older bespoke games while giving new polish a common rhythm. */
 .game-intro {
@@ -2458,21 +2476,25 @@ img {
 }
 .trust-locale-switch {
   display: inline-flex;
+  align-items: center;
   gap: 4px;
   padding: 4px;
   border: 1px solid rgba(20, 17, 14, 0.12);
   border-radius: 999px;
   background: rgba(255, 252, 244, 0.58);
+  white-space: nowrap;
 }
 .trust-locale-switch button {
   min-height: 30px;
-  padding: 0 10px;
+  min-width: 72px;
+  padding: 0 12px;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: #6b6258;
   font-size: 0.72rem;
   font-weight: 900;
+  letter-spacing: 0.08em;
   cursor: pointer;
 }
 .trust-locale-switch button[aria-pressed="true"] {
@@ -3732,4 +3754,72 @@ body {
   .intro-chips {
     justify-content: center !important;
   }
+}
+
+/* Result QA: keep dark-themed result cards readable despite shared light card polish. */
+.defense-page .result-wrap .result-card {
+  background:
+    radial-gradient(circle at 82% 8%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 34%),
+    linear-gradient(145deg, rgba(34, 25, 20, 0.98), rgba(17, 20, 30, 0.96)) !important;
+  border-color: rgba(248, 239, 226, 0.16) !important;
+  color: #fff4dd !important;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.defense-page .result-wrap .result-card h2,
+.defense-page .result-wrap .deep-insights h3,
+.defense-page .result-wrap .score-section h3 {
+  color: #fff4dd !important;
+}
+
+.defense-page .result-wrap .description,
+.defense-page .result-wrap .insight-grid p,
+.defense-page .result-wrap .deep-section p,
+.defense-page .result-wrap .inner-quote p,
+.defense-page .result-wrap .test-basis p,
+.defense-page .result-wrap .score-list,
+.defense-page .result-wrap .result-card footer {
+  color: rgba(255, 244, 221, 0.88) !important;
+  opacity: 1 !important;
+}
+
+.defense-page .result-wrap .insight-grid section,
+.defense-page .result-wrap .deep-section,
+.defense-page .result-wrap .inner-quote,
+.defense-page .result-wrap .score-section,
+.defense-page .result-wrap .test-basis {
+  background: rgba(7, 10, 16, 0.34) !important;
+  border-color: rgba(248, 239, 226, 0.16) !important;
+  color: #fff4dd !important;
+}
+
+.scene-page .scene-card:has(.result-view) {
+  background:
+    radial-gradient(circle at 82% 8%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 34%),
+    linear-gradient(145deg, rgba(31, 24, 42, 0.98), rgba(17, 15, 25, 0.96)) !important;
+  border-color: rgba(247, 234, 212, 0.17) !important;
+  color: #fff3df !important;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title h2,
+.scene-page .scene-card:has(.result-view) .friend-question p {
+  color: #fff3df !important;
+  opacity: 1 !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title p,
+.scene-page .scene-card:has(.result-view) .result-description,
+.scene-page .scene-card:has(.result-view) .result-sections p,
+.scene-page .scene-card:has(.result-view) .progress-head,
+.scene-page .scene-card:has(.result-view) .shared-label {
+  color: rgba(255, 246, 225, 0.9) !important;
+  opacity: 1 !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-sections section,
+.scene-page .scene-card:has(.result-view) .friend-question {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(247, 234, 212, 0.15) !important;
+  color: #fff3df !important;
 }

@@ -50,7 +50,7 @@ export type ValueAnswer = {
   weights: Partial<Record<ValueConflictId, number>>;
 };
 
-export const VALUE_RESULTS: ValueResult[] = [
+const RAW_VALUE_RESULTS: ValueResult[] = [
   {
     id: "freedom-stability",
     title: { ko: "?? vs ??", en: "Freedom vs Stability" },
@@ -241,6 +241,202 @@ export const VALUE_RESULTS: ValueResult[] = [
     shareLine: { ko: "나는 가치관 갈등 테스트에서 균형 조율형 나왔다. 바로 결론 내리기보다 상황을 보는 타입이라는데 좀 맞는 듯.", en: "My Value Conflict result is Balanced Negotiator. I tend to watch the situation before deciding, which feels pretty accurate." },
   },
 ];
+
+type ValueResultKoCopy = {
+  [K in Exclude<keyof ValueResult, "id">]: string;
+};
+
+const VALUE_RESULT_KO_COPY = {
+  "freedom-stability": {
+    title: "자유 vs 안정",
+    oneLiner: "떠나고 싶지만, 무너지기는 싫은 사람",
+    description:
+      "당신은 새로운 가능성에 끌리지만, 이미 쌓아온 생활의 기반도 쉽게 놓지 않습니다. 변화가 설레는 순간에도 그것이 일상과 관계를 얼마나 흔들지 함께 계산하는 편입니다.",
+    conflictStructure:
+      "마음 한쪽은 더 넓은 곳으로 나아가고 싶어 합니다. 다른 한쪽은 안정, 익숙한 사람들, 이미 만들어둔 리듬을 지키고 싶어 합니다. 마음은 짐을 싸지만, 발은 계속 땅을 확인합니다.",
+    commonThought: "해보고는 싶은데, 지금 가진 걸 잃으면 어떡하지?",
+    friendComment: "너는 떠나고 싶다고 말하면서도, 안정적인 건 끝까지 붙잡는 편이야.",
+    neededSentence:
+      "완벽히 안전해진 뒤에 움직일 필요는 없습니다. 작은 대비책 하나를 만들고, 한 걸음부터 옮겨도 됩니다.",
+    strength:
+      "가능성과 현실적 위험을 동시에 볼 수 있어 오래 버틸 수 있는 선택을 찾는 힘이 있습니다.",
+    risk: "완전히 준비된 느낌을 기다리다 보면, 진짜 원하는 방향이 계속 뒤로 밀릴 수 있습니다.",
+    moment: "직장, 이사, 관계의 시작처럼 생활의 기반이 흔들릴 수 있는 선택 앞에서 자주 나타납니다.",
+    hint: "완전한 안전 대신, 움직일 수 있게 해주는 최소한의 안전장치를 정해보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 자유 vs 안정이 나왔다. 움직이고 싶은데 무너지기는 싫은 타입이라니 좀 아프게 맞음.",
+  },
+  "recognition-independence": {
+    title: "인정 vs 독립",
+    oneLiner: "사랑받고 싶지만, 휘둘리고 싶지는 않은 사람",
+    description:
+      "당신은 타인의 반응을 무시하지 않습니다. 다만 인정받기 위해 내 기준을 너무 많이 양보하는 순간에는 마음이 불편해집니다.",
+    conflictStructure:
+      "누군가의 기대에 맞추면 관계는 부드러워지지만, 내 선택이 작아지는 느낌이 듭니다. 반대로 내 뜻을 세우면 자유롭지만, 멀어질까 봐 마음 한구석이 조심스러워집니다.",
+    commonThought: "좋게 보이고 싶긴 한데, 내가 사라지는 느낌은 싫어.",
+    friendComment: "너는 칭찬을 좋아하면서도, 누가 시키는 대로만 하라고 하면 바로 답답해하잖아.",
+    neededSentence:
+      "인정받고 싶은 마음은 약점이 아닙니다. 다만 인정과 허락을 구분하면 선택이 훨씬 가벼워집니다.",
+    strength:
+      "관계의 분위기를 읽는 감각이 좋고, 동시에 자기 기준을 잃지 않으려는 힘이 있습니다.",
+    risk: "거절당할까 봐 지나치게 맞추면, 나중에는 상대보다 스스로에게 더 서운해질 수 있습니다.",
+    moment: "평가, 부탁, 가족이나 가까운 사람의 기대가 걸린 선택 앞에서 두드러집니다.",
+    hint: "상대가 좋아할 선택과 내가 감당할 수 있는 선택을 따로 적어보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 인정 vs 독립이 나왔다. 사랑받고 싶은데 휘둘리긴 싫은 타입이라니 너무 나 같음.",
+  },
+  "truth-peace": {
+    title: "진실 vs 평화",
+    oneLiner: "솔직하고 싶지만, 관계가 깨지는 건 두려운 사람",
+    description:
+      "당신에게는 사실을 바로잡고 싶은 마음과, 지금의 분위기를 지키고 싶은 마음이 함께 있습니다. 그래서 말해야 할 때를 오래 고르는 편입니다.",
+    conflictStructure:
+      "진실을 말하면 속은 시원하지만 누군가 상처받을 수 있습니다. 조용히 넘어가면 평화는 지켜지지만 내 안에는 찝찝함이 남습니다. 당신은 그 사이에서 말의 온도와 타이밍을 계속 재봅니다.",
+    commonThought: "말해야 하는 건 아는데, 지금 말하면 너무 커지지 않을까?",
+    friendComment: "너는 그냥 넘어가는 것 같아도, 속으로는 계속 정리하고 있더라.",
+    neededSentence:
+      "평화를 지키는 것과 침묵하는 것은 다릅니다. 부드럽게 말해도 충분히 진실할 수 있습니다.",
+    strength:
+      "상대의 감정과 상황의 흐름을 함께 고려하기 때문에, 불필요한 충돌을 줄이는 힘이 있습니다.",
+    risk: "너무 오래 참고 넘기면, 나중에는 더 작은 말도 크게 터질 수 있습니다.",
+    moment: "오해, 거짓말, 불편한 농담, 관계의 선을 넘는 말 앞에서 자주 드러납니다.",
+    hint: "상대를 이기려는 말이 아니라, 관계를 지키기 위해 필요한 사실 한 문장부터 꺼내보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 진실 vs 평화가 나왔다. 솔직하고 싶은데 분위기 깨지는 건 싫은 사람.",
+  },
+  "growth-rest": {
+    title: "성장 vs 휴식",
+    oneLiner: "더 나아지고 싶지만, 계속 버티기만 할 수는 없는 사람",
+    description:
+      "당신은 지금보다 나아지고 싶은 욕구가 큽니다. 하지만 몸과 마음이 보내는 피로 신호도 무시하기 어렵습니다.",
+    conflictStructure:
+      "성장은 당신에게 중요한 의미를 줍니다. 동시에 휴식은 무너뜨리지 않고 오래 가기 위한 조건입니다. 당신 안에서는 더 밀어붙이고 싶은 마음과 잠시 멈춰야 한다는 감각이 계속 줄다리기를 합니다.",
+    commonThought: "쉬어야 하는 건 아는데, 쉬면 뒤처질 것 같아.",
+    friendComment: "너는 쉬는 중에도 뭔가 해야 할 것 같다고 말하잖아.",
+    neededSentence:
+      "휴식은 성장의 반대가 아닙니다. 오래 가기 위해 리듬을 되찾는 시간입니다.",
+    strength:
+      "자기 발전에 대한 감각이 살아 있고, 스스로를 더 좋은 방향으로 이끌려는 힘이 있습니다.",
+    risk: "휴식을 죄책감으로만 느끼면, 결국 성장을 위한 에너지도 함께 줄어듭니다.",
+    moment: "번아웃 직전, 새 목표를 세우는 순간, 쉬는 날에도 마음이 바쁜 때 나타납니다.",
+    hint: "오늘의 성장을 ‘더 하기’가 아니라 ‘회복해서 유지하기’로 바꿔보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 성장 vs 휴식이 나왔다. 쉬어야 하는데 뒤처질까 봐 쉬지를 못하는 타입.",
+  },
+  "love-pride": {
+    title: "사랑 vs 자존심",
+    oneLiner: "다가가고 싶지만, 먼저 무너지고 싶지는 않은 사람",
+    description:
+      "당신은 마음이 있는 사람에게 쉽게 무심해지지 못합니다. 다만 내 마음이 가벼워 보이거나, 내가 더 매달리는 사람처럼 보이는 것은 조심합니다.",
+    conflictStructure:
+      "사랑은 가까이 가고 싶게 만들지만, 자존심은 나를 지키라고 말합니다. 그래서 당신은 연락 한 번, 사과 한마디, 표현 하나에도 마음의 무게를 많이 재는 편입니다.",
+    commonThought: "보고 싶은데, 내가 먼저 그러면 너무 지는 것 같아.",
+    friendComment: "너는 마음은 큰데 티를 낼 때까지 시간이 오래 걸려.",
+    neededSentence:
+      "마음을 표현한다고 해서 당신의 가치가 낮아지는 것은 아닙니다. 다만 표현의 방식은 당신답게 고르면 됩니다.",
+    strength:
+      "관계 안에서도 자신을 잃지 않으려는 감각이 있고, 쉽게 휩쓸리지 않는 힘이 있습니다.",
+    risk: "자존심을 보호하느라 필요한 표현까지 늦추면, 상대는 마음이 없는 줄 오해할 수 있습니다.",
+    moment: "연락, 사과, 고백, 화해처럼 먼저 손을 내밀어야 하는 순간에 자주 나타납니다.",
+    hint: "이기는 표현보다 진짜 마음을 덜 다치게 전하는 표현을 찾아보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 사랑 vs 자존심이 나왔다. 다가가고 싶은데 먼저 지는 느낌은 싫은 타입.",
+  },
+  "perfect-start": {
+    title: "완벽 vs 시작",
+    oneLiner: "제대로 하고 싶어서, 시작이 늦어지는 사람",
+    description:
+      "당신은 대충 시작하는 것보다 잘 준비된 시작을 선호합니다. 그래서 기준이 높아질수록 첫걸음이 더 무거워질 때가 있습니다.",
+    conflictStructure:
+      "완벽함은 결과를 지키고 싶다는 마음에서 옵니다. 시작은 불완전함을 감수해야 가능해집니다. 당신 안에서는 잘하고 싶은 마음과 일단 해봐야 알 수 있다는 감각이 부딪힙니다.",
+    commonThought: "조금만 더 준비하고 시작하면 더 잘할 수 있을 것 같은데.",
+    friendComment: "너는 시작하기 전 자료조사만 해도 이미 프로젝트 하나야.",
+    neededSentence:
+      "완벽한 시작보다 수정할 수 있는 첫 버전이 더 멀리 데려갈 때가 많습니다.",
+    strength:
+      "기준이 분명하고, 결과물의 완성도를 끝까지 끌어올리는 힘이 있습니다.",
+    risk: "처음부터 완벽하려고 하면 경험으로 배울 기회를 놓칠 수 있습니다.",
+    moment: "새로운 일, 창작, 공부, 프로젝트를 시작하기 직전에 특히 강하게 나타납니다.",
+    hint: "오늘은 완성본이 아니라 ‘고칠 수 있는 초안’을 목표로 잡아보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 완벽 vs 시작이 나왔다. 제대로 하려다가 시작이 늦어지는 사람.",
+  },
+  "responsibility-freedom": {
+    title: "책임 vs 자유",
+    oneLiner: "맡은 것을 지키고 싶지만, 숨 쉴 공간도 필요한 사람",
+    description:
+      "당신은 책임을 가볍게 여기지 않습니다. 그래서 누군가 기대하거나 의지하는 상황에서 쉽게 빠져나오지 못합니다.",
+    conflictStructure:
+      "책임은 당신에게 신뢰와 의미를 줍니다. 하지만 자유는 당신이 소진되지 않기 위해 꼭 필요한 숨구멍입니다. 당신은 해야 할 일과 내가 살 수 있는 공간 사이에서 균형을 찾으려 합니다.",
+    commonThought: "내가 안 하면 안 될 것 같은데, 이대로는 너무 답답해.",
+    friendComment: "너는 힘들어도 맡은 건 끝까지 하려고 하잖아.",
+    neededSentence:
+      "책임을 다한다는 것은 모든 것을 혼자 짊어진다는 뜻이 아닙니다.",
+    strength:
+      "신뢰를 오래 쌓는 힘이 있고, 쉽게 도망치지 않는 안정감이 있습니다.",
+    risk: "도움을 요청하지 못하면 책임감이 결국 원망으로 바뀔 수 있습니다.",
+    moment: "팀, 가족, 관계, 일정처럼 나를 필요로 하는 일이 겹칠 때 나타납니다.",
+    hint: "지켜야 할 책임과 나눌 수 있는 책임을 구분해보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 책임 vs 자유가 나왔다. 맡은 건 지키고 싶은데 숨 쉴 공간도 필요한 타입.",
+  },
+  "stability-change": {
+    title: "안정 vs 변화",
+    oneLiner: "익숙함이 편하지만, 이대로만 살고 싶지는 않은 사람",
+    description:
+      "당신은 안정된 리듬에서 힘을 얻습니다. 하지만 같은 자리에 너무 오래 머무르면 마음 한쪽에서 변화의 신호가 올라옵니다.",
+    conflictStructure:
+      "안정은 당신을 지탱합니다. 변화는 당신을 깨웁니다. 당신은 지금의 삶을 무너뜨리지 않으면서도, 조금 다른 가능성을 열고 싶어 합니다.",
+    commonThought: "지금도 나쁘지 않은데, 계속 이렇게만 가도 괜찮을까?",
+    friendComment: "너는 편한 걸 좋아하지만, 가끔 갑자기 뭔가 바꾸고 싶어 하더라.",
+    neededSentence:
+      "변화는 꼭 모든 것을 뒤엎는 방식일 필요가 없습니다. 작은 실험도 충분한 변화가 될 수 있습니다.",
+    strength:
+      "기반을 지키면서도 새로운 가능성을 살피는 균형감이 있습니다.",
+    risk: "불편함을 피하려고만 하면, 필요한 변화까지 너무 늦게 알아차릴 수 있습니다.",
+    moment: "일상이 안정됐지만 마음이 답답하거나, 새 선택지가 반복해서 떠오를 때 나타납니다.",
+    hint: "큰 결정을 내리기 전, 일주일짜리 작은 변화부터 시험해보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 안정 vs 변화가 나왔다. 익숙함은 좋은데 이대로만 살고 싶지는 않은 사람.",
+  },
+  "balanced-negotiator": {
+    title: "균형 조율형",
+    oneLiner: "흔들려도 바로 한쪽으로 치우치지 않는 사람",
+    description:
+      "당신은 중요한 선택 앞에서 감정과 현실을 함께 보려는 사람입니다. 확신이 없다고 해서 멈추기만 하지 않고, 불안하다고 해서 무작정 뛰어들지도 않습니다.",
+    conflictStructure:
+      "당신 안의 갈등은 어느 한 가치가 너무 강해서라기보다, 여러 가치를 동시에 존중하려는 데서 생깁니다. 그래서 선택이 늦어질 때도 있지만, 대신 쉽게 후회할 결정을 줄이는 편입니다.",
+    commonThought: "지금 당장 결론 내리기보다, 조금 더 보고 정해도 되지 않을까?",
+    friendComment: "너는 바로 확정 안 하고, 일단 상황을 좀 보잖아.",
+    neededSentence:
+      "모든 답을 한 번에 정하지 않아도 됩니다. 작은 확인과 작은 선택을 반복해도 충분히 앞으로 갈 수 있습니다.",
+    strength: "극단으로 치우치기 전에 상황을 넓게 보는 힘이 있습니다.",
+    risk: "너무 오래 조율하다 보면 선택 자체가 늦어질 수 있습니다.",
+    moment: "정보가 아직 부족하거나, 사람과 현실이 모두 걸려 있는 선택 앞에서 자주 나타납니다.",
+    hint: "정답 하나를 찾기보다, 지금 확인할 수 있는 가장 작은 기준부터 정해보세요.",
+    shareLine:
+      "나는 가치관 갈등 테스트에서 균형 조율형 나왔다. 바로 결론 내리기보다 상황을 보는 타입이라는데 좀 맞는 듯.",
+  },
+} satisfies Record<ValueConflictId, ValueResultKoCopy>;
+
+export const VALUE_RESULTS: ValueResult[] = RAW_VALUE_RESULTS.map((result) => {
+  const copy = VALUE_RESULT_KO_COPY[result.id];
+  return {
+    ...result,
+    title: { ...result.title, ko: copy.title },
+    oneLiner: { ...result.oneLiner, ko: copy.oneLiner },
+    description: { ...result.description, ko: copy.description },
+    conflictStructure: { ...result.conflictStructure, ko: copy.conflictStructure },
+    commonThought: { ...result.commonThought, ko: copy.commonThought },
+    friendComment: { ...result.friendComment, ko: copy.friendComment },
+    neededSentence: { ...result.neededSentence, ko: copy.neededSentence },
+    strength: { ...result.strength, ko: copy.strength },
+    risk: { ...result.risk, ko: copy.risk },
+    moment: { ...result.moment, ko: copy.moment },
+    hint: { ...result.hint, ko: copy.hint },
+    shareLine: { ...result.shareLine, ko: copy.shareLine },
+  };
+});
 
 export const VALUE_QUESTIONS: ValueQuestion[] = [
   {

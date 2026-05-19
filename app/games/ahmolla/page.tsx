@@ -501,7 +501,7 @@ export default function AhmollaGame() {
   const { locale, t } = useLocale();
   const [depth, setDepth] = useState(0);
   const [current, setCurrent] = useState<Q>(INITIAL);
-  const [phase, setPhase] = useState<"intro" | "playing" | "decided">("intro");
+  const [phase, setPhase] = useState<"intro" | "playing" | "decided">("playing");
   const [introStep, setIntroStep] = useState(0);
   const [showStart, setShowStart] = useState(false);
   const [decision, setDecision] = useState<string>("");
@@ -659,7 +659,7 @@ export default function AhmollaGame() {
   const restart = () => {
     setDepth(0);
     setCurrent(INITIAL);
-    setPhase("intro");
+    setPhase("playing");
     setDecision("");
     recentRef.current = [];
     setLoading(false);
@@ -954,6 +954,20 @@ export default function AhmollaGame() {
           </div>
         ) : (
           <div className="text-center w-full" key={current.id}>
+            <p
+              className="fade-in"
+              style={{
+                margin: "0 auto 18px",
+                maxWidth: 420,
+                color: "#6b7280",
+                fontSize: "clamp(14px, 3.6vw, 16px)",
+                fontWeight: 600,
+                lineHeight: 1.6,
+                wordBreak: "keep-all",
+              }}
+            >
+              {t("생각이 너무 많아졌다면, 그냥 하나만 고르세요.", "If you are overthinking, just pick one.")}
+            </p>
             <h1
               className="fade-in mobile-wrap"
               style={{
@@ -976,6 +990,7 @@ export default function AhmollaGame() {
                 <button
                   key={optionId}
                   type="button"
+                  aria-label={`${String.fromCharCode(65 + i)}. ${trEntry(opt.text, locale)}`}
                   onClick={() => chooseOption(opt)}
                   onMouseEnter={() => onOptHover(i)}
                   data-choice-id={optionId}
@@ -984,6 +999,11 @@ export default function AhmollaGame() {
                     background: "white",
                     border: "1px solid #e5e5e5",
                     color: "#1a1a1a",
+                    display: "grid",
+                    gridTemplateColumns: "auto 1fr",
+                    alignItems: "center",
+                    gap: 10,
+                    textAlign: "left",
                     padding: "18px 14px",
                     fontSize: "clamp(13px, 3.8vw, 16px)",
                     fontWeight: 500,
@@ -996,7 +1016,24 @@ export default function AhmollaGame() {
                     animationDelay: `${i * 0.07}s`,
                   }}
                 >
-                  {trEntry(opt.text, locale)}
+                  <span
+                    aria-hidden
+                    style={{
+                      display: "inline-grid",
+                      placeItems: "center",
+                      width: 28,
+                      height: 28,
+                      borderRadius: 999,
+                      background: "#f3f4f6",
+                      color: "#111827",
+                      fontSize: 12,
+                      fontWeight: 800,
+                      fontFamily: "var(--font-inter)",
+                    }}
+                  >
+                    {String.fromCharCode(65 + i)}
+                  </span>
+                  <span>{trEntry(opt.text, locale)}</span>
                 </button>
                 );
               })}
