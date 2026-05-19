@@ -193,7 +193,7 @@ export default function AuctionGame() {
               aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
               className={s.topbar__toggle}
             >
-              {locale === "ko" ? "한 / EN" : "EN / 한"}
+              한 / EN
             </button>
           </div>
         </div>

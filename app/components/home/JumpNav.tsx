@@ -27,7 +27,7 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
 
   return (
     <nav
-      className="sticky top-0 z-40 border-b border-home-hairline bg-[rgba(255,248,235,0.82)] shadow-[0_14px_36px_rgba(48,35,24,0.06)] backdrop-blur-xl"
+      className="sticky top-0 z-40 border-b border-home-hairline bg-[rgba(255,249,239,0.86)] shadow-[0_14px_36px_rgba(48,35,24,0.06)] backdrop-blur-xl"
       aria-label="Jump to category"
     >
       <div className="mx-auto flex max-w-col gap-2.5 overflow-x-auto px-4 py-3 sm:gap-3 sm:px-6 sm:py-3.5 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
@@ -44,7 +44,7 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
                 "whitespace-nowrap no-underline shadow-[0_10px_24px_rgba(48,35,24,0.055)] transition-[background,color,border-color,transform,box-shadow]",
                 isActive
                   ? "border-home-ink bg-home-ink text-white shadow-[0_16px_34px_rgba(20,17,14,0.16)]"
-                  : "border-home-hairline bg-white/72 text-home-ink hover:-translate-y-0.5 hover:border-home-coral/30 hover:bg-white hover:shadow-[0_16px_34px_rgba(48,35,24,0.10)]",
+                  : "border-home-hairline bg-white/78 text-home-ink hover:-translate-y-0.5 hover:border-home-coral/35 hover:bg-white hover:shadow-[0_16px_34px_rgba(48,35,24,0.10)]",
               ].join(" ")}
             >
               <span

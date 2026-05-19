@@ -2800,3 +2800,582 @@ a:focus-visible {
     min-height: 54px !important;
   }
 }
+
+/* ==========================================================================
+   Final product-design pass: warmer modern product polish without filler art.
+   ========================================================================== */
+
+body {
+  background: linear-gradient(180deg, #fffaf3 0%, #fff6ea 42%, #fffdf8 100%) !important;
+  color: #1f1812;
+}
+
+[data-home] {
+  --home-bg: #fff7ec;
+  --home-bg-soft: #fff2e2;
+  --home-paper: #fffdf8;
+  --home-surface: rgba(255, 253, 248, 0.88);
+  --home-ink: #19120e;
+  --home-ink-2: #2f251d;
+  --home-muted: #76675a;
+  --home-hairline: rgba(39, 30, 22, 0.085);
+  --home-hairline-strong: rgba(39, 30, 22, 0.18);
+  --home-coral: #c95f4a;
+  --home-gold: #9b733f;
+  background:
+    linear-gradient(180deg, rgba(255, 249, 238, 0.96), rgba(255, 253, 248, 0.96)),
+    #fff7ec !important;
+}
+
+[data-home] section[data-cat] {
+  position: relative;
+}
+
+[data-home] section[data-cat] + section[data-cat]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: max(16px, calc((100% - 1040px) / 2));
+  right: max(16px, calc((100% - 1040px) / 2));
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(39, 30, 22, 0.11), transparent);
+}
+
+.defense-page .hero,
+.thinking-hero,
+.value-hero,
+.stoic-hero,
+.crush-test .hero-card,
+.breaking-page .intro,
+.scene-page .intro,
+.game-intro {
+  width: min(100%, 880px) !important;
+  min-height: auto !important;
+  margin-inline: auto !important;
+  border: 1px solid rgba(39, 30, 22, 0.1) !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 253, 248, 0.96), rgba(255, 246, 232, 0.9)) !important;
+  box-shadow: 0 26px 76px rgba(48, 35, 24, 0.12), inset 0 1px 0 rgba(255,255,255,0.88) !important;
+  padding: clamp(26px, 5vw, 54px) !important;
+  text-align: left !important;
+}
+
+.thinking-hero::before,
+.thinking-hero::after,
+.value-hero::before,
+.value-hero::after,
+.stoic-hero::before,
+.stoic-hero::after,
+.crush-test .hero-card::before,
+.crush-test .hero-card::after,
+.breaking-page .intro::before,
+.breaking-page .intro::after,
+.scene-page .intro::before,
+.scene-page .intro::after,
+.defense-page .hero::before,
+.defense-page .hero::after,
+.game-intro::before,
+.game-intro::after {
+  display: none !important;
+}
+
+.thinking-hero .hero-copy,
+.value-hero .hero-copy,
+.stoic-hero .hero-copy,
+.crush-test .hero-copy,
+.defense-page .hero-content {
+  max-width: 720px !important;
+}
+
+.defense-page .hero h1,
+.thinking-hero h1,
+.value-hero h1,
+.stoic-hero h1,
+.crush-test .hero-card h1,
+.breaking-page .intro h1,
+.scene-page .intro h1,
+.game-intro__title {
+  max-width: 12.5em !important;
+  margin: 0 !important;
+  color: #1d1510 !important;
+  font-size: clamp(2.55rem, 7vw, 4.6rem) !important;
+  line-height: 1.03 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.defense-page .hero p,
+.thinking-hero .subtitle,
+.thinking-hero .description,
+.value-hero .subtitle,
+.value-hero .description,
+.stoic-hero .subtitle,
+.stoic-hero .description,
+.crush-test .subtitle,
+.crush-test .description,
+.breaking-page .intro .subtitle,
+.breaking-page .intro .description,
+.scene-page .intro .subtitle,
+.scene-page .intro .description,
+.game-intro__hook,
+.game-intro__how {
+  max-width: 680px !important;
+  color: rgba(47, 37, 29, 0.78) !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  font-size: clamp(1rem, 2vw, 1.12rem) !important;
+  font-weight: 650 !important;
+  line-height: 1.72 !important;
+}
+
+.defense-page .kicker,
+.thinking-hero .eyebrow,
+.value-hero .eyebrow,
+.stoic-hero .eyebrow,
+.crush-test .eyebrow,
+.breaking-page .intro .eyebrow,
+.scene-page .intro .eyebrow,
+.game-intro__eyebrow {
+  color: #bf5b46 !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  font-size: 0.75rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+}
+
+.meta-line,
+.notice,
+.disclaimer,
+.game-intro__meta span {
+  color: rgba(47, 37, 29, 0.58) !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  font-size: 0.84rem !important;
+  font-weight: 800 !important;
+  line-height: 1.55 !important;
+}
+
+.question-card,
+.thinking-card,
+.value-card,
+.stoic-card,
+.crush-card,
+.quiz-card,
+.scene-card,
+.breaking-card,
+.test-card {
+  width: min(100%, 980px) !important;
+  margin-inline: auto !important;
+  padding: clamp(22px, 4vw, 38px) !important;
+  border-radius: 26px !important;
+  background: rgba(255, 253, 248, 0.92) !important;
+}
+
+.readable-question {
+  display: grid !important;
+  gap: 18px !important;
+  margin: 12px 0 24px !important;
+}
+
+.readable-question__situation,
+.readable-question__prompt {
+  display: grid !important;
+  gap: 8px !important;
+}
+
+.readable-question__situation span,
+.readable-question__prompt span,
+.progress-head span,
+.progress span {
+  color: #b45a44 !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.13em !important;
+  text-transform: uppercase !important;
+}
+
+.readable-question__situation p {
+  margin: 0 !important;
+  color: rgba(47, 37, 29, 0.74) !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  font-size: clamp(1rem, 1.8vw, 1.12rem) !important;
+  font-weight: 650 !important;
+  line-height: 1.66 !important;
+  word-break: keep-all !important;
+}
+
+.readable-question__prompt h2,
+.question-card h2,
+.thinking-card h2,
+.value-card h2,
+.stoic-card h2,
+.crush-card h2 {
+  margin: 0 !important;
+  color: #1f1812 !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  font-size: clamp(1.45rem, 3.6vw, 2.1rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.38 !important;
+  letter-spacing: -0.015em !important;
+  word-break: keep-all !important;
+}
+
+.answers,
+.question-card .answers,
+.thinking-card .answers,
+.value-card .answers,
+.stoic-card .answers,
+.crush-card .answers,
+.choices {
+  gap: 14px !important;
+}
+
+.answer,
+.answers button,
+.choices button,
+.option-button,
+.choice {
+  min-height: 64px !important;
+  padding: 16px 18px !important;
+  border-radius: 18px !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+}
+
+.answer strong,
+.answers button strong,
+.choices button strong {
+  font-size: clamp(0.98rem, 1.7vw, 1.08rem) !important;
+  font-weight: 850 !important;
+  line-height: 1.45 !important;
+}
+
+.result-actions__btn,
+.recommended-games__cta,
+.primary,
+.game-intro__start {
+  min-height: 52px !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.recommended-games {
+  color: #241a13 !important;
+  background: linear-gradient(145deg, rgba(255, 253, 248, 0.96), rgba(255, 244, 226, 0.92)) !important;
+}
+
+.recommended-games__item strong {
+  color: #201711 !important;
+}
+
+.recommended-games__desc {
+  color: rgba(47, 37, 29, 0.72) !important;
+}
+
+.site-footer {
+  background: #17120e !important;
+  color: rgba(255, 250, 240, 0.78) !important;
+  border-top-color: rgba(255, 250, 240, 0.1) !important;
+}
+
+.site-footer__brand strong,
+.site-footer a:hover {
+  color: #fffaf0 !important;
+}
+
+.site-footer__copy {
+  color: rgba(255, 250, 240, 0.52) !important;
+}
+
+@media (max-width: 640px) {
+  .defense-page .hero,
+  .thinking-hero,
+  .value-hero,
+  .stoic-hero,
+  .crush-test .hero-card,
+  .breaking-page .intro,
+  .scene-page .intro,
+  .game-intro {
+    width: calc(100% - 24px) !important;
+    border-radius: 24px !important;
+    padding: 26px 20px !important;
+  }
+
+  .defense-page .hero h1,
+  .thinking-hero h1,
+  .value-hero h1,
+  .stoic-hero h1,
+  .crush-test .hero-card h1,
+  .breaking-page .intro h1,
+  .scene-page .intro h1,
+  .game-intro__title {
+    font-size: clamp(2.15rem, 12vw, 3.25rem) !important;
+  }
+
+  .question-card,
+  .thinking-card,
+  .value-card,
+  .stoic-card,
+  .crush-card,
+  .quiz-card,
+  .scene-card,
+  .breaking-card,
+  .test-card {
+    width: calc(100% - 24px) !important;
+    border-radius: 22px !important;
+    padding: 20px !important;
+  }
+
+  .readable-question__prompt h2,
+  .question-card h2,
+  .thinking-card h2,
+  .value-card h2,
+  .stoic-card h2,
+  .crush-card h2 {
+    font-size: clamp(1.35rem, 6.5vw, 1.65rem) !important;
+  }
+
+  .recommended-games__grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Open test intro landing screens. These override only the intro phase shells. */
+.defense-page,
+.thinking-test,
+.value-test,
+.stoic-test,
+.crush-test,
+.breaking-page,
+.scene-page {
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+.defense-page {
+  background: linear-gradient(135deg, #19130f 0%, #2b211b 54%, #493223 100%) !important;
+}
+
+.breaking-page {
+  background: linear-gradient(135deg, #181513 0%, #26211e 52%, #3b3028 100%) !important;
+}
+
+.scene-page {
+  background: linear-gradient(135deg, #191420 0%, #292033 54%, #3a2a3d 100%) !important;
+}
+
+.thinking-test {
+  background: linear-gradient(135deg, #fffaf4 0%, #f6efff 48%, #fffdf8 100%) !important;
+}
+
+.value-test {
+  background: linear-gradient(135deg, #fff8ed 0%, #f1eee7 50%, #eef4f5 100%) !important;
+}
+
+.stoic-test {
+  background: linear-gradient(135deg, #fbf4e8 0%, #ece5d6 50%, #f8f6ef 100%) !important;
+}
+
+.crush-test {
+  background: linear-gradient(135deg, #fff9f2 0%, #fff0f1 46%, #fffaf5 100%) !important;
+}
+
+.defense-page .hero,
+.thinking-hero,
+.value-hero,
+.stoic-hero,
+.crush-test .hero-card,
+.breaking-page .intro,
+.scene-page .intro {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: min(780px, calc(100svh - 80px)) !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: clamp(64px, 10svh, 118px) clamp(20px, 6vw, 76px) clamp(54px, 8svh, 96px) !important;
+}
+
+.thinking-shell,
+.value-shell,
+.stoic-shell,
+.crush-test .shell,
+.breaking-shell,
+.scene-shell {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.defense-page .hero-content,
+.thinking-hero .hero-copy,
+.value-hero .hero-copy,
+.stoic-hero .hero-copy,
+.crush-test .hero-copy {
+  width: min(100%, 760px) !important;
+}
+
+.defense-page .hero,
+.crush-test .hero-card,
+.scene-page .intro {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.thinking-hero,
+.value-hero,
+.stoic-hero,
+.breaking-page .intro {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
+.thinking-hero,
+.value-hero,
+.stoic-hero {
+  flex-direction: row !important;
+}
+
+.breaking-page .intro {
+  align-items: flex-start !important;
+}
+
+.thinking-hero .hero-copy,
+.value-hero .hero-copy,
+.stoic-hero .hero-copy {
+  margin: 0 !important;
+}
+
+.defense-page .hero-content,
+.crush-test .hero-copy {
+  margin-inline: auto !important;
+}
+
+.defense-page .hero h1,
+.thinking-hero h1,
+.value-hero h1,
+.stoic-hero h1,
+.crush-test .hero-card h1,
+.breaking-page .intro h1,
+.scene-page .intro h1 {
+  max-width: 11.5em !important;
+  margin: 0 !important;
+  font-size: clamp(3rem, 8.5vw, 5.7rem) !important;
+  line-height: 1.04 !important;
+  letter-spacing: -0.045em !important;
+}
+
+.defense-page .hero h1,
+.breaking-page .intro h1,
+.scene-page .intro h1 {
+  color: #fff7e8 !important;
+}
+
+.defense-page .hero p,
+.breaking-page .intro .subtitle,
+.breaking-page .intro .description,
+.scene-page .intro .subtitle,
+.scene-page .intro .description {
+  color: rgba(255, 247, 232, 0.78) !important;
+}
+
+.defense-page .kicker,
+.breaking-page .intro .eyebrow,
+.scene-page .intro .eyebrow {
+  color: #ffc08f !important;
+}
+
+.defense-page .meta-line,
+.defense-page .disclaimer,
+.breaking-page .meta-line,
+.breaking-page .disclaimer,
+.scene-page .meta-line,
+.scene-page .disclaimer {
+  color: rgba(255, 247, 232, 0.58) !important;
+}
+
+.defense-page .primary,
+.breaking-page .primary,
+.scene-page .primary,
+.thinking-hero .primary,
+.value-hero .primary,
+.stoic-hero .primary,
+.crush-test .primary {
+  margin-top: clamp(24px, 4vw, 36px) !important;
+}
+
+.defense-page .hero-content .primary,
+.crush-test .hero-copy .primary,
+.scene-page .intro .primary {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.defense-page .meta-line,
+.thinking-hero .meta-line,
+.value-hero .meta-line,
+.stoic-hero .meta-line,
+.crush-test .meta-line,
+.breaking-page .meta-line,
+.scene-page .meta-line {
+  margin-top: 16px !important;
+}
+
+@media (max-width: 640px) {
+  .defense-page .hero,
+  .thinking-hero,
+  .value-hero,
+  .stoic-hero,
+  .crush-test .hero-card,
+  .breaking-page .intro,
+  .scene-page .intro {
+    width: 100% !important;
+    min-height: calc(100svh - 58px) !important;
+    padding: 52px 22px 56px !important;
+  }
+
+  .thinking-hero,
+  .value-hero,
+  .stoic-hero,
+  .breaking-page .intro {
+    justify-content: center !important;
+  }
+
+  .defense-page .hero h1,
+  .thinking-hero h1,
+  .value-hero h1,
+  .stoic-hero h1,
+  .crush-test .hero-card h1,
+  .breaking-page .intro h1,
+  .scene-page .intro h1 {
+    font-size: clamp(2.55rem, 13vw, 3.8rem) !important;
+    line-height: 1.06 !important;
+  }
+
+  .defense-page .hero p,
+  .thinking-hero .subtitle,
+  .thinking-hero .description,
+  .value-hero .subtitle,
+  .value-hero .description,
+  .stoic-hero .subtitle,
+  .stoic-hero .description,
+  .crush-test .subtitle,
+  .crush-test .description,
+  .breaking-page .intro .subtitle,
+  .breaking-page .intro .description,
+  .scene-page .intro .subtitle,
+  .scene-page .intro .description {
+    font-size: 1rem !important;
+    line-height: 1.64 !important;
+  }
+}

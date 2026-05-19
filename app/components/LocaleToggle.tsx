@@ -29,14 +29,14 @@ export default function LocaleToggle() {
         top: 20,
         right: 20,
         zIndex: 9999,
-        background: "rgba(20,17,14,0.78)",
+        background: "rgba(20,17,14,0.82)",
         border: "1px solid rgba(255,255,255,0.18)",
         borderRadius: 999,
         padding: "8px 16px",
         cursor: "pointer",
         color: "white",
         fontSize: 14,
-        fontWeight: 800,
+        fontWeight: 900,
         letterSpacing: "0.04em",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
@@ -44,7 +44,7 @@ export default function LocaleToggle() {
         transition: "background 0.15s ease, transform 0.1s ease",
       }}
     >
-      {locale === "ko" ? "한 / EN" : "EN / 한"}
+      한 / EN
     </button>
   );
 }

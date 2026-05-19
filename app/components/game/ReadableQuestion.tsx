@@ -21,7 +21,10 @@ function splitPrompt(prompt: string): { situation: string; question: string } {
     };
   }
 
-  const sentences = trimmed.match(/[^.!?。！？?]+[.!?。！？?]?/g)?.map((part) => part.trim()).filter(Boolean);
+  const sentences = trimmed
+    .match(/[^.!?。！？]+[.!?。！？]?/g)
+    ?.map((part) => part.trim())
+    .filter(Boolean);
   if (!sentences || sentences.length < 2 || trimmed.length < 58) {
     return { situation: "", question: trimmed };
   }

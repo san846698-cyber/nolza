@@ -426,7 +426,7 @@ export default function TrustLocalizedPage({ page }: { page: TrustPageId }) {
             aria-pressed={locale === "ko"}
             onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
           >
-            {locale === "ko" ? "한 / EN" : "EN / 한"}
+            한 / EN
           </button>
         </div>
       }

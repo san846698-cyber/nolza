@@ -74,8 +74,11 @@ function DefaultMark({ skin }: { skin: Skin }) {
     );
   }
   return (
-    <svg viewBox="0 0 100 100" className="w-full h-full">
-      <circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" strokeWidth="1.2" />
+    <svg viewBox="0 0 100 100" className="w-full h-full" fill="none" stroke="currentColor" strokeLinecap="round">
+      <path d="M26 34H74" strokeWidth="2.2" opacity="0.72" />
+      <path d="M22 50H70" strokeWidth="1.6" opacity="0.54" />
+      <path d="M30 66H62" strokeWidth="1.6" opacity="0.42" />
+      <path d="M78 34C70 44 69 54 78 66" strokeWidth="1.2" opacity="0.42" />
     </svg>
   );
 }

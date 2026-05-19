@@ -46,7 +46,7 @@ const footerCopy: Record<
     operated: "運営: Studio4Any",
     contact: "お問い合わせ",
     links: [
-      { href: "/about", label: "サイト紹介" },
+      { href: "/about", label: "紹介" },
       { href: "/contact", label: "お問い合わせ" },
       { href: "/privacy", label: "プライバシーポリシー" },
       { href: "/terms", label: "利用規約" },

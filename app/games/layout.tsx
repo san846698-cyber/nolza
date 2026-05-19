@@ -123,7 +123,7 @@ export default function GamesLayout({
             letterSpacing: "0.08em",
           }}
         >
-          {locale === "ko" ? "한 / EN" : "EN / 한"}
+          한 / EN
         </button>
         {children}
       </div>
@@ -164,7 +164,7 @@ export default function GamesLayout({
               onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
               aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
             >
-              {locale === "ko" ? "한 / EN" : "EN / 한"}
+              한 / EN
             </button>
           </div>
         </div>
