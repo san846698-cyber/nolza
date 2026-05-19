@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -992,30 +991,6 @@ export default function SajuPage(): ReactElement {
     >
       <Starfield />
       <BaguaCorner />
-      <Link
-        href="/"
-        aria-label="home"
-        style={{
-          position: "fixed",
-          left: 20,
-          top: 20,
-          zIndex: 50,
-          display: "inline-flex",
-          height: 40,
-          width: 40,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 999,
-          fontSize: 22,
-          color: ACCENT_DIM,
-          textDecoration: "none",
-          background: "rgba(10,10,26,0.7)",
-          backdropFilter: "blur(6px)",
-          border: `1px solid ${RULE}`,
-        }}
-      >
-        ←
-      </Link>
       {/* Step indicator */}
       <div
         style={{
@@ -1273,9 +1248,10 @@ function LanguageStep({
               type="button"
               onClick={choice.onClick}
               className="saju-entry__choice"
+              aria-label={`${choice.label}. ${choice.detail}`}
             >
               <span className="saju-entry__choice-orbit" aria-hidden />
-              <span>
+              <span className="saju-entry__choice-copy">
                 <strong>{choice.label}</strong>
                 <small>{choice.detail}</small>
               </span>
@@ -1486,6 +1462,12 @@ function LanguageStep({
           border: 1px solid rgba(232, 211, 154, 0.42);
           background: radial-gradient(circle, rgba(232,211,154,0.9) 0 3px, transparent 4px);
           box-shadow: 0 0 20px rgba(232,211,154,0.2);
+        }
+
+        .saju-entry__choice-copy {
+          display: grid;
+          gap: 5px;
+          min-width: 0;
         }
 
         .saju-entry__choice strong {

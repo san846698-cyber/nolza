@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
@@ -166,15 +165,6 @@ export default function SilenceGame() {
         userSelect: "none",
       }}
     >
-      <Link
-        href="/"
-        className="back-arrow"
-        aria-label="home"
-        data-allow
-        style={{ color: "#bbb" }}
-      >
-        ←
-      </Link>
       <div data-allow>
       </div>
 

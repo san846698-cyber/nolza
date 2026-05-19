@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AdMobileSticky } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
@@ -729,14 +728,6 @@ export default function AhmollaGame() {
           fontFamily: "var(--font-noto-sans-kr)",
         }}
       >
-        <Link
-          href="/"
-          className="back-arrow"
-          aria-label="home"
-          style={{ color: "#888" }}
-        >
-          ←
-        </Link>
         <div className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center px-6">
           <div className="text-center" style={{ minHeight: 240 }}>
             {introStep >= 0 && (
@@ -819,9 +810,6 @@ export default function AhmollaGame() {
           fontFamily: "var(--font-noto-sans-kr)",
         }}
       >
-        <Link href="/" className="back-arrow" aria-label="home" style={{ color: "#666" }}>
-          ←
-        </Link>
         <div className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center px-6 text-center">
           <div style={{ fontSize: 13, color: "#888", letterSpacing: "0.3em", textTransform: "uppercase" }}>
             {t("AI가 대신 결정했습니다", "AI decided for you")}
@@ -914,9 +902,6 @@ export default function AhmollaGame() {
         transition: "background-color 0.6s ease",
       }}
     >
-      <Link href="/" className="back-arrow" aria-label="home" style={{ color: "#888" }}>
-        ←
-      </Link>
       {/* Choice counter top-left */}
       <div
         className="tabular-nums"

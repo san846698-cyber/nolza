@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
+import BrandMark, { brandText, homeBackLabel } from "@/app/components/BrandMark";
 import { GAMES, type CatId } from "@/lib/games-home";
 
 const SECTION_NO: Record<CatId, string> = {
@@ -32,12 +33,20 @@ const DARK_GAME_IDS = new Set([
   "aqua-fishing",
 ]);
 
-const MINIMAL_HEADER_GAME_IDS = new Set(["aqua-fishing", "traffic", "friend-match", "react"]);
-const NO_LAYOUT_CHROME_GAME_IDS = new Set(["auction"]);
+const MINIMAL_HEADER_GAME_IDS = new Set([
+  "aqua-fishing",
+  "traffic",
+  "friend-match",
+  "react",
+  "attachment",
+  "kbti",
+]);
+
+const NO_LAYOUT_CHROME_GAME_IDS = new Set(["auction", "mbti-depth"]);
 
 function getSectionLabel(id: string, cat: CatId, locale: "ko" | "en") {
   if (id === "korean-name") {
-    return locale === "ko" ? "이름 테스트" : "Name Test";
+    return locale === "ko" ? "· 이름 테스트" : "· Name Test";
   }
   return SECTION_LABEL[cat][locale];
 }
@@ -75,7 +84,7 @@ export default function GamesLayout({
     const floatingBtnBase: React.CSSProperties = {
       position: "fixed",
       zIndex: 70,
-      height: 40,
+      height: 44,
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
@@ -95,17 +104,18 @@ export default function GamesLayout({
       <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
         <Link
           href="/"
-          aria-label={locale === "ko" ? "모든 놀이로" : "All plays"}
+          aria-label={homeBackLabel(locale)}
           style={{
             ...floatingBtnBase,
             top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
             left: "max(12px, calc(env(safe-area-inset-left, 0px) + 8px))",
-            width: 44,
-            height: 44,
-            fontSize: 22,
+            width: "auto",
+            padding: "0 14px",
+            fontSize: 13,
+            fontWeight: 800,
           }}
         >
-          ←
+          {homeBackLabel(locale)}
         </Link>
         <button
           type="button"
@@ -114,10 +124,12 @@ export default function GamesLayout({
           style={{
             ...floatingBtnBase,
             top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
-            left: "max(64px, calc(env(safe-area-inset-left, 0px) + 60px))",
+            left:
+              locale === "ko"
+                ? "max(132px, calc(env(safe-area-inset-left, 0px) + 128px))"
+                : "max(190px, calc(env(safe-area-inset-left, 0px) + 186px))",
             padding: "0 12px",
             minWidth: 44,
-            height: 44,
             fontSize: 12,
             fontWeight: 700,
             letterSpacing: "0.08em",
@@ -134,9 +146,8 @@ export default function GamesLayout({
     <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
       <header className="game-shell-bar">
         <div className="game-shell-bar__inner">
-          <Link href="/" className="game-shell-brand" aria-label="nolza.fun">
-            <span className="game-shell-brand__name">Nolza</span>
-            <span className="game-shell-brand__dot">.fun</span>
+          <Link href="/" className="game-shell-brand" aria-label={brandText(locale)}>
+            <BrandMark locale={locale} className="brand-mark--shell" />
           </Link>
 
           <div className="game-shell-meta" aria-hidden={!game}>
@@ -156,7 +167,7 @@ export default function GamesLayout({
 
           <div className="game-shell-actions">
             <Link href="/" className="game-shell-back">
-              {locale === "ko" ? "← 모든 놀이" : "← All plays"}
+              {homeBackLabel(locale)}
             </Link>
             <button
               type="button"

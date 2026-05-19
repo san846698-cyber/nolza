@@ -131,7 +131,7 @@ export default function TodayGame() {
       <div className="border-b border-border" style={{ backgroundColor: "rgba(52, 199, 89, 0.04)" }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자.fun으로 돌아가기
+            ← 놀자 홈으로
           </Link>
           <div className="text-xs text-gray-500">
             🟢 지금 <span className="font-bold text-emerald-400 tabular-nums">{liveUsers.toLocaleString("ko-KR")}</span>명 함께
@@ -233,7 +233,7 @@ export default function TodayGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            ← 놀자.fun으로 돌아가기
+            ← 놀자 홈으로
           </Link>
         </div>
       </div>

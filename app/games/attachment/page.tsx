@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -256,34 +255,6 @@ export default function AttachmentPage(): ReactElement {
         transition: "background 0.4s ease",
       }}
     >
-      <Link
-        className="att-home-link"
-        href="/"
-        aria-label={t("놀자.fun으로 돌아가기", "Back to Nolza.fun")}
-        style={{
-          position: "fixed",
-          left: 20,
-          top: 20,
-          zIndex: 50,
-          display: "inline-flex",
-          minHeight: 40,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 999,
-          padding: "0 14px",
-          fontSize: 13,
-          fontWeight: 800,
-          color: "rgba(42,42,42,0.6)",
-          textDecoration: "none",
-          background: "rgba(255,255,255,0.7)",
-          backdropFilter: "blur(6px)",
-          border: `1px solid ${RULE}`,
-          fontFamily: INTER,
-        }}
-      >
-        {t("← Nolza.fun으로 돌아가기", "← Back to Nolza.fun")}
-      </Link>
-
       {phase === "quiz" && target ? (
         <QuizView
           questionIdx={questionIdx}
@@ -916,8 +887,8 @@ function Intro({
           }}
         >
           {t(
-            "관계에서 나타나는 당신의 패턴을 알아보세요",
-            "Discover your pattern in relationships",
+            "관계에서 나타나는 당신의 패턴을 알아보세요.",
+            "Discover your pattern in relationships.",
           )}
         </p>
 
@@ -964,20 +935,6 @@ function Intro({
           {t("시작하기", "Start")}
         </button>
 
-        <p
-          className="att-reveal"
-          style={{
-            ["--i" as string]: "5",
-            marginTop: 18,
-            marginBottom: 0,
-            fontSize: 15,
-            color: "rgba(42,42,42,0.56)",
-            letterSpacing: "0.04em",
-            fontFamily: INTER,
-          }}
-        >
-          {t(`${TOTAL_QUESTIONS}문항 · 약 5분`, `${TOTAL_QUESTIONS} questions · 5 min`)}
-        </p>
         <p
           className="att-reveal"
           style={{

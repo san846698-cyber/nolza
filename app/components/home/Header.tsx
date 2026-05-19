@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
+import BrandMark, { brandText } from "@/app/components/BrandMark";
 
 export function HomeHeader() {
   const { locale, setLocale, t } = useLocale();
@@ -15,14 +16,10 @@ export function HomeHeader() {
       <div className="relative mx-auto flex w-full max-w-col items-center justify-between gap-3.5 px-4 py-4 sm:px-6 lg:px-7">
         <Link
           href="#top"
-          className="inline-flex shrink-0 items-baseline gap-1 leading-none no-underline"
+          className="inline-flex shrink-0 leading-none no-underline"
+          aria-label={brandText(locale)}
         >
-          <span className="font-serif text-[34px] font-black tracking-[-0.04em] text-home-ink sm:text-[42px]">
-            놀자
-          </span>
-          <span className="font-fraunces text-[19px] font-light italic tracking-tight text-home-coral sm:text-[23px]">
-            .fun
-          </span>
+          <BrandMark locale={locale} className="brand-mark--home" />
         </Link>
 
         <div className="ml-auto flex shrink-0 items-center gap-3.5">

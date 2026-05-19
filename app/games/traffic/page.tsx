@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocale } from "@/hooks/useLocale";
 import { trackGameComplete, trackGameStart, trackShareClick } from "@/lib/analytics";
@@ -358,9 +357,7 @@ export default function TrafficGame() {
   return (
     <div className={s.shell}>
       <header className={s.topbar}>
-        <Link href="/" className={s.back}>
-          ← {t("놀자.fun", "nolza.fun")}
-        </Link>
+        <span className={s.back} aria-hidden />
         <div className={s.title}>
           {t("교통 지옥", "Traffic Hell")}
         </div>
@@ -386,10 +383,6 @@ export default function TrafficGame() {
           <div>
             <span>{t("기록", "Best")}</span>
             <b>{playerBest ?? "—"}</b>
-          </div>
-          <div>
-            <span>{t("출구", "Exit")}</span>
-            <b>{t("오른쪽", "Right")}</b>
           </div>
           <div>
             <span>{t("퍼즐", "Puzzle")}</span>
@@ -466,8 +459,7 @@ export default function TrafficGame() {
             )}
           </div>
         )}
-
-        <div className={s.controls}>
+        <div className={s.controls} aria-label={t("퍼즐 조작", "Puzzle controls")}>
           <button
             type="button"
             className={s.btn}

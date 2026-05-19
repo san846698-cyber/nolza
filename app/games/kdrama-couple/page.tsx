@@ -692,7 +692,7 @@ export default function KdramaCouplePage(): ReactElement {
         }
         .kdc-header {
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-end;
           align-items: center;
           gap: 16px;
           margin-bottom: 42px;
@@ -763,9 +763,6 @@ export default function KdramaCouplePage(): ReactElement {
 
       <div className="kdc-shell">
         <header className="kdc-header">
-          <Link href="/" className="kdc-logo" aria-label="nolza.fun">
-            놀자.fun
-          </Link>
           <Link
             href="/games/kdrama"
             style={{
@@ -970,26 +967,31 @@ function PersonEditor({
               type="button"
               onClick={() => onChange({ ...value, role: option.value })}
               aria-pressed={selected}
-              aria-label={`${label}: ${loc === "ko" ? option.ko : option.en}`}
+              aria-label={`${label}. ${loc === "ko" ? option.ko : option.en}. ${loc === "ko" ? option.hintKo : option.hintEn}`}
               style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                justifyContent: "center",
+                gap: 8,
                 textAlign: "left",
-                minHeight: 106,
-                borderRadius: 14,
+                minHeight: 92,
+                borderRadius: 18,
                 border: `1px solid ${selected ? ROSE : LINE}`,
                 background: selected
                   ? "linear-gradient(135deg, rgba(242,198,189,0.2), rgba(255,255,255,0.08))"
                   : "rgba(255,255,255,0.04)",
                 color: INK,
-                padding: "14px 14px",
+                padding: "15px 16px",
                 cursor: "pointer",
                 boxShadow: selected ? "0 10px 26px rgba(242,198,189,0.12)" : "none",
                 touchAction: "manipulation",
               }}
             >
-              <span style={{ display: "block", fontWeight: 900, fontSize: 16, lineHeight: 1.25 }}>
+              <span style={{ display: "block", fontWeight: 900, fontSize: 16, lineHeight: 1.35, wordBreak: "keep-all" }}>
                 {loc === "ko" ? option.ko : option.en}
               </span>
-              <span style={{ display: "block", marginTop: 7, color: SUBTLE, fontSize: 12, lineHeight: 1.35 }}>
+              <span style={{ display: "block", color: SUBTLE, fontSize: 12, lineHeight: 1.45, wordBreak: "keep-all" }}>
                 {loc === "ko" ? option.hintKo : option.hintEn}
               </span>
             </button>

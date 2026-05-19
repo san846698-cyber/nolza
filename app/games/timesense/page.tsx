@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AdBottom, AdMobileSticky } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
@@ -198,7 +197,6 @@ export default function TimeSenseGame() {
           fontFamily: "var(--font-inter), var(--font-noto-sans-kr)",
         }}
       >
-        <Link href="/" className="back-arrow dark" aria-label="home">←</Link>
         <div className="flex min-h-screen flex-col items-center justify-center px-6">
           <div className="text-center fade-in">
             <div style={{ fontSize: 13, color: "#666", letterSpacing: "0.3em", textTransform: "uppercase" }}>
@@ -261,7 +259,6 @@ export default function TimeSenseGame() {
           fontFamily: "var(--font-inter), var(--font-noto-sans-kr)",
         }}
       >
-        <Link href="/" className="back-arrow dark" aria-label="home">←</Link>
         <div className="mx-auto max-w-md px-6" style={{ paddingTop: 100, paddingBottom: 80 }}>
           <div className="text-center">
             <div style={{ fontSize: 13, color: "#666", letterSpacing: "0.3em", textTransform: "uppercase" }}>
@@ -397,7 +394,6 @@ export default function TimeSenseGame() {
         fontFamily: "var(--font-inter), var(--font-noto-sans-kr)",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home">←</Link>
       <div className="flex min-h-screen flex-col items-center justify-center px-6">
         <div className="text-center">
           <div style={{ fontSize: 13, color: "#666", letterSpacing: "0.3em", textTransform: "uppercase" }}>

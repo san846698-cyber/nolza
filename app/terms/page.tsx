@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import TrustLocalizedPage from "@/app/components/TrustLocalizedPage";
 
 export const metadata: Metadata = {
-  title: "이용약관 | Terms of Service | Nolza.fun",
+  title: "이용약관 | Terms of Service | nolza.fun",
   description:
-    "Nolza.fun 이용약관. Terms for using games, tests, simulations, and interactive entertainment content.",
+    "놀자.fun 이용약관. Terms for using games, tests, simulations, and interactive entertainment content.",
   alternates: {
     canonical: "/terms",
   },

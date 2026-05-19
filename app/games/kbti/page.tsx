@@ -581,6 +581,8 @@ function Intro({
           letterSpacing: 0,
           lineHeight: 1.08,
           marginBottom: 16,
+          wordBreak: "keep-all",
+          overflowWrap: "normal",
         }}
       >
         {t("MBTI는 알겠고", "You know MBTI")}

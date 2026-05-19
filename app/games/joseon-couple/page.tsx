@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -836,31 +835,6 @@ export default function JoseonCouplePage(): ReactElement {
       <CornerOrnament position="tr" />
       <CornerOrnament position="bl" />
       <CornerOrnament position="br" />
-
-      <Link
-        href="/"
-        aria-label="home"
-        style={{
-          position: "fixed",
-          left: 16,
-          top: 32,
-          zIndex: 50,
-          display: "inline-flex",
-          height: 40,
-          width: 40,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 999,
-          fontSize: 22,
-          color: DANCHEONG_RED,
-          textDecoration: "none",
-          background: "rgba(245,240,224,0.85)",
-          backdropFilter: "blur(4px)",
-          border: `1px solid ${RULE}`,
-        }}
-      >
-        ←
-      </Link>
       <div
         style={{
           minHeight: "100svh",

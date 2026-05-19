@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState, type ReactElement } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import { trackResultView, trackShareClick, trackTestStart } from "@/lib/analytics";
@@ -389,7 +389,6 @@ export default function JoseonLifePage(): ReactElement {
 
   return (
     <main className="joseon-life">
-      <Link href="/" className="back-link">{t("← Nolza.fun으로 돌아가기", "← Back to Nolza.fun")}</Link>
       {!result ? (
         <section className="hero-card">
           <p className="eyebrow">{t("가상의 조선 생애 기록", "Fictional Joseon Life Record")}</p>

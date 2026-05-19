@@ -35,6 +35,8 @@
 }
 
 .back {
+  display: inline-flex;
+  min-width: 72px;
   font-size: 13px;
   color: rgba(248, 241, 231, 0.68);
   text-decoration: none;
@@ -117,7 +119,7 @@
   width: 100%;
   min-width: 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
@@ -252,9 +254,9 @@
 
 .exitLane {
   position: absolute;
-  right: -102px;
+  right: -108px;
   top: calc(16px + (100% - 32px) * 2 / 6);
-  width: 124px;
+  width: 132px;
   height: calc((100% - 32px) / 6);
   border-radius: 0 16px 16px 0;
   background:
@@ -296,13 +298,13 @@
 
 .exitLabel {
   position: absolute;
-  left: 18px;
+  left: 28px;
   right: 18px;
-  top: -34px;
+  top: -38px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 22px;
+  min-height: 24px;
   border-radius: 999px;
   border: 1px solid rgba(255, 226, 166, 0.28);
   background: rgba(18, 22, 23, 0.92);
@@ -317,9 +319,9 @@
 
 .exitLaneArrow {
   position: absolute;
-  left: 52px;
+  left: 58px;
   top: 50%;
-  width: 46px;
+  width: 50px;
   height: 4px;
   transform: translateY(-50%);
   border-radius: 999px;
@@ -741,9 +743,9 @@
 }
 
 .controls {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
   justify-content: center;
   width: 100%;
 }
@@ -751,7 +753,7 @@
 .btn,
 .btnPrimary {
   min-height: 46px;
-  min-width: 108px;
+  min-width: 0;
   border-radius: 999px;
   cursor: pointer;
   font-family: inherit;
@@ -1201,6 +1203,7 @@
 
   .controls {
     gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .btn,
@@ -1208,7 +1211,7 @@
     min-height: 46px;
     padding: 10px 12px;
     min-width: 92px;
-    flex: 1 1 calc(50% - 8px);
+    width: 100%;
   }
 
   .winCard,

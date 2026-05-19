@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
@@ -139,7 +140,7 @@ export default function SceneChoiceTestClient() {
   return (
     <main className="scene-page" lang={locale}>
       <header className="scene-topbar">
-        <Link href="/" className="home-link">nolza.fun</Link>
+        <Link href="/" className="home-link">{homeBackLabel(locale)}</Link>
       </header>
 
       <section className="scene-shell">
@@ -157,7 +158,6 @@ export default function SceneChoiceTestClient() {
             <button type="button" className="primary" onClick={start}>
               {SCENE_COPY.start[locale]}
             </button>
-            <p className="meta-line">{SCENE_COPY.meta[locale]}</p>
             <p className="disclaimer">{SCENE_COPY.disclaimer[locale]}</p>
           </section>
         ) : (

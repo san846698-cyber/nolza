@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import BrandMark from "@/app/components/BrandMark";
 
 type FooterLocale = "ko" | "en" | "ja";
 
@@ -110,7 +111,9 @@ export default function SiteFooter() {
     >
       <div className="site-footer__inner">
         <div className="site-footer__brand">
-          <strong>Nolza.fun</strong>
+          <strong>
+            <BrandMark domain />
+          </strong>
           <span>{copy.operated}</span>
           <a href={`mailto:${CONTACT_EMAIL}`}>
             {copy.contact}: {CONTACT_EMAIL}
@@ -124,7 +127,7 @@ export default function SiteFooter() {
           ))}
         </nav>
         <p className="site-footer__copy">
-          &copy; 2026 Nolza.fun / Studio4Any. All rights reserved.
+          &copy; 2026 nolza.fun / Studio4Any. All rights reserved.
         </p>
       </div>
     </footer>

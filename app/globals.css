@@ -23,6 +23,47 @@ body {
     linear-gradient(180deg, #fffaf1 0%, #fff7ec 38%, #fffdf8 100%);
 }
 
+.brand-mark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 0.92;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.brand-mark__name {
+  font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
+  font-weight: 950;
+  letter-spacing: -0.045em;
+}
+
+.brand-mark__dot {
+  position: relative;
+  top: -0.02em;
+  margin-left: -0.01em;
+  font-family: var(--font-fraunces), var(--font-inter), serif;
+  font-size: 0.58em;
+  font-style: italic;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: var(--home-coral, #ca614c);
+}
+
+.brand-mark--en .brand-mark__name {
+  font-family: var(--font-fraunces), var(--font-inter), serif;
+  letter-spacing: -0.03em;
+}
+
+.brand-mark--home {
+  font-size: clamp(34px, 4.3vw, 44px);
+  color: var(--home-ink);
+}
+
+.brand-mark--shell {
+  font-size: 25px;
+}
+
 [data-home] {
   --home-bg: #fff8ed;
   --home-bg-soft: #fff4e6;
@@ -1076,6 +1117,9 @@ img {
   font-weight: 300;
   font-size: 16px;
   color: var(--shell-muted);
+}
+.game-shell-brand .brand-mark__dot {
+  color: var(--shell-injoo);
 }
 .game-shell-meta {
   display: flex;

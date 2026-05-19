@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
@@ -138,7 +139,7 @@ export default function BreakingPointTestClient() {
   return (
     <main className="breaking-page" lang={locale}>
       <header className="breaking-topbar">
-        <Link href="/" className="home-link">nolza.fun</Link>
+        <Link href="/" className="home-link">{homeBackLabel(locale)}</Link>
       </header>
 
       <section className="breaking-shell">
@@ -156,7 +157,6 @@ export default function BreakingPointTestClient() {
             <button type="button" className="primary" onClick={start}>
               {BREAKING_COPY.start[locale]}
             </button>
-            <p className="meta-line">{BREAKING_COPY.meta[locale]}</p>
             <p className="disclaimer">{BREAKING_COPY.disclaimer[locale]}</p>
           </section>
         ) : (

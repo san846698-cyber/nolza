@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -1126,29 +1125,6 @@ export default function KoreanNamePage(): ReactElement {
         paddingBottom: 100,
       }}
     >
-      <Link
-        href="/"
-        aria-label="home"
-        style={{
-          position: "fixed",
-          left: 20,
-          top: 20,
-          zIndex: 50,
-          display: "inline-flex",
-          height: 40,
-          width: 40,
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 999,
-          fontSize: 22,
-          color: "rgba(31,27,22,0.55)",
-          textDecoration: "none",
-          background: "rgba(255,253,247,0.7)",
-          backdropFilter: "blur(6px)",
-        }}
-      >
-        ←
-      </Link>
       {/* Step indicator */}
       <div
         style={{

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
@@ -136,7 +137,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
     <main className="thinking-test">
       <section className="thinking-shell">
         <nav className="thinking-back">
-          <Link href="/">{t(locale, "← Nolza.fun으로 돌아가기", "← Back to Nolza.fun")}</Link>
+          <Link href="/">{homeBackLabel(locale)}</Link>
         </nav>
 
         {phase === "intro" ? (
@@ -166,7 +167,6 @@ export default function ThinkingPatternTestClient(): ReactElement {
               <button type="button" onClick={start} className="primary">
                 {t(locale, "테스트 시작하기", "Start the test")}
               </button>
-              <p className="meta-line">{t(locale, "16문항 · 약 4분", "16 questions · about 4 min")}</p>
               <p className="notice">
                 {t(
                   locale,

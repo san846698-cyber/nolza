@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { AdBottom } from "@/app/components/Ads";
+import { homeBackLabel } from "@/app/components/BrandMark";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { usePersistentTestSession } from "@/hooks/usePersistentTestSession";
 import {
@@ -297,9 +298,7 @@ export default function DefenseMechanismTestClient() {
   return (
     <main className="defense-page" lang={locale}>
       <header className="defense-topbar">
-        <Link href="/" className="home-link">
-          nolza.fun
-        </Link>
+        <Link href="/" className="home-link">{homeBackLabel(locale)}</Link>
       </header>
 
       {phase === "intro" && <Intro locale={locale} onStart={start} />}
@@ -357,9 +356,6 @@ function Intro({ locale, onStart }: { locale: DefenseLocale; onStart: () => void
       <button type="button" className="primary" onClick={onStart}>
         {DEFENSE_COPY.start[locale]}
       </button>
-      <small className="meta-line">
-        {locale === "ko" ? "16문항 · 약 4분" : "16 questions · about 4 min"}
-      </small>
       <small className="disclaimer">{DEFENSE_COPY.disclaimer[locale]}</small>
       </div>
     </section>

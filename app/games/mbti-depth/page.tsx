@@ -7,6 +7,7 @@ import { ShareCard } from "../../components/ShareCard";
 import RecommendedGames from "../../components/game/RecommendedGames";
 import ResultActions from "../../components/game/ResultActions";
 import { useLocale } from "@/hooks/useLocale";
+import BrandMark, { brandText, homeBackLabel } from "@/app/components/BrandMark";
 import {
   QUESTIONS,
   LEVELS,
@@ -23,7 +24,7 @@ type Phase = "intro" | "transition" | "quiz" | "result";
 const BEST_KEY = "nolza-mbti-depth-best";
 
 export default function MbtiDepthGame() {
-  const { locale, t } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const [phase, setPhase] = useState<Phase>("intro");
   const [qIdx, setQIdx] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -86,21 +87,21 @@ export default function MbtiDepthGame() {
   return (
     <main className="mbti-depth-page min-h-screen bg-bg pb-32">
       <div className="border-b border-border">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
+        <div className="mx-auto grid max-w-4xl grid-cols-[auto_1fr_auto] items-center gap-4 px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← {t("놀자.fun으로 돌아가기", "Back to Nolza.fun")}
+            {homeBackLabel(locale)}
           </Link>
-          {phase === "quiz" || phase === "transition" ? (
-            <div className="text-xs text-gray-500">
-              <span className="font-medium text-white">{qIdx + 1}</span>
-              <span className="mx-1">/</span>
-              <span>{QUESTIONS.length}</span>
-            </div>
-          ) : (
-            <div className="text-xs text-gray-500">
-              {t("28문항 심층", "28 deep questions")}
-            </div>
-          )}
+          <Link href="/" className="justify-self-center text-white" aria-label={brandText(locale)}>
+            <BrandMark locale={locale} className="brand-mark--shell" />
+          </Link>
+          <button
+            type="button"
+            onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
+            className="rounded-full border border-border px-3 py-2 text-xs font-bold tracking-[0.12em] text-gray-300 hover:border-accent hover:text-accent"
+            aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
+          >
+            한 / EN
+          </button>
         </div>
       </div>
 
@@ -138,15 +139,6 @@ export default function MbtiDepthGame() {
           />
         )}
 
-        <div className="mt-12 flex justify-center">
-          <Link
-            href="/"
-            className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
-          >
-            ← {t("놀자.fun으로 돌아가기", "Back to Nolza.fun")}
-          </Link>
-        </div>
-
         <AdBottom />
       </div>
       <AdMobileSticky />
@@ -165,7 +157,7 @@ function IntroView({
 }) {
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center text-center">
-      <h1 className="font-serif text-4xl font-black leading-tight text-white md:text-6xl lg:text-7xl whitespace-pre-line">
+      <h1 className="font-serif text-4xl font-black leading-tight text-white md:text-6xl lg:text-7xl whitespace-pre-line [word-break:keep-all]">
         {t(
           "당신의 MBTI,\n진짜로 분석해드립니다",
           "Your MBTI,\nbut make it specific",

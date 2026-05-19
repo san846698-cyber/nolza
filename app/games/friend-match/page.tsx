@@ -290,7 +290,7 @@ function FriendMatchInner() {
             href="/"
             style={{ fontSize: 12, color: C.sub, textDecoration: "none" }}
           >
-            ← {t("놀자.fun으로 돌아가기", "Back to nolza.fun")}
+            {t("← 놀자 홈으로", "← Back to Nolza.fun")}
           </Link>
           <div style={{ fontFamily: FONT_SERIF, fontSize: 13, color: C.gold, letterSpacing: "0.05em" }}>
             ✦ {t("우리 사이, 하늘이 정해놨다", "Written in the stars")}
@@ -1556,7 +1556,7 @@ function FriendMatchFallback() {
           }}
         >
           <Link href="/" style={{ color: C.sub, textDecoration: "none", fontSize: 13 }}>
-            ← 놀자.fun으로 돌아가기
+            ← 놀자 홈으로
           </Link>
           <span style={{ color: C.goldSoft, fontSize: 13, fontWeight: 800 }}>
             친구 궁합
