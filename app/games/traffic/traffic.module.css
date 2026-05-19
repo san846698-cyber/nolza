@@ -743,10 +743,26 @@
 }
 
 .controls {
+  width: 100%;
+}
+
+.controlList {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
   justify-content: center;
+}
+
+.controlList li {
+  min-width: 0;
+  display: flex;
+}
+
+.controlList .btn {
   width: 100%;
 }
 
@@ -1202,6 +1218,10 @@
   }
 
   .controls {
+    gap: 8px;
+  }
+
+  .controlList {
     gap: 8px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

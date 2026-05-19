@@ -459,37 +459,49 @@ export default function TrafficGame() {
             )}
           </div>
         )}
-        <div className={s.controls} aria-label={t("퍼즐 조작", "Puzzle controls")}>
-          <button
-            type="button"
-            className={s.btn}
-            onClick={prevLevel}
-            disabled={levelIdx === 0}
-          >
-            <span className={s.btnLabel}>{t("이전", "Previous")}</span>
-          </button>
-          <button type="button" className={s.btn} onClick={reset}>
-            <span className={s.btnLabel}>{t("다시", "Retry")}</span>
-          </button>
-          <button type="button" className={s.btn} onClick={toggleHint}>
-            <span className={s.btnLabel}>{t("힌트", "Hint")}</span>
-          </button>
-          <button
-            type="button"
-            className={s.btn}
-            onClick={() => setShowSelect(true)}
-          >
-            <span className={s.btnLabel}>{t("레벨", "Levels")}</span>
-          </button>
-          <button
-            type="button"
-            className={s.btn}
-            onClick={nextLevel}
-            disabled={levelIdx >= LEVELS.length - 1}
-          >
-            <span className={s.btnLabel}>{t("다음", "Next")}</span>
-          </button>
-        </div>
+        <nav className={s.controls} aria-label={t("퍼즐 조작", "Puzzle controls")}>
+          <ul className={s.controlList}>
+            <li>
+              <button
+                type="button"
+                className={s.btn}
+                onClick={prevLevel}
+                disabled={levelIdx === 0}
+              >
+                <span className={s.btnLabel}>{t("이전", "Previous")}</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" className={s.btn} onClick={reset}>
+                <span className={s.btnLabel}>{t("다시", "Retry")}</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" className={s.btn} onClick={toggleHint}>
+                <span className={s.btnLabel}>{t("힌트", "Hint")}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={s.btn}
+                onClick={() => setShowSelect(true)}
+              >
+                <span className={s.btnLabel}>{t("레벨", "Levels")}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={s.btn}
+                onClick={nextLevel}
+                disabled={levelIdx >= LEVELS.length - 1}
+              >
+                <span className={s.btnLabel}>{t("다음", "Next")}</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </main>
 
       {showSelect && (

@@ -40,13 +40,14 @@ const MINIMAL_HEADER_GAME_IDS = new Set([
   "react",
   "attachment",
   "kbti",
+  "ahmolla",
 ]);
 
 const NO_LAYOUT_CHROME_GAME_IDS = new Set(["auction", "mbti-depth"]);
 
 function getSectionLabel(id: string, cat: CatId, locale: "ko" | "en") {
   if (id === "korean-name") {
-    return locale === "ko" ? "· 이름 테스트" : "· Name Test";
+    return locale === "ko" ? " · 이름 테스트" : " · Name Test";
   }
   return SECTION_LABEL[cat][locale];
 }
@@ -102,6 +103,24 @@ export default function GamesLayout({
 
     return (
       <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
+        <Link
+          href="/"
+          aria-label={brandText(locale)}
+          style={{
+            ...floatingBtnBase,
+            top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "auto",
+            padding: "0 14px",
+            fontSize: 18,
+            fontWeight: 900,
+            color: isDark ? "#f8fafc" : "#1f1b16",
+            background: isDark ? "rgba(15, 23, 42, 0.65)" : "rgba(255, 253, 247, 0.78)",
+          }}
+        >
+          <BrandMark locale={locale} />
+        </Link>
         <Link
           href="/"
           aria-label={homeBackLabel(locale)}

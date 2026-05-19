@@ -30,6 +30,9 @@ body {
   line-height: 0.92;
   white-space: nowrap;
   color: inherit;
+  font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
+  font-weight: 950;
+  letter-spacing: -0.045em;
 }
 
 .brand-mark__name {
@@ -51,6 +54,11 @@ body {
 }
 
 .brand-mark--en .brand-mark__name {
+  font-family: var(--font-fraunces), var(--font-inter), serif;
+  letter-spacing: -0.03em;
+}
+
+.brand-mark--en {
   font-family: var(--font-fraunces), var(--font-inter), serif;
   letter-spacing: -0.03em;
 }

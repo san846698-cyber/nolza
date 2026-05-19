@@ -19,20 +19,18 @@ export default function BrandMark({
   domain = false,
   className,
 }: BrandMarkProps) {
-  if (domain) {
-    return <span className={className}>nolza.fun</span>;
-  }
-
-  const isKo = locale === "ko";
-
+  const text = domain ? "nolza.fun" : brandText(locale);
   return (
     <span
-      className={["brand-mark", isKo ? "brand-mark--ko" : "brand-mark--en", className]
+      className={[
+        domain ? "brand-mark brand-mark--domain" : "brand-mark",
+        !domain && locale === "ko" ? "brand-mark--ko" : "brand-mark--en",
+        className,
+      ]
         .filter(Boolean)
         .join(" ")}
     >
-      <span className="brand-mark__name">{isKo ? "놀자" : "Nolza"}</span>
-      <span className="brand-mark__dot">.fun</span>
+      {text}
     </span>
   );
 }

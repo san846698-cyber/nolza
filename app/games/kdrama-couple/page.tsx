@@ -957,47 +957,50 @@ function PersonEditor({
         style={inputStyle}
       />
 
-      <div className="kdc-role-grid" style={{ marginTop: 12 }}>
+      <ul className="kdc-role-grid" style={{ marginTop: 12, padding: 0, listStyle: "none" }}>
         {DISPLAY_ROLE_OPTIONS.map((option) => {
           const selected = value.role === option.value;
           return (
-            <button
-              key={option.value}
-              className="kdc-role-card"
-              type="button"
-              onClick={() => onChange({ ...value, role: option.value })}
-              aria-pressed={selected}
-              aria-label={`${label}. ${loc === "ko" ? option.ko : option.en}. ${loc === "ko" ? option.hintKo : option.hintEn}`}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justifyContent: "center",
-                gap: 8,
-                textAlign: "left",
-                minHeight: 92,
-                borderRadius: 18,
-                border: `1px solid ${selected ? ROSE : LINE}`,
-                background: selected
-                  ? "linear-gradient(135deg, rgba(242,198,189,0.2), rgba(255,255,255,0.08))"
-                  : "rgba(255,255,255,0.04)",
-                color: INK,
-                padding: "15px 16px",
-                cursor: "pointer",
-                boxShadow: selected ? "0 10px 26px rgba(242,198,189,0.12)" : "none",
-                touchAction: "manipulation",
-              }}
-            >
-              <span style={{ display: "block", fontWeight: 900, fontSize: 16, lineHeight: 1.35, wordBreak: "keep-all" }}>
-                {loc === "ko" ? option.ko : option.en}
-              </span>
-              <span style={{ display: "block", color: SUBTLE, fontSize: 12, lineHeight: 1.45, wordBreak: "keep-all" }}>
-                {loc === "ko" ? option.hintKo : option.hintEn}
-              </span>
-            </button>
+            <li key={option.value} style={{ minWidth: 0, display: "flex" }}>
+              <button
+                className="kdc-role-card"
+                type="button"
+                onClick={() => onChange({ ...value, role: option.value })}
+                aria-pressed={selected}
+                aria-labelledby={`${personKey}-${option.value}-label`}
+                aria-describedby={`${personKey}-${option.value}-desc`}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  gap: 8,
+                  width: "100%",
+                  textAlign: "left",
+                  minHeight: 92,
+                  borderRadius: 18,
+                  border: `1px solid ${selected ? ROSE : LINE}`,
+                  background: selected
+                    ? "linear-gradient(135deg, rgba(242,198,189,0.2), rgba(255,255,255,0.08))"
+                    : "rgba(255,255,255,0.04)",
+                  color: INK,
+                  padding: "15px 16px",
+                  cursor: "pointer",
+                  boxShadow: selected ? "0 10px 26px rgba(242,198,189,0.12)" : "none",
+                  touchAction: "manipulation",
+                }}
+              >
+                <span id={`${personKey}-${option.value}-label`} style={{ display: "block", fontWeight: 900, fontSize: 16, lineHeight: 1.35, wordBreak: "keep-all" }}>
+                  {loc === "ko" ? option.ko : option.en}
+                </span>
+                <span id={`${personKey}-${option.value}-desc`} style={{ display: "block", color: SUBTLE, fontSize: 12, lineHeight: 1.45, wordBreak: "keep-all" }}>
+                  {loc === "ko" ? option.hintKo : option.hintEn}
+                </span>
+              </button>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </fieldset>
   );
 }
