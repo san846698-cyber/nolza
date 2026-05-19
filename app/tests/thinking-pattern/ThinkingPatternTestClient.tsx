@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
+import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -142,12 +143,12 @@ export default function ThinkingPatternTestClient(): ReactElement {
           <section className="thinking-hero">
             <div className="hero-copy">
               <p className="eyebrow">{t(locale, "인지왜곡 테스트", "Thinking Pattern Test")}</p>
-              <h1>{t(locale, "내 생각은 어디서 자주 꼬일까?", "Where Does Your Thinking Get Twisted?")}</h1>
+              <h1>{t(locale, "인지왜곡 테스트", "Cognitive Distortion Test")}</h1>
               <p className="subtitle">
                 {t(
                   locale,
-                  "불안하거나 힘들 때 반복되는 나의 생각 습관을 알아보세요.",
-                  "Discover the thinking habit that shows up when you feel stressed.",
+                  "내 생각은 어디서 자주 꼬일까요?",
+                  "Where does your thinking get twisted?",
                 )}
               </p>
               <p className="description">
@@ -186,7 +187,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
 
             {phase === "quiz" ? (
               <>
-                <h2>{text(locale, currentQuestion.prompt)}</h2>
+                <ReadableQuestion prompt={text(locale, currentQuestion.prompt)} locale={locale} />
                 <div className="answers">
                   {currentQuestion.choices.map((choice) => (
                     <button key={choice.id} type="button" onClick={() => choose(choice)} className="answer">
@@ -218,8 +219,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           min-height: 100vh;
           color: #24232a;
           background:
-            radial-gradient(circle at 18% 14%, rgba(142, 119, 190, 0.16), transparent 29rem),
-            radial-gradient(circle at 86% 8%, rgba(111, 123, 139, 0.14), transparent 30rem),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 34%),
             linear-gradient(180deg, #fbf7ee 0%, #f0e8dc 58%, #f8f0e6 100%);
           padding: 24px clamp(16px, 4vw, 44px) 56px;
         }
@@ -248,13 +248,11 @@ export default function ThinkingPatternTestClient(): ReactElement {
         .thinking-hero {
           display: flex;
           align-items: center;
+          width: min(100%, 840px);
+          margin: 0 auto;
           min-height: min(720px, calc(100vh - 116px));
           padding: clamp(34px, 6vw, 76px) clamp(22px, 5vw, 60px);
           overflow: hidden;
-          border: 0;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: none;
         }
         .thinking-hero .hero-copy {
           width: min(100%, 720px);

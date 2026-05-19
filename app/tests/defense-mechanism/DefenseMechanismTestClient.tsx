@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { AdBottom } from "@/app/components/Ads";
+import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { usePersistentTestSession } from "@/hooks/usePersistentTestSession";
 import {
   trackQuestionAnswered,
@@ -299,18 +300,6 @@ export default function DefenseMechanismTestClient() {
         <Link href="/" className="home-link">
           nolza.fun
         </Link>
-        <div className="locale-switch" aria-label={DEFENSE_COPY.languageLabel[locale]}>
-          {(["ko", "en"] as const).map((item) => (
-            <button
-              key={item}
-              type="button"
-              className={locale === item ? "active" : ""}
-              onClick={() => setLocale(item)}
-            >
-              {item.toUpperCase()}
-            </button>
-          ))}
-        </div>
       </header>
 
       {phase === "intro" && <Intro locale={locale} onStart={start} />}
@@ -399,9 +388,11 @@ function Quiz({
       </div>
 
       <article className="question-card">
-        <span className="scene-label">{locale === "ko" ? "상황" : "Scene"}</span>
-        <p className="scene">{question.scene[locale]}</p>
-        <h2>{question.question[locale]}</h2>
+        <ReadableQuestion
+          situation={question.scene[locale]}
+          prompt={question.question[locale]}
+          locale={locale}
+        />
         <div className="answers">
           {question.answers.map((answer, index) => (
             <button
@@ -582,8 +573,7 @@ const styles = `
     overflow: hidden;
     color: #f8efe2;
     background:
-      radial-gradient(circle at 50% 22%, rgba(255, 175, 117, 0.16), transparent 31%),
-      radial-gradient(circle at 12% 8%, rgba(242, 200, 121, 0.12), transparent 32%),
+      linear-gradient(180deg, rgba(248, 239, 226, 0.05), transparent 34%),
       linear-gradient(145deg, #101820 0%, #171714 48%, #0b111a 100%);
     font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
   }
@@ -652,6 +642,13 @@ const styles = `
     position: relative;
     z-index: 2;
     width: min(760px, 100%);
+    padding: clamp(32px, 6vw, 64px);
+    border: 1px solid rgba(248, 239, 226, 0.14);
+    border-radius: 28px;
+    background:
+      linear-gradient(180deg, rgba(248, 239, 226, 0.105), rgba(248, 239, 226, 0.045)),
+      rgba(8, 12, 18, 0.54);
+    box-shadow: 0 28px 78px rgba(0, 0, 0, 0.24);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -699,43 +696,6 @@ const styles = `
     font-size: clamp(0.96rem, 1.8vw, 1.06rem);
     line-height: 1.7;
     font-weight: 650;
-  }
-  .hero .journal-preview {
-    display: none;
-  }
-  .journal-preview {
-    width: min(100%, 720px);
-    margin: 26px 0 22px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-  .journal-card {
-    min-height: 132px;
-    padding: 18px;
-    border-radius: 22px;
-    border: 1px solid rgba(248, 239, 226, 0.14);
-    background: linear-gradient(145deg, rgba(248, 239, 226, 0.1), rgba(248, 239, 226, 0.055));
-    backdrop-filter: blur(14px);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
-  }
-  .journal-card span {
-    color: #f2c879;
-    font-size: 0.82rem;
-    font-weight: 950;
-  }
-  .journal-card strong {
-    display: block;
-    margin-top: 13px;
-    font-family: var(--font-noto-serif-kr), serif;
-    font-size: 1.34rem;
-    line-height: 1.2;
-  }
-  .journal-card p {
-    margin: 9px 0 0;
-    color: rgba(248, 239, 226, 0.62);
-    line-height: 1.55;
-    font-weight: 700;
   }
   .card-two {
     background: rgba(168, 184, 232, 0.11);
@@ -1267,16 +1227,6 @@ const styles = `
     }
     h1 {
       font-size: clamp(2.25rem, 12vw, 3.65rem);
-    }
-    .journal-preview {
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin: 22px 0 18px;
-    }
-    .journal-card {
-      min-height: auto;
-      padding: 16px;
-      border-radius: 20px;
     }
     .answers,
     .insight-grid,

@@ -415,67 +415,10 @@ export default function AttachmentPage(): ReactElement {
   box-shadow: 0 10px 28px rgba(0,0,0,0.08);
 }
 
-/* Intro — full-screen with background decorations */
-.att-intro-bg-blur-tr {
-  position: fixed;
-  top: -200px;
-  right: -200px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, #c7d2fe 0%, transparent 70%);
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 0;
-}
-.att-intro-bg-blur-bl {
-  position: fixed;
-  bottom: -150px;
-  left: -150px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, #ddd6fe 0%, transparent 70%);
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: 0;
-}
-.att-intro-watermark {
-  position: fixed;
-  left: -20px;
-  top: 50%;
-  transform: translateY(-50%) rotate(-90deg);
-  transform-origin: center;
-  font-size: 120px;
-  font-weight: 900;
-  color: rgba(0,0,0,0.03);
-  white-space: nowrap;
-  letter-spacing: -4px;
-  font-family: ${INTER};
-  pointer-events: none;
-  z-index: 0;
-  user-select: none;
-}
+/* Intro */
 .att-intro-content {
   position: relative;
   z-index: 1;
-}
-@media (max-width: 768px) {
-  .att-intro-watermark {
-    font-size: 72px;
-    letter-spacing: -2px;
-    left: -40px;
-  }
-  .att-intro-bg-blur-tr {
-    width: 400px;
-    height: 400px;
-    top: -120px;
-    right: -120px;
-  }
-  .att-intro-bg-blur-bl {
-    width: 280px;
-    height: 280px;
-    bottom: -100px;
-    left: -100px;
-  }
 }
 @media (max-width: 640px) {
   .att-intro-title {
@@ -557,9 +500,10 @@ export default function AttachmentPage(): ReactElement {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: 0 24px;
+  gap: clamp(28px, 6vh, 56px);
+  padding: 24px;
 }
 .att-quiz-question-area {
   display: flex;
@@ -567,28 +511,31 @@ export default function AttachmentPage(): ReactElement {
   align-items: center;
 }
 .att-quiz-question {
-  font-size: 40px;
-  line-height: 1.5;
-  font-weight: 700;
+  font-size: clamp(24px, 3.2vw, 34px);
+  line-height: 1.42;
+  font-weight: 800;
   letter-spacing: -0.01em;
   max-width: 800px;
   text-align: center;
-  font-family: ${SERIF};
+  font-family: ${INTER};
   color: ${INK};
   margin: 0;
-  padding: 0 40px;
+  padding: 0 28px;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 .att-quiz-subtext {
-  font-family: ${SERIF};
-  font-size: 18px;
-  font-style: italic;
-  color: #9ca3af;
+  font-family: ${INTER};
+  font-size: clamp(15px, 1.8vw, 17px);
+  font-style: normal;
+  color: rgba(42,42,42,0.62);
   text-align: center;
-  margin-top: 14px;
+  margin-top: 12px;
   letter-spacing: 0.01em;
-  max-width: 600px;
-  line-height: 1.55;
-  padding: 0 40px;
+  max-width: 680px;
+  line-height: 1.62;
+  padding: 0 28px;
+  word-break: keep-all;
 }
 .att-quiz-likert-area {
   display: flex;
@@ -722,11 +669,13 @@ export default function AttachmentPage(): ReactElement {
     font-size: 14px;
   }
   .att-quiz-question {
-    font-size: 24px;
+    font-size: 22px;
+    line-height: 1.45;
     padding: 0 18px;
   }
   .att-quiz-subtext {
-    font-size: 14px;
+    font-size: 14.5px;
+    line-height: 1.58;
     margin-top: 10px;
     padding: 0 18px;
   }
@@ -872,17 +821,18 @@ function Intro({
 }): ReactElement {
   return (
     <>
-      {/* Background decorations — fill the entire viewport */}
-      <div className="att-intro-bg-blur-tr" aria-hidden />
-      <div className="att-intro-bg-blur-bl" aria-hidden />
-      <div className="att-intro-watermark" aria-hidden>
-        Attachment Style Test
-      </div>
-
-      {/* Centered content */}
       <div
         className="att-intro-content"
-        style={{ maxWidth: 720, width: "100%", textAlign: "center" }}
+        style={{
+          maxWidth: 720,
+          width: "100%",
+          textAlign: "center",
+          padding: "clamp(32px, 6vw, 60px)",
+          border: "1px solid rgba(42,42,42,0.08)",
+          borderRadius: 28,
+          background: "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.78))",
+          boxShadow: "0 24px 70px rgba(31,41,55,0.08)",
+        }}
       >
         <div
           className="att-reveal"
@@ -997,9 +947,6 @@ function TargetSelect({
 }): ReactElement {
   return (
     <>
-      {/* Background decoration — same family as intro */}
-      <div className="att-intro-bg-blur-tr" aria-hidden />
-
       <div
         className="att-intro-content att-target-shell"
         style={{

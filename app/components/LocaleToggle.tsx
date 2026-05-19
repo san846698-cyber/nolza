@@ -7,7 +7,16 @@ export default function LocaleToggle() {
   const { locale, setLocale } = useLocale();
   const pathname = usePathname();
 
-  if (pathname === "/" || pathname.startsWith("/games")) return null;
+  const hasPageToggle =
+    pathname === "/" ||
+    pathname.startsWith("/games") ||
+    pathname === "/tests/kr-jp-signal" ||
+    pathname === "/about" ||
+    pathname === "/contact" ||
+    pathname === "/privacy" ||
+    pathname === "/terms";
+
+  if (hasPageToggle) return null;
 
   return (
     <button

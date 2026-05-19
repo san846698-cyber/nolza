@@ -15,24 +15,32 @@ const SECTION_NO: Record<CatId, string> = {
 const SECTION_LABEL: Record<CatId, { ko: string; en: string }> = {
   play: { ko: "도전", en: "Challenge" },
   self: { ko: "진단", en: "Know Yourself" },
-  sim: { ko: "시뮬", en: "Live It" },
+  sim: { ko: "체험", en: "Live It" },
   world: { ko: "탐험", en: "Explore" },
 };
 
-// Games whose canvas is intentionally dark — keep chrome dark to match.
 const DARK_GAME_IDS = new Set([
-  "silence", "deep", "saju", "dilemma", "gambling",
-  "highnote", "timeline", "asteroid", "battle-what-if",
+  "silence",
+  "deep",
+  "saju",
+  "dilemma",
+  "gambling",
+  "highnote",
+  "timeline",
+  "asteroid",
+  "battle-what-if",
   "aqua-fishing",
 ]);
 
-// Games that hide the full header and show only a floating back button.
-// (Games here either render their own topbar, or want full-bleed canvas.)
 const MINIMAL_HEADER_GAME_IDS = new Set(["aqua-fishing", "traffic", "friend-match", "react"]);
-
-// Games that render a fully bespoke header (back + locale toggle) themselves —
-// the shared layout chrome is suppressed entirely so we don't show a duplicate header.
 const NO_LAYOUT_CHROME_GAME_IDS = new Set(["auction"]);
+
+function getSectionLabel(id: string, cat: CatId, locale: "ko" | "en") {
+  if (id === "korean-name") {
+    return locale === "ko" ? "이름 테스트" : "Name Test";
+  }
+  return SECTION_LABEL[cat][locale];
+}
 
 export default function GamesLayout({
   children,
@@ -55,12 +63,13 @@ export default function GamesLayout({
       </div>
     );
   }
+
   const fallbackTitle = id
     ? id
         .split("-")
         .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
         .join(" ")
-    : "놀자";
+    : "놀이";
 
   if (isMinimal) {
     const floatingBtnBase: React.CSSProperties = {
@@ -81,6 +90,7 @@ export default function GamesLayout({
       cursor: "pointer",
       fontFamily: "var(--font-inter), sans-serif",
     };
+
     return (
       <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
         <Link
@@ -100,9 +110,7 @@ export default function GamesLayout({
         <button
           type="button"
           onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
-          aria-label={
-            locale === "ko" ? "Switch to English" : "한국어로 전환"
-          }
+          aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
           style={{
             ...floatingBtnBase,
             top: "max(12px, calc(env(safe-area-inset-top, 0px) + 8px))",
@@ -123,32 +131,22 @@ export default function GamesLayout({
   }
 
   return (
-    <div
-      data-game-shell={isDark ? "dark" : "light"}
-      style={{ minHeight: "100svh" }}
-    >
+    <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
       <header className="game-shell-bar">
         <div className="game-shell-bar__inner">
-          <Link href="/" className="game-shell-brand" aria-label="놀자.fun">
-            <span className="game-shell-brand__name">놀자</span>
+          <Link href="/" className="game-shell-brand" aria-label="nolza.fun">
+            <span className="game-shell-brand__name">Nolza</span>
             <span className="game-shell-brand__dot">.fun</span>
           </Link>
 
           <div className="game-shell-meta" aria-hidden={!game}>
             {game ? (
               <>
-                <span className="game-shell-meta__no">
-                  {SECTION_NO[game.cat]}
-                </span>
+                <span className="game-shell-meta__no">{SECTION_NO[game.cat]}</span>
                 <span className="game-shell-meta__sep" />
-                <span className="game-shell-meta__title">
-                  {game[locale].title}
-                </span>
-                <span
-                  className="game-shell-meta__section"
-                  style={{ marginLeft: 14 }}
-                >
-                  {SECTION_LABEL[game.cat][locale]}
+                <span className="game-shell-meta__title">{game[locale].title}</span>
+                <span className="game-shell-meta__section" style={{ marginLeft: 14 }}>
+                  {getSectionLabel(id, game.cat, locale)}
                 </span>
               </>
             ) : (
@@ -164,9 +162,7 @@ export default function GamesLayout({
               type="button"
               className="game-shell-toggle"
               onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
-              aria-label={
-                locale === "ko" ? "Switch to English" : "한국어로 전환"
-              }
+              aria-label={locale === "ko" ? "Switch to English" : "한국어로 전환"}
             >
               {locale === "ko" ? "한 / EN" : "EN / 한"}
             </button>

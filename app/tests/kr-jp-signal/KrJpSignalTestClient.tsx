@@ -196,13 +196,6 @@ export default function KrJpSignalTestClient() {
 
   return (
     <main className="signal-page" lang={locale}>
-      <div className="ambient" aria-hidden>
-        <span className="orb orb-a" />
-        <span className="orb orb-b" />
-        <span className="chat-line chat-line-a" />
-        <span className="chat-line chat-line-b" />
-      </div>
-
       <header className="topbar">
         <Link href="/" className="home-link">
           nolza.fun
@@ -506,52 +499,9 @@ const styles = `
     overflow: hidden;
     color: #f7f3ea;
     background:
-      radial-gradient(circle at 16% 8%, rgba(251, 191, 36, 0.17), transparent 34%),
-      radial-gradient(circle at 86% 18%, rgba(125, 211, 252, 0.16), transparent 30%),
+      linear-gradient(180deg, rgba(247, 243, 234, 0.045), transparent 34%),
       linear-gradient(135deg, #12111a 0%, #201d30 48%, #111827 100%);
     font-family: var(--font-inter), var(--font-noto-sans-kr), "Noto Sans JP", system-ui, sans-serif;
-  }
-  .ambient {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.88;
-  }
-  .orb {
-    position: absolute;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    filter: blur(0.2px);
-  }
-  .orb-a {
-    left: -84px;
-    top: 18%;
-    width: 260px;
-    height: 260px;
-    background: rgba(251, 191, 36, 0.12);
-  }
-  .orb-b {
-    right: -80px;
-    bottom: 12%;
-    width: 300px;
-    height: 300px;
-    background: rgba(110, 231, 183, 0.1);
-  }
-  .chat-line {
-    position: absolute;
-    width: 190px;
-    height: 54px;
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    border-radius: 22px;
-    background: rgba(255, 255, 255, 0.05);
-  }
-  .chat-line-a {
-    right: 9%;
-    top: 18%;
-  }
-  .chat-line-b {
-    left: 7%;
-    bottom: 16%;
   }
   .topbar {
     width: min(1080px, calc(100% - 32px));

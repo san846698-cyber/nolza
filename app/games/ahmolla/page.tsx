@@ -22,7 +22,7 @@ function trEntry(text: string, locale: "ko" | "en"): string {
 }
 
 type Tier = "branch" | "linked" | "mid" | "late" | "chaos";
-type Option = { text: string; next?: string };
+type Option = { id?: string; text: string; next?: string };
 type Q = {
   id: string;
   q: string;
@@ -613,9 +613,9 @@ export default function AhmollaGame() {
     setCurrent(nextQ);
   };
 
-  const choose = (option: Option) => {
+  const chooseOption = (option: Option) => {
     if (loading) return;
-    if (option.text.includes("아 몰라")) {
+    if (option.id === "ahmolla" || option.text.includes("아 몰라")) {
       ahmolla();
       return;
     }
@@ -635,6 +635,9 @@ export default function AhmollaGame() {
       advanceTo(nextQ);
     }
   };
+
+  const stableOptionId = (questionId: string, option: Option, index: number) =>
+    option.id ?? `${questionId}:${index}:${option.next ?? "free"}:${option.text}`;
 
   /* Buttons run away on hover at depth 20+ — but only for the first few
      hovers per question, otherwise the gag becomes unplayable. */
@@ -746,7 +749,7 @@ export default function AhmollaGame() {
                   lineHeight: 1.5,
                 }}
               >
-                {t("한 가지만 부탁드려요.", "Just one request.")}
+                {t("생각이 너무 많아졌다면, 그냥 하나만 고르세요.", "If you are overthinking, just pick one.")}
               </div>
             )}
             {introStep >= 1 && (
@@ -761,7 +764,7 @@ export default function AhmollaGame() {
                 }}
               >
                 {t(
-                  "아 몰라 버튼은 절대 누르지 마세요.",
+                  "단, 아 몰라 버튼은 아직 누르지 마세요.",
                   "Never press the I Give Up button.",
                 )}
               </div>
@@ -777,7 +780,7 @@ export default function AhmollaGame() {
                   lineHeight: 1.5,
                 }}
               >
-                {t("누르면 당신이 지는 거예요.", "If you press it, you lose.")}
+                {t("누르면 게임이 바로 끝납니다.", "If you press it, you lose.")}
               </div>
             )}
           </div>
@@ -978,16 +981,19 @@ export default function AhmollaGame() {
               }}
             >
               {glitch
-                ? t("아 몰라 누르세요", "Just press I Give Up")
+                ? t("그냥 아 몰라 누르세요", "Just press I Give Up")
                 : trEntry(current.q, locale)}
             </h1>
             <div className="grid grid-cols-2 gap-3">
-              {current.options.map((opt, i) => (
+              {current.options.map((opt, i) => {
+                const optionId = stableOptionId(current.id, opt, i);
+                return (
                 <button
-                  key={i}
+                  key={optionId}
                   type="button"
-                  onClick={() => choose(opt)}
+                  onClick={() => chooseOption(opt)}
                   onMouseEnter={() => onOptHover(i)}
+                  data-choice-id={optionId}
                   className={`rounded-2xl ${optShake ? "ahmolla-shake" : ""}`}
                   style={{
                     background: "white",
@@ -1007,7 +1013,8 @@ export default function AhmollaGame() {
                 >
                   {trEntry(opt.text, locale)}
                 </button>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
+import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -142,12 +143,12 @@ export default function CrushTypeTestClient(): ReactElement {
           <section className="hero-card">
             <div className="hero-copy">
               <p className="eyebrow">{t(locale, "짝사랑 유형 테스트", "Crush Type Test")}</p>
-              <h1>{t(locale, "좋아하는 사람 앞에서 나는 왜 이상해질까?", "Why Do I Act Weird Around My Crush?")}</h1>
+              <h1>{t(locale, "짝사랑 유형 테스트", "Crush Type Test")}</h1>
               <p className="subtitle">
                 {t(
                   locale,
-                  "짝사랑할 때 드러나는 나의 숨겨진 연애 패턴을 알아보세요.",
-                  "Discover your hidden pattern when you like someone.",
+                  "좋아하는 사람 앞에서 나는 왜 이상해질까요?",
+                  "Why do I act weird around my crush?",
                 )}
               </p>
               <p className="description">
@@ -169,20 +170,6 @@ export default function CrushTypeTestClient(): ReactElement {
                 )}
               </p>
             </div>
-            <div className="signal-art" aria-hidden>
-              <span className="thread" />
-              <span className="signal-node signal-node-left" />
-              <span className="signal-node signal-node-right" />
-              <span className="message-card message-card-one">
-                <i />
-                <i />
-                <i />
-              </span>
-              <span className="message-card message-card-two">
-                <i />
-                <i />
-              </span>
-            </div>
           </section>
         ) : (
           <section className="quiz-card">
@@ -196,7 +183,7 @@ export default function CrushTypeTestClient(): ReactElement {
 
             {phase === "quiz" ? (
               <>
-                <h2>{text(locale, currentQuestion.prompt)}</h2>
+                <ReadableQuestion prompt={text(locale, currentQuestion.prompt)} locale={locale} />
                 <div className="answers">
                   {currentQuestion.choices.map((choice) => (
                     <button key={choice.id} type="button" onClick={() => choose(choice)} className="answer">
@@ -228,9 +215,8 @@ export default function CrushTypeTestClient(): ReactElement {
           min-height: 100vh;
           color: #2b1720;
           background:
-            radial-gradient(circle at 18% 8%, rgba(255, 169, 132, 0.28), transparent 28rem),
-            radial-gradient(circle at 82% 12%, rgba(172, 128, 255, 0.2), transparent 30rem),
-            linear-gradient(180deg, #241423 0%, #3a2230 35%, #fff1df 35%, #fff7eb 100%);
+            linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%),
+            linear-gradient(180deg, #241423 0%, #3a2230 32%, #fff1df 32%, #fff7eb 100%);
           padding: 24px clamp(16px, 4vw, 44px) 56px;
         }
 
@@ -260,10 +246,9 @@ export default function CrushTypeTestClient(): ReactElement {
         }
 
         .hero-card {
-          display: grid;
-          grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-          gap: 28px;
-          align-items: center;
+          display: block;
+          width: min(100%, 840px);
+          margin: 0 auto;
           padding: clamp(28px, 5vw, 64px);
           overflow: hidden;
         }
@@ -271,6 +256,7 @@ export default function CrushTypeTestClient(): ReactElement {
         .hero-copy {
           position: relative;
           z-index: 1;
+          width: min(100%, 700px);
         }
 
         .eyebrow,
@@ -362,112 +348,6 @@ export default function CrushTypeTestClient(): ReactElement {
         .secondary:hover,
         .answer:hover {
           transform: translateY(-2px);
-        }
-
-        .signal-art {
-          position: relative;
-          min-height: 380px;
-        }
-
-        .signal-art::before {
-          content: "";
-          position: absolute;
-          inset: 14% 10% 12%;
-          border-radius: 42px;
-          background:
-            linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 238, 221, 0.18)),
-            radial-gradient(circle at 26% 24%, rgba(216, 68, 98, 0.14), transparent 34%),
-            radial-gradient(circle at 78% 70%, rgba(158, 37, 71, 0.1), transparent 36%);
-          border: 1px solid rgba(146, 70, 78, 0.13);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48);
-        }
-
-        .message-card {
-          position: absolute;
-          z-index: 2;
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          border-radius: 18px;
-          background: rgba(255, 250, 245, 0.82);
-          border: 1px solid rgba(146, 70, 78, 0.16);
-          box-shadow: 0 18px 40px rgba(77, 38, 47, 0.14);
-          backdrop-filter: blur(10px);
-        }
-
-        .message-card i {
-          display: block;
-          height: 8px;
-          border-radius: 999px;
-          background: rgba(186, 58, 88, 0.34);
-        }
-
-        .message-card-one {
-          width: 138px;
-          height: 74px;
-          left: 8%;
-          top: 18%;
-          padding: 0 18px;
-        }
-
-        .message-card-one i:nth-child(1) {
-          width: 14px;
-        }
-
-        .message-card-one i:nth-child(2) {
-          width: 34px;
-        }
-
-        .message-card-one i:nth-child(3) {
-          width: 22px;
-        }
-
-        .message-card-two {
-          width: 116px;
-          height: 64px;
-          right: 8%;
-          bottom: 18%;
-          padding: 0 17px;
-        }
-
-        .message-card-two i:nth-child(1) {
-          width: 42px;
-        }
-
-        .message-card-two i:nth-child(2) {
-          width: 18px;
-          background: rgba(142, 68, 77, 0.22);
-        }
-
-        .thread {
-          position: absolute;
-          left: 19%;
-          right: 18%;
-          top: 50%;
-          height: 1px;
-          transform: rotate(-13deg);
-          background: linear-gradient(90deg, transparent, rgba(186, 58, 88, 0.52), transparent);
-          box-shadow: 0 0 18px rgba(186, 58, 88, 0.14);
-        }
-
-        .signal-node {
-          position: absolute;
-          z-index: 2;
-          width: 14px;
-          height: 14px;
-          border-radius: 999px;
-          background: #ba3a58;
-          box-shadow: 0 0 0 10px rgba(186, 58, 88, 0.08), 0 14px 32px rgba(77, 38, 47, 0.18);
-        }
-
-        .signal-node-left {
-          left: 20%;
-          top: 43%;
-        }
-
-        .signal-node-right {
-          right: 20%;
-          bottom: 42%;
         }
 
         .quiz-card {
@@ -636,15 +516,6 @@ export default function CrushTypeTestClient(): ReactElement {
         }
 
         @media (max-width: 780px) {
-          .hero-card {
-            grid-template-columns: 1fr;
-          }
-
-          .signal-art {
-            min-height: 260px;
-            order: -1;
-          }
-
           .answers,
           .result-grid {
             grid-template-columns: 1fr;

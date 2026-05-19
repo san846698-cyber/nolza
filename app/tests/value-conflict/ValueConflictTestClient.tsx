@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
+import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -186,7 +187,7 @@ export default function ValueConflictTestClient(): ReactElement {
 
             {phase === "quiz" ? (
               <>
-                <h2>{text(locale, currentQuestion.prompt)}</h2>
+                <ReadableQuestion prompt={text(locale, currentQuestion.prompt)} locale={locale} />
                 <div className="answers">
                   {currentQuestion.choices.map((choice) => (
                     <button key={choice.id} type="button" onClick={() => choose(choice)} className="answer">
@@ -218,8 +219,7 @@ export default function ValueConflictTestClient(): ReactElement {
           min-height: 100vh;
           color: #211d18;
           background:
-            radial-gradient(circle at 18% 12%, rgba(176, 116, 39, 0.16), transparent 28rem),
-            radial-gradient(circle at 86% 8%, rgba(103, 123, 151, 0.18), transparent 30rem),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.52), transparent 34%),
             linear-gradient(180deg, #fbf4e7 0%, #f4e7d2 54%, #f8efe1 100%);
           padding: 24px clamp(16px, 4vw, 44px) 56px;
         }
@@ -248,13 +248,11 @@ export default function ValueConflictTestClient(): ReactElement {
         .value-hero {
           display: flex;
           align-items: center;
+          width: min(100%, 840px);
+          margin: 0 auto;
           min-height: min(720px, calc(100vh - 116px));
           padding: clamp(34px, 6vw, 76px) clamp(22px, 5vw, 60px);
           overflow: hidden;
-          border: 0;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: none;
         }
         .value-hero .hero-copy {
           width: min(100%, 720px);

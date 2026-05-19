@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
+import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -186,7 +187,7 @@ export default function StoicControlTestClient(): ReactElement {
 
             {phase === "quiz" ? (
               <>
-                <h2>{text(locale, currentQuestion.prompt)}</h2>
+                <ReadableQuestion prompt={text(locale, currentQuestion.prompt)} locale={locale} />
                 <div className="answers">
                   {currentQuestion.choices.map((choice) => (
                     <button key={choice.id} type="button" onClick={() => choose(choice)} className="answer">
@@ -218,8 +219,7 @@ export default function StoicControlTestClient(): ReactElement {
           min-height: 100vh;
           color: #24231f;
           background:
-            radial-gradient(circle at 18% 14%, rgba(150, 113, 68, 0.15), transparent 29rem),
-            radial-gradient(circle at 86% 8%, rgba(104, 118, 102, 0.14), transparent 30rem),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.48), transparent 34%),
             linear-gradient(180deg, #f6efe4 0%, #e9dfcf 58%, #f7ecda 100%);
           padding: 24px clamp(16px, 4vw, 44px) 56px;
         }
@@ -249,13 +249,11 @@ export default function StoicControlTestClient(): ReactElement {
           display: flex;
           align-items: center;
           justify-content: center;
+          width: min(100%, 840px);
+          margin: 0 auto;
           min-height: min(720px, calc(100vh - 116px));
           padding: clamp(34px, 6vw, 76px) clamp(22px, 5vw, 60px);
           overflow: hidden;
-          border: 0;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: none;
         }
         .stoic-hero .hero-copy {
           width: min(100%, 720px);

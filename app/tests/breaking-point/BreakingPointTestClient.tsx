@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
+import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -136,33 +137,13 @@ export default function BreakingPointTestClient() {
 
   return (
     <main className="breaking-page" lang={locale}>
-      <div className="line-field" aria-hidden>
-        <span />
-        <i />
-      </div>
       <header className="breaking-topbar">
         <Link href="/" className="home-link">nolza.fun</Link>
-        <div className="locale-switch" aria-label={BREAKING_COPY.languageLabel[locale]}>
-          {(["ko", "en"] as const).map((item) => (
-            <button
-              key={item}
-              type="button"
-              className={locale === item ? "active" : ""}
-              onClick={() => setLocale(item)}
-            >
-              {item.toUpperCase()}
-            </button>
-          ))}
-        </div>
       </header>
 
       <section className="breaking-shell">
         {phase === "intro" ? (
           <section className="intro">
-            <div className="boundary-mark" aria-hidden>
-              <span />
-              <span />
-            </div>
             <p className="eyebrow">{BREAKING_COPY.badge[locale]}</p>
             <h1>{BREAKING_COPY.title[locale]}</h1>
             <p className="subtitle">{BREAKING_COPY.subtitle[locale]}</p>
@@ -229,8 +210,11 @@ function QuestionView({
 }) {
   return (
     <div className="question-view">
-      <p className="question-kicker">{locale === "ko" ? "반복되는 장면" : "A repeated scene"}</p>
-      <h2>{text(locale, question.prompt)}</h2>
+      <ReadableQuestion
+        prompt={text(locale, question.prompt)}
+        locale={locale}
+        situationLabel={locale === "ko" ? "반복되는 장면" : "A repeated scene"}
+      />
       <div className="choices">
         {question.choices.map((choice, index) => (
           <button key={choice.id} type="button" onClick={() => onChoose(choice)}>
@@ -306,35 +290,9 @@ const styles = `
     overflow-x: hidden;
     color: #f4eadc;
     background:
-      radial-gradient(circle at 14% 8%, rgba(216, 108, 84, 0.18), transparent 28rem),
-      radial-gradient(circle at 86% 10%, rgba(123, 140, 166, 0.16), transparent 30rem),
-      linear-gradient(145deg, #12100f 0%, #211b18 48%, #3b3029 100%);
+      linear-gradient(180deg, rgba(244, 234, 220, 0.035), transparent 34%),
+      linear-gradient(145deg, #12100f 0%, #211b18 52%, #302720 100%);
     font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
-  }
-  .line-field {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.55;
-  }
-  .line-field span,
-  .line-field i {
-    position: absolute;
-    display: block;
-    background: linear-gradient(180deg, transparent, rgba(244, 234, 220, 0.18), transparent);
-    transform: rotate(22deg);
-  }
-  .line-field span {
-    left: 16%;
-    top: -10%;
-    width: 1px;
-    height: 120%;
-  }
-  .line-field i {
-    right: 18%;
-    top: -12%;
-    width: 1px;
-    height: 130%;
   }
   .breaking-topbar {
     width: min(1080px, calc(100% - 32px));
@@ -386,39 +344,19 @@ const styles = `
     box-shadow: 0 34px 100px rgba(0, 0, 0, 0.3);
   }
   .intro {
-    min-height: min(720px, calc(100vh - 130px));
+    width: min(100%, 780px);
+    min-height: min(650px, calc(100vh - 140px));
     display: grid;
     align-content: center;
     justify-items: start;
     position: relative;
     overflow: hidden;
-    padding: clamp(34px, 7vw, 78px);
-    border-radius: 34px;
+    margin: clamp(16px, 5vh, 54px) auto 0;
+    padding: clamp(32px, 6vw, 64px);
+    border-radius: 28px;
     background:
-      linear-gradient(135deg, rgba(244, 234, 220, 0.105), rgba(12, 11, 10, 0.08)),
-      rgba(244, 234, 220, 0.055);
-    backdrop-filter: blur(18px);
-  }
-  .boundary-mark {
-    position: absolute;
-    right: clamp(22px, 9vw, 110px);
-    top: clamp(28px, 9vw, 92px);
-    width: clamp(140px, 25vw, 300px);
-    height: clamp(180px, 32vw, 380px);
-    opacity: 0.72;
-  }
-  .boundary-mark span {
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(244, 234, 220, 0.26);
-    border-radius: 999px;
-    transform: rotate(18deg);
-  }
-  .boundary-mark span + span {
-    inset: 24% 42%;
-    border-radius: 999px;
-    background: rgba(216, 108, 84, 0.12);
-    transform: rotate(18deg);
+      linear-gradient(180deg, rgba(244, 234, 220, 0.105), rgba(244, 234, 220, 0.045)),
+      rgba(16, 13, 12, 0.62);
   }
   .eyebrow,
   .question-kicker,
@@ -442,10 +380,10 @@ const styles = `
     letter-spacing: 0;
   }
   h1 {
-    max-width: 790px;
+    max-width: 720px;
     color: #fff2e2;
-    font-size: clamp(2.65rem, 7.5vw, 6rem);
-    line-height: 1.02;
+    font-size: clamp(2.35rem, 6.4vw, 5.35rem);
+    line-height: 1.06;
     word-break: keep-all;
   }
   .subtitle {
@@ -497,7 +435,7 @@ const styles = `
     border: 0;
     color: #211410;
     background: linear-gradient(135deg, #efd1a0, #d86c54);
-    box-shadow: 0 18px 40px rgba(216, 108, 84, 0.28);
+    box-shadow: 0 14px 34px rgba(216, 108, 84, 0.26);
   }
   .secondary {
     color: #f4eadc;
@@ -682,9 +620,6 @@ const styles = `
     .intro,
     .test-card {
       border-radius: 24px;
-    }
-    .boundary-mark {
-      opacity: 0.28;
     }
     .choices,
     .result-grid {

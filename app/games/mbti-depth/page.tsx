@@ -300,7 +300,7 @@ function QuizView({
       <div className="text-xs uppercase tracking-[0.18em] text-accent/80">
         {question.category[locale]}
       </div>
-      <h2 className="mt-3 font-serif text-xl font-bold leading-snug text-white md:text-3xl">
+      <h2 className="mt-4 max-w-3xl text-2xl font-extrabold leading-snug text-white md:text-3xl">
         {question.prompt[locale]}
       </h2>
 
@@ -310,13 +310,13 @@ function QuizView({
             key={i}
             type="button"
             onClick={() => onSelect(opt.score)}
-            className="group rounded-2xl border border-border bg-card p-5 text-left transition-all hover:border-accent hover:bg-bg md:p-6"
+            className="group rounded-2xl border border-border bg-card p-4 text-left transition-all hover:border-accent hover:bg-bg md:p-5"
           >
             <div className="flex items-start gap-4">
               <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-xs font-bold text-gray-400 group-hover:border-accent group-hover:text-accent">
                 {String.fromCharCode(65 + i)}
               </span>
-              <span className="text-base text-gray-200 group-hover:text-white md:text-lg">
+              <span className="text-base leading-relaxed text-gray-200 group-hover:text-white md:text-[17px]">
                 {opt.label[locale]}
               </span>
             </div>

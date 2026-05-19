@@ -347,6 +347,184 @@ a:focus-visible {
   }
 }
 
+/* Readable repeated-question screens */
+.question-card,
+.thinking-card,
+.value-card,
+.stoic-card,
+.crush-card,
+.scene-card,
+.breaking-card,
+.test-card {
+  width: min(100%, 980px) !important;
+  padding: clamp(22px, 3.2vw, 38px) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 16px 42px rgba(42, 30, 18, 0.08), inset 0 1px 0 rgba(255,255,255,0.78) !important;
+}
+
+.readable-question {
+  margin: clamp(18px, 3vw, 28px) 0 clamp(18px, 2.8vw, 26px);
+}
+
+.readable-question__situation {
+  margin: 0 0 clamp(14px, 2vw, 18px);
+  padding: 0 0 clamp(14px, 2vw, 18px);
+  border-bottom: 1px solid rgba(41, 33, 24, 0.11);
+}
+
+.readable-question__situation span,
+.readable-question__prompt span {
+  display: block;
+  margin: 0 0 8px;
+  color: rgba(146, 78, 57, 0.82);
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.readable-question__situation p {
+  margin: 0;
+  max-width: 860px;
+  color: rgba(33, 24, 18, 0.78);
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  font-weight: 600;
+  line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.readable-question__prompt h2,
+.question-card .readable-question h2,
+.thinking-card .readable-question h2,
+.value-card .readable-question h2,
+.stoic-card .readable-question h2,
+.crush-card .readable-question h2,
+.scene-card .readable-question h2,
+.breaking-card .readable-question h2,
+.test-card .readable-question h2 {
+  margin: 0 !important;
+  max-width: 900px;
+  color: inherit;
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif !important;
+  font-size: clamp(1.45rem, 2.6vw, 2rem) !important;
+  font-weight: 850 !important;
+  line-height: 1.42 !important;
+  letter-spacing: 0 !important;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.question-card .answers,
+.thinking-card .answers,
+.value-card .answers,
+.stoic-card .answers,
+.crush-card .answers,
+.scene-card .choices,
+.breaking-card .choices,
+.test-card .choices {
+  gap: 12px !important;
+}
+
+.question-card .answers button,
+.thinking-card .answer,
+.value-card .answer,
+.stoic-card .answer,
+.crush-card .answer,
+.scene-card .choices button,
+.breaking-card .choices button,
+.test-card .choices button,
+.test-card .answer {
+  min-height: 62px !important;
+  padding: 15px 16px !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: #211812 !important;
+}
+
+.question-card .answers strong,
+.thinking-card .answer strong,
+.value-card .answer strong,
+.stoic-card .answer strong,
+.crush-card .answer strong,
+.scene-card .choices strong,
+.breaking-card .choices strong,
+.test-card .choices strong,
+.test-card .answer strong {
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif !important;
+  font-size: clamp(1rem, 1.45vw, 1.08rem) !important;
+  line-height: 1.5 !important;
+  font-weight: 760 !important;
+}
+
+.question-card .answers button span,
+.thinking-card .answer span,
+.value-card .answer span,
+.stoic-card .answer span,
+.crush-card .answer span,
+.scene-card .choices button span,
+.breaking-card .choices button span,
+.test-card .choices button span,
+.test-card .answer span {
+  flex-shrink: 0;
+}
+
+.progress-head,
+.progress > div {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 760px) {
+  .question-card .answers,
+  .thinking-card .answers,
+  .value-card .answers,
+  .stoic-card .answers,
+  .crush-card .answers,
+  .scene-card .choices,
+  .breaking-card .choices,
+  .test-card .choices {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .question-card,
+  .thinking-card,
+  .value-card,
+  .stoic-card,
+  .crush-card,
+  .scene-card,
+  .breaking-card,
+  .test-card {
+    padding: 20px !important;
+    border-radius: 20px !important;
+  }
+
+  .readable-question {
+    margin: 16px 0 18px;
+  }
+
+  .readable-question__situation p {
+    font-size: 1rem;
+    line-height: 1.58;
+  }
+
+  .readable-question__prompt h2,
+  .question-card .readable-question h2,
+  .thinking-card .readable-question h2,
+  .value-card .readable-question h2,
+  .stoic-card .readable-question h2,
+  .crush-card .readable-question h2,
+  .scene-card .readable-question h2,
+  .breaking-card .readable-question h2,
+  .test-card .readable-question h2 {
+    font-size: clamp(1.35rem, 6vw, 1.62rem) !important;
+    line-height: 1.43 !important;
+  }
+}
+
 html, body {
   -webkit-font-smoothing: antialiased;
   min-height: 100%;

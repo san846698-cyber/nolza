@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
+import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -137,31 +138,13 @@ export default function SceneChoiceTestClient() {
 
   return (
     <main className="scene-page" lang={locale}>
-      <div className="scene-noise" aria-hidden />
       <header className="scene-topbar">
         <Link href="/" className="home-link">nolza.fun</Link>
-        <div className="locale-switch" aria-label={SCENE_COPY.languageLabel[locale]}>
-          {(["ko", "en"] as const).map((item) => (
-            <button
-              key={item}
-              type="button"
-              className={locale === item ? "active" : ""}
-              onClick={() => setLocale(item)}
-            >
-              {item.toUpperCase()}
-            </button>
-          ))}
-        </div>
       </header>
 
       <section className="scene-shell">
         {phase === "intro" ? (
           <section className="intro">
-            <div className="intro-mark" aria-hidden>
-              <span />
-              <i />
-              <em />
-            </div>
             <p className="eyebrow">{SCENE_COPY.badge[locale]}</p>
             <h1>{SCENE_COPY.title[locale]}</h1>
             <p className="subtitle">{SCENE_COPY.subtitle[locale]}</p>
@@ -232,9 +215,12 @@ function QuestionView({
 }) {
   return (
     <div className="question-view">
-      <p className="scene-label">{text(locale, question.title)}</p>
-      <p className="scene-text">{text(locale, question.scene)}</p>
-      <h2>{text(locale, question.prompt)}</h2>
+      <ReadableQuestion
+        situation={text(locale, question.scene)}
+        prompt={text(locale, question.prompt)}
+        locale={locale}
+        situationLabel={text(locale, question.title)}
+      />
       <div className="choices">
         {question.choices.map((choice, index) => (
           <button key={choice.id} type="button" onClick={() => onChoose(choice)}>
@@ -317,21 +303,9 @@ const styles = `
     overflow-x: hidden;
     color: #f7ead4;
     background:
-      radial-gradient(circle at 16% 9%, rgba(208, 151, 84, 0.2), transparent 28rem),
-      radial-gradient(circle at 82% 6%, rgba(107, 134, 162, 0.18), transparent 30rem),
-      linear-gradient(150deg, #171512 0%, #242018 48%, #4d3d2d 100%);
+      linear-gradient(180deg, rgba(247, 234, 212, 0.04), transparent 36%),
+      linear-gradient(150deg, #171512 0%, #242018 52%, #3d3024 100%);
     font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
-  }
-  .scene-noise {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.16;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 42px 42px;
-    mask-image: linear-gradient(180deg, rgba(0,0,0,0.8), transparent 80%);
   }
   .scene-topbar {
     width: min(1080px, calc(100% - 32px));
@@ -383,51 +357,19 @@ const styles = `
     box-shadow: 0 34px 100px rgba(0, 0, 0, 0.28);
   }
   .intro {
-    min-height: min(720px, calc(100vh - 130px));
+    width: min(100%, 780px);
+    min-height: min(650px, calc(100vh - 140px));
     display: grid;
     align-content: center;
     justify-items: start;
     overflow: hidden;
     position: relative;
-    padding: clamp(34px, 7vw, 78px);
-    border-radius: 34px;
+    margin: clamp(16px, 5vh, 54px) auto 0;
+    padding: clamp(32px, 6vw, 64px);
+    border-radius: 28px;
     background:
-      linear-gradient(135deg, rgba(247, 234, 212, 0.1), rgba(12, 11, 10, 0.1)),
-      rgba(247, 234, 212, 0.055);
-    backdrop-filter: blur(18px);
-  }
-  .intro-mark {
-    position: absolute;
-    right: clamp(18px, 8vw, 88px);
-    top: clamp(24px, 8vw, 84px);
-    width: clamp(136px, 24vw, 280px);
-    aspect-ratio: 1;
-    opacity: 0.72;
-  }
-  .intro-mark span,
-  .intro-mark i,
-  .intro-mark em {
-    position: absolute;
-    display: block;
-    border: 1px solid rgba(247, 234, 212, 0.28);
-    border-radius: 50%;
-  }
-  .intro-mark span {
-    inset: 0;
-    background: radial-gradient(circle at 38% 32%, rgba(247, 234, 212, 0.18), transparent 56%);
-  }
-  .intro-mark i {
-    inset: 22%;
-    border-style: dashed;
-  }
-  .intro-mark em {
-    left: 47%;
-    top: -9%;
-    width: 18%;
-    height: 118%;
-    border-radius: 999px;
-    transform: rotate(38deg);
-    background: rgba(247, 234, 212, 0.08);
+      linear-gradient(180deg, rgba(247, 234, 212, 0.105), rgba(247, 234, 212, 0.045)),
+      rgba(18, 14, 11, 0.62);
   }
   .eyebrow,
   .scene-label,
@@ -452,10 +394,11 @@ const styles = `
     letter-spacing: 0;
   }
   h1 {
-    max-width: 760px;
+    max-width: 720px;
     color: #fff3df;
-    font-size: clamp(2.75rem, 8vw, 6.5rem);
-    line-height: 0.98;
+    font-size: clamp(2.35rem, 6.4vw, 5.35rem);
+    line-height: 1.06;
+    word-break: keep-all;
   }
   .subtitle {
     max-width: 700px;
@@ -704,11 +647,6 @@ const styles = `
     .intro {
       min-height: auto;
       padding-top: 28px;
-    }
-    .intro-mark {
-      opacity: 0.34;
-      right: -24px;
-      top: 18px;
     }
     .choices,
     .result-sections {

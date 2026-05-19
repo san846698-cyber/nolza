@@ -9,6 +9,7 @@ import {
   type ReactElement,
 } from "react";
 import { AdMobileSticky } from "../../components/Ads";
+import RecommendedGames from "../../components/game/RecommendedGames";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import { trackResultView, trackRetryClick, trackShareClick, trackTestStart } from "@/lib/analytics";
 import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
@@ -100,6 +101,14 @@ type RomanceArchetype = {
   build: (ctx: RomanceContext) => Omit<RomanceResult, "titleKo" | "titleEn">;
 };
 
+type RecordSection = {
+  mark: string;
+  titleKo: string;
+  titleEn: string;
+  bodyKo: string[];
+  bodyEn: string[];
+};
+
 function buildPerson(originalName: string, gender: Gender, salt: number): Person {
   const seed = hashString(`${originalName}|${gender}|${salt}`);
   const rng = mulberry32(seed);
@@ -133,6 +142,107 @@ function scoreInterpretationEn(score: number): string {
     return `${score} pts\nNot an easy fate, but one that fills each other's missing season and deepens slowly.`;
   }
   return `${score} pts\nA hesitant, waiting kind of bond, like a letter folded away and never forgotten.`;
+}
+
+function cleanScoreSummary(text: string, score: number): string {
+  return text
+    .replace(`${score}점\n`, "")
+    .replace(`${score} pts\n`, "")
+    .trim();
+}
+
+function buildRecordSections(result: CoupleResult): RecordSection[] {
+  const { p1, p2, score } = result;
+  const p1StatusKo = p1.cls.ko;
+  const p2StatusKo = p2.cls.ko;
+  const p1RoleKo = p1.role.ko;
+  const p2RoleKo = p2.role.ko;
+  const p1StatusEn = p1.cls.en;
+  const p2StatusEn = p2.cls.en;
+  const p1RoleEn = p1.role.en;
+  const p2RoleEn = p2.role.en;
+  const isStrong = score >= 80;
+  const isDifficult = score < 75;
+
+  return [
+    {
+      mark: "緣",
+      titleKo: "만남의 시작",
+      titleEn: "How It Began",
+      bodyKo: [
+        `${p1.name.display}와 ${p2.name.display}은 처음부터 쉬운 인연은 아니었습니다.`,
+        `한 사람은 ${p1RoleKo}의 자리에서 하루를 견디고, 다른 한 사람은 ${p2RoleKo}의 이름으로 자신의 계절을 지나고 있었습니다.`,
+        "서로 다른 길 위에 서 있었지만, 이상하게도 두 사람은 처음 본 순간의 기척을 오래 잊지 못했습니다.",
+      ],
+      bodyEn: [
+        `${p1.name.display} and ${p2.name.display} were not an easy fate from the beginning.`,
+        `One lived through the days as ${p1RoleEn}; the other carried the life of ${p2RoleEn}.`,
+        "Their roads were different, yet the first trace of each other stayed longer than expected.",
+      ],
+    },
+    {
+      mark: "情",
+      titleKo: "마음이 기운 순간",
+      titleEn: "When Affection Turned",
+      bodyKo: [
+        "처음에는 말 한마디도 조심스러웠고, 눈길 하나에도 숨겨야 할 마음이 많았습니다.",
+        `${p1.name.display}은 ${p2.name.display}이 감추고 있던 외로움을 먼저 알아보았고, ${p2.name.display}은 ${p1.name.display}의 침묵 속에 남아 있는 진심을 읽었습니다.`,
+        "그때부터 이 인연은 빠르게 타오르기보다, 접어둔 편지처럼 조용히 깊어졌습니다.",
+      ],
+      bodyEn: [
+        "At first, even a sentence had to be careful, and even a glance carried what could not be spoken.",
+        `${p1.name.display} noticed the loneliness ${p2.name.display} had hidden; ${p2.name.display} read the sincerity left inside ${p1.name.display}'s silence.`,
+        "From then on, this bond deepened quietly, like a letter folded away rather than a flame rushing upward.",
+      ],
+    },
+    {
+      mark: "障",
+      titleKo: "둘 사이의 벽",
+      titleEn: "The Wall Between Them",
+      bodyKo: [
+        `두 사람 사이의 벽은 ${p1StatusKo}와 ${p2StatusKo}이라는 이름만으로 설명되지 않았습니다.`,
+        isDifficult
+          ? "가장 어려웠던 것은 서로를 향한 속도가 달랐다는 점이었습니다. 한 사람은 다가가고 싶었고, 다른 한 사람은 그 마음이 오래 머물 수 있는지 확인하고 싶었습니다."
+          : "서로의 자리가 달랐기에 마음을 드러내는 법도 달랐습니다. 그래서 가까워지는 순간마다 작은 오해와 긴 침묵이 따라왔습니다.",
+      ],
+      bodyEn: [
+        `The wall between them was not explained only by the names ${p1StatusEn} and ${p2StatusEn}.`,
+        isDifficult
+          ? "The hardest part was their different pace. One wanted to step closer; the other needed time to know whether the feeling would stay."
+          : "Because their stations were different, their ways of showing the heart were different too. Each step closer brought small misunderstandings and long silences.",
+      ],
+    },
+    {
+      mark: "約",
+      titleKo: "함께 넘은 계절",
+      titleEn: "The Season They Crossed",
+      bodyKo: [
+        isStrong
+          ? "그럼에도 두 사람은 쉽게 등을 돌리지 않았습니다. 마음이 흔들릴 때마다 서로의 이름을 다시 붙잡는 쪽을 택했습니다."
+          : "그럼에도 이 인연은 완전히 흩어지지 않았습니다. 멀어지는 날에도 서로의 안부를 마음 한켠에 남겨두었습니다.",
+        "사랑은 큰 맹세보다 작은 선택에 가까웠고, 함께 버틴 계절은 두 사람을 조금 더 단단하게 만들었습니다.",
+      ],
+      bodyEn: [
+        isStrong
+          ? "Even so, they did not turn away easily. Whenever the heart wavered, they chose to hold on to each other's name again."
+          : "Even so, this bond did not scatter completely. Even on distant days, each kept the other's safety somewhere in the heart.",
+        "Their love was closer to a small daily choice than to a grand vow, and the season they endured made them steadier.",
+      ],
+    },
+    {
+      mark: "末",
+      titleKo: "후대의 기록",
+      titleEn: "How It Was Remembered",
+      bodyKo: [
+        `훗날 사람들은 ${p1.name.display}와 ${p2.name.display}의 사랑을 뜨겁게 타오른 불꽃보다, 오래 꺼지지 않은 등불에 가깝다고 기록했습니다.`,
+        "크게 소리 내지 않아도 서로의 곁을 밝히는 마음. 그것이 이 조선 로맨스가 남긴 가장 오래된 문장이었습니다.",
+      ],
+      bodyEn: [
+        `Later, people remembered the love of ${p1.name.display} and ${p2.name.display} not as a sudden flame, but as a lamp that did not easily go out.`,
+        "A heart that lights the space beside another without needing to speak loudly. That was the oldest sentence this Joseon romance left behind.",
+      ],
+    },
+  ];
 }
 
 const ROMANCE_ARCHETYPES: RomanceArchetype[] = [
@@ -830,6 +940,54 @@ export default function JoseonCouplePage(): ReactElement {
 .jc-seal { animation: sealStamp 0.3s cubic-bezier(.3,.7,.3,1.4) forwards; }
 .jc-stamp-btn:hover .jc-stamp-inner { transform: rotate(-3deg) scale(1.03); }
 .jc-stamp-btn:active .jc-stamp-inner { transform: rotate(2deg) scale(0.96); }
+.joseon-recommendations .recommended-games {
+  background: rgba(245,240,224,0.62);
+  border: 1px solid rgba(26,26,26,0.16);
+  box-shadow: inset 0 0 0 3px rgba(184,150,12,0.08);
+}
+.joseon-recommendations .recommended-games__head {
+  color: ${INK_SOFT};
+}
+.joseon-recommendations .recommended-games__head small,
+.joseon-recommendations .recommended-games__cta {
+  color: ${DANCHEONG_RED};
+}
+.joseon-recommendations .recommended-games__item {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(26,26,26,0.16);
+}
+.joseon-recommendations .recommended-games__item strong {
+  color: ${INK};
+}
+.joseon-recommendations .recommended-games__desc {
+  color: ${INK_SOFT};
+}
+@media (max-width: 640px) {
+  .jc-result-identities {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .jc-thread-seal {
+    display: flex !important;
+    min-width: 0 !important;
+    justify-content: center;
+  }
+  .jc-thread-seal > span:first-child,
+  .jc-thread-seal > span:last-child {
+    width: 54px !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, ${RULE}, ${DANCHEONG_RED}, ${RULE}) !important;
+  }
+  .jc-record-grid article {
+    grid-template-columns: 1fr !important;
+  }
+  .jc-record-grid article > div:first-child {
+    margin-bottom: 2px;
+  }
+  .jc-scroll {
+    max-width: calc(100vw - 26px) !important;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .jc-scroll, .jc-ink, .jc-lotus, .jc-seal { animation-duration: 1ms !important; animation-delay: 0ms !important; }
 }
@@ -1022,7 +1180,7 @@ function InputView({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr auto 1fr",
+            gridTemplateColumns: "minmax(0, 1fr) auto minmax(0, 1fr)",
             gap: 14,
             alignItems: "center",
           }}
@@ -1170,13 +1328,13 @@ function PersonScroll({
           selected={gender === "male"}
           onClick={() => setGender("male")}
           type="male"
-          label={t("남", "M")}
+          label={t("남성", "Male")}
         />
         <HanbokTile
           selected={gender === "female"}
           onClick={() => setGender("female")}
           type="female"
-          label={t("여", "F")}
+          label={t("여성", "Female")}
         />
       </div>
     </div>
@@ -1194,17 +1352,20 @@ function HanbokTile({
   type: "male" | "female";
   label: string;
 }): ReactElement {
-  const fillBody = type === "male" ? DANCHEONG_BLUE : DANCHEONG_RED;
+  const sealText = type === "male" ? "男" : "女";
+  const accent = type === "male" ? DANCHEONG_BLUE : DANCHEONG_RED;
   return (
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={selected}
       style={{
         background: selected ? HANJI_DEEP : HANJI,
         color: INK,
         border: `1.5px solid ${selected ? DANCHEONG_RED : RULE}`,
         borderRadius: 4,
-        padding: "8px 4px",
+        padding: "10px 6px",
+        minHeight: 68,
         fontSize: 13,
         fontWeight: 700,
         cursor: "pointer",
@@ -1218,24 +1379,25 @@ function HanbokTile({
         boxShadow: selected ? `inset 0 0 0 2px ${GOLD}` : "none",
       }}
     >
-      <svg width="32" height="32" viewBox="0 0 44 44" aria-hidden>
-        <circle cx="22" cy="11" r="6" fill={INK_SOFT} />
-        {type === "male" ? (
-          <>
-            <ellipse cx="22" cy="6" rx="11" ry="2.5" fill={INK} />
-            <rect x="19" y="2.5" width="6" height="4" fill={INK} />
-            <path d="M 8 36 L 10 22 Q 22 17 34 22 L 36 36 Z" fill={fillBody} />
-            <path d="M 14 36 L 18 42 L 26 42 L 30 36 Z" fill={INK_SOFT} />
-            <rect x="11" y="28" width="22" height="2" fill={GOLD} />
-          </>
-        ) : (
-          <>
-            <path d="M 16 8 Q 22 3 28 8 L 28 12 L 16 12 Z" fill={INK} />
-            <path d="M 12 22 Q 22 19 32 22 L 30 28 L 14 28 Z" fill={fillBody} />
-            <path d="M 8 42 Q 8 32 14 28 L 30 28 Q 36 32 36 42 Z" fill={DANCHEONG_BLUE} />
-          </>
-        )}
-      </svg>
+      <span
+        aria-hidden
+        style={{
+          display: "grid",
+          placeItems: "center",
+          width: 34,
+          height: 34,
+          border: `1.5px solid ${accent}`,
+          color: accent,
+          background: "rgba(255,255,255,0.18)",
+          fontFamily: SERIF,
+          fontSize: 18,
+          fontWeight: 900,
+          lineHeight: 1,
+          boxShadow: selected ? `inset 0 0 0 2px ${HANJI}` : "none",
+        }}
+      >
+        {sealText}
+      </span>
       <span>{label}</span>
     </button>
   );
@@ -1273,9 +1435,12 @@ function LotusOrnament(): ReactElement {
           color: DANCHEONG_RED,
           fontWeight: 900,
           letterSpacing: "0.05em",
+          border: `1px solid ${DANCHEONG_RED}`,
+          padding: "3px 7px",
+          background: "rgba(196,30,58,0.06)",
         }}
       >
-        ❤
+        緣
       </div>
       <div
         style={{
@@ -1384,8 +1549,10 @@ function ResultView({
   const { p1, p2, romance, score } = result;
   const title = locale === "ko" ? romance.titleKo : romance.titleEn;
   const interpretation = locale === "ko" ? romance.interpretationKo : romance.interpretationEn;
+  const scoreSummary = cleanScoreSummary(interpretation, score);
   const storyParagraphs = locale === "ko" ? romance.storyKo : romance.storyEn;
   const dramaLine = locale === "ko" ? romance.dramaLineKo : romance.dramaLineEn;
+  const recordSections = buildRecordSections(result);
   let revealIdx = 0;
   const stagger = (): React.CSSProperties => ({
     ["--jc-i" as string]: String(revealIdx++),
@@ -1450,90 +1617,101 @@ function ResultView({
           className="jc-ink"
           style={{
             ...stagger(),
-            background: HANJI,
-            border: `1px solid ${INK}`,
-            borderRadius: 4,
-            padding: "26px 18px 22px",
-            marginBottom: 16,
+            position: "relative",
+            overflow: "hidden",
+            background:
+              `linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.08)), ${HANJI}`,
+            border: `1px solid rgba(26,26,26,0.34)`,
+            borderRadius: 6,
+            padding: "28px 22px 24px",
+            marginBottom: 18,
             textAlign: "center",
-            boxShadow: `inset 0 0 0 4px ${HANJI}, inset 0 0 0 5px ${DANCHEONG_RED}`,
+            boxShadow:
+              `inset 0 0 0 4px ${HANJI}, inset 0 0 0 5px rgba(184,150,12,0.24), 0 14px 24px rgba(26,26,26,0.08)`,
           }}
         >
+          <div aria-hidden style={documentCorner("tl")} />
+          <div aria-hidden style={documentCorner("tr")} />
+          <div aria-hidden style={documentCorner("bl")} />
+          <div aria-hidden style={documentCorner("br")} />
+
           <div
+            className="jc-result-identities"
             style={{
-              display: "flex",
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 1fr) auto minmax(0, 1fr)",
               alignItems: "center",
               justifyContent: "center",
-              gap: 10,
-              flexWrap: "wrap",
+              gap: 14,
             }}
           >
-            <PersonCard person={p1} locale={locale} />
-            <div
-              aria-hidden
-              style={{
-                fontSize: 26,
-                color: DANCHEONG_RED,
-                fontWeight: 900,
-              }}
-            >
-              ❤
-            </div>
-            <PersonCard person={p2} locale={locale} />
+            <PersonCard person={p1} locale={locale} order={t("其一", "First")} />
+            <ThreadSeal />
+            <PersonCard person={p2} locale={locale} order={t("其二", "Second")} />
           </div>
 
           <div
             style={{
-              marginTop: 22,
+              marginTop: 28,
               fontFamily: SERIF,
-              fontSize: 26,
+              fontSize: 30,
               fontWeight: 800,
               lineHeight: 1.3,
               color: INK,
+              letterSpacing: "0.01em",
             }}
           >
             「{title}」
           </div>
 
-          <div style={{ marginTop: 18 }}>
+          <div style={{ margin: "18px auto 0", maxWidth: 460 }}>
             <div
               style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 10,
                 fontFamily: SERIF,
                 fontSize: 11,
                 letterSpacing: "0.3em",
                 color: DANCHEONG_BLUE,
                 fontWeight: 700,
-                marginBottom: 6,
+                marginBottom: 8,
               }}
             >
-              緣 · {t("인연의 점수", "Fate Score")}
+              <span aria-hidden style={{ width: 34, height: 1, background: RULE }} />
+              <span>緣 · {t("인연의 점수", "Fate Score")}</span>
+              <span aria-hidden style={{ width: 34, height: 1, background: RULE }} />
             </div>
             <div
               style={{
+                display: "inline-flex",
+                alignItems: "baseline",
+                justifyContent: "center",
+                minWidth: 118,
+                padding: "8px 18px 9px",
+                borderTop: `1px solid ${DANCHEONG_RED}`,
+                borderBottom: `1px solid ${DANCHEONG_RED}`,
                 fontFamily: SERIF,
-                fontSize: 38,
+                fontSize: 32,
                 fontWeight: 900,
                 color: DANCHEONG_RED,
-                letterSpacing: "-0.02em",
+                letterSpacing: "0",
                 marginTop: 4,
               }}
             >
               {score}
-              <span style={{ fontSize: 16, marginLeft: 4, color: SUBTLE }}>
+              <span style={{ fontSize: 14, marginLeft: 4, color: INK_SOFT, fontWeight: 700 }}>
                 {t("점", "pts")}
               </span>
             </div>
-            <p style={{ ...storyTextStyle, whiteSpace: "pre-line", margin: "10px auto 0", maxWidth: 430 }}>
-              {interpretation.replace(`${score}점\n`, "").replace(`${score} pts\n`, "")}
+            <p style={{ ...storyTextStyle, whiteSpace: "pre-line", margin: "14px auto 0", maxWidth: 430, color: INK_SOFT }}>
+              {scoreSummary}
             </p>
           </div>
         </div>
 
-        <div className="jc-ink" style={{ ...stagger(), display: "flex", justifyContent: "center", margin: "0 0 18px" }}>
-          <button type="button" onClick={onShare} style={primarySealButton}>
-            {copied ? t("✓ 복사됨", "✓ Copied") : t("우리 조선 로맨스 공유하기", "Share our Joseon romance")}
-          </button>
-        </div>
+        <RecordSectionList sections={recordSections} locale={locale} stagger={stagger} />
 
         <StorySection title={t("두 사람의 조선 로맨스", "Your Joseon Romance")} stagger={stagger}>
           {storyParagraphs.map((paragraph, index) => (
@@ -1583,11 +1761,19 @@ function ResultView({
           }}
         >
           <button type="button" onClick={onShare} style={primarySealButton}>
-            {copied ? t("✓ 복사됨", "✓ Copied") : t("우리 조선 로맨스 공유하기", "Share our Joseon romance")}
+            {copied ? t("복사됨", "Copied") : t("결과 공유하기", "Share result")}
           </button>
           <button type="button" onClick={onReset} style={secondaryButton}>
             {isSharedResult ? t("나도 해보기", "Try it myself") : t("다시 하기", "Try again")}
           </button>
+        </div>
+
+        <div className="jc-ink joseon-recommendations" style={{ ...stagger(), marginTop: 22 }}>
+          <RecommendedGames
+            currentId="joseon-couple"
+            ids={["kdrama-couple", "friend-match", "crush-type", "joseon"]}
+            limit={4}
+          />
         </div>
       </ScrollFrame>
     </div>
@@ -1600,50 +1786,63 @@ function ScrollFrame({ children }: { children: React.ReactNode }): ReactElement 
       style={{
         position: "relative",
         background: `linear-gradient(180deg, ${HANJI} 0%, ${HANJI_DEEP} 100%)`,
-        border: `1.5px solid ${INK}`,
+        border: `1px solid rgba(26,26,26,0.34)`,
         borderRadius: 6,
-        padding: "32px 24px 30px",
+        padding: "34px 26px 32px",
         boxShadow:
-          "0 12px 30px rgba(26,26,26,0.12), inset 0 0 0 6px " + HANJI + ", inset 0 0 0 7px " + GOLD,
+          "0 14px 34px rgba(26,26,26,0.1), inset 0 0 0 5px " + HANJI + ", inset 0 0 0 6px rgba(184,150,12,0.34)",
       }}
     >
       <div
         aria-hidden
         style={{
           position: "absolute",
-          top: -12,
-          left: -8,
-          right: -8,
-          height: 18,
-          background: `linear-gradient(180deg, ${INK_SOFT}, ${INK})`,
+          top: -9,
+          left: -6,
+          right: -6,
+          height: 13,
+          background: `linear-gradient(180deg, rgba(58,47,34,0.94), ${INK_SOFT})`,
           borderRadius: 4,
-          boxShadow: `inset 0 1px 0 ${GOLD}, 0 2px 6px rgba(0,0,0,0.2)`,
+          boxShadow: `inset 0 1px 0 rgba(184,150,12,0.65), 0 2px 5px rgba(0,0,0,0.13)`,
         }}
       />
       <div
         aria-hidden
         style={{
           position: "absolute",
-          top: -16,
-          left: -16,
-          width: 28,
-          height: 28,
+          top: -12,
+          left: -12,
+          width: 22,
+          height: 22,
           borderRadius: "50%",
-          background: `radial-gradient(circle at 30% 30%, ${GOLD}, ${INK_SOFT})`,
-          border: `1.5px solid ${INK}`,
+          background: `radial-gradient(circle at 30% 30%, rgba(184,150,12,0.82), ${INK_SOFT})`,
+          border: `1px solid rgba(26,26,26,0.55)`,
         }}
       />
       <div
         aria-hidden
         style={{
           position: "absolute",
-          top: -16,
-          right: -16,
-          width: 28,
-          height: 28,
+          top: -12,
+          right: -12,
+          width: 22,
+          height: 22,
           borderRadius: "50%",
-          background: `radial-gradient(circle at 30% 30%, ${GOLD}, ${INK_SOFT})`,
-          border: `1.5px solid ${INK}`,
+          background: `radial-gradient(circle at 30% 30%, rgba(184,150,12,0.82), ${INK_SOFT})`,
+          border: `1px solid rgba(26,26,26,0.55)`,
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: -9,
+          left: -6,
+          right: -6,
+          height: 13,
+          background: `linear-gradient(0deg, rgba(58,47,34,0.94), ${INK_SOFT})`,
+          borderRadius: 4,
+          boxShadow: `inset 0 -1px 0 rgba(184,150,12,0.65), 0 2px 5px rgba(0,0,0,0.13)`,
         }}
       />
       <div
@@ -1651,38 +1850,25 @@ function ScrollFrame({ children }: { children: React.ReactNode }): ReactElement 
         style={{
           position: "absolute",
           bottom: -12,
-          left: -8,
-          right: -8,
-          height: 18,
-          background: `linear-gradient(0deg, ${INK_SOFT}, ${INK})`,
-          borderRadius: 4,
-          boxShadow: `inset 0 -1px 0 ${GOLD}, 0 2px 6px rgba(0,0,0,0.2)`,
+          left: -12,
+          width: 22,
+          height: 22,
+          borderRadius: "50%",
+          background: `radial-gradient(circle at 30% 30%, rgba(184,150,12,0.82), ${INK_SOFT})`,
+          border: `1px solid rgba(26,26,26,0.55)`,
         }}
       />
       <div
         aria-hidden
         style={{
           position: "absolute",
-          bottom: -16,
-          left: -16,
-          width: 28,
-          height: 28,
+          bottom: -12,
+          right: -12,
+          width: 22,
+          height: 22,
           borderRadius: "50%",
-          background: `radial-gradient(circle at 30% 30%, ${GOLD}, ${INK_SOFT})`,
-          border: `1.5px solid ${INK}`,
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          bottom: -16,
-          right: -16,
-          width: 28,
-          height: 28,
-          borderRadius: "50%",
-          background: `radial-gradient(circle at 30% 30%, ${GOLD}, ${INK_SOFT})`,
-          border: `1.5px solid ${INK}`,
+          background: `radial-gradient(circle at 30% 30%, rgba(184,150,12,0.82), ${INK_SOFT})`,
+          border: `1px solid rgba(26,26,26,0.55)`,
         }}
       />
       {children}
@@ -1690,20 +1876,94 @@ function ScrollFrame({ children }: { children: React.ReactNode }): ReactElement 
   );
 }
 
+function documentCorner(position: "tl" | "tr" | "bl" | "br"): React.CSSProperties {
+  const line = "1px solid rgba(196,30,58,0.42)";
+  const base: React.CSSProperties = {
+    position: "absolute",
+    width: 24,
+    height: 24,
+    pointerEvents: "none",
+  };
+  if (position === "tl") return { ...base, top: 10, left: 10, borderTop: line, borderLeft: line };
+  if (position === "tr") return { ...base, top: 10, right: 10, borderTop: line, borderRight: line };
+  if (position === "bl") return { ...base, bottom: 10, left: 10, borderBottom: line, borderLeft: line };
+  return { ...base, bottom: 10, right: 10, borderBottom: line, borderRight: line };
+}
+
+function ThreadSeal(): ReactElement {
+  return (
+    <div
+      className="jc-thread-seal"
+      aria-hidden
+      style={{
+        display: "grid",
+        placeItems: "center",
+        gap: 6,
+        minWidth: 54,
+      }}
+    >
+      <span style={{ width: 1, height: 36, background: `linear-gradient(${RULE}, ${DANCHEONG_RED}, ${RULE})` }} />
+      <span
+        style={{
+          display: "grid",
+          placeItems: "center",
+          width: 38,
+          height: 38,
+          border: `1.5px solid ${DANCHEONG_RED}`,
+          background: "rgba(196,30,58,0.055)",
+          color: DANCHEONG_RED,
+          fontFamily: SERIF,
+          fontSize: 17,
+          fontWeight: 900,
+          boxShadow: `inset 0 0 0 2px ${HANJI}`,
+        }}
+      >
+        緣
+      </span>
+      <span style={{ width: 1, height: 36, background: `linear-gradient(${RULE}, ${DANCHEONG_RED}, ${RULE})` }} />
+    </div>
+  );
+}
+
 function PersonCard({
   person,
   locale,
+  order,
 }: {
   person: Person;
   locale: SimpleLocale;
+  order: string;
 }): ReactElement {
+  const status = locale === "ko" ? person.cls.ko : person.cls.en;
+  const socialRole = locale === "ko" ? person.role.ko : person.role.en;
+
   return (
-    <div style={{ textAlign: "center", minWidth: 110 }}>
-      <div style={{ fontSize: 34, marginBottom: 4 }}>{person.cls.emoji}</div>
+    <div
+      style={{
+        textAlign: "center",
+        minWidth: 0,
+        padding: "14px 12px 15px",
+        borderTop: `1px solid ${RULE}`,
+        borderBottom: `1px solid ${RULE}`,
+        background: "rgba(255,255,255,0.12)",
+      }}
+    >
+      <div
+        style={{
+          marginBottom: 8,
+          fontFamily: SERIF,
+          fontSize: 12,
+          letterSpacing: "0.22em",
+          color: DANCHEONG_RED,
+          fontWeight: 800,
+        }}
+      >
+        {order}
+      </div>
       <div
         style={{
           fontFamily: SERIF,
-          fontSize: 26,
+          fontSize: 28,
           fontWeight: 800,
           color: INK,
           letterSpacing: "0.03em",
@@ -1717,37 +1977,35 @@ function PersonCard({
       </div>
       <div
         style={{
-          marginTop: 6,
-          fontSize: 12,
-          color: DANCHEONG_RED,
-          fontFamily: SERIF,
-          letterSpacing: "0.15em",
-          fontWeight: 700,
+          width: 42,
+          height: 1,
+          background: RULE,
+          margin: "10px auto 8px",
         }}
-      >
-        {locale === "ko" ? person.cls.ko : person.cls.en}
-      </div>
+      />
       <div
         style={{
-          marginTop: 4,
+          marginTop: 0,
           fontSize: 12,
           color: INK_SOFT,
           fontFamily: SERIF,
+          letterSpacing: "0.08em",
           fontWeight: 700,
         }}
       >
-        {locale === "ko" ? person.role.ko : person.role.en}
+        {status} · {socialRole}
       </div>
       {person.original && person.original.trim() !== person.name.display && (
         <div
           style={{
-            marginTop: 4,
+            marginTop: 8,
             fontSize: 12,
             color: SUBTLE,
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: SERIF,
+            letterSpacing: "0.04em",
           }}
         >
-          ({person.original})
+          {person.original}
         </div>
       )}
     </div>
@@ -1801,6 +2059,97 @@ function Section({
         {children}
       </div>
     </div>
+  );
+}
+
+function RecordSectionList({
+  sections,
+  locale,
+  stagger,
+}: {
+  sections: RecordSection[];
+  locale: SimpleLocale;
+  stagger: () => React.CSSProperties;
+}): ReactElement {
+  return (
+    <section className="jc-ink" style={{ ...stagger(), marginBottom: 18 }}>
+      <div style={sectionTitleWrap}>
+        <div style={{ flex: 1, height: 1, background: RULE }} />
+        <div style={sectionTitleText}>書 · {locale === "ko" ? "연분의 기록" : "Record of the Bond"}</div>
+        <div style={{ flex: 1, height: 1, background: RULE }} />
+      </div>
+      <div
+        className="jc-record-grid"
+        style={{
+          display: "grid",
+          gap: 10,
+        }}
+      >
+        {sections.map((section) => (
+          <article
+            key={section.mark}
+            style={{
+              position: "relative",
+              display: "grid",
+              gridTemplateColumns: "42px minmax(0, 1fr)",
+              gap: 12,
+              background:
+                `linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.04)), ${HANJI}`,
+              border: `1px solid rgba(26,26,26,0.14)`,
+              borderLeft: `2px solid rgba(196,30,58,0.58)`,
+              borderRadius: 5,
+              padding: "15px 16px 15px 14px",
+              boxShadow: "0 8px 18px rgba(26,26,26,0.045)",
+            }}
+          >
+            <div
+              aria-hidden
+              style={{
+                width: 34,
+                height: 34,
+                border: `1px solid ${DANCHEONG_RED}`,
+                color: DANCHEONG_RED,
+                display: "grid",
+                placeItems: "center",
+                fontFamily: SERIF,
+                fontSize: 15,
+                fontWeight: 900,
+                background: "rgba(196,30,58,0.055)",
+              }}
+            >
+              {section.mark}
+            </div>
+            <div>
+              <h3
+                style={{
+                  margin: "0 0 7px",
+                  color: INK,
+                  fontFamily: SERIF,
+                  fontSize: 17,
+                  fontWeight: 800,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {locale === "ko" ? section.titleKo : section.titleEn}
+              </h3>
+              {(locale === "ko" ? section.bodyKo : section.bodyEn).map((line, index) => (
+                <p
+                  key={index}
+                  style={{
+                    ...storyTextStyle,
+                    color: INK_SOFT,
+                    lineHeight: 1.82,
+                    margin: index === 0 ? 0 : "7px 0 0",
+                  }}
+                >
+                  {line}
+                </p>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -1889,23 +2238,23 @@ const inputStyle: React.CSSProperties = {
 };
 
 const primarySealButton: React.CSSProperties = {
-  background: DANCHEONG_RED,
+  background: "linear-gradient(180deg, #9f2630, #7f1f28)",
   color: HANJI,
-  border: `2px solid ${DANCHEONG_RED}`,
+  border: "1px solid rgba(80,32,22,0.62)",
   padding: "12px 24px",
   borderRadius: 4,
   fontSize: 15,
   fontWeight: 800,
-  letterSpacing: "0.15em",
+  letterSpacing: "0.08em",
   cursor: "pointer",
   fontFamily: SERIF,
-  boxShadow: `inset 0 0 0 2px rgba(245,240,224,0.9), 0 4px 12px rgba(196,30,58,0.3)`,
+  boxShadow: `inset 0 0 0 1px rgba(245,240,224,0.5), 0 6px 14px rgba(80,32,22,0.18)`,
 };
 
 const secondaryButton: React.CSSProperties = {
-  background: "transparent",
+  background: "rgba(255,255,255,0.16)",
   color: INK,
-  border: `1.5px solid ${INK}`,
+  border: `1px solid rgba(26,26,26,0.34)`,
   padding: "12px 24px",
   borderRadius: 4,
   fontSize: 15,

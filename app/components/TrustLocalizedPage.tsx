@@ -27,7 +27,7 @@ const COMMON: Record<SimpleLocale, { back: string; languageLabel: string; langua
   ko: {
     back: "← Nolza.fun으로 돌아가기",
     languageLabel: "언어 선택",
-    languageName: "KO",
+    languageName: "한",
   },
   en: {
     back: "← Back to Nolza.fun",
@@ -421,16 +421,13 @@ export default function TrustLocalizedPage({ page }: { page: TrustPageId }) {
       lang={locale}
       actions={
         <div className="trust-locale-switch" aria-label={common.languageLabel}>
-          {(["ko", "en"] as const).map((item) => (
-            <button
-              key={item}
-              type="button"
-              aria-pressed={locale === item}
-              onClick={() => setLocale(item)}
-            >
-              {COMMON[item].languageName}
-            </button>
-          ))}
+          <button
+            type="button"
+            aria-pressed={locale === "ko"}
+            onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
+          >
+            {locale === "ko" ? "한 / EN" : "EN / 한"}
+          </button>
         </div>
       }
     >

@@ -100,6 +100,37 @@ const ROLE_OPTIONS: RoleOption[] = [
   },
 ];
 
+const DISPLAY_ROLE_OPTIONS: RoleOption[] = [
+  {
+    value: "female",
+    ko: "여주/여성 캐릭터 톤",
+    en: "Female character tone",
+    hintKo: "감정선이 또렷한 여성 캐릭터 서사",
+    hintEn: "A clear female-character story rhythm",
+  },
+  {
+    value: "male",
+    ko: "남주/남성 캐릭터 톤",
+    en: "Male character tone",
+    hintKo: "멜로 장면이 잘 사는 남성 캐릭터 서사",
+    hintEn: "A male-character story rhythm with strong drama beats",
+  },
+  {
+    value: "random",
+    ko: "랜덤",
+    en: "Random",
+    hintKo: "장르가 알아서 정해지는 톤",
+    hintEn: "Playful, not fixed",
+  },
+  {
+    value: "neutral",
+    ko: "중립 캐릭터 톤",
+    en: "Neutral character tone",
+    hintKo: "성별보다 관계 흐름이 먼저 보이는 톤",
+    hintEn: "A role led by relationship dynamics, not gender",
+  },
+];
+
 const FEMALE_ROLES: CharacterRole[] = [
   {
     title: "재벌가에 휘말린 평범한 주인공",
@@ -242,7 +273,7 @@ function rolePool(role: RoleStyle, seed: string): CharacterRole[] {
 }
 
 function roleLabel(role: RoleStyle, loc: Loc): string {
-  const option = ROLE_OPTIONS.find((item) => item.value === role) ?? ROLE_OPTIONS[2];
+  const option = DISPLAY_ROLE_OPTIONS.find((item) => item.value === role) ?? DISPLAY_ROLE_OPTIONS[2];
   return loc === "ko" ? option.ko : option.en;
 }
 
@@ -682,7 +713,7 @@ export default function KdramaCouplePage(): ReactElement {
         .kdc-role-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 9px;
+          gap: 14px;
         }
         .kdc-result-grid {
           display: grid;
@@ -717,7 +748,8 @@ export default function KdramaCouplePage(): ReactElement {
             grid-template-columns: 1fr;
           }
           .kdc-role-grid {
-            gap: 8px;
+            grid-template-columns: 1fr;
+            gap: 10px;
           }
           .kdc-mobile-stack {
             flex-direction: column !important;
@@ -929,7 +961,7 @@ function PersonEditor({
       />
 
       <div className="kdc-role-grid" style={{ marginTop: 12 }}>
-        {ROLE_OPTIONS.map((option) => {
+        {DISPLAY_ROLE_OPTIONS.map((option) => {
           const selected = value.role === option.value;
           return (
             <button
@@ -938,10 +970,11 @@ function PersonEditor({
               type="button"
               onClick={() => onChange({ ...value, role: option.value })}
               aria-pressed={selected}
+              aria-label={`${label}: ${loc === "ko" ? option.ko : option.en}`}
               style={{
                 textAlign: "left",
-                minHeight: 88,
-                borderRadius: 8,
+                minHeight: 106,
+                borderRadius: 14,
                 border: `1px solid ${selected ? ROSE : LINE}`,
                 background: selected
                   ? "linear-gradient(135deg, rgba(242,198,189,0.2), rgba(255,255,255,0.08))"
