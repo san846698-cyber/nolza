@@ -348,6 +348,12 @@ function Intro({ locale, onStart }: { locale: DefenseLocale; onStart: () => void
           : "A quiet look at the ways your mind tries to keep you safe."}
       </p>
 
+      <div className="intro-chips" aria-label={locale === "ko" ? "테스트 정보" : "Test info"}>
+        <span>{locale === "ko" ? "16문항" : "16 questions"}</span>
+        <span>{locale === "ko" ? "약 4분" : "About 4 min"}</span>
+        <span>{locale === "ko" ? "자기이해" : "Self-insight"}</span>
+      </div>
+
       <button type="button" className="primary" onClick={onStart}>
         {DEFENSE_COPY.start[locale]}
       </button>

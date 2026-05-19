@@ -158,6 +158,11 @@ export default function StoicControlTestClient(): ReactElement {
                   "Explore how you separate what you can control from what you cannot.",
                 )}
               </p>
+              <div className="intro-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
+                <span>{t(locale, "16문항", "16 questions")}</span>
+                <span>{t(locale, "약 4분", "About 4 min")}</span>
+                <span>{t(locale, "철학 기반", "Philosophy lens")}</span>
+              </div>
               <button type="button" onClick={start} className="primary">
                 {t(locale, "테스트 시작하기", "Start the test")}
               </button>

@@ -158,6 +158,11 @@ export default function ThinkingPatternTestClient(): ReactElement {
                   "See where your thoughts tend to go first in ambiguous moments.",
                 )}
               </p>
+              <div className="intro-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
+                <span>{t(locale, "16문항", "16 questions")}</span>
+                <span>{t(locale, "약 4분", "About 4 min")}</span>
+                <span>{t(locale, "생각 패턴", "Thinking pattern")}</span>
+              </div>
               <button type="button" onClick={start} className="primary">
                 {t(locale, "테스트 시작하기", "Start the test")}
               </button>

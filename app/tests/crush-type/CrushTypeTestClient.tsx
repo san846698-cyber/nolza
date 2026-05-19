@@ -158,6 +158,11 @@ export default function CrushTypeTestClient(): ReactElement {
                   "A reply, a look, a small change in tone — suddenly everything feels meaningful. Find out what kind of person you become around your crush.",
                 )}
               </p>
+              <div className="intro-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
+                <span>{t(locale, "16문항", "16 questions")}</span>
+                <span>{t(locale, "약 4분", "About 4 min")}</span>
+                <span>{t(locale, "관계 패턴", "Relationship pattern")}</span>
+              </div>
               <button type="button" onClick={start} className="primary">
                 {t(locale, "테스트 시작하기", "Start the test")}
               </button>

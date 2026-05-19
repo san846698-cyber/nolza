@@ -149,6 +149,11 @@ export default function SceneChoiceTestClient() {
             <h1>{SCENE_COPY.title[locale]}</h1>
             <p className="subtitle">{SCENE_COPY.subtitle[locale]}</p>
             <p className="description">{SCENE_COPY.description[locale]}</p>
+            <div className="intro-chips" aria-label={locale === "ko" ? "테스트 정보" : "Test info"}>
+              <span>{locale === "ko" ? "12장면" : "12 scenes"}</span>
+              <span>{locale === "ko" ? "약 4분" : "About 4 min"}</span>
+              <span>{locale === "ko" ? "장면 선택" : "Scene choice"}</span>
+            </div>
             <button type="button" className="primary" onClick={start}>
               {SCENE_COPY.start[locale]}
             </button>

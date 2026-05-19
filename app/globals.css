@@ -3379,3 +3379,170 @@ body {
     line-height: 1.64 !important;
   }
 }
+
+/* Final refinement for open test intros: structure without enclosing cards. */
+.defense-page .hero-content {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.defense-page .hero h1,
+.thinking-hero h1,
+.value-hero h1,
+.stoic-hero h1,
+.crush-test .hero-card h1,
+.breaking-page .intro h1,
+.scene-page .intro h1 {
+  width: 100% !important;
+  max-width: 920px !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  text-wrap: balance;
+  white-space: normal !important;
+}
+
+.thinking-hero .hero-copy,
+.value-hero .hero-copy,
+.stoic-hero .hero-copy,
+.breaking-page .intro {
+  width: min(100%, 820px) !important;
+  margin-left: clamp(0px, 5vw, 92px) !important;
+}
+
+.defense-page .hero-content,
+.crush-test .hero-copy,
+.scene-page .intro {
+  width: min(100%, 820px) !important;
+}
+
+.intro-chips {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 9px !important;
+  margin-top: clamp(18px, 3vw, 26px) !important;
+  margin-bottom: 0 !important;
+}
+
+.defense-page .intro-chips,
+.crush-test .intro-chips,
+.scene-page .intro-chips {
+  justify-content: center !important;
+}
+
+.thinking-hero .intro-chips,
+.value-hero .intro-chips,
+.stoic-hero .intro-chips,
+.breaking-page .intro-chips {
+  justify-content: flex-start !important;
+}
+
+.intro-chips span {
+  display: inline-flex !important;
+  min-height: 34px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(47, 37, 29, 0.13) !important;
+  background: rgba(255, 255, 255, 0.58) !important;
+  color: rgba(47, 37, 29, 0.72) !important;
+  padding: 0 13px !important;
+  font-family: var(--font-inter), system-ui, sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.015em !important;
+  line-height: 1 !important;
+  box-shadow: 0 10px 24px rgba(48, 35, 24, 0.055) !important;
+}
+
+.defense-page .intro-chips span,
+.breaking-page .intro-chips span,
+.scene-page .intro-chips span {
+  border-color: rgba(255, 247, 232, 0.18) !important;
+  background: rgba(255, 247, 232, 0.105) !important;
+  color: rgba(255, 247, 232, 0.78) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16) !important;
+}
+
+.thinking-hero .intro-chips span {
+  border-color: rgba(122, 90, 175, 0.18) !important;
+  color: #6e519f !important;
+}
+
+.value-hero .intro-chips span {
+  border-color: rgba(102, 88, 68, 0.18) !important;
+  color: #6f593d !important;
+}
+
+.stoic-hero .intro-chips span {
+  border-color: rgba(117, 98, 51, 0.2) !important;
+  color: #74612f !important;
+}
+
+.crush-test .intro-chips span {
+  border-color: rgba(181, 82, 95, 0.18) !important;
+  color: #a94d5c !important;
+}
+
+.defense-page .primary,
+.breaking-page .primary,
+.scene-page .primary,
+.thinking-hero .primary,
+.value-hero .primary,
+.stoic-hero .primary,
+.crush-test .primary {
+  margin-top: clamp(18px, 3vw, 26px) !important;
+}
+
+.defense-page .meta-line,
+.thinking-hero .meta-line,
+.value-hero .meta-line,
+.stoic-hero .meta-line,
+.crush-test .meta-line,
+.breaking-page .meta-line,
+.scene-page .meta-line {
+  display: block !important;
+  margin-top: 14px !important;
+  opacity: 0.84 !important;
+}
+
+@media (max-width: 640px) {
+  .thinking-hero .hero-copy,
+  .value-hero .hero-copy,
+  .stoic-hero .hero-copy,
+  .breaking-page .intro {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .defense-page .hero-content,
+  .crush-test .hero-copy,
+  .scene-page .intro {
+    width: 100% !important;
+  }
+
+  .defense-page .hero h1,
+  .thinking-hero h1,
+  .value-hero h1,
+  .stoic-hero h1,
+  .crush-test .hero-card h1,
+  .breaking-page .intro h1,
+  .scene-page .intro h1 {
+    max-width: 100% !important;
+    font-size: clamp(2.25rem, 11.2vw, 3.25rem) !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .intro-chips {
+    gap: 8px !important;
+    margin-top: 18px !important;
+  }
+
+  .intro-chips span {
+    min-height: 32px !important;
+    padding: 0 11px !important;
+    font-size: 0.74rem !important;
+  }
+}

@@ -148,6 +148,11 @@ export default function BreakingPointTestClient() {
             <h1>{BREAKING_COPY.title[locale]}</h1>
             <p className="subtitle">{BREAKING_COPY.subtitle[locale]}</p>
             <p className="description">{BREAKING_COPY.description[locale]}</p>
+            <div className="intro-chips" aria-label={locale === "ko" ? "테스트 정보" : "Test info"}>
+              <span>{locale === "ko" ? "16문항" : "16 questions"}</span>
+              <span>{locale === "ko" ? "약 4분" : "About 4 min"}</span>
+              <span>{locale === "ko" ? "감정 경계" : "Emotional boundary"}</span>
+            </div>
             <button type="button" className="primary" onClick={start}>
               {BREAKING_COPY.start[locale]}
             </button>
