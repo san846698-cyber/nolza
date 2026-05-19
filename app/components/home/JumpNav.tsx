@@ -27,10 +27,10 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
 
   return (
     <nav
-      className="sticky top-0 z-40 border-b border-home-hairline bg-home-bg/88 shadow-[0_12px_34px_rgba(55,38,20,0.055)] backdrop-blur-xl"
+      className="sticky top-0 z-40 border-b border-home-hairline bg-[rgba(255,248,235,0.82)] shadow-[0_14px_36px_rgba(48,35,24,0.06)] backdrop-blur-xl"
       aria-label="Jump to category"
     >
-      <div className="mx-auto flex max-w-col gap-3 overflow-x-auto px-4 py-3.5 sm:gap-3.5 sm:px-6 sm:py-4 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+      <div className="mx-auto flex max-w-col gap-2.5 overflow-x-auto px-4 py-3 sm:gap-3 sm:px-6 sm:py-3.5 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
         {categories.map((c, i) => {
           const isActive = active === c.id;
           return (
@@ -39,18 +39,18 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
               href={`#${c.id}`}
               aria-current={isActive ? "true" : undefined}
               className={[
-                "inline-flex min-h-12 shrink-0 items-center gap-2.5 rounded-full px-5 py-2.5 sm:min-h-[54px] sm:px-6 lg:min-h-[52px] lg:px-6",
-                "border text-[15px] font-black tracking-tight sm:text-[15.5px] lg:text-[15px]",
-                "whitespace-nowrap no-underline shadow-[0_10px_24px_rgba(55,38,20,0.065)] transition-[background,color,border-color,transform,box-shadow]",
+                "inline-flex min-h-11 shrink-0 items-center gap-2.5 rounded-full px-[18px] py-2.5 sm:min-h-[50px] sm:px-5 lg:min-h-[48px] lg:px-5",
+                "border text-[14.5px] font-black tracking-tight sm:text-[15px]",
+                "whitespace-nowrap no-underline shadow-[0_10px_24px_rgba(48,35,24,0.055)] transition-[background,color,border-color,transform,box-shadow]",
                 isActive
-                  ? "border-home-ink bg-home-ink text-home-bg shadow-[0_16px_34px_rgba(20,17,14,0.18)]"
-                  : "border-home-hairline-strong bg-white/70 text-home-ink hover:-translate-y-0.5 hover:border-home-ink/35 hover:bg-white hover:shadow-[0_16px_34px_rgba(55,38,20,0.11)]",
+                  ? "border-home-ink bg-home-ink text-white shadow-[0_16px_34px_rgba(20,17,14,0.16)]"
+                  : "border-home-hairline bg-white/72 text-home-ink hover:-translate-y-0.5 hover:border-home-coral/30 hover:bg-white hover:shadow-[0_16px_34px_rgba(48,35,24,0.10)]",
               ].join(" ")}
             >
               <span
                 className={[
                   "font-mono text-[11px] font-black tracking-[0.1em]",
-                  isActive ? "text-home-bg/62" : "text-home-injoo/80",
+                  isActive ? "text-white/62" : "text-home-coral/80",
                 ].join(" ")}
               >
                 {String(i + 1).padStart(2, "0")}

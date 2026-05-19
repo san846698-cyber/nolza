@@ -68,7 +68,7 @@ export default function BreakingPointTestClient() {
   }, [phase, result.id]);
 
   const start = useCallback(() => {
-    trackTestStart("breaking-point", "The Moment You Cross the Line");
+    trackTestStart("breaking-point", "The Moment I Turn Cold");
     setPhase("quiz");
     setQuestionIndex(0);
     setAnswers([]);
@@ -111,8 +111,8 @@ export default function BreakingPointTestClient() {
       locale,
     } satisfies BreakingSharePayload);
     const shareText = locale === "ko"
-      ? `나는 “당신이 선을 넘게 되는 순간”에서 「${result.title.ko}」 나왔다.\n이거 좀 맞는 듯.`
-      : `I got "${result.title.en}" on The Moment You Cross the Line.\nThis feels pretty accurate.`;
+      ? `나는 “나를 차갑게 만드는 순간” 테스트에서 「${result.title.ko}」 나왔다.\n이거 좀 맞는 듯.`
+      : `I got "${result.title.en}" on The Moment I Turn Cold.\nThis feels pretty accurate.`;
     const title = BREAKING_COPY.title[locale];
 
     try {

@@ -382,7 +382,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
     id: "suppression",
     name: { ko: "억압", en: "Suppression" },
     oneLiner: {
-      ko: "아무렇지 않은 척 지나가며 버티는 사람",
+      ko: "감정을 잠시 접어두고 눈앞의 일을 먼저 해내는 사람",
       en: "You push feelings aside so you can keep going.",
     },
     description: {
@@ -394,7 +394,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "You can keep functioning when something still needs to be done.",
     },
     weakPoint: {
-      ko: "괜찮은 척하다가 나중에 한꺼번에 지칠 수 있습니다.",
+      ko: "접어둔 감정이 나중에 한꺼번에 피로로 돌아올 수 있습니다.",
       en: "You may seem fine until exhaustion catches up later.",
     },
     whenHelps: {
@@ -402,7 +402,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "It helps when a deadline or responsibility needs your focus right now.",
     },
     carefulWhen: {
-      ko: "계속 괜찮다고 말하지만 사소한 일에도 금방 지치는 상태입니다.",
+      ko: "겉으로는 기능하고 있지만 사소한 일에도 금방 에너지가 닳는 상태입니다.",
       en: "Be careful when you keep saying you are fine, but tiny things drain you quickly.",
     },
     innerProcess: {
@@ -410,7 +410,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "Even when feelings rise, your mind puts the next responsibility first. You may choose to function now because falling apart does not feel possible.",
     },
     outwardLook: {
-      ko: "겉으로는 침착하고 책임감 있어 보일 수 있습니다. 하지만 속으로는 괜찮지 않은 마음을 아주 조용히 뒤로 밀어두고 있을 때가 있어요.",
+      ko: "겉으로는 침착하고 책임감 있어 보일 수 있습니다. 하지만 속으로는 처리하지 못한 감정을 잠시 뒤쪽에 보관해두고 있을 때가 있어요.",
       en: "You may look calm and responsible. Inside, though, you may be quietly pushing aside feelings that are not actually okay.",
     },
     innerQuote: {
@@ -422,15 +422,15 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "Suppression helps you get through what must be done. It keeps life from stopping completely when feelings become intense.",
     },
     repeatedPattern: {
-      ko: "하지만 계속 밀어두면 작은 일에도 쉽게 지칠 수 있습니다. 감정은 사라진 것이 아니라 조용히 기다리고 있었을 수 있어요.",
+      ko: "하지만 계속 밀어두면 작은 일에도 쉽게 지칠 수 있습니다. 감정은 사라진 것이 아니라 처리될 차례를 기다리고 있었을 수 있어요.",
       en: "But if everything is pushed away, small things can become strangely draining. The feeling may not be gone; it may simply be waiting.",
     },
     gentlePractice: {
-      ko: "하루가 끝난 뒤 “오늘 괜찮은 척하느라 힘들었던 순간이 있었나?”를 짧게 떠올려보세요.",
+      ko: "하루가 끝난 뒤 “오늘 잠시 접어둔 감정이 있었나?”를 짧게 떠올려보세요.",
       en: "At the end of the day, briefly ask: \"Was there a moment when pretending to be okay took effort?\"",
     },
     shareLine: {
-      ko: "나는 억압 타입이래. 괜찮은 척이 너무 자동임.",
+      ko: "나는 억압 타입이래. 감정을 잠깐 접어두고 버티는 편.",
       en: "I got Suppression. Acting fine is almost automatic.",
     },
     accent: "#f0a7a1",
@@ -443,7 +443,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "You may notice your own worries through what you think others are feeling.",
     },
     description: {
-      ko: "당신은 불안하거나 예민해졌을 때 상대의 말투, 표정, 반응에서 신호를 찾으려는 편입니다. 때로는 내 안의 걱정이 상대의 마음처럼 느껴질 수 있어요. 이건 관계를 중요하게 생각한다는 뜻이기도 하지만, 확인되지 않은 추측은 나를 더 지치게 만들 수 있습니다.",
+      ko: "당신은 불안하거나 예민해졌을 때 바깥의 신호를 촘촘히 읽으려는 편입니다. 때로는 내 안의 걱정이 상대의 마음처럼 느껴질 수 있어요. 이 방식은 상처를 빨리 피하려는 마음의 경보 장치처럼 작동하지만, 확인되지 않은 추측은 나를 더 지치게 만들 수 있습니다.",
       en: "When you feel anxious or sensitive, you may search for signals in another person’s tone, face, or reaction. Sometimes your worry can feel like their opinion. This can mean you care deeply about relationships, but unchecked guesses can be tiring.",
     },
     strength: {
@@ -463,7 +463,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "Be careful when an unconfirmed thought starts to feel like a fact.",
     },
     innerProcess: {
-      ko: "불안하거나 예민해질 때, 당신의 마음은 바깥의 반응을 더 촘촘히 읽으려 합니다. 내 안의 걱정이 상대의 표정이나 말투에서 먼저 보이는 것처럼 느껴질 수 있습니다.",
+      ko: "불안하거나 예민해질 때, 당신의 마음은 부족한 정보를 바깥의 신호로 채우려 합니다. 내 안의 걱정이 상대의 분위기에서 먼저 보이는 것처럼 느껴질 수 있습니다.",
       en: "When you feel anxious or sensitive, your mind reads outside reactions more closely. Your own worry may seem to appear first in another person's tone or expression.",
     },
     outwardLook: {
@@ -500,7 +500,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "You sometimes protect yourself by acting opposite to what you feel.",
     },
     description: {
-      ko: "당신은 마음이 들키는 것이 불편할 때 오히려 반대로 행동할 수 있습니다. 좋아하면서 무심한 척하거나, 서운하면서 괜찮은 척하거나, 불안하면서 더 강한 척하는 식입니다. 이 방식은 마음을 숨기는 데 도움이 되지만, 가까운 사람에게는 오해를 만들 수 있어요.",
+      ko: "당신은 마음이 들키는 것이 불편할 때 오히려 반대로 행동할 수 있습니다. 좋아하면서 무심하게 굴거나, 서운할수록 더 태연하게 보이려 하고, 불안할수록 더 단단한 모습을 꺼내는 식입니다. 이 방식은 마음을 숨기는 데 도움이 되지만, 가까운 사람에게는 오해를 만들 수 있어요.",
       en: "When showing your real feelings feels uncomfortable, you may act in the opposite direction. You might seem indifferent when you care, fine when you are hurt, or extra strong when you are nervous. It can hide your heart, but it may confuse people close to you.",
     },
     strength: {
@@ -520,7 +520,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
       en: "Be careful when others start believing the opposite act is your real meaning.",
     },
     innerProcess: {
-      ko: "마음을 들키는 것이 불편할 때, 당신은 실제 감정과 반대되는 행동을 먼저 꺼낼 수 있습니다. 좋아할수록 무심해지고, 상처받을수록 더 괜찮은 척할 수 있어요.",
+      ko: "마음을 들키는 것이 불편할 때, 당신은 실제 감정과 반대되는 행동을 먼저 꺼낼 수 있습니다. 좋아할수록 무심해지고, 상처받을수록 더 태연한 얼굴을 만들 수 있어요.",
       en: "When revealing your feelings feels uncomfortable, you may first act in the opposite direction. The more you care, the more indifferent you may seem; the more hurt you are, the more fine you may act.",
     },
     outwardLook: {
@@ -557,8 +557,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
     "targetDimension": "humor/rationalization/avoidance/intellectualization",
     "rationale": "Mild social hurt reveals the first protective move without naming defense styles.",
     "scene": {
-      "ko": "친구가 별생각 없이 한 말이 마음에 남았습니다. 그날 밤 단체방은 평소처럼 웃고 떠듭니다.",
-      "en": "A friend says something casually, and it stays with you. That night, the group chat is still joking as usual."
+      "ko": "친구가 별생각 없이 한 말에 조금 기분이 상했습니다. 바로 티 내기엔 애매한 분위기입니다.",
+      "en": "A friend says something casually, and you feel a little hurt. It feels awkward to show it right away."
     },
     "question": {
       "ko": "당신에게 가장 가까운 반응은?",
@@ -598,7 +598,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "왜 그 말이 걸렸는지 혼자 차분히 되짚어본다.",
+          "ko": "왜 그 말에 기분이 상했는지 혼자 차분히 되짚어본다.",
           "en": "I calmly replay why that comment bothered me."
         },
         "scores": {
@@ -612,7 +612,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
     "targetDimension": "humor/rationalization/avoidance/intellectualization",
     "rationale": "Feedback after effort creates disappointment while keeping all answer options socially plausible.",
     "scene": {
-      "ko": "열심히 준비한 발표가 끝난 뒤, 상대가 “나쁘진 않은데 기대보다는 평범했어”라고 말했습니다. 분위기는 어색하지 않지만 그 말이 남습니다.",
+      "ko": "열심히 준비한 발표가 끝난 뒤, 상대가 “나쁘진 않은데 기대보다는 평범했어”라고 말했습니다. 분위기는 어색하지 않지만 조금 실망했습니다.",
       "en": "After a presentation you worked hard on, someone says, “It was not bad, just more ordinary than I expected.” The mood is not awkward, but the words stay."
     },
     "question": {
@@ -723,7 +723,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
     "targetDimension": "sublimation/suppression/avoidance/intellectualization",
     "rationale": "Deadline pressure shows whether discomfort becomes action, containment, distance, or analysis.",
     "scene": {
-      "ko": "마감이 가까운데 마음은 이미 지쳐 있습니다. 주변에서는 “이번 건 네가 잘하잖아”라고 기대합니다.",
+      "ko": "마감이 가까운데 이미 지쳐 있습니다. 주변에서는 “이번 건 네가 잘하잖아”라고 기대합니다.",
       "en": "A deadline is close, and you already feel drained. People around you say, “You are good at this one.”"
     },
     "question": {
@@ -776,11 +776,11 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
   },
   {
     "id": "dm_05",
-    "targetDimension": "reactionFormation/projection/humor/suppression",
-    "rationale": "Boundary crossing evokes hidden anger, politeness, joking, or projected blame.",
+    "targetDimension": "humor/rationalization/avoidance/intellectualization",
+    "rationale": "A small embarrassed moment tests whether the user lightens, explains, avoids, or analyzes the feeling.",
     "scene": {
-      "ko": "누군가 부탁을 했는데 사실상 선을 넘는 요청입니다. 거절하면 분위기가 불편해질 것 같습니다.",
-      "en": "Someone asks for a favor that quietly crosses your boundary. Saying no may make the mood uncomfortable."
+      "ko": "실수한 장면을 누군가 가볍게 농담으로 언급했습니다. 분위기는 웃고 있지만 당신은 조금 민망해졌습니다.",
+      "en": "Someone lightly jokes about a mistake you made. The mood is playful, but you feel a little embarrassed."
     },
     "question": {
       "ko": "가장 가까운 반응은?",
@@ -790,8 +790,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "농담 섞어 “그건 좀 빡센데?”라고 말해본다.",
-          "en": "I say playfully, “That one is kind of a lot.”"
+          "ko": "나도 웃으며 더 웃긴 말로 넘긴다.",
+          "en": "I laugh too and turn it into an even funnier line."
         },
         "scores": {
           "humor": 2
@@ -800,31 +800,31 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "괜찮은 척 더 친절하게 굴다가 나중에 피곤해진다.",
-          "en": "I act extra kind as if it is fine, then feel tired later."
+          "ko": "악의는 없었을 거라고 생각하며 납득하려 한다.",
+          "en": "I tell myself they probably meant no harm and try to accept it."
         },
         "scores": {
-          "reactionFormation": 2
+          "rationalization": 2
         }
       },
       {
         "id": "c",
         "text": {
-          "ko": "상대가 내 상황을 전혀 생각하지 않는다고 느낀다.",
-          "en": "It feels like they are not considering my situation at all."
+          "ko": "그 장면은 잠시 생각하지 않으려 한다.",
+          "en": "I try not to think about that scene for a while."
         },
         "scores": {
-          "projection": 2
+          "avoidance": 2
         }
       },
       {
         "id": "d",
         "text": {
-          "ko": "불편하지만 표정에는 최대한 드러내지 않는다.",
-          "en": "I feel uncomfortable but try not to show it."
+          "ko": "왜 그렇게 민망했는지 혼자 차분히 되짚어본다.",
+          "en": "I calmly replay why it felt so embarrassing."
         },
         "scores": {
-          "suppression": 2
+          "intellectualization": 2
         }
       }
     ]
@@ -942,10 +942,10 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
   {
     "id": "dm_08",
     "targetDimension": "avoidance/suppression/rationalization/sublimation",
-    "rationale": "Disappointment from changed plans tests distancing, containment, explanation, and productive redirection.",
+    "rationale": "Immediate disappointment after a small public dismissal tests distancing, containment, explanation, and productive redirection.",
     "scene": {
-      "ko": "기대하던 약속이 가볍게 미뤄졌습니다. 상대는 미안해하지만 당신은 생각보다 서운합니다.",
-      "en": "A plan you looked forward to is casually postponed. They apologize, but you feel more disappointed than expected."
+      "ko": "모임에서 당신의 의견이 별다른 반응 없이 바로 넘어갔습니다. 큰일은 아니지만 그 순간 조금 서운합니다.",
+      "en": "In a group setting, your opinion is passed over with little reaction. It is not a huge deal, but you feel a little hurt in the moment."
     },
     "question": {
       "ko": "당신에게 가까운 반응은?",
@@ -955,8 +955,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "괜찮다고 말하고 혼자 조용히 식힌다.",
-          "en": "I say it is okay and cool down alone."
+          "ko": "그 자리에서는 표정을 정리하고 넘어간다.",
+          "en": "I steady my expression and let the moment pass."
         },
         "scores": {
           "suppression": 1,
@@ -966,8 +966,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "상대도 사정이 있었을 거라고 납득하려 한다.",
-          "en": "I try to understand that they probably had their reasons."
+          "ko": "회의 흐름상 깊게 다룰 시간이 없었을 거라고 생각한다.",
+          "en": "I tell myself the flow probably did not allow time to discuss it."
         },
         "scores": {
           "rationalization": 2
@@ -976,8 +976,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "당분간 먼저 약속 얘기를 꺼내고 싶지 않다.",
-          "en": "I do not want to bring up plans first for a while."
+          "ko": "잠깐 말수를 줄이고 다음 주제로 넘어간다.",
+          "en": "I speak less for a moment and move to the next topic."
         },
         "scores": {
           "avoidance": 2
@@ -986,8 +986,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "비어버린 시간을 내가 미뤄둔 일에 써버린다.",
-          "en": "I use the freed-up time for something I had been postponing."
+          "ko": "나중에 더 짧고 분명하게 말할 방법을 메모해둔다.",
+          "en": "I note a clearer, shorter way to say it next time."
         },
         "scores": {
           "sublimation": 2
@@ -1031,7 +1031,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "내 의견을 별로라고 여긴 것 같아 마음이 굳는다.",
+          "ko": "내 의견을 별로라고 여긴 것 같아 위축된다.",
           "en": "I tense up because it feels like they thought my idea was weak."
         },
         "scores": {
@@ -1220,7 +1220,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
     "targetDimension": "suppression/intellectualization/rationalization/projection",
     "rationale": "A lingering family comment evokes restrained emotion, analysis, explanation, or projected intent.",
     "scene": {
-      "ko": "가족의 한마디가 예상보다 오래 마음에 남습니다. 대놓고 상처 주려던 말은 아닌 것 같습니다.",
+      "ko": "가족의 한마디에 생각보다 서운했습니다. 대놓고 상처 주려던 말은 아닌 것 같습니다.",
       "en": "A family member’s comment stays longer than expected. It probably was not meant to hurt you directly."
     },
     "question": {
@@ -1231,7 +1231,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "괜찮은 척하고 그 자리에서는 넘긴다.",
+          "ko": "그 자리에서는 감정을 접어두고 넘긴다.",
           "en": "I act fine and let it pass in the moment."
         },
         "scores": {
@@ -1241,7 +1241,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "그 말이 왜 건드렸는지 혼자 정리한다.",
+          "ko": "그 말에 왜 서운했는지 혼자 정리한다.",
           "en": "I privately sort out why it touched me."
         },
         "scores": {
@@ -1261,7 +1261,7 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "나를 낮게 보는 마음이 있었던 것 같다고 느낀다.",
+          "ko": "나를 낮게 본 것 같다고 느낀다.",
           "en": "It feels like there was some part of them looking down on me."
         },
         "scores": {
@@ -1384,10 +1384,10 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
   {
     "id": "dm_16",
     "targetDimension": "projection/reactionFormation/avoidance/rationalization",
-    "rationale": "A changed social rhythm invites hidden threat reading, opposite behavior, withdrawal, or explanation.",
+    "rationale": "An immediate interruption in conversation invites hidden threat reading, opposite behavior, withdrawal, or explanation.",
     "scene": {
-      "ko": "친한 사람과의 대화 리듬이 예전 같지 않습니다. 특별한 사건은 없었지만 거리감이 느껴집니다.",
-      "en": "The rhythm with someone close does not feel like before. Nothing specific happened, but you sense distance."
+      "ko": "대화 중 상대가 당신의 말을 끊고 다른 주제로 넘어갔습니다. 일부러 그런 것 같지는 않지만 불편함이 남습니다.",
+      "en": "During a conversation, someone cuts off your words and moves to another topic. It does not seem intentional, but discomfort remains."
     },
     "question": {
       "ko": "가장 가까운 반응은?",
@@ -1397,8 +1397,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "상대가 마음이 식은 것 같다고 느낀다.",
-          "en": "It feels like their feelings have cooled."
+          "ko": "상대가 내 말을 중요하게 듣지 않는 것 같다고 느낀다.",
+          "en": "It feels like they are not really valuing what I said."
         },
         "scores": {
           "projection": 2
@@ -1407,8 +1407,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "아무렇지 않은 척 더 밝고 다정하게 군다.",
-          "en": "I act brighter and warmer as if nothing is wrong."
+          "ko": "불편한 마음과 반대로 더 밝게 반응한다.",
+          "en": "I respond more brightly than I feel."
         },
         "scores": {
           "reactionFormation": 2
@@ -1417,8 +1417,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "잠깐 거리를 두고 상황을 더 지켜본다.",
-          "en": "I take a little distance and watch the situation longer."
+          "ko": "잠깐 대화에서 빠져 감정을 가라앉힌다.",
+          "en": "I step back from the conversation for a moment to settle myself."
         },
         "scores": {
           "avoidance": 2
@@ -1427,8 +1427,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "요즘 서로 바빴을 수 있다고 생각한다.",
-          "en": "I think we may both have been busy lately."
+          "ko": "상대가 급하게 떠올린 말이 있었을 거라고 생각한다.",
+          "en": "I assume they probably had something urgent on their mind."
         },
         "scores": {
           "rationalization": 2

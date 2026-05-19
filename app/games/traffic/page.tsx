@@ -400,7 +400,7 @@ export default function TrafficGame() {
         <div className={s.boardWrap} ref={boardRef}>
           <div className={s.exitLane} aria-hidden>
             <span className={s.exitLabel}>{t("출구", "Exit")}</span>
-            <b className={s.exitLaneArrow}>{"\u2192"}</b>
+            <b className={s.exitLaneArrow} />
           </div>
           <div
             className={s.grid}

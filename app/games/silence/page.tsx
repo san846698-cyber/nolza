@@ -41,11 +41,6 @@ export default function SilenceGame() {
     const tick = () => {
       const elapsed = (performance.now() - startTimeRef.current) / 1000;
       setTimer(elapsed);
-      // Best updates silently as current attempt exceeds it
-      if (elapsed > bestRef.current) {
-        bestRef.current = elapsed;
-        setBest(elapsed);
-      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -65,7 +60,11 @@ export default function SilenceGame() {
     };
 
     const triggerReset = () => {
-      // Persist the just-finished attempt (best in ref is already current)
+      const elapsed = (performance.now() - startTimeRef.current) / 1000;
+      if (elapsed > bestRef.current) {
+        bestRef.current = elapsed;
+        setBest(elapsed);
+      }
       try {
         localStorage.setItem(STORAGE_KEY, String(bestRef.current));
       } catch {}

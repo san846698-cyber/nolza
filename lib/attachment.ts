@@ -42,202 +42,202 @@ export const QUESTIONS: Question[] = [
   {
     id: 1,
     dim: "anxiety",
-    ko: "상대방이 나를 떠날까봐 걱정될 때가 있다",
-    en: "I sometimes worry that my partner will leave me",
-    subKo: "두려움도 사랑의 일부일 때가 있어요",
-    subEn: "Fear can be part of love sometimes",
+    ko: "가까운 사람이 평소보다 조용해진 날, 관계의 분위기가 달라진 것처럼 느껴진다",
+    en: "When someone close is quieter than usual, I feel the relationship atmosphere has changed",
+    subKo: "상대의 반응이 내 안정감에 얼마나 영향을 주나요",
+    subEn: "How much does their response affect your sense of safety?",
   },
   {
     id: 2,
     dim: "avoidance",
-    ko: "너무 가까워지면 불편하게 느껴진다",
-    en: "Getting too close feels uncomfortable",
-    subKo: "거리감은 자기 보호의 한 형태예요",
-    subEn: "Distance is a form of self-protection",
+    ko: "친한 사람이 갑자기 더 깊은 이야기를 나누려 하면, 고맙지만 한 걸음 물러서고 싶어진다",
+    en: "When someone close suddenly wants a deeper conversation, I appreciate it but want to step back",
+    subKo: "가까움이 편안함인지 부담인지 살펴보세요",
+    subEn: "Notice whether closeness feels comforting or heavy",
   },
   {
     id: 3,
     dim: "anxiety",
-    ko: "상대방이 답장이 늦으면 불안해진다",
-    en: "I get anxious when my partner is slow to reply",
-    subKo: "기다림 속에서 마음이 어떻게 움직이나요",
-    subEn: "How does your heart move while waiting",
+    ko: "함께 있던 분위기가 좋았는데 헤어진 뒤 상대방의 온도가 식은 것 같아 신경 쓰인다",
+    en: "After a warm time together, I worry if they seem less warm afterward",
+    subKo: "관계의 온도 변화에 마음이 얼마나 흔들리나요",
+    subEn: "How much do shifts in warmth affect you?",
   },
   {
     id: 4,
     dim: "avoidance",
-    ko: "감정을 표현하는 게 어렵게 느껴진다",
-    en: "Expressing my emotions feels difficult",
-    subKo: "표현하지 못한 감정도 진짜예요",
-    subEn: "Unspoken feelings are still real",
+    ko: "내가 힘든 일을 말하려는 순간, 괜히 분위기가 무거워질까 봐 말을 줄인다",
+    en: "When I am about to share something hard, I say less because it might make the mood heavy",
+    subKo: "마음을 꺼내는 속도가 관계마다 다를 수 있어요",
+    subEn: "Everyone opens up at a different pace",
   },
   {
     id: 5,
     dim: "anxiety",
-    ko: "상대방이 나를 정말 좋아하는지 확신이 안 설 때가 많다",
-    en: "I'm often unsure whether my partner really likes me",
-    subKo: "확신은 어디에서 오는 걸까요",
-    subEn: "Where does certainty come from",
+    ko: "상대방이 다정하게 대해도, 그 마음이 오래 갈지 확인하고 싶어진다",
+    en: "Even when they are kind, I want reassurance that the feeling will last",
+    subKo: "안정감은 순간보다 지속성에서 오기도 해요",
+    subEn: "Security often comes from consistency, not one moment",
   },
   {
     id: 6,
     dim: "avoidance",
-    ko: "혼자 있는 게 편하다",
-    en: "I feel comfortable being alone",
-    subKo: "지금 이 순간, 솔직하게 답해주세요",
-    subEn: "Be honest with yourself in this moment",
+    ko: "가까운 사람과 좋은 시간을 보낸 뒤에도, 혼자 회복할 시간이 꼭 필요하다",
+    en: "Even after a good time with someone close, I need time alone to recover",
+    subKo: "혼자 있는 시간이 관계를 피하는 것과 같지는 않아요",
+    subEn: "Alone time is not always avoidance",
   },
   {
     id: 7,
     dim: "dependency",
-    ko: "상대방에게 내 모든 것을 보여주고 싶다",
-    en: "I want to show my partner everything about me",
-    subKo: "나를 보여준다는 것의 무게",
-    subEn: "The weight of being fully seen",
+    ko: "중요한 일이 생기면 혼자 정리하기보다 상대방과 먼저 나누고 싶다",
+    en: "When something important happens, I want to share it with them before sorting it out alone",
+    subKo: "기댄다는 것은 연결을 확인하는 방식일 수 있어요",
+    subEn: "Leaning can be a way of feeling connected",
   },
   {
     id: 8,
     dim: "avoidance",
-    ko: "상대방이 나를 실망시킬까봐 처음부터 기대를 안 한다",
-    en: "I avoid getting my hopes up so I won't be disappointed",
-    subKo: "기대하지 않는 것도 사랑하는 방식일까",
-    subEn: "Is avoiding hope a way of loving",
+    ko: "관계가 좋아질수록 기대가 커지는 게 부담스러워 일부러 마음을 조금 낮춘다",
+    en: "As a relationship gets better, I lower my expectations because bigger hopes feel risky",
+    subKo: "기대를 낮추는 마음도 나를 지키려는 움직임이에요",
+    subEn: "Lowering expectations can be a protective move",
   },
   {
     id: 9,
     dim: "anxiety",
-    ko: "사랑받고 있다는 확신이 자주 필요하다",
-    en: "I often need reassurance that I'm loved",
-    subKo: "확인받고 싶은 마음은 자연스러워요",
-    subEn: "Needing reassurance is natural",
+    ko: "서운한 일이 생기면, 관계가 괜찮다는 말을 직접 듣고 나서야 마음이 놓인다",
+    en: "When I feel hurt, I relax only after hearing directly that the relationship is okay",
+    subKo: "확인은 때로 마음을 다시 연결하는 신호가 돼요",
+    subEn: "Reassurance can feel like a signal of reconnection",
   },
   {
     id: 10,
     dim: "anxiety",
-    ko: "상대방이 나를 원하는 것보다 내가 상대방을 더 원한다고 느낀다",
-    en: "I feel like I want them more than they want me",
-    subKo: "사랑의 균형은 늘 흔들려요",
-    subEn: "Love's balance always shifts",
+    ko: "내가 먼저 연락하는 일이 계속되면, 나만 관계를 붙잡고 있는 것처럼 느껴질 때가 있다",
+    en: "When I keep reaching out first, I sometimes feel like I am the only one holding the relationship",
+    subKo: "관계의 균형감이 안정감에 영향을 줄 수 있어요",
+    subEn: "A sense of balance can affect security",
   },
   {
     id: 11,
     dim: "dependency",
-    ko: "관계에서 나를 잃는 것 같은 느낌이 들 때가 있다",
-    en: "Sometimes I feel like I lose myself in relationships",
-    subKo: "사랑 속에서 나는 어디에 있나요",
-    subEn: "Where are you within love",
+    ko: "가까운 사람이 원하면 내 계획을 바꾸는 일이 자연스럽게 느껴진다",
+    en: "When someone close wants something, changing my own plans can feel natural",
+    subKo: "맞춰주는 마음과 내 리듬 사이를 살펴보세요",
+    subEn: "Notice the line between adjusting and losing your rhythm",
   },
   {
     id: 12,
     dim: "anxiety",
-    ko: "상대방의 기분에 내 기분이 크게 영향을 받는다",
-    en: "My partner's mood strongly affects my mood",
-    subKo: "감정은 함께 흐르는 강물이에요",
-    subEn: "Emotions flow like a shared river",
+    ko: "상대방의 기분이 가라앉아 보이면, 내 하루의 분위기도 같이 무거워진다",
+    en: "When they seem down, my own day also starts to feel heavy",
+    subKo: "가까운 관계에서는 감정의 거리가 짧아질 수 있어요",
+    subEn: "In close relationships, emotional distance can feel shorter",
   },
   {
     id: 13,
     dim: "trust",
-    ko: "진정으로 나를 이해해줄 사람이 있을 거라 믿는다",
-    en: "I believe someone who truly understands me exists",
-    subKo: "믿음은 작은 문에서 시작돼요",
-    subEn: "Trust begins with a small door",
+    ko: "갈등이 생겨도 서로 진심을 확인하면 다시 가까워질 수 있다고 느낀다",
+    en: "Even after conflict, I feel we can become close again if we understand each other's sincerity",
+    subKo: "갈등 이후 다시 연결되는 방식을 떠올려보세요",
+    subEn: "Think about how reconnection works after conflict",
   },
   {
     id: 14,
     dim: "avoidance",
-    ko: "상대방이 가까이 오려 할 때 물러서고 싶어진다",
-    en: "When someone tries to get close, I want to step back",
-    subKo: "물러서는 것도 본능이에요",
-    subEn: "Pulling back is also instinct",
+    ko: "상대방이 나를 더 많이 알고 싶어 할수록, 어느 정도는 감춰두고 싶어진다",
+    en: "The more they want to know me, the more I want to keep some parts private",
+    subKo: "가까움에도 나만의 속도가 필요할 수 있어요",
+    subEn: "Closeness may still need your own pace",
   },
   {
     id: 15,
     dim: "trust",
-    ko: "관계가 잘 될 거라는 믿음이 있다",
-    en: "I believe relationships can work out",
-    subKo: "희망은 답이 아닌 자세예요",
-    subEn: "Hope is a stance, not an answer",
+    ko: "상대방이 잠시 서툴게 행동해도, 한 번의 일로 관계 전체를 판단하지는 않는다",
+    en: "Even if they act clumsily once, I do not judge the whole relationship by that one moment",
+    subKo: "안정감은 한 장면보다 전체 흐름을 보게 해요",
+    subEn: "Security helps you see the whole flow, not one scene",
   },
   {
     id: 16,
     dim: "trust",
-    ko: "내 필요와 감정을 상대방에게 솔직하게 말할 수 있다",
-    en: "I can honestly tell my partner what I need and feel",
-    subKo: "솔직함에는 용기가 필요해요",
-    subEn: "Honesty takes courage",
+    ko: "내가 원하는 거리나 도움이 있을 때, 상대방에게 비교적 분명하게 말할 수 있다",
+    en: "When I need space or support, I can usually say it clearly",
+    subKo: "관계 안에서 필요한 것을 말하는 힘을 봅니다",
+    subEn: "This looks at how you name what you need",
   },
   {
     id: 17,
     dim: "anxiety",
-    ko: "상대방이 다른 사람과 친하게 지내면 불안해진다",
-    en: "I feel anxious when my partner is close with others",
-    subKo: "질투는 사랑의 그림자예요",
-    subEn: "Jealousy is love's shadow",
+    ko: "상대방이 다른 관계에 마음을 많이 쓰는 것 같으면, 내 자리가 줄어든 것처럼 느껴진다",
+    en: "When they seem deeply invested elsewhere, I feel my place with them has become smaller",
+    subKo: "내 자리의 감각이 안정감과 연결될 수 있어요",
+    subEn: "A sense of your place can connect to security",
   },
   {
     id: 18,
     dim: "trust",
-    ko: "도움이 필요할 때 상대방에게 편하게 말할 수 있다",
-    en: "I can comfortably ask my partner for help",
-    subKo: "기대는 것도 사랑의 한 모습이에요",
-    subEn: "Leaning on someone is also love",
+    ko: "도움이 필요할 때 부탁해도 관계가 부담스러워지지 않을 거라고 느낀다",
+    en: "When I need help, I feel asking will not make the relationship too heavy",
+    subKo: "기댈 수 있다는 믿음은 관계의 중요한 안정감이에요",
+    subEn: "Being able to lean is a key kind of security",
   },
   {
     id: 19,
     dim: "avoidance",
-    ko: "상대방이 너무 의존하면 숨이 막힌다",
-    en: "When my partner is too dependent, I feel suffocated",
-    subKo: "내 공간을 지키고 싶은 마음",
-    subEn: "Wanting your own space",
+    ko: "상대방이 감정적으로 자주 기대오면, 잘 받아주고 싶어도 숨이 막히는 느낌이 든다",
+    en: "When they often lean on me emotionally, I want to be there but start feeling suffocated",
+    subKo: "돌봐주고 싶은 마음과 내 공간 사이의 긴장입니다",
+    subEn: "This is the tension between care and space",
   },
   {
     id: 20,
     dim: "avoidance",
-    ko: "혼자서도 충분히 행복할 수 있다",
-    en: "I can be perfectly happy on my own",
-    subKo: "혼자의 시간은 나를 알아가는 시간",
-    subEn: "Alone time is time to know yourself",
+    ko: "관계가 안정적이어도 내 일정과 공간은 따로 지켜져야 편하다",
+    en: "Even when a relationship is stable, I feel better when my own schedule and space are protected",
+    subKo: "독립감이 있어야 가까움도 편해질 수 있어요",
+    subEn: "Independence can make closeness feel easier",
   },
   {
     id: 21,
     dim: "anxiety",
-    ko: "관계가 잘못되면 항상 내 탓인 것 같다",
-    en: "When things go wrong, I feel it's always my fault",
-    subKo: "모든 게 내 탓은 아니에요",
-    subEn: "Not everything is your fault",
+    ko: "갈등이 생기면, 상대방이 멀어질까 봐 내가 먼저 맞추려는 마음이 커진다",
+    en: "When conflict happens, I feel a strong urge to adjust first so they do not pull away",
+    subKo: "갈등 후 연결을 회복하려는 방식이 드러나요",
+    subEn: "This shows how you try to reconnect after conflict",
   },
   {
     id: 22,
     dim: "anxiety",
-    ko: "상대방의 작은 행동 하나에도 의미를 찾으려 한다",
-    en: "I read meaning into my partner's smallest gestures",
-    subKo: "작은 것들에서 마음을 읽으려 하나요",
-    subEn: "Reading meaning in small things",
+    ko: "상대방의 작은 변화가 보이면, 관계가 괜찮은지 먼저 확인하고 싶어진다",
+    en: "When I notice a small change in them, I want to check whether the relationship is still okay",
+    subKo: "작은 변화가 안정감 확인으로 이어지는지 봅니다",
+    subEn: "Notice whether small changes lead to checking for security",
   },
   {
     id: 23,
     dim: "trust",
-    ko: "상대방이 내 곁에 있어줄 거라 믿는다",
-    en: "I trust that my partner will be there for me",
-    subKo: "곁에 있어준다는 것의 의미",
-    subEn: "What it means to stay close",
+    ko: "상대방이 바쁘거나 지쳐 있어도, 기본적으로 내 편이라는 감각은 유지된다",
+    en: "Even when they are busy or tired, I can still feel they are basically on my side",
+    subKo: "상황과 관계 자체를 구분할 수 있는지 살펴보세요",
+    subEn: "This looks at separating the situation from the relationship",
   },
   {
     id: 24,
     dim: "dependency",
-    ko: "감정적으로 힘들 때 상대방에게 기대고 싶다",
-    en: "When I'm struggling, I want to lean on my partner",
-    subKo: "약함을 보여주는 게 두려운가요",
-    subEn: "Is showing weakness scary",
+    ko: "마음이 무거운 날에는 혼자 버티기보다 가까운 사람에게 기대고 싶다",
+    en: "On emotionally heavy days, I want to lean on someone close rather than carry it alone",
+    subKo: "확인받을 때 안정되는지, 혼자 회복되는지 떠올려보세요",
+    subEn: "Do you stabilize through reassurance or by recovering alone?",
   },
   {
     id: 25,
     dim: "trust",
-    ko: "관계에서 있는 그대로의 내 모습을 보여줄 수 있다",
-    en: "I can show my true self in relationships",
-    subKo: "있는 그대로가 가장 사랑스러워요",
-    subEn: "Being yourself is the most loved version",
+    ko: "친밀감이 깊어질수록 나를 숨기기보다 조금씩 더 편하게 보여줄 수 있다",
+    en: "As intimacy deepens, I can gradually show myself more comfortably instead of hiding",
+    subKo: "깊어지는 관계가 부담인지 안정인지 느껴보세요",
+    subEn: "Notice whether deeper closeness feels safe or burdensome",
   },
 ];
 
@@ -400,14 +400,12 @@ export const TYPES: Record<AttachmentTypeId, AttachmentType> = {
     color: "#16a34a",
     bg: "rgba(22,163,74,0.08)",
     ko: {
-      name: "안정형",
-      serious: `안정형 애착을 가진 사람은 관계에서 편안함을 느낍니다. 가까워지는 것이 자연스럽고 혼자 있는 것도 괜찮습니다.
+      name: "안정감을 느끼면 깊이 연결되는 타입",
+      serious: `당신은 관계가 흔들려도 한 장면만으로 전체를 판단하지 않으려는 편입니다. 가까운 사람이 잠시 서툴거나 바빠도, 기본적인 신뢰가 유지되면 마음이 크게 흔들리지 않습니다.
 
-당신은 상대방을 신뢰하고 자신도 신뢰받을 수 있다고 믿어요. 갈등이 생겨도 대화로 풀 수 있다는 믿음이 있습니다.
+가까워지는 것도, 혼자 있는 것도 비교적 자연스럽게 받아들입니다. 갈등이 생겨도 관계가 끝났다고 느끼기보다 다시 연결할 방법을 찾으려 합니다.
 
-어린 시절 일관되고 따뜻한 양육 환경에서 자란 경우가 많아요. 감정을 표현하고 받는 것이 자연스럽게 느껴집니다.
-
-이 유형은 관계에서 가장 건강한 패턴을 보여요. 근데 안정형이라고 해서 항상 완벽한 건 아니에요. 때로 불안하고 때로 거리를 두고 싶을 수 있어요. 그게 정상이에요.`,
+이 결과는 완벽하다는 뜻이 아닙니다. 당신도 때로 불안하고, 때로는 혼자 있고 싶을 수 있어요. 다만 관계의 안정감을 회복하는 속도가 비교적 빠른 편에 가깝습니다.`,
       strengths: [
         "감정 표현이 자연스러워요",
         "갈등을 건강하게 해결해요",
@@ -415,26 +413,22 @@ export const TYPES: Record<AttachmentTypeId, AttachmentType> = {
         "혼자와 함께, 둘 다 괜찮아요",
       ],
       watchOut:
-        "안정형은 불안정한 애착 유형의 파트너를 만나면 지칠 수 있어요. 상대방의 패턴을 이해하고 경계를 지키는 것도 중요해요.",
+        "상대방이 관계의 안정감을 자주 확인해야 하는 사람이라면, 당신의 차분함이 때로는 무심함처럼 보일 수 있어요. 내 리듬만 믿기보다 상대가 안심하는 방식을 함께 살펴보는 것이 좋습니다.",
       fun: `안정형.
-연락 안 해도 믿음.
-싸워도 대화로 풀음.
-이게 되는 사람이야?
-실존하는 유형 맞음.
-근데 주변에 별로 없음.`,
-      shareText: `나의 애착 유형: 안정형 🟢
-'연락 안 해도 믿음. 싸워도 대화로 풀음.'
+관계가 잠깐 삐끗해도 바로 끝장이라고 보진 않음.
+혼자 있을 때도 괜찮고, 같이 있을 때도 괜찮음.
+가까움이 안정감으로 느껴지는 쪽.`,
+      shareText: `나의 애착 유형: 안정감을 느끼면 깊이 연결되는 타입 🟢
+'가까움이 편하고, 갈등 후에도 다시 연결하려는 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Secure",
-      serious: `Securely attached people feel comfortable in relationships. Getting close feels natural, and being alone is fine too.
+      name: "Deeply Connected When Secure",
+      serious: `You tend not to judge an entire relationship by one imperfect moment. If basic trust remains, a quiet day or awkward moment does not immediately shake your sense of connection.
 
-You trust your partner and believe you're worthy of being trusted. When conflict arises, you believe it can be resolved through conversation.
+Closeness and alone time can both feel natural. When conflict happens, you are more likely to look for a way back into connection than assume the relationship is broken.
 
-This often develops from consistent, warm caregiving in childhood. Expressing and receiving emotions feels natural to you.
-
-This is the healthiest attachment pattern. But secure doesn't mean perfect — you still feel anxious sometimes, still want distance sometimes. That's completely normal.`,
+This does not mean you are perfect. You can still feel anxious or need space. It simply suggests you recover a sense of relational safety relatively well.`,
       strengths: [
         "Natural emotional expression",
         "Healthy conflict resolution",
@@ -442,14 +436,13 @@ This is the healthiest attachment pattern. But secure doesn't mean perfect — y
         "Comfortable alone and together",
       ],
       watchOut:
-        "Secure types can get exhausted by insecurely attached partners. Understanding their patterns and maintaining boundaries matters.",
+        "If someone close needs frequent reassurance, your calm may sometimes read as indifference. It can help to notice what helps them feel safe too.",
       fun: `Secure type.
-Trusts without constant reassurance.
-Resolves conflict through talking.
-This person actually exists.
-Just rare.`,
-      shareText: `My attachment style: Secure 🟢
-'Trusts without reassurance. Talks it out.'
+Doesn't treat one awkward moment as the end.
+Fine alone, fine together.
+Closeness feels like safety.`,
+      shareText: `My attachment style: Deeply Connected When Secure 🟢
+'Closeness feels safe, and conflict can reconnect.'
 What's yours? → nolza.fun/games/attachment`,
     },
   },
@@ -459,14 +452,12 @@ What's yours? → nolza.fun/games/attachment`,
     color: "#dc2626",
     bg: "rgba(220,38,38,0.08)",
     ko: {
-      name: "불안형",
-      serious: `불안형 애착을 가진 사람은 관계에서 강렬한 감정을 느껴요. 사랑하는 사람 곁에 있고 싶지만 그 사람이 정말 날 사랑하는지 확신이 서지 않아요.
+      name: "가까워지고 싶지만 확인이 필요한 타입",
+      serious: `당신은 가까운 관계에서 상대의 온도 변화에 민감한 편입니다. 다정한 순간이 있어도 그 마음이 계속 이어질지 확인하고 싶어질 수 있어요.
 
-답장이 늦으면 최악의 상황을 상상하고, 상대방의 작은 행동에도 큰 의미를 찾으려 해요. 이게 과민반응이라는 걸 알면서도 멈추기가 어려워요.
+상대가 잠시 조용해지거나 관계의 리듬이 달라지면, 마음속 안정감이 흔들릴 수 있습니다. 그래서 직접적인 말, 반복되는 다정함, 관계가 괜찮다는 신호가 중요하게 느껴집니다.
 
-이 패턴은 어린 시절 불일관된 양육에서 비롯되는 경우가 많아요. '언제 사랑받을지 모른다'는 경험이 계속 확인을 구하는 행동으로 이어져요.
-
-당신의 감정은 과장된 게 아니에요. 다만 그 강도가 때로 관계를 힘들게 만들 수 있어요.`,
+이건 사랑을 못 믿는다는 뜻이 아니라, 연결이 끊기지 않았다는 감각을 자주 확인해야 마음이 편해지는 쪽에 가깝다는 뜻입니다.`,
       strengths: [
         "감정이 풍부하고 깊이 사랑해요",
         "관계에 온 마음을 다해요",
@@ -474,27 +465,22 @@ What's yours? → nolza.fun/games/attachment`,
         "헌신적이에요",
       ],
       watchOut:
-        "확인을 구하는 행동이 반복되면 상대방이 지칠 수 있어요. 불안할 때 상대방에게 달려가기 전에 잠깐 스스로 달래는 연습이 도움이 돼요.",
+        "확인이 필요할 때마다 바로 묻기보다, 먼저 내가 무엇 때문에 불안해졌는지 한 번만 구체적으로 이름 붙여보세요. 그러면 상대에게도 더 정확하게 말할 수 있습니다.",
       fun: `불안형.
-답장 3분 늦음. 이미 이별 시나리오 완성.
-'괜찮아?' 문자 보내고 싶음.
-안 보냄. 10분 참음.
-보냄.
-'응 바빴어' 옴.
-안도. 5분 후 또 불안.`,
-      shareText: `나의 애착 유형: 불안형 🔴
-'답장 3분 늦음. 이미 이별 시나리오 완성.'
+괜찮다는 말 한마디에 마음이 확 놓임.
+다정함이 좋고, 지속되는 다정함은 더 좋음.
+연결되어 있다는 감각이 중요한 타입.`,
+      shareText: `나의 애착 유형: 가까워지고 싶지만 확인이 필요한 타입 🔴
+'연결되어 있다는 신호가 있어야 마음이 놓이는 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Anxious",
-      serious: `Anxiously attached people feel intense emotions in relationships. You desperately want to be close but can't quite believe your partner truly loves you.
+      name: "Close, But Needs Reassurance",
+      serious: `You are sensitive to changes in warmth and rhythm. Even after kind moments, you may want to know whether that care will continue.
 
-Late replies trigger worst-case thinking. You read meaning into small gestures. You know you're overreacting, but you can't stop.
+When someone close becomes quiet or the relationship rhythm shifts, your sense of safety can shake. Direct words, consistent kindness, and signals that the relationship is okay matter a lot.
 
-This pattern often comes from inconsistent caregiving in childhood — not knowing when love would come led to constant reassurance-seeking.
-
-Your feelings aren't exaggerated. But their intensity can sometimes make relationships exhausting.`,
+This does not mean you cannot trust love. It means you feel steadier when connection is made visible and repeated.`,
       strengths: [
         "Rich emotions, loves deeply",
         "Fully committed to relationships",
@@ -502,17 +488,13 @@ Your feelings aren't exaggerated. But their intensity can sometimes make relatio
         "Deeply devoted",
       ],
       watchOut:
-        "Constant reassurance-seeking can exhaust partners. When anxiety spikes, try soothing yourself before reaching out — it takes practice but helps.",
+        "Before asking for reassurance immediately, try naming what made you feel unsafe. It can make your request clearer and easier to receive.",
       fun: `Anxious type.
-Reply is 3 minutes late.
-Already wrote the breakup speech internally.
-Wants to text 'you okay?'
-Doesn't. Waits 10 minutes.
-Texts.
-Gets 'yeah was busy.'
-Relief. Anxious again 5 minutes later.`,
-      shareText: `My attachment style: Anxious 🔴
-'Reply 3 min late. Already wrote the breakup speech.'
+A simple 'we're okay' can settle everything.
+Kindness is good.
+Consistent kindness is better.`,
+      shareText: `My attachment style: Close, But Needs Reassurance 🔴
+'I feel safe when connection is clear.'
 What's yours? → nolza.fun/games/attachment`,
     },
   },
@@ -522,14 +504,12 @@ What's yours? → nolza.fun/games/attachment`,
     color: "#2563eb",
     bg: "rgba(37,99,235,0.08)",
     ko: {
-      name: "회피형",
-      serious: `회피형 애착을 가진 사람은 독립성을 매우 중요하게 여겨요. 가까워지는 것이 불편하고 상대방이 너무 의존하면 숨이 막혀요.
+      name: "혼자만의 거리가 있어야 편한 타입",
+      serious: `당신은 가까운 관계에서도 자기만의 공간과 속도가 필요합니다. 상대를 싫어해서가 아니라, 너무 빠른 친밀감이 오면 마음이 먼저 긴장할 수 있어요.
 
-감정 표현이 어렵고, 상대방이 감정적으로 다가오면 거리를 두고 싶어져요. 이게 상대방을 거부하는 게 아니라 자신을 보호하는 방식이에요.
+감정을 바로 꺼내기보다 혼자 정리한 뒤 말하는 편일 수 있습니다. 상대가 자주 기대오면 잘 받아주고 싶으면서도 내 리듬이 사라지는 느낌이 들 수 있습니다.
 
-어린 시절 감정을 표현했을 때 무시되거나 부담스럽게 여겨진 경험이 있는 경우가 많아요. 그래서 감정은 혼자 처리하는 것이 더 안전하다는 걸 배웠어요.
-
-당신도 사랑받고 싶어요. 다만 그 방식이 다를 뿐이에요.`,
+이 결과는 차갑다는 뜻이 아닙니다. 가까워지는 속도를 직접 조절해야 관계가 더 편안해지는 쪽에 가깝습니다.`,
       strengths: [
         "독립적이고 자기 의존적이에요",
         "감정에 휩쓸리지 않아요",
@@ -537,27 +517,22 @@ What's yours? → nolza.fun/games/attachment`,
         "냉정하게 상황을 볼 수 있어요",
       ],
       watchOut:
-        "거리를 두는 게 습관이 되면 정말 원하는 관계도 놓칠 수 있어요. 불편해도 조금씩 표현하는 연습이 관계를 바꿉니다.",
+        "혼자 정리할 시간이 필요하다면 그냥 사라지기보다, '잠깐 생각할 시간이 필요해'처럼 짧게 알려주는 것이 관계를 덜 불안하게 만듭니다.",
       fun: `회피형.
-좋아함. 근데 티 안 냄.
-상대방이 다가옴. 한 발 물러남.
-상대방이 포기함. 아쉬움.
-혼자가 편함. 근데 외로움.
-이 모순 속에서 삼.
-잘 지내고 있음.`,
-      shareText: `나의 애착 유형: 회피형 🔵
-'좋아함. 근데 티 안 냄. 다가오면 물러남.'
+좋아해도 내 공간은 필요함.
+깊은 얘기는 천천히 해야 편함.
+속도 조절이 있어야 오래 가까워지는 타입.`,
+      shareText: `나의 애착 유형: 혼자만의 거리가 있어야 편한 타입 🔵
+'내 속도가 지켜질 때 더 오래 가까워지는 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Avoidant",
-      serious: `Avoidantly attached people place high value on independence. Getting too close feels uncomfortable, and neediness from partners feels suffocating.
+      name: "Needs Space To Feel Close",
+      serious: `You need your own pace and space even in close relationships. It is not that you dislike connection; fast intimacy can simply make your system tense.
 
-Expressing emotions is hard. When someone comes in emotionally, you pull back. This isn't rejection — it's self-protection.
+You may prefer to process feelings alone before speaking. When someone leans on you often, you may want to be there but also feel your own rhythm disappearing.
 
-Often comes from childhood experiences where expressing emotions was dismissed or seen as burdensome. You learned: handle feelings alone, it's safer.
-
-You want love too. You just show and receive it differently.`,
+This does not mean you are cold. It means closeness feels safer when you can control the pace.`,
       strengths: [
         "Independent and self-reliant",
         "Not swept away by emotions",
@@ -565,16 +540,13 @@ You want love too. You just show and receive it differently.`,
         "Can assess situations calmly",
       ],
       watchOut:
-        "Habitual distancing can cause you to lose relationships you actually wanted. Practicing small expressions of feeling, even when uncomfortable, changes things.",
+        "If you need time alone, saying 'I need a little time to think' can protect both your space and the other person's sense of safety.",
       fun: `Avoidant type.
-Likes someone. Doesn't show it.
-Person gets closer. Steps back.
-Person gives up. Sad about it.
-Comfortable alone. But lonely.
-Living inside this contradiction.
-Fine though.`,
-      shareText: `My attachment style: Avoidant 🔵
-'Likes you. Doesn't show it. You get close, they step back.'
+Likes closeness, but slowly.
+Needs space to stay present.
+Pace matters more than intensity.`,
+      shareText: `My attachment style: Needs Space To Feel Close 🔵
+'I stay closer when my pace is respected.'
 What's yours? → nolza.fun/games/attachment`,
     },
   },
@@ -584,14 +556,12 @@ What's yours? → nolza.fun/games/attachment`,
     color: "#9333ea",
     bg: "rgba(147,51,234,0.08)",
     ko: {
-      name: "혼란형",
-      serious: `혼란형 애착은 가장 복잡한 유형이에요. 가까워지고 싶은 마음과 가까워지는 게 두려운 마음이 동시에 존재해요.
+      name: "가까움과 독립 사이를 오가는 타입",
+      serious: `당신은 가까워지고 싶은 마음과 내 공간을 지키고 싶은 마음이 함께 움직일 수 있습니다. 어느 날은 더 연결되고 싶고, 어느 날은 같은 가까움이 부담스럽게 느껴질 수 있어요.
 
-사랑받고 싶어요. 근데 상처받는 게 두려워요. 그래서 다가갔다가 밀어내고, 밀어냈다가 다시 다가가요. 본인도 이 패턴이 왜 반복되는지 이해하기 어려울 수 있어요.
+상대의 반응이 따뜻하면 안심되지만, 친밀감이 너무 빠르게 깊어지면 다시 속도를 늦추고 싶어질 수 있습니다. 그래서 관계 안에서 확인과 거리 조절이 번갈아 필요할 때가 있습니다.
 
-이 유형은 어린 시절 가장 믿었던 사람에게 상처를 받은 경험과 관련이 있는 경우가 많아요. 사랑하는 사람이 동시에 두려운 존재였던 경험.
-
-이건 당신의 잘못이 아니에요. 그리고 변할 수 있어요.`,
+이 결과는 모순적이라는 뜻이 아닙니다. 당신에게는 연결의 욕구와 자기 보호의 욕구가 동시에 중요하다는 뜻에 가깝습니다.`,
       strengths: [
         "감정의 깊이가 남달라요",
         "공감 능력이 뛰어나요",
@@ -599,27 +569,23 @@ What's yours? → nolza.fun/games/attachment`,
         "변화하려는 의지가 강해요",
       ],
       watchOut:
-        "이 패턴은 혼자 바꾸기 어려울 수 있어요. 전문가의 도움이 진짜 큰 차이를 만들어요. 용기를 내는 게 약한 게 아니에요.",
+        "마음이 갑자기 가까워졌다가 멀어질 때는, 지금 필요한 것이 확인인지 휴식인지 먼저 구분해보세요. 그 한 문장이 관계의 혼란을 줄여줄 수 있습니다.",
       fun: `혼란형.
-좋아함. 두려움. 다가감.
-무서워짐. 밀어냄.
-후회함. 다시 다가감.
-상대방: 어지럽다.
-나: 나도 어지럽다.
-그래도 사랑하고 싶음.`,
-      shareText: `나의 애착 유형: 혼란형 🟣
-'다가갔다가 밀어냄. 밀어냈다가 다시 다가감.'
+가까워지고 싶음.
+근데 내 공간도 필요함.
+확인받고 싶다가도 갑자기 숨 쉴 틈이 필요해짐.
+속도 조절이 핵심.`,
+      shareText: `나의 애착 유형: 가까움과 독립 사이를 오가는 타입 🟣
+'연결되고 싶지만, 내 속도도 지키고 싶은 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Disorganized",
-      serious: `Disorganized attachment is the most complex. The desire to get close and the fear of getting close exist simultaneously.
+      name: "Between Closeness And Independence",
+      serious: `Your desire for closeness and your need for space can move at the same time. Some days you want more connection; other days the same closeness can feel like too much.
 
-You want to be loved. But you're terrified of being hurt. So you move toward, then push away, push away, then reach back out. Even you might not understand why this keeps happening.
+Warm responses can soothe you, but if intimacy deepens too quickly, you may want to slow the pace again. Reassurance and space can both feel necessary.
 
-This pattern is often linked to childhood experiences of being hurt by the people you trusted most — when the source of love was also the source of fear.
-
-This isn't your fault. And it can change.`,
+This does not mean you are contradictory. It means connection and self-protection both matter strongly to you.`,
       strengths: [
         "Extraordinary emotional depth",
         "Strong empathy",
@@ -627,16 +593,14 @@ This isn't your fault. And it can change.`,
         "Strong desire to grow and change",
       ],
       watchOut:
-        "This pattern can be hard to change alone. Professional support makes a real difference. Seeking help isn't weakness — it's courage.",
+        "When you suddenly want to move closer or pull back, try naming whether you need reassurance or rest. That single distinction can reduce confusion.",
       fun: `Disorganized type.
-Likes them. Scared. Gets closer.
-Gets scared. Pushes away.
-Regrets it. Reaches back out.
-Partner: dizzy.
-Me: also dizzy.
-Still wants love though.`,
-      shareText: `My attachment style: Disorganized 🟣
-'Gets close. Pushes away. Reaches back. Repeat.'
+Wants closeness.
+Also needs air.
+Reassurance and space both matter.
+The pace is everything.`,
+      shareText: `My attachment style: Between Closeness And Independence 🟣
+'I want connection, but I need my pace too.'
 What's yours? → nolza.fun/games/attachment`,
     },
   },

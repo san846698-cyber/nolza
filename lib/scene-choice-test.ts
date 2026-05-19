@@ -152,7 +152,7 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
       ko: "새벽의 작은 항구에 혼자 서 있습니다. 물결은 낮고, 아직 출발하지 않은 배들이 조용히 묶여 있습니다.",
       en: "You stand alone at a small harbor at dawn. The water is low, and boats that have not left yet are tied in silence.",
     },
-    prompt: { ko: "가장 먼저 마음에 남는 것은?", en: "What stays with you first?" },
+    prompt: { ko: "가장 먼저 기억에 남는 것은?", en: "What do you remember first?" },
     choices: [
       { id: "a", text: { ko: "멀리 떠 있는 배의 불빛", en: "A boat light far away" }, scores: { curiosityUnknown: 2, freedomChange: 1 } },
       { id: "b", text: { ko: "묶여 있는 밧줄", en: "The tied rope" }, scores: { controlOrder: 2, safetyStability: 1 } },
@@ -182,7 +182,7 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
       ko: "공연이 끝난 극장에 조명이 희미하게 남아 있습니다. 객석은 비어 있고 무대 위에는 작은 소품 하나만 놓여 있습니다.",
       en: "A theater after a performance still holds a dim light. The seats are empty and one small prop remains on stage.",
     },
-    prompt: { ko: "무엇이 가장 오래 남나요?", en: "What lingers longest?" },
+    prompt: { ko: "무엇이 가장 오래 기억에 남나요?", en: "What do you remember longest?" },
     choices: [
       { id: "a", text: { ko: "무대 한가운데의 빈 의자", en: "The empty chair at center stage" }, scores: { emotionalDepth: 2, memoryAttachment: 1 } },
       { id: "b", text: { ko: "객석 맨 뒤의 열린 문", en: "The open door at the back" }, scores: { freedomChange: 2, hiddenThreat: 1 } },

@@ -23,6 +23,8 @@ const config: Config = {
           hairline: "var(--home-hairline)",
           "hairline-strong": "var(--home-hairline-strong)",
           injoo: "var(--home-injoo)",
+          coral: "var(--home-coral)",
+          gold: "var(--home-gold)",
         },
         cat: {
           play: "var(--cat-play)",

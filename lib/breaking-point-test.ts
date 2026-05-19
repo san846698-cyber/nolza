@@ -42,12 +42,12 @@ export type BreakingResult = {
 
 export const BREAKING_COPY = {
   languageLabel: { ko: "언어 선택", en: "Language selection" },
-  title: { ko: "당신이 선을 넘게 되는 순간", en: "The Moment You Cross the Line" },
+  title: { ko: "나를 차갑게 만드는 순간", en: "The Moment I Turn Cold" },
   badge: { ko: "심리 테스트", en: "Psychology Test" },
-  subtitle: { ko: "평소의 내가 무너지는 지점은 어디일까요?", en: "Where does your usual self begin to change?" },
+  subtitle: { ko: "평소의 내가 달라지는 지점은 어디일까요?", en: "Where does your usual self begin to change?" },
   description: {
-    ko: "사람은 한 번의 사건보다, 반복되는 감각에 더 깊게 변할 때가 있습니다. 당신을 차갑게 만들고, 마음의 기준선을 바꾸는 순간을 알아보세요.",
-    en: "Sometimes people do not change because of one event, but because of a feeling repeated too many times. Discover what makes your inner boundary shift.",
+    ko: "사람은 한 번의 사건보다, 반복되는 감각에 더 깊게 변할 때가 있습니다. 나를 차갑게 만들고 마음의 기준선을 바꾸는 순간을 알아보세요.",
+    en: "Sometimes people do not change because of one event, but because of a feeling repeated too many times. Discover what makes you turn cold and shift your inner boundary.",
   },
   disclaimer: {
     ko: "이 테스트는 전문적인 진단이 아닌, 심리학적 자기이해를 위한 재미용 콘텐츠입니다.",
@@ -88,9 +88,9 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "You finish something you prepared for a long time, but people move on to the next task with little reaction. What comes closest?",
     },
     choices: [
-      { id: "a", text: { ko: "인정받고 싶었다는 마음이 먼저 올라온다", en: "The wish to be recognized comes up first." }, scores: { delayedRecognition: 3 } },
+      { id: "a", text: { ko: "인정받지 못해 아쉽다는 생각이 먼저 든다", en: "I first feel disappointed that the effort was not recognized." }, scores: { delayedRecognition: 3 } },
       { id: "b", text: { ko: "결과보다 다음 할 일을 정리하려고 한다", en: "I try to organize the next task rather than dwell on the result." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 1 } },
-      { id: "c", text: { ko: "티 내지 않지만 마음이 조금 식는다", en: "I do not show it, but something in me cools a little." }, scores: { abandonedFeeling: 2, delayedRecognition: 1 } },
+      { id: "c", text: { ko: "티 내지 않지만 조금 서운해서 의욕이 식는다", en: "I do not show it, but I feel a little hurt and lose some motivation." }, scores: { abandonedFeeling: 2, delayedRecognition: 1 } },
       { id: "d", text: { ko: "내가 너무 기대했나 싶어 넘기려 한다", en: "I wonder if I expected too much and try to let it pass." }, scores: { repeatedDisrespect: 1 } },
     ],
   },
@@ -110,14 +110,14 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
   {
     id: "bp_04",
     prompt: {
-      ko: "당신이 진심으로 한 행동을 상대가 다른 의도로 받아들였습니다. 설명할 기회는 있지만 이미 지친 느낌입니다.",
-      en: "Something you did sincerely is interpreted as having a different motive. You could explain, but you already feel tired.",
+      ko: "진심으로 한 행동이 몇 번이나 다른 의도로 받아들여졌습니다. 이번에도 설명할 기회는 있지만 이미 지친 느낌입니다.",
+      en: "Your sincere actions have been misread several times. You could explain again, but you already feel tired.",
     },
     choices: [
       { id: "a", text: { ko: "오해를 풀고 싶지만, 마음을 보여주는 일이 무겁게 느껴진다", en: "I want to clear it up, but showing my heart feels heavy." }, scores: { misunderstoodSincerity: 3 } },
-      { id: "b", text: { ko: "핵심만 짧게 설명하고 더 길게 붙잡지는 않는다", en: "I explain only the core point and do not hold onto it too long." }, scores: { violatedBoundary: 1 } },
-      { id: "c", text: { ko: "이번에도 설명해야 한다는 사실이 서운하다", en: "It hurts that I have to explain myself again." }, scores: { repeatedDisrespect: 1, misunderstoodSincerity: 2 } },
-      { id: "d", text: { ko: "상대가 그렇게 느낀 이유도 있을 거라고 생각해본다", en: "I try to consider why they may have felt that way." }, scores: { abandonedFeeling: 1 } },
+      { id: "b", text: { ko: "핵심만 짧게 설명하고, 더 이상 내 의도를 계속 증명하지는 않는다", en: "I explain only the core point and stop trying to keep proving my intent." }, scores: { violatedBoundary: 1 } },
+      { id: "c", text: { ko: "또 설명해야 한다는 사실 때문에 마음의 온도가 내려간다", en: "Having to explain again makes my warmth drop." }, scores: { repeatedDisrespect: 1, misunderstoodSincerity: 2 } },
+      { id: "d", text: { ko: "이번에도 상대가 받아들인 맥락을 한 번은 생각해본다", en: "I still consider the context that made them read it that way." }, scores: { abandonedFeeling: 1 } },
     ],
   },
   {
@@ -129,7 +129,7 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
     choices: [
       { id: "a", text: { ko: "이번에도 맡지만 속으로는 무게가 확 느껴진다", en: "I take it on again, but the weight hits me inside." }, scores: { overloadedResponsibility: 3 } },
       { id: "b", text: { ko: "내가 할 수 있는 범위를 먼저 정리해 말한다", en: "I first state what I can realistically handle." }, scores: { violatedBoundary: 2 } },
-      { id: "c", text: { ko: "왜 항상 나부터 떠올리는지 마음에 남는다", en: "It stays with me that I am always the first person they think of." }, scores: { repeatedDisrespect: 2, overloadedResponsibility: 1 } },
+      { id: "c", text: { ko: "왜 항상 나부터 떠올리는지 계속 신경 쓰인다", en: "It keeps bothering me that I am always the first person they think of." }, scores: { repeatedDisrespect: 2, overloadedResponsibility: 1 } },
       { id: "d", text: { ko: "상황이 급하니 우선 정리하고 나중에 이야기하려 한다", en: "Since things are urgent, I organize it first and talk later." }, scores: { uncontrollableChaos: 1, overloadedResponsibility: 1 } },
     ],
   },
@@ -155,7 +155,7 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
     choices: [
       { id: "a", text: { ko: "기준을 먼저 정하지 않으면 더는 움직이기 어렵다", en: "If the standard is not clarified first, it is hard for me to keep moving." }, scores: { uncontrollableChaos: 3 } },
       { id: "b", text: { ko: "불확실한 부분과 확실한 부분을 나눠본다", en: "I separate what is uncertain from what is clear." }, scores: { uncontrollableChaos: 2 } },
-      { id: "c", text: { ko: "계속 바뀌는 흐름에 마음의 여유가 줄어든다", en: "My emotional room shrinks as the flow keeps changing." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 2 } },
+      { id: "c", text: { ko: "계속 바뀌는 흐름 때문에 점점 여유가 없어진다", en: "The constant changes leave me with less and less room to breathe." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 2 } },
       { id: "d", text: { ko: "다들 혼란스러울 수 있으니 조금 더 지켜본다", en: "Everyone may be confused, so I watch a bit longer." }, scores: { abandonedFeeling: 1 } },
     ],
   },
@@ -201,40 +201,40 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
   {
     id: "bp_11",
     prompt: {
-      ko: "당신이 힘들다고 말했는데, 상대는 곧바로 자기 이야기로 넘어갑니다. 악의는 없어 보이지만 마음이 멈춥니다.",
-      en: "You say you are having a hard time, and the other person quickly turns to their own story. It does not seem intentional, but something in you stops.",
+      ko: "힘든 이야기를 꺼낼 때마다 상대는 곧 자기 이야기로 넘어갑니다. 악의는 없어 보이지만, 이번에는 말문이 막힙니다.",
+      en: "Whenever you bring up something hard, they soon turn it into their own story. It does not seem intentional, but this time something in you stops.",
     },
     choices: [
-      { id: "a", text: { ko: "내 이야기는 여기서 더 꺼내지 말아야겠다고 느낀다", en: "I feel I should not bring out more of my story here." }, scores: { abandonedFeeling: 3 } },
-      { id: "b", text: { ko: "지금은 내 얘기를 조금만 더 들어달라고 말해본다", en: "I try saying that I need them to listen a little longer." }, scores: { misunderstoodSincerity: 2 } },
-      { id: "c", text: { ko: "상대도 자기 힘든 게 컸을 수 있다고 생각한다", en: "I think maybe their own difficulty felt big too." }, scores: { abandonedFeeling: 1 } },
-      { id: "d", text: { ko: "겉으로는 들어주지만 마음속 거리는 생긴다", en: "I listen outwardly, but a distance forms inside." }, scores: { repeatedDisrespect: 1, abandonedFeeling: 2 } },
+      { id: "a", text: { ko: "내 이야기를 꺼낼 수 있는 자리로 느껴지지 않게 된다", en: "This no longer feels like a place where my story can be brought out." }, scores: { abandonedFeeling: 3 } },
+      { id: "b", text: { ko: "이번에는 말해보지만, 예전처럼 길게 기대하지는 않는다", en: "This time I say something, but I do not expect as much as before." }, scores: { misunderstoodSincerity: 2 } },
+      { id: "c", text: { ko: "상대도 자기 힘든 게 컸을 수 있다고 한 번은 생각한다", en: "I still consider that their own difficulty may have felt big too." }, scores: { abandonedFeeling: 1 } },
+      { id: "d", text: { ko: "듣고는 있지만, 이 관계에서 내 위치를 다시 정하게 된다", en: "I keep listening, but I start redefining my place in this relationship." }, scores: { repeatedDisrespect: 1, abandonedFeeling: 2 } },
     ],
   },
   {
     id: "bp_12",
     prompt: {
-      ko: "중요한 순간에 기대했던 사람이 당신 편에 서지 않았습니다. 이유는 들었지만 마음은 쉽게 돌아오지 않습니다.",
+      ko: "중요한 순간에 기대했던 사람이 당신 편에 서지 않았습니다. 이유는 들었지만 쉽게 괜찮아지지 않습니다.",
       en: "At an important moment, someone you expected to stand with you did not. You heard their reason, but your heart does not return easily.",
     },
     choices: [
       { id: "a", text: { ko: "이후에는 그 사람에게 기대는 기준이 달라진다", en: "After that, the standard for relying on them changes." }, scores: { betrayedTrust: 3 } },
       { id: "b", text: { ko: "그 순간 내가 무엇을 기대했는지 먼저 정리한다", en: "I first sort out what I had expected in that moment." }, scores: { betrayedTrust: 1, misunderstoodSincerity: 1 } },
-      { id: "c", text: { ko: "그 사람도 어려웠을 수 있지만, 마음은 닫힌다", en: "They may have had their own difficulty, but my heart closes." }, scores: { betrayedTrust: 2, abandonedFeeling: 1 } },
+      { id: "c", text: { ko: "그 사람도 어려웠을 수 있지만, 다시 기대하기는 어렵다", en: "They may have had their own difficulty, but it becomes hard to rely on them again." }, scores: { betrayedTrust: 2, abandonedFeeling: 1 } },
       { id: "d", text: { ko: "바로 판단하지 않고 다음 행동까지 보려 한다", en: "I try not to judge immediately and watch what they do next." }, scores: { betrayedTrust: 1 } },
     ],
   },
   {
     id: "bp_13",
     prompt: {
-      ko: "상대가 당신의 시간을 자주 갑자기 요청합니다. 거절하면 서운해할 것 같고, 받아주면 내 하루가 무너집니다.",
-      en: "Someone often asks for your time suddenly. If you refuse, they may be hurt; if you accept, your day falls apart.",
+      ko: "함께 정해야 할 일이 자꾸 미뤄지고, 그때마다 당신만 기다리는 상황이 반복됩니다.",
+      en: "A decision you need to make together keeps getting delayed, and you are repeatedly the one left waiting.",
     },
     choices: [
-      { id: "a", text: { ko: "내 하루가 계속 밀리는 순간부터 마음이 단단해진다", en: "Once my day keeps getting pushed aside, my heart becomes firmer." }, scores: { violatedBoundary: 3 } },
-      { id: "b", text: { ko: "가능한 시간대를 따로 제안해본다", en: "I suggest a separate time that actually works for me." }, scores: { violatedBoundary: 1, uncontrollableChaos: 1 } },
-      { id: "c", text: { ko: "상대가 내 사정을 고려하지 않는다고 느낀다", en: "It feels like they are not considering my situation." }, scores: { repeatedDisrespect: 2 } },
-      { id: "d", text: { ko: "이번만 넘기고, 다음에는 분명히 말하려고 한다", en: "I let it pass this time and decide to be clearer next time." }, scores: { overloadedResponsibility: 1, violatedBoundary: 1 } },
+      { id: "a", text: { ko: "내 시간이 계속 대기 상태가 되는 느낌에 마음이 식는다", en: "My warmth drops when my time keeps being left on standby." }, scores: { violatedBoundary: 3 } },
+      { id: "b", text: { ko: "언제까지 정해야 하는지 기준을 먼저 잡아보려 한다", en: "I try to set a clear point for when the decision needs to be made." }, scores: { violatedBoundary: 1, uncontrollableChaos: 1 } },
+      { id: "c", text: { ko: "내가 기다리는 건 당연하게 여겨진다고 느낀다", en: "It feels like my waiting is being treated as expected." }, scores: { repeatedDisrespect: 2 } },
+      { id: "d", text: { ko: "이번에도 내가 정리해야 하나 싶어 지친다", en: "I get tired wondering if I have to organize it again this time." }, scores: { overloadedResponsibility: 1, violatedBoundary: 1 } },
     ],
   },
   {
@@ -244,7 +244,7 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Several people keep saying different things and delaying a decision. It looks like you will end up organizing it again.",
     },
     choices: [
-      { id: "a", text: { ko: "또 내가 맡게 될 것 같아 마음이 먼저 지친다", en: "My mind gets tired first because it feels like I will carry it again." }, scores: { overloadedResponsibility: 3 } },
+      { id: "a", text: { ko: "또 내가 맡게 될 것 같아 시작하기 전부터 지친다", en: "It feels like I will carry it again, so I get tired before it even starts." }, scores: { overloadedResponsibility: 3 } },
       { id: "b", text: { ko: "결정 기준을 한 문장으로 정리해보자고 한다", en: "I suggest summarizing the decision standard in one sentence." }, scores: { uncontrollableChaos: 2 } },
       { id: "c", text: { ko: "정리가 안 된 흐름이 오래 이어지는 게 가장 답답하다", en: "The most frustrating part is the disorder continuing too long." }, scores: { uncontrollableChaos: 3 } },
       { id: "d", text: { ko: "내가 다 하지 않도록 역할을 먼저 나눈다", en: "I divide roles first so I do not do everything." }, scores: { violatedBoundary: 1, overloadedResponsibility: 2 } },
@@ -270,9 +270,9 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "You have said you were fine for a long time, but one day the same scene repeats and you no longer want to respond the old way. What feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "크게 말하기보다 조용히 마음의 거리를 바꾼다", en: "Rather than making a big statement, I quietly change the distance in my heart." }, scores: { repeatedDisrespect: 1, betrayedTrust: 1, abandonedFeeling: 1 } },
+      { id: "a", text: { ko: "크게 말하기보다 허용 범위를 다시 정한다", en: "Rather than making a big statement, I redefine what I will allow." }, scores: { repeatedDisrespect: 1, betrayedTrust: 1, abandonedFeeling: 1 } },
       { id: "b", text: { ko: "내가 지킬 수 있는 선을 이번에는 분명히 말한다", en: "This time, I clearly say what line I need to protect." }, scores: { violatedBoundary: 2, misunderstoodSincerity: 1 } },
-      { id: "c", text: { ko: "내가 혼자 감당해온 것들을 더 이상 당연하게 두지 않는다", en: "I stop allowing what I carried alone to be treated as normal." }, scores: { overloadedResponsibility: 2, delayedRecognition: 1 } },
+      { id: "c", text: { ko: "내 어깨에 계속 올라온 책임을 더 이상 당연하게 두지 않는다", en: "I stop allowing responsibility that kept landing on me to be treated as normal." }, scores: { overloadedResponsibility: 2, delayedRecognition: 1 } },
       { id: "d", text: { ko: "무엇이 반복될 때 내가 변하는지 차분히 확인한다", en: "I calmly check what repeated pattern changes me." }, scores: { uncontrollableChaos: 1, betrayedTrust: 1 } },
     ],
   },
@@ -288,7 +288,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "You are shaken more by the repeated feeling of being treated lightly than by one cold word. At first you try to understand, then you try to let it pass, but if it keeps happening, your inner line quietly moves.",
     },
     howYouChange: {
-      ko: "당신은 크게 소란스러워지기보다 조용히 거리를 둡니다. 어느 날 갑자기 차가워진 것처럼 보이지만, 사실은 오래전부터 마음속에서 정리하고 있었을 가능성이 큽니다.",
+      ko: "당신은 크게 소란스러워지기보다 허용 범위를 다시 정합니다. 어느 날 갑자기 차가워진 것처럼 보이지만, 사실은 오래전부터 마음의 기준선을 조금씩 옮기고 있었을 가능성이 큽니다.",
       en: "You tend to create quiet distance rather than become loud. It may look sudden from the outside, but inside you may have been organizing your feelings for a long time.",
     },
     sign: { ko: "“내가 계속 이렇게까지 해야 하나?”", en: "“Do I really have to keep going this far?”" },
@@ -297,7 +297,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "When you feel taken lightly, it can help to name where you are okay and where it starts becoming too much before you fully pull away.",
     },
     friendComment: { ko: "너 갑자기 차가워진 게 아니라, 오래 참다가 정리한 거잖아.", en: "You did not suddenly turn cold. You were patient for a long time, then you sorted it out inside." },
-    shareLine: { ko: "나는 “반복된 무시”가 선을 넘게 만드는 타입이래.", en: "My line shifts when I feel repeated disrespect." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「반복된 무시」가 나왔다. 이거 좀 맞는 듯.", en: "I got “Repeated Disrespect” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#d39a64",
   },
   misunderstoodSincerity: {
@@ -309,7 +309,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "You care deeply about intention. When words or actions you meant sincerely are misunderstood, you may feel a deeper fatigue than simple disappointment.",
     },
     howYouChange: {
-      ko: "처음에는 설명하려고 하지만, 계속 오해받는다고 느끼면 점점 말수가 줄어듭니다. 마음을 보여주는 것이 의미 없다고 느껴지는 순간, 당신은 조용히 닫히기 시작합니다.",
+      ko: "처음에는 설명하려고 하지만, 계속 오해받는다고 느끼면 설명의 기준이 달라집니다. 마음을 보여주는 것이 의미 없다고 느껴지는 순간, 당신은 더 이상 같은 방식으로 열려 있지 않게 됩니다.",
       en: "At first you try to explain. But if misunderstanding repeats, you speak less. When showing your heart starts to feel pointless, you begin to close quietly.",
     },
     sign: { ko: "“내가 그런 뜻으로 한 게 아닌데.”", en: "“That is not what I meant.”" },
@@ -318,7 +318,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "Not every sincere feeling is understood immediately. But in a relationship where you are repeatedly misread, a boundary may matter more than another explanation.",
     },
     friendComment: { ko: "너 설명하다 지치면 갑자기 아무 말도 안 하잖아.", en: "When you get tired of explaining, you suddenly stop talking." },
-    shareLine: { ko: "나는 “이해받지 못한 진심”에서 선이 바뀌는 타입이래.", en: "My line shifts when my sincerity is misunderstood." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「이해받지 못한 진심」이 나왔다. 이거 좀 맞는 듯.", en: "I got “Misunderstood Sincerity” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#b98f72",
   },
   violatedBoundary: {
@@ -330,7 +330,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "You may usually try to adjust and move on. But when someone treats your time, feelings, or space as something they can freely access, that warmth can quickly become a firm wall.",
     },
     howYouChange: {
-      ko: "당신은 처음부터 차갑지 않습니다. 오히려 오래 참는 편에 가깝습니다. 하지만 선을 넘었다고 느낀 순간부터는 설명보다 거리두기가 먼저 나올 수 있습니다.",
+      ko: "당신은 처음부터 차갑지 않습니다. 오히려 오래 참는 편에 가깝습니다. 하지만 선을 넘었다고 느낀 순간부터는 설명보다 허용 범위를 다시 정하는 일이 먼저 나올 수 있습니다.",
       en: "You are not cold from the beginning. You often hold on for quite a while. But once you feel a line has been crossed, distance may come before explanation.",
     },
     sign: { ko: "“내가 편해서가 아니라, 네가 선을 넘은 거야.”", en: "“It is not that I am difficult. You crossed a line.”" },
@@ -339,15 +339,15 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "A boundary is not coldness; it is a way to protect yourself. Expressing it a little earlier can keep the relationship from getting more hurt.",
     },
     friendComment: { ko: "너 괜찮다고 말할 때가 제일 안 괜찮을 때 있음.", en: "Sometimes when you say you are fine, that is when you are least fine." },
-    shareLine: { ko: "나는 “존중받지 못한 경계”가 선을 넘게 만드는 타입이래.", en: "My line shifts when my boundaries are not respected." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「존중받지 못한 경계」가 나왔다. 이거 좀 맞는 듯.", en: "I got “Violated Boundary” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#d86c54",
   },
   overloadedResponsibility: {
     id: "overloadedResponsibility",
     title: { ko: "책임의 과부하", en: "Overloaded Responsibility" },
-    oneLiner: { ko: "모든 것을 혼자 감당해야 한다고 느낄 때 무너지는 사람", en: "You change when you feel everything is placed on your shoulders." },
+    oneLiner: { ko: "모든 책임이 내 어깨에 올라온다고 느낄 때 무너지는 사람", en: "You change when every responsibility seems to land on your shoulders." },
     description: {
-      ko: "당신은 책임감이 강한 편입니다. 그래서 필요한 순간에는 먼저 나서고, 부족한 부분을 채우려 합니다. 하지만 그 역할이 반복되어 모두가 당신에게 기대기 시작하면, 어느 순간 마음속에서 무거운 피로가 쌓입니다.",
+      ko: "당신은 책임감이 강한 편입니다. 그래서 필요한 순간에는 먼저 나서고, 부족한 부분을 채우려 합니다. 하지만 그 역할이 반복되어 모두가 당신의 어깨를 기본값처럼 여기기 시작하면, 어느 순간 마음속에서 무거운 피로가 쌓입니다.",
       en: "You likely have a strong sense of responsibility. You step forward when needed and fill the gaps. But when that role repeats and everyone starts leaning on you, a heavy fatigue builds inside.",
     },
     howYouChange: {
@@ -360,7 +360,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "Responsibility is a strength, but carrying everything can become isolation rather than strength. Practice sharing what can be shared.",
     },
     friendComment: { ko: "너 책임감으로 버티다가 갑자기 사라질 때 있잖아.", en: "You hold on through responsibility, then sometimes disappear all at once." },
-    shareLine: { ko: "나는 “책임의 과부하”에서 선이 바뀌는 타입이래.", en: "My line shifts when responsibility becomes too heavy." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「책임의 과부하」가 나왔다. 이거 좀 맞는 듯.", en: "I got “Overloaded Responsibility” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#caa56a",
   },
   betrayedTrust: {
@@ -368,11 +368,11 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
     title: { ko: "배신당한 신뢰", en: "Betrayed Trust" },
     oneLiner: { ko: "한 번 마음을 열었기 때문에, 무너질 때 더 깊게 닫히는 사람", en: "Because you opened your heart, you close more deeply when trust breaks." },
     description: {
-      ko: "당신은 누구에게나 쉽게 기대는 타입은 아닐 수 있습니다. 그래서 한 번 믿고 마음을 열었던 사람이 그 신뢰를 가볍게 다룰 때, 단순한 실망보다 더 깊은 단절감을 느낍니다.",
+      ko: "당신은 누구에게나 쉽게 기대는 타입은 아닐 수 있습니다. 그래서 한 번 믿고 마음을 열었던 사람이 그 신뢰를 가볍게 다룰 때, 단순한 실망보다 관계 안의 위치가 바뀌는 감각을 더 크게 느낍니다.",
       en: "You may not rely on just anyone. So when someone you trusted and opened up to treats that trust lightly, you feel a deeper disconnection than ordinary disappointment.",
     },
     howYouChange: {
-      ko: "당신은 바로 화내기보다 마음속에서 상대의 자리를 조용히 바꿉니다. 어제까지 가까웠던 사람이 어느 날부터 다시 멀리 있는 사람처럼 느껴질 수 있습니다.",
+      ko: "당신은 바로 화내기보다 상대에게 허용하던 자리를 다시 정합니다. 어제까지 가까웠던 사람이 어느 날부터 다시 멀리 있는 사람처럼 느껴질 수 있습니다.",
       en: "Rather than reacting immediately, you quietly change that person’s place inside. Someone who felt close yesterday may suddenly feel far away.",
     },
     sign: { ko: "“내가 너를 믿었기 때문에 더 아픈 거야.”", en: "“It hurts more because I trusted you.”" },
@@ -381,7 +381,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "You do not have to end everything immediately when trust breaks. But it matters to know what conditions you need before trusting again.",
     },
     friendComment: { ko: "너 마음 열기까지 오래 걸려서, 닫힐 때도 진짜 깊게 닫히는 편이야.", en: "It takes you time to open up, so when you close, you close deeply." },
-    shareLine: { ko: "나는 “배신당한 신뢰”가 선을 넘게 만드는 타입이래.", en: "My line shifts when trust is broken." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「배신당한 신뢰」가 나왔다. 이거 좀 맞는 듯.", en: "I got “Betrayed Trust” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#8d7896",
   },
   delayedRecognition: {
@@ -393,7 +393,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "You are not someone who needs praise for every step. But when long effort and quiet change are repeatedly treated as obvious, your inner drive can slowly weaken.",
     },
     howYouChange: {
-      ko: "처음에는 더 잘하면 알아봐 주겠지 생각합니다. 하지만 인정이 계속 미뤄지면, 어느 순간 더 이상 증명하고 싶지 않아질 수 있습니다.",
+      ko: "처음에는 더 잘하면 알아봐 주겠지 생각합니다. 하지만 인정이 계속 미뤄지면, 어느 순간 더 이상 증명하고 싶은 마음의 온도가 내려갈 수 있습니다.",
       en: "At first you think they may notice if you do better. But when recognition keeps being delayed, you may eventually stop wanting to prove anything.",
     },
     sign: { ko: "“내가 이만큼 해도 결국 당연한 거구나.”", en: "“Even after all this, it is just expected.”" },
@@ -402,7 +402,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "Wanting recognition is not weakness. But if every standard depends on others’ reactions, even your real growth can start to feel small.",
     },
     friendComment: { ko: "너 인정 안 받으면 화내기보다 조용히 열정이 식는 타입이야.", en: "When you are not recognized, you do not always complain; your fire quietly cools." },
-    shareLine: { ko: "나는 “계속 미뤄진 인정”에서 선이 바뀌는 타입이래.", en: "My line shifts when recognition keeps being delayed." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「계속 미뤄진 인정」이 나왔다. 이거 좀 맞는 듯.", en: "I got “Delayed Recognition” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#d1b35f",
   },
   uncontrollableChaos: {
@@ -414,7 +414,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "You use your energy well when some structure and flow are visible. But when words keep changing, standards shake, and things remain unpredictable, your emotional room shrinks quickly.",
     },
     howYouChange: {
-      ko: "처음에는 적응하려고 합니다. 하지만 혼란이 반복되면 당신은 감정보다 구조를 먼저 세우려 하고, 그 과정에서 차갑고 단호해 보일 수 있습니다.",
+      ko: "처음에는 적응하려고 합니다. 하지만 혼란이 반복되면 당신은 감정보다 기준을 먼저 세우려 하고, 그 과정에서 허용 범위가 빠르게 좁아질 수 있습니다.",
       en: "At first you try to adapt. But if confusion repeats, you start building structure before dealing with feelings, and you may look firm or distant in the process.",
     },
     sign: { ko: "“기준이 뭐야? 뭘 맞추라는 거야?”", en: "“What is the standard? What am I supposed to match?”" },
@@ -423,7 +423,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "Finding structure inside confusion is a real strength. Just remember that trying to fully control every situation can exhaust you first.",
     },
     friendComment: { ko: "너 기준이 계속 바뀌면 표정부터 딱 굳어짐.", en: "When the standard keeps changing, your face gets still first." },
-    shareLine: { ko: "나는 “통제할 수 없는 혼란”에서 선이 바뀌는 타입이래.", en: "My line shifts when chaos stays too long." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「통제할 수 없는 혼란」이 나왔다. 이거 좀 맞는 듯.", en: "I got “Uncontrollable Chaos” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#6f8b8d",
   },
   abandonedFeeling: {
@@ -435,7 +435,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "You are not simply afraid of being alone. The harder part is feeling unseen even when you are with others. If that repeats, you begin choosing silence over more words.",
     },
     howYouChange: {
-      ko: "처음에는 더 이해받으려고 노력합니다. 하지만 계속 혼자라고 느끼면 어느 순간 기대를 줄이고, 마음을 보여주는 일을 멈출 수 있습니다.",
+      ko: "처음에는 더 이해받으려고 노력합니다. 하지만 계속 혼자라고 느끼면 어느 순간 기대의 기준을 낮추고, 이 관계에서 내 마음을 어디까지 꺼낼지 다시 정하게 됩니다.",
       en: "At first you try harder to be understood. But if you keep feeling alone, you may lower your expectations and stop showing your heart.",
     },
     sign: { ko: "“같이 있는데 왜 혼자인 것 같지?”", en: "“Why do I feel alone when we are together?”" },
@@ -444,7 +444,7 @@ export const BREAKING_RESULTS: Record<BreakingDimension, BreakingResult> = {
       en: "When you feel alone, it can help to tell one person a little more specifically before deciding that nobody sees you.",
     },
     friendComment: { ko: "너 말 안 하는 날은 진짜 괜찮은 게 아니라 기대를 줄인 날 같아.", en: "When you go quiet, it does not always mean you are fine. It often means you lowered your expectations." },
-    shareLine: { ko: "나는 “혼자 남겨진 감각”이 선을 넘게 만드는 타입이래.", en: "My line shifts when I feel left alone." },
+    shareLine: { ko: "나는 “나를 차갑게 만드는 순간” 테스트에서 「혼자 남겨진 감각」이 나왔다. 이거 좀 맞는 듯.", en: "I got “Abandoned Feeling” on The Moment I Turn Cold. This feels pretty accurate." },
     accent: "#7b8ca6",
   },
 };

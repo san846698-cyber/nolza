@@ -1516,8 +1516,122 @@ function MiniInsight({ title, body }: { title: string; body: string }) {
 
 export default function FriendMatchPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<FriendMatchFallback />}>
       <FriendMatchInner />
     </Suspense>
+  );
+}
+
+function FriendMatchFallback() {
+  const inputBox = {
+    width: "100%",
+    boxSizing: "border-box" as const,
+    border: `1px solid ${C.line}`,
+    background: "rgba(255,255,255,0.05)",
+    color: C.ink,
+    borderRadius: 16,
+    padding: "15px 16px",
+    fontSize: 16,
+    outline: "none",
+  };
+
+  return (
+    <main
+      style={{
+        minHeight: "100svh",
+        background: C.bg,
+        color: C.ink,
+        fontFamily: FONT_SANS,
+        padding: "20px 20px 72px",
+      }}
+    >
+      <div style={{ maxWidth: 880, margin: "0 auto" }}>
+        <header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 16,
+            alignItems: "center",
+            paddingBottom: 28,
+          }}
+        >
+          <Link href="/" style={{ color: C.sub, textDecoration: "none", fontSize: 13 }}>
+            ← 놀자.fun으로 돌아가기
+          </Link>
+          <span style={{ color: C.goldSoft, fontSize: 13, fontWeight: 800 }}>
+            친구 궁합
+          </span>
+        </header>
+
+        <section style={{ textAlign: "center", padding: "18px 0 28px" }}>
+          <p style={{ margin: 0, color: C.goldSoft, fontSize: 13, fontWeight: 800 }}>
+            우리 사이, 하늘이 정해놨다
+          </p>
+          <h1
+            style={{
+              margin: "12px 0 0",
+              fontFamily: FONT_SERIF,
+              fontSize: "clamp(34px, 8vw, 64px)",
+              lineHeight: 1.08,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            친구 궁합 보기
+          </h1>
+          <p
+            style={{
+              maxWidth: 560,
+              margin: "18px auto 0",
+              color: "rgba(245,241,230,0.78)",
+              fontSize: 16,
+              lineHeight: 1.75,
+            }}
+          >
+            두 사람의 이름과 태어난 해를 입력하면, 관계의 결을 가볍게 읽어드려요.
+          </p>
+        </section>
+
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: 16,
+            padding: 22,
+            borderRadius: 24,
+            background: C.paper,
+            border: `1px solid ${C.line}`,
+          }}
+        >
+          {["나", "친구"].map((label) => (
+            <div key={label}>
+              <div style={{ marginBottom: 10, color: C.goldSoft, fontWeight: 800 }}>
+                {label}
+              </div>
+              <input disabled placeholder="이름 또는 닉네임" style={inputBox} />
+              <input disabled placeholder="태어난 해" style={{ ...inputBox, marginTop: 10 }} />
+            </div>
+          ))}
+        </section>
+
+        <div style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
+          <button
+            type="button"
+            disabled
+            style={{
+              border: 0,
+              borderRadius: 999,
+              padding: "15px 28px",
+              background: C.gold,
+              color: "#17120b",
+              fontWeight: 900,
+              fontSize: 15,
+              opacity: 0.9,
+            }}
+          >
+            궁합 분석하기
+          </button>
+        </div>
+      </div>
+    </main>
   );
 }

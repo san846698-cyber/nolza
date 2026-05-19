@@ -556,12 +556,17 @@ function Result({
       </div>
 
       <nav className="related" aria-label={DEFENSE_COPY.related[locale]}>
-        <h2>{DEFENSE_COPY.related[locale]}</h2>
+        <div className="related-head">
+          <small>{locale === "ko" ? "추천" : "RECOMMENDED"}</small>
+          <h2>{locale === "ko" ? "이 테스트도 해보세요" : "Try These Next"}</h2>
+        </div>
         <div>
           {relatedTests.map((item) => (
             <Link key={item.href} href={item.href}>
+              <small>{locale === "ko" ? "심리 테스트" : "Psychology Test"}</small>
               <strong>{item.title[locale]}</strong>
               <span>{item.sub[locale]}</span>
+              <em>{locale === "ko" ? "테스트하기" : "Take test"}</em>
             </Link>
           ))}
         </div>
@@ -1131,38 +1136,101 @@ const styles = `
     border-color: rgba(248, 239, 226, 0.36);
   }
   .related {
-    padding: 22px;
+    padding: clamp(22px, 3vw, 30px);
+    border-color: rgba(255, 232, 190, 0.18);
+    background:
+      radial-gradient(circle at 18% 0%, rgba(255, 113, 76, 0.18), transparent 25rem),
+      linear-gradient(135deg, rgba(31, 24, 22, 0.9), rgba(18, 15, 16, 0.78));
+  }
+  .related-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .related-head small {
+    color: #ffc987;
+    font-size: 0.72rem;
+    font-weight: 1000;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
   .related h2 {
-    margin: 0 0 14px;
-    font-size: 1.18rem;
+    margin: 0;
+    color: #fff8e8;
+    font-size: 1.25rem;
     letter-spacing: 0;
   }
   .related div {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 14px;
   }
   .related a {
-    min-height: 92px;
-    padding: 15px;
-    border-radius: 18px;
-    color: #f8efe2;
+    min-height: 168px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    padding: 20px;
+    border-radius: 20px;
+    color: #fff8e8;
     text-decoration: none;
-    background: rgba(0, 0, 0, 0.17);
-    border: 1px solid rgba(248, 239, 226, 0.1);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.055));
+    border: 1px solid rgba(255, 232, 190, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 16px 38px rgba(0, 0, 0, 0.18);
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+  }
+  .related a:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 201, 135, 0.42);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.085));
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.3);
+  }
+  .related a:focus-visible {
+    outline: 3px solid rgba(255, 201, 135, 0.34);
+    outline-offset: 4px;
+  }
+  .related a small {
+    color: #ffc987;
+    font-size: 0.76rem;
+    font-weight: 1000;
+    letter-spacing: 0.06em;
+    line-height: 1.35;
   }
   .related strong {
     display: block;
+    color: #fffaf0;
+    font-size: 1.08rem;
     line-height: 1.35;
   }
   .related span {
     display: block;
-    margin-top: 7px;
-    color: rgba(248, 239, 226, 0.58);
-    font-size: 0.86rem;
+    color: rgba(255, 248, 232, 0.82);
+    font-size: 0.9rem;
     font-weight: 700;
     line-height: 1.45;
+  }
+  .related em {
+    width: max-content;
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    padding: 11px 18px;
+    border: 1px solid rgba(255, 201, 135, 0.35);
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffd08a, #e6764f);
+    color: #1f1510;
+    font-size: 0.88rem;
+    font-style: normal;
+    font-weight: 1000;
+    line-height: 1;
+    box-shadow: 0 14px 30px rgba(230, 118, 79, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  .related a:hover em {
+    background: linear-gradient(135deg, #ffe0a8, #f1865d);
   }
   @keyframes heroReveal {
     from { opacity: 0; transform: translateY(16px); }
@@ -1214,6 +1282,9 @@ const styles = `
     .insight-grid,
     .related div {
       grid-template-columns: 1fr;
+    }
+    .related em {
+      width: 100%;
     }
     .answers button {
       min-height: 74px;

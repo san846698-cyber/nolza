@@ -568,7 +568,7 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
     "targetDimension": "future/present-action/emotions/perfect-self",
     "rationale": "Unclear season tests future scenario control versus present practice.",
     "prompt": {
-      "ko": "앞으로 몇 달이 어떻게 흘러갈지 잘 보이지 않습니다. 정해진 답이 없어서 마음이 산만합니다.\n\n가장 가까운 모습은?",
+      "ko": "앞으로 몇 달이 어떻게 흘러갈지 잘 보이지 않습니다. 정해진 답이 없어서 불안하고 집중이 잘 안 됩니다.\n\n가장 가까운 모습은?",
       "en": "You cannot clearly see how the next few months will unfold. With no fixed answer, your mind feels scattered.\n\nWhat are you most likely to do?"
     },
     "choices": [
@@ -626,7 +626,7 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "관계가 다시 예전처럼 돌아와야 마음이 놓일 것 같다.",
+          "ko": "관계가 다시 예전처럼 돌아와야 안심될 것 같다.",
           "en": "I feel I will relax only if the relationship returns to how it was."
         },
         "weights": {
@@ -760,7 +760,7 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "불편한 감정이 올라오지 않게 먼저 눌러본다.",
+          "ko": "불편한 감정을 티 내지 않으려고 먼저 눌러본다.",
           "en": "I first try to press down the uncomfortable emotion."
         },
         "weights": {
@@ -774,7 +774,7 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
     "targetDimension": "past/future/present-action/perfect-self",
     "rationale": "Old choice scenario tests past rewriting and future spillover.",
     "prompt": {
-      "ko": "예전 선택 하나가 문득 떠오릅니다. 지금 당장 바꿀 수는 없지만 마음이 복잡해집니다.\n\n가장 가까운 생각은?",
+      "ko": "예전 선택 하나가 문득 떠오릅니다. 지금 당장 바꿀 수는 없지만 후회와 걱정이 섞입니다.\n\n가장 가까운 생각은?",
       "en": "An old choice suddenly comes to mind. You cannot change it now, but your mind gets complicated.\n\nWhat thought feels closest?"
     },
     "choices": [
@@ -877,7 +877,7 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
     "targetDimension": "emotions/present-action/future/past",
     "rationale": "Quiet night scenario tests default mental control target when alone.",
     "prompt": {
-      "ko": "밤에 혼자 있으니 생각이 길어집니다. 특별한 사건은 없는데 마음이 쉽게 멈추지 않습니다.\n\n가장 자주 돌아오는 쪽은?",
+      "ko": "밤에 혼자 있으니 생각이 길어집니다. 특별한 사건은 없는데 생각이 쉽게 멈추지 않습니다.\n\n가장 자주 돌아오는 쪽은?",
       "en": "At night alone, your thoughts get longer. Nothing specific happened, but your mind does not stop easily.\n\nWhat returns most often?"
     },
     "choices": [
@@ -1120,7 +1120,7 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "최종 결과가 엉망이 될까 봐 마음이 붙잡힌다.",
+          "ko": "최종 결과가 엉망이 될까 봐 계속 신경 쓰인다.",
           "en": "My mind gets stuck on whether the final result will be messy."
         },
         "weights": {

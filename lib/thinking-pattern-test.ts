@@ -446,7 +446,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
     "targetDimension": "balanced-perspective/mind-reading/personalization/overgeneralization",
     "rationale": "Group silence is ambiguous and reduces obvious ideal-self responding.",
     "prompt": {
-      "ko": "단체방에 보낸 말에 잠깐 반응이 없습니다. 곧 다른 얘기로 넘어가긴 했지만, 그 순간이 남습니다.\n\n가장 가까운 생각은?",
+      "ko": "단체방에 보낸 말에 잠깐 반응이 없습니다. 곧 다른 얘기로 넘어가긴 했지만, 조금 민망했습니다.\n\n가장 가까운 생각은?",
       "en": "Your message in a group chat gets no reaction for a moment. The chat soon moves on, but that moment stays.\n\nWhat thought comes closest?"
     },
     "choices": [
@@ -473,7 +473,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "내가 분위기를 끊은 것 같아 마음이 쓰인다.",
+          "ko": "내가 분위기를 끊은 것 같아 신경 쓰인다.",
           "en": "I worry that I broke the mood."
         },
         "weights": {
@@ -497,7 +497,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
     "targetDimension": "balanced-perspective/should-statements/emotional-reasoning/catastrophizing",
     "rationale": "A changed plan tests uncertainty tolerance and rules about how one should react.",
     "prompt": {
-      "ko": "기대했던 일정이 갑자기 바뀌었습니다. 큰 손해는 없지만 마음이 어수선합니다.\n\n가장 가까운 반응은?",
+      "ko": "기대했던 일정이 갑자기 바뀌었습니다. 큰 손해는 없지만 조금 실망스럽고 어수선합니다.\n\n가장 가까운 반응은?",
       "en": "A schedule you were looking forward to suddenly changes. Nothing major is lost, but your mind feels unsettled.\n\nWhat reaction feels closest?"
     },
     "choices": [
@@ -524,7 +524,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "마음이 이렇게 불편한 걸 보면 뭔가 잘못된 것 같다.",
+          "ko": "이렇게 불편한 걸 보면 뭔가 잘못된 것 같다.",
           "en": "Because I feel this uncomfortable, it seems something is wrong."
         },
         "weights": {
@@ -752,7 +752,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
     "targetDimension": "balanced-perspective/personalization/mind-reading/catastrophizing",
     "rationale": "Unclear invitation exclusion captures common automatic social interpretations.",
     "prompt": {
-      "ko": "친구들이 당신 없이 만난 걸 나중에 알았습니다. 특별히 숨긴 것 같지는 않지만 마음이 걸립니다.\n\n가장 가까운 생각은?",
+      "ko": "친구들이 당신 없이 만난 걸 나중에 알았습니다. 특별히 숨긴 것 같지는 않지만 조금 서운했습니다.\n\n가장 가까운 생각은?",
       "en": "You later learn friends met without you. It does not seem intentionally hidden, but it bothers you.\n\nWhat thought feels closest?"
     },
     "choices": [

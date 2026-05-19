@@ -2498,7 +2498,7 @@ function AquaHelpPanel({
           touchAction: "manipulation",
         }}
       >
-        ? {t("조작법", "Controls")}
+        {t("PC 조작 안내", "Desktop controls")}
       </button>
     );
   }

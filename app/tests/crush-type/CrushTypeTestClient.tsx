@@ -160,20 +160,35 @@ export default function CrushTypeTestClient(): ReactElement {
               <button type="button" onClick={start} className="primary">
                 {t(locale, "테스트 시작하기", "Start the test")}
               </button>
-              <p className="notice">{t(locale, "이 테스트는 재미용입니다. 실제 상대의 마음을 판단하지 않아요.", "This test is for fun. It does not determine anyone's real feelings.")}</p>
+              <p className="meta-line">{t(locale, "16문항 · 약 4분", "16 questions · about 4 min")}</p>
+              <p className="notice">
+                {t(
+                  locale,
+                  "이 테스트는 전문적인 진단이 아닌, 관계 속 반응 패턴을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
+                  "This is not a professional diagnosis. It is an entertainment and self-reflection experience based on relationship response patterns.",
+                )}
+              </p>
             </div>
             <div className="signal-art" aria-hidden>
-              <span className="bubble bubble-one" />
-              <span className="bubble bubble-two" />
               <span className="thread" />
-              <span className="heart" />
+              <span className="signal-node signal-node-left" />
+              <span className="signal-node signal-node-right" />
+              <span className="message-card message-card-one">
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className="message-card message-card-two">
+                <i />
+                <i />
+              </span>
             </div>
           </section>
         ) : (
           <section className="quiz-card">
             <div className="progress-head">
               <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "질문", "Question")}</span>
-              <strong>{phase === "result" ? "12/12" : `${questionIndex + 1}/12`}</strong>
+              <strong>{phase === "result" ? `${CRUSH_QUESTIONS.length}/${CRUSH_QUESTIONS.length}` : `${questionIndex + 1}/${CRUSH_QUESTIONS.length}`}</strong>
             </div>
             <div className="progress-bar" aria-hidden>
               <span style={{ width: `${progress}%` }} />
@@ -289,7 +304,8 @@ export default function CrushTypeTestClient(): ReactElement {
 
         .subtitle,
         .description,
-        .notice {
+        .notice,
+        .meta-line {
           max-width: 640px;
           color: rgba(43, 23, 32, 0.74);
           line-height: 1.72;
@@ -309,6 +325,13 @@ export default function CrushTypeTestClient(): ReactElement {
         .notice {
           margin: 16px 0 0;
           font-size: 14px;
+        }
+
+        .meta-line {
+          margin: 18px 0 0;
+          color: #a62d4e;
+          font-size: 14px;
+          font-weight: 900;
         }
 
         .primary,
@@ -346,71 +369,105 @@ export default function CrushTypeTestClient(): ReactElement {
           min-height: 380px;
         }
 
-        .heart {
-          position: absolute;
-          width: 154px;
-          height: 154px;
-          left: 50%;
-          top: 52%;
-          transform: translate(-50%, -50%) rotate(45deg);
-          border-radius: 42px 44px 30px 44px;
-          background: linear-gradient(135deg, #ff6d7e, #c83c64);
-          box-shadow: 0 22px 56px rgba(200, 60, 100, 0.32), inset 0 2px 0 rgba(255, 255, 255, 0.36);
-        }
-
-        .heart::before,
-        .heart::after {
+        .signal-art::before {
           content: "";
           position: absolute;
-          width: 154px;
-          height: 154px;
-          border-radius: 50%;
-          background: inherit;
+          inset: 14% 10% 12%;
+          border-radius: 42px;
+          background:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 238, 221, 0.18)),
+            radial-gradient(circle at 26% 24%, rgba(216, 68, 98, 0.14), transparent 34%),
+            radial-gradient(circle at 78% 70%, rgba(158, 37, 71, 0.1), transparent 36%);
+          border: 1px solid rgba(146, 70, 78, 0.13);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.48);
         }
 
-        .heart::before {
-          left: -76px;
-          top: 0;
-        }
-
-        .heart::after {
-          left: 0;
-          top: -76px;
-        }
-
-        .bubble {
+        .message-card {
           position: absolute;
           z-index: 2;
-          display: grid;
-          place-items: center;
-          border-radius: 24px;
-          background: rgba(255, 255, 255, 0.74);
-          color: #ba3a58;
-          font-weight: 900;
-          box-shadow: 0 18px 40px rgba(77, 38, 47, 0.18);
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          border-radius: 18px;
+          background: rgba(255, 250, 245, 0.82);
+          border: 1px solid rgba(146, 70, 78, 0.16);
+          box-shadow: 0 18px 40px rgba(77, 38, 47, 0.14);
+          backdrop-filter: blur(10px);
         }
 
-        .bubble-one {
-          width: 110px;
-          height: 76px;
-          left: 12%;
-          top: 16%;
+        .message-card i {
+          display: block;
+          height: 8px;
+          border-radius: 999px;
+          background: rgba(186, 58, 88, 0.34);
         }
 
-        .bubble-two {
-          width: 74px;
+        .message-card-one {
+          width: 138px;
           height: 74px;
-          right: 12%;
-          bottom: 20%;
-          font-size: 34px;
+          left: 8%;
+          top: 18%;
+          padding: 0 18px;
+        }
+
+        .message-card-one i:nth-child(1) {
+          width: 14px;
+        }
+
+        .message-card-one i:nth-child(2) {
+          width: 34px;
+        }
+
+        .message-card-one i:nth-child(3) {
+          width: 22px;
+        }
+
+        .message-card-two {
+          width: 116px;
+          height: 64px;
+          right: 8%;
+          bottom: 18%;
+          padding: 0 17px;
+        }
+
+        .message-card-two i:nth-child(1) {
+          width: 42px;
+        }
+
+        .message-card-two i:nth-child(2) {
+          width: 18px;
+          background: rgba(142, 68, 77, 0.22);
         }
 
         .thread {
           position: absolute;
-          inset: 10% 8% 8%;
-          border: 1px solid rgba(186, 58, 88, 0.24);
-          border-radius: 48% 52% 44% 56%;
-          transform: rotate(-12deg);
+          left: 19%;
+          right: 18%;
+          top: 50%;
+          height: 1px;
+          transform: rotate(-13deg);
+          background: linear-gradient(90deg, transparent, rgba(186, 58, 88, 0.52), transparent);
+          box-shadow: 0 0 18px rgba(186, 58, 88, 0.14);
+        }
+
+        .signal-node {
+          position: absolute;
+          z-index: 2;
+          width: 14px;
+          height: 14px;
+          border-radius: 999px;
+          background: #ba3a58;
+          box-shadow: 0 0 0 10px rgba(186, 58, 88, 0.08), 0 14px 32px rgba(77, 38, 47, 0.18);
+        }
+
+        .signal-node-left {
+          left: 20%;
+          top: 43%;
+        }
+
+        .signal-node-right {
+          right: 20%;
+          bottom: 42%;
         }
 
         .quiz-card {
@@ -561,6 +618,10 @@ export default function CrushTypeTestClient(): ReactElement {
           font-weight: 700;
         }
 
+        .result-basis {
+          background: rgba(255, 249, 241, 0.78);
+        }
+
         .result-actions {
           display: flex;
           flex-wrap: wrap;
@@ -634,6 +695,16 @@ function ResultView({
         <p className="one-liner">{text(locale, result.oneLiner)}</p>
       </div>
       <p className="result-description">{text(locale, result.description)}</p>
+      <div className="result-box result-basis">
+        <span>{t(locale, "테스트 기준", "How this test works")}</span>
+        <p>
+          {t(
+            locale,
+            "이 테스트는 관계 속에서 나타나는 반응 패턴을 일상 상황으로 풀어낸 재미용 자기이해 콘텐츠입니다. 결과는 참고용이며 실제 상대의 마음을 판단하지 않습니다.",
+            "This test translates relationship response patterns into everyday situations. Results are for entertainment and self-reflection only and do not determine anyone's real feelings.",
+          )}
+        </p>
+      </div>
       <div className="result-grid">
         <div className="result-box">
           <span>{t(locale, "강점", "Strength")}</span>

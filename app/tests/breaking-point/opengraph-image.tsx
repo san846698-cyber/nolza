@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "당신이 선을 넘게 되는 순간 | The Moment You Cross the Line";
+export const alt = "나를 차갑게 만드는 순간 | The Moment I Turn Cold";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -63,13 +63,13 @@ export default function Image() {
             PSYCHOLOGY TEST
           </div>
           <div style={{ marginTop: 20, fontSize: 76, fontWeight: 900, lineHeight: 1.08 }}>
-            당신이 선을 넘게 되는 순간
+            나를 차갑게 만드는 순간
           </div>
           <div style={{ marginTop: 22, fontSize: 32, fontWeight: 800, color: "rgba(255,242,226,.84)" }}>
-            평소의 내가 무너지는 지점은 어디일까요?
+            평소의 내가 달라지는 지점은 어디일까요?
           </div>
           <div style={{ marginTop: 28, fontSize: 25, fontWeight: 700, color: "rgba(255,242,226,.68)" }}>
-            The Moment You Cross the Line
+            The Moment I Turn Cold
           </div>
         </div>
       </div>

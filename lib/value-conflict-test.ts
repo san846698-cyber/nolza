@@ -301,7 +301,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
     "targetDimension": "truth/peace/love/pride",
     "rationale": "An honest conversation tests whether the user prioritizes clarity, harmony, connection, or self-protection.",
     "prompt": {
-      "ko": "친한 사람에게 솔직히 말해야 할 일이 생겼습니다. 말하지 않으면 마음에 남고, 말하면 분위기가 어색해질 수 있습니다. 당신은?",
+      "ko": "친한 사람에게 솔직히 말해야 할 일이 생겼습니다. 말하지 않으면 계속 신경 쓰이고, 말하면 분위기가 어색해질 수 있습니다. 당신은?",
       "en": "You need to be honest with someone close. If you say nothing, it will stay on your mind; if you say it, the mood may turn awkward. What do you do?"
     },
     "choices": [
@@ -354,7 +354,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
     "targetDimension": "growth/rest/responsibility/start",
     "rationale": "A weekend tension between recovery and improvement shows which value becomes harder to put down.",
     "prompt": {
-      "ko": "주말에 쉬고 싶지만, 놓치면 아쉬울 공부 모임도 있습니다. 몸은 지쳐 있고 마음은 뒤처질까 봐 흔들립니다. 당신에게 가까운 쪽은?",
+      "ko": "주말에 쉬고 싶지만, 놓치면 아쉬울 공부 모임도 있습니다. 몸은 지쳐 있고 뒤처질까 봐 불안합니다. 당신에게 가까운 쪽은?",
       "en": "You want to rest on the weekend, but there is a study session you might regret missing. Your body is tired, and your mind worries about falling behind. What feels closest?"
     },
     "choices": [
@@ -407,7 +407,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
     "targetDimension": "recognition/independence/stability/freedom",
     "rationale": "A socially expected path versus a desired path reveals tension between approval and self-direction.",
     "prompt": {
-      "ko": "사람들이 기대하는 길과 내가 끌리는 길이 다릅니다. 기대를 저버리는 것도 마음에 걸리고, 계속 맞추는 것도 답답합니다. 당신은?",
+      "ko": "사람들이 기대하는 길과 내가 끌리는 길이 다릅니다. 기대를 저버리면 신경 쓰이고, 계속 맞추는 것도 답답합니다. 당신은?",
       "en": "The path people expect from you and the path you feel drawn to are different. Disappointing them bothers you, but continuing to fit their expectations feels stifling. What do you do?"
     },
     "choices": [
@@ -783,7 +783,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
     "targetDimension": "love/pride/truth/peace",
     "rationale": "Repairing awkwardness with someone close tests warmth, self-respect, and gentle honesty.",
     "prompt": {
-      "ko": "가까운 사람과 작은 일로 어색해졌습니다. 먼저 풀고 싶지만, 내 마음만 급한 것 같아 멈칫합니다. 당신은?",
+      "ko": "가까운 사람과 작은 일로 어색해졌습니다. 먼저 풀고 싶지만, 나만 조급해 보일까 봐 멈칫합니다. 당신은?",
       "en": "A small issue has made things awkward with someone close. You want to smooth it over first, but you pause because it may look like only you are eager. What do you do?"
     },
     "choices": [
@@ -942,7 +942,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
     "targetDimension": "perfection/start/recognition",
     "rationale": "A rough first draft tests whether action is blocked by quality standards or visibility concerns.",
     "prompt": {
-      "ko": "초안은 나왔지만 아직 거칠고 어색합니다. 지금 손을 떼면 앞으로 나아갈 수 있고, 더 다듬으면 마음은 놓일 것 같습니다. 당신은?",
+      "ko": "초안은 나왔지만 아직 거칠고 어색합니다. 지금 손을 떼면 앞으로 나아갈 수 있고, 더 다듬으면 안심될 것 같습니다. 당신은?",
       "en": "You have a draft, but it is still rough and awkward. Letting it go now would move you forward; polishing it more would feel reassuring. What do you do?"
     },
     "choices": [
@@ -1048,7 +1048,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
     "targetDimension": "balanced negotiation across love/truth/peace/freedom/stability",
     "rationale": "A final two-option dilemma checks whether the user can negotiate competing values without collapsing into one extreme.",
     "prompt": {
-      "ko": "두 선택지가 있습니다. 하나는 마음이 끌리지만 불안하고, 다른 하나는 안전하지만 아쉬움이 남습니다. 지금 당장 결정해야 한다면?",
+      "ko": "두 선택지가 있습니다. 하나는 끌리지만 불안하고, 다른 하나는 안전하지만 아쉽습니다. 지금 당장 결정해야 한다면?",
       "en": "There are two options. One draws your heart but feels uncertain; the other is safe but leaves some regret. If you had to decide now, what would you do?"
     },
     "choices": [
@@ -1065,7 +1065,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "불안해도 마음이 계속 향하는 쪽을 고른다",
+          "ko": "불안해도 계속 끌리는 쪽을 고른다",
           "en": "Even with anxiety, I choose the direction my heart keeps leaning toward."
         },
         "weights": {
@@ -1087,7 +1087,7 @@ export const VALUE_QUESTIONS: ValueQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "누구에게 어떤 말을 해야 마음이 덜 남을지 먼저 본다",
+          "ko": "누구에게 어떤 말을 해야 덜 찝찝할지 먼저 본다",
           "en": "I first consider what I need to say to whom so less remains unresolved."
         },
         "weights": {

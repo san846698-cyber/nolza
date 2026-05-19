@@ -18,16 +18,12 @@ const DEFAULT_IDS = ["kbti", "circle", "react", "password", "timesense", "averag
 function ctaFor(type: ContentType | undefined, locale: Lang) {
   if (type === "game") return locale === "ko" ? "플레이하기" : "Play";
   if (type === "test") return locale === "ko" ? "테스트하기" : "Take test";
-  if (type === "compatibility" || type === "fortune") {
-    return locale === "ko" ? "해보기" : "Try it";
-  }
   return locale === "ko" ? "해보기" : "Try it";
 }
 
 export default function RecommendedGames({
   currentId,
   ids,
-  title,
   limit = 3,
 }: RecommendedGamesProps) {
   const { locale, t } = useLocale();
@@ -41,10 +37,10 @@ export default function RecommendedGames({
   if (games.length === 0) return null;
 
   return (
-    <section className="recommended-games" aria-label={t("추천 테스트", "Recommended tests")}>
+    <section className="recommended-games" aria-label={t("이 테스트도 해보세요", "Try These Next")}>
       <div className="recommended-games__head">
         <small>{t("추천", "RECOMMENDED")}</small>
-        <span>{title ? title[locale] : t("이 테스트도 해보세요", "Try these next")}</span>
+        <span>{t("이 테스트도 해보세요", "Try These Next")}</span>
       </div>
       <div className="recommended-games__grid">
         {games.map((game) => {
@@ -59,8 +55,8 @@ export default function RecommendedGames({
             >
               <span className="recommended-games__kicker">{copy.kicker}</span>
               <strong>{copy.title}</strong>
-              <span>{copy.sub}</span>
-              <em>{ctaFor(game.type, locale)}</em>
+              <span className="recommended-games__desc">{copy.sub}</span>
+              <em className="recommended-games__cta">{ctaFor(game.type, locale)}</em>
             </Link>
           );
         })}

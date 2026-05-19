@@ -311,16 +311,28 @@
 
 .exitLaneArrow {
   position: absolute;
-  left: 48px;
+  left: 44px;
   top: 50%;
-  transform: translateY(-53%);
-  color: #ffe2a6;
-  font-size: 28px;
-  font-weight: 950;
-  line-height: 1;
-  letter-spacing: 0;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.48);
+  width: 46px;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: #ffe2a6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.48);
   animation: arrowPulse 1300ms ease-in-out infinite;
+}
+
+.exitLaneArrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  border-top: 4px solid #ffe2a6;
+  border-right: 4px solid #ffe2a6;
+  border-radius: 2px;
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .car {
@@ -1159,8 +1171,16 @@
   }
 
   .exitLaneArrow {
-    left: 34px;
-    font-size: 22px;
+    left: 30px;
+    width: 34px;
+    height: 3px;
+  }
+
+  .exitLaneArrow::after {
+    width: 10px;
+    height: 10px;
+    border-top-width: 3px;
+    border-right-width: 3px;
   }
 
   .car {
