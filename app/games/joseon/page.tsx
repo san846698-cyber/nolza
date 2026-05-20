@@ -278,11 +278,38 @@ function isNameLike(value: string): boolean {
   return true;
 }
 
+const EDGE_NAME_PUNCT_RE = /^[\s"'`“”‘’「」『』!?.,，。！？]+|[\s"'`“”‘’「」『』!?.,，。！？]+$/g;
+
+function sanitizeDisplayName(value: string): string {
+  return value
+    .trim()
+    .replace(EDGE_NAME_PUNCT_RE, "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function finalConsonantIndex(value: string): number {
+  const last = Array.from(value.trim()).reverse().find((char) => /\S/.test(char));
+  if (!last) return 0;
+  const code = last.charCodeAt(0);
+  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28;
+  if (/x$/i.test(last)) return 0;
+  return /[0-9bcdfghjklmnpqrstvwxyz]$/i.test(last) ? 1 : 0;
+}
+
+function withJosa(value: string, pair: "은/는" | "을/를" | "으로/로"): string {
+  const jong = finalConsonantIndex(value);
+  if (pair === "은/는") return `${value}${jong ? "은" : "는"}`;
+  if (pair === "을/를") return `${value}${jong ? "을" : "를"}`;
+  return `${value}${jong && jong !== 8 ? "으로" : "로"}`;
+}
+
 function getInitialSharedName(): string {
   if (typeof window === "undefined") return "";
   const payload = decodeSharePayload<LifeSharePayload>(new URLSearchParams(window.location.search).get("s"));
-  return payload?.v === 2 && typeof payload.name === "string" && isNameLike(payload.name)
-    ? payload.name.trim()
+  const name = typeof payload?.name === "string" ? sanitizeDisplayName(payload.name) : "";
+  return payload?.v === 2 && isNameLike(name)
+    ? name
     : "";
 }
 
@@ -290,16 +317,16 @@ function makeParagraphs(name: string, result: Omit<LifeResult, "paragraphs">): {
   const { archetype, birthYear, finalYear, region, role, remembered, season, finalObject } = result;
   return {
     ko: [
-      `${name}은 ${birthYear}년, ${region.ko}의 작은 계절 속에서 태어났습니다. 그해 마을에는 유난히 바람이 오래 머물렀고, 사람들은 아이의 눈빛이 또렷하다고 말했습니다.`,
+      `${withJosa(name, "은/는")} ${birthYear}년, ${region.ko}의 작은 계절 속에서 태어났습니다. 그해 마을에는 유난히 바람이 오래 머물렀고, 사람들은 아이의 눈빛이 또렷하다고 말했습니다.`,
       archetype.child.ko,
       archetype.turn.ko,
-      `그 뒤 ${name}은 ${role.ko}의 길을 걷기 시작했습니다. 처음에는 하루를 버티는 일만으로도 벅찼지만, 시간이 지날수록 그 길은 당신의 얼굴을 닮아갔습니다.`,
+      `그 뒤 ${withJosa(name, "은/는")} ${role.ko}의 길을 걷기 시작했습니다. 처음에는 하루를 버티는 일만으로도 벅찼지만, 시간이 지날수록 그 길은 당신의 얼굴을 닮아갔습니다.`,
       archetype.hardship.ko,
       archetype.bond.ko,
       archetype.achievement.ko,
       archetype.later.ko,
-      `${finalYear}년 ${season.ko}, ${name}은 ${finalObject.ko}을 곁에 두고 조용히 눈을 감았습니다. 방 안에는 오래 접어 둔 마음처럼 낮은 빛이 남아 있었습니다.`,
-      `훗날 사람들은 ${name}을 크게 빛난 인물이라 부르지는 않았습니다. 다만 ${remembered.ko}으로, 누군가의 기억 속에 오래 남았다고 전해졌습니다.`,
+      `${finalYear}년 ${season.ko}, ${withJosa(name, "은/는")} ${withJosa(finalObject.ko, "을/를")} 곁에 두고 조용히 눈을 감았습니다. 방 안에는 오래 접어 둔 마음처럼 낮은 빛이 남아 있었습니다.`,
+      `훗날 사람들은 ${withJosa(name, "을/를")} 크게 빛난 인물이라 부르지는 않았습니다. 다만 ${withJosa(remembered.ko, "으로/로")}, 누군가의 기억 속에 오래 남았다고 전해졌습니다.`,
     ],
     en: [
       `${name} was born in ${birthYear}, in a small season of ${region.en}. That year, wind lingered in the village for a long time, and people said the child's eyes were unusually clear.`,
@@ -350,7 +377,7 @@ export default function JoseonLifePage(): ReactElement {
   }, [result]);
 
   const submit = () => {
-    const trimmed = name.trim();
+    const trimmed = sanitizeDisplayName(name);
     if (!isNameLike(trimmed)) {
       setError(t("이름 또는 닉네임처럼 보이는 단어를 입력해주세요.", "Please enter a word that looks like a name or nickname."));
       return;
@@ -358,6 +385,7 @@ export default function JoseonLifePage(): ReactElement {
     setError("");
     setCopied(false);
     trackTestStart("joseon", "My Life in Joseon");
+    setName(trimmed);
     setSubmittedName(trimmed);
     window.history.replaceState(null, "", "/games/joseon");
   };

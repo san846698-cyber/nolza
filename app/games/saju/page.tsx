@@ -713,6 +713,28 @@ function generateKoreanName(input: string, gender: Gender): GeneratedName {
   return pool[seededIndex(input, gender + ":name", pool.length)];
 }
 
+const EDGE_NAME_PUNCT_RE = /^[\s"'`“”‘’「」『』!?.,，。！？]+|[\s"'`“”‘’「」『』!?.,，。！？]+$/g;
+
+function sanitizeDisplayName(name: string): string {
+  return name
+    .trim()
+    .replace(EDGE_NAME_PUNCT_RE, "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function hasKoreanBatchim(text: string): boolean {
+  const last = Array.from(text.trim()).pop();
+  if (!last) return false;
+  const code = last.charCodeAt(0);
+  if (code < 0xac00 || code > 0xd7a3) return false;
+  return (code - 0xac00) % 28 !== 0;
+}
+
+function topicJosa(text: string): "은" | "는" {
+  return hasKoreanBatchim(text) ? "은" : "는";
+}
+
 /* ============================================================================
    Saju calculation
    Note: Simplified solar-calendar based calculation. For entertainment only —
@@ -872,8 +894,10 @@ export default function SajuPage(): ReactElement {
   const submitForeignName = useCallback(
     (e?: FormEvent) => {
       e?.preventDefault();
-      if (!foreignName.trim() || !gender) return;
-      const generated = generateKoreanName(foreignName, gender);
+      const cleanName = sanitizeDisplayName(foreignName);
+      if (!cleanName || !gender) return;
+      const generated = generateKoreanName(cleanName, gender);
+      setForeignName(cleanName);
       setGeneratedName(generated);
       setForm((f) => ({ ...f, name: generated.display }));
       setPhase("fr-bridge");
@@ -894,8 +918,9 @@ export default function SajuPage(): ReactElement {
       const m = parseInt(form.month, 10);
       const d = parseInt(form.day, 10);
       const h = form.unknownHour || form.hour === "" ? null : parseInt(form.hour, 10);
+      const cleanName = sanitizeDisplayName(form.name);
       if (
-        !form.name.trim() ||
+        !cleanName ||
         !Number.isFinite(y) ||
         !Number.isFinite(m) ||
         !Number.isFinite(d) ||
@@ -910,6 +935,7 @@ export default function SajuPage(): ReactElement {
       }
       const r = calcSaju(y, m - 1, d, h);
       trackTestStart("saju", "Saju Reading");
+      setForm((f) => ({ ...f, name: cleanName }));
       setResult(r);
       setPhase("result");
     },
@@ -2292,7 +2318,7 @@ function ResultView({
         </div>
         <p style={{ fontSize: 15, color: INK, lineHeight: 1.7, marginTop: 14 }}>
           {dominantInfo.emoji} <strong style={{ color: ACCENT }}>{dominantInfo.ko}({dominantInfo.hanja})</strong>의 기운이 가장 강합니다.{" "}
-          {weakestInfo.emoji} <strong style={{ color: SUBTLE }}>{weakestInfo.ko}({weakestInfo.hanja})</strong>은(는) 보완이 필요해요.
+          {weakestInfo.emoji} <strong style={{ color: SUBTLE }}>{weakestInfo.ko}({weakestInfo.hanja})</strong>{topicJosa(weakestInfo.ko)} 보완이 필요해요.
         </p>
       </Section>
 
@@ -2341,7 +2367,9 @@ function ResultView({
         }}
       >
         <button type="button" onClick={onShare} style={primaryButtonStyle}>
-          {copied ? "COPIED" : "공유  ·  SHARE"}
+          {copied
+            ? (locale === "ko" ? "복사됨" : "COPIED")
+            : (locale === "ko" ? "공유하기" : "SHARE")}
         </button>
         <button type="button" onClick={onReset} style={secondaryButtonStyle}>
           ↺ 다시 보기

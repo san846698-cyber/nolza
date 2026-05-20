@@ -108,6 +108,16 @@ type RecordSection = {
   bodyEn: string[];
 };
 
+const EDGE_NAME_PUNCT_RE = /^[\s"'`“”‘’「」『』!?.,，。！？]+|[\s"'`“”‘’「」『』!?.,，。！？]+$/g;
+
+function sanitizeDisplayName(name: string): string {
+  return name
+    .trim()
+    .replace(EDGE_NAME_PUNCT_RE, "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
 function buildPerson(originalName: string, gender: Gender, salt: number): Person {
   const seed = hashString(`${originalName}|${gender}|${salt}`);
   const rng = mulberry32(seed);
@@ -122,6 +132,7 @@ function hasFinalConsonantKo(value: string): boolean {
   if (!last) return false;
   const code = last.charCodeAt(0);
   if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 !== 0;
+  if (/x$/i.test(last)) return false;
   return /[0-9bcdfghjklmnpqrstvwxyz]$/i.test(last);
 }
 
@@ -143,6 +154,8 @@ function polishKoreanParticlesKo(text: string, values: string[]): string {
       const subject = withJosaKo(value, "은", "는");
       const nominative = withJosaKo(value, "이", "가");
       const object = withJosaKo(value, "을", "를");
+      const nameForm = withJosaKo(value, "이라는", "라는");
+      const calledForm = withJosaKo(value, "이라", "라");
 
       next = replaceLiteralKo(next, `${value}와(과)`, join);
       next = replaceLiteralKo(next, `${value}과(와)`, join);
@@ -156,6 +169,10 @@ function polishKoreanParticlesKo(text: string, values: string[]): string {
       next = replaceLiteralKo(next, `${value}가(이)`, nominative);
       next = replaceLiteralKo(next, `${value}을(를)`, object);
       next = replaceLiteralKo(next, `${value}를(을)`, object);
+      next = replaceLiteralKo(next, `${value}이라는`, nameForm);
+      next = replaceLiteralKo(next, `${value}라는`, nameForm);
+      next = replaceLiteralKo(next, `${value}이라 불린`, `${calledForm} 불린`);
+      next = replaceLiteralKo(next, `${value}라 불린`, `${calledForm} 불린`);
 
       return next;
     }, text);
@@ -807,8 +824,9 @@ export default function JoseonCouplePage(): ReactElement {
     ) {
       return;
     }
-    const n1 = payload.name1.trim();
-    const n2 = payload.name2.trim();
+    const n1 = sanitizeDisplayName(payload.name1);
+    const n2 = sanitizeDisplayName(payload.name2);
+    if (!n1 || !n2) return;
     const restoreId = window.setTimeout(() => {
       setName1(n1);
       setName2(n2);
@@ -824,8 +842,8 @@ export default function JoseonCouplePage(): ReactElement {
   const handleSubmit = useCallback(
     (e?: FormEvent) => {
       e?.preventDefault();
-      const n1 = name1.trim();
-      const n2 = name2.trim();
+      const n1 = sanitizeDisplayName(name1);
+      const n2 = sanitizeDisplayName(name2);
       if (!n1 || !n2) return;
       trackTestStart("joseon-couple", "Joseon Couple Compatibility");
       setIsSharedResult(false);

@@ -12,6 +12,7 @@ import {
 } from "react";
 import { AdBottom } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
+import { GAMES } from "@/lib/games-home";
 
 type Loc = "ko" | "en";
 type RoleStyle = "female" | "male" | "random" | "neutral";
@@ -55,6 +56,37 @@ type DramaResult = {
   shipReason: string;
   shareSummary: string;
 };
+
+type ResultRecommendation = {
+  href: string;
+  ko: string;
+  en: string;
+};
+
+const VALID_RECOMMENDATION_ROUTES = new Set(GAMES.map((game) => game.href));
+
+const KDRAMA_RESULT_RECOMMENDATIONS: ResultRecommendation[] = [
+  {
+    href: "/games/joseon-couple",
+    ko: "조선시대 커플",
+    en: "Joseon Couple",
+  },
+  {
+    href: "/tests/crush-type",
+    ko: "짝사랑 유형 테스트",
+    en: "Crush Type Test",
+  },
+  {
+    href: "/games/friend-match",
+    ko: "친구 궁합",
+    en: "Friend Match",
+  },
+  {
+    href: "/games/joseon",
+    ko: "조선시대 나의 일대기",
+    en: "My Life in Joseon",
+  },
+].filter((item) => VALID_RECOMMENDATION_ROUTES.has(item.href));
 
 const BG = "#080609";
 const PANEL = "rgba(255,255,255,0.055)";
@@ -246,6 +278,8 @@ const GENRES = [
   "계약 동거 로코",
 ];
 
+const EDGE_NAME_PUNCT_RE = /^[\s"'`“”‘’「」『』!?.,，。！？]+|[\s"'`“”‘’「」『』!?.,，。！？]+$/g;
+
 function hashStr(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) | 0;
@@ -256,21 +290,40 @@ function pick<T>(items: T[], seed: string, salt: string): T {
   return items[hashStr(`${seed}:${salt}`) % items.length];
 }
 
+function sanitizeDisplayName(name: string): string {
+  return name
+    .trim()
+    .replace(EDGE_NAME_PUNCT_RE, "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
 function displayName(name: string, fallback: string): string {
-  const trimmed = name.trim();
+  const trimmed = sanitizeDisplayName(name);
   return trimmed || fallback;
 }
 
-function hasFinalConsonant(value: string): boolean {
+function finalConsonantIndex(value: string): number {
   const last = Array.from(value.trim()).reverse().find((char) => /\S/.test(char));
-  if (!last) return false;
+  if (!last) return 0;
   const code = last.charCodeAt(0);
-  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 !== 0;
-  return /[0-9bcdfghjklmnpqrstvwxyz]$/i.test(last);
+  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28;
+  if (/x$/i.test(last)) return 0;
+  return /[0-9bcdfghjklmnpqrstvwxyz]$/i.test(last) ? 1 : 0;
 }
 
-function withJosa(value: string, consonantForm: string, vowelForm: string): string {
-  return `${value}${hasFinalConsonant(value) ? consonantForm : vowelForm}`;
+function hasFinalConsonant(value: string): boolean {
+  return finalConsonantIndex(value) !== 0;
+}
+
+function withJosa(value: string, pair: "은/는" | "이/가" | "을/를" | "과/와" | "으로/로" | "이랑/랑"): string {
+  const jong = finalConsonantIndex(value);
+  if (pair === "은/는") return `${value}${jong ? "은" : "는"}`;
+  if (pair === "이/가") return `${value}${jong ? "이" : "가"}`;
+  if (pair === "을/를") return `${value}${jong ? "을" : "를"}`;
+  if (pair === "과/와") return `${value}${jong ? "과" : "와"}`;
+  if (pair === "으로/로") return `${value}${jong && jong !== 8 ? "으로" : "로"}`;
+  return `${value}${jong ? "이랑" : "랑"}`;
 }
 
 function replaceAllLiteral(text: string, from: string, to: string): string {
@@ -283,15 +336,21 @@ function polishKoreanParticles(text: string, values: string[]): string {
     .sort((a, b) => b.length - a.length)
     .reduce((output, value) => {
       let next = output;
-      const join = withJosa(value, "과", "와");
-      const subject = withJosa(value, "은", "는");
-      const nominative = withJosa(value, "이", "가");
-      const casualJoin = withJosa(value, "이랑", "랑");
+      const join = withJosa(value, "과/와");
+      const subject = withJosa(value, "은/는");
+      const nominative = withJosa(value, "이/가");
+      const object = withJosa(value, "을/를");
+      const direction = withJosa(value, "으로/로");
+      const casualJoin = withJosa(value, "이랑/랑");
 
       next = replaceAllLiteral(next, `${value}과`, join);
       next = replaceAllLiteral(next, `${value}와`, join);
       next = replaceAllLiteral(next, `${value}은`, subject);
       next = replaceAllLiteral(next, `${value}는`, subject);
+      next = replaceAllLiteral(next, `${value}을`, object);
+      next = replaceAllLiteral(next, `${value}를`, object);
+      next = replaceAllLiteral(next, `${value}으로`, direction);
+      next = replaceAllLiteral(next, `${value}로`, direction);
       next = replaceAllLiteral(next, `${value}이 `, `${nominative} `);
       next = replaceAllLiteral(next, `${value}가 `, `${nominative} `);
       next = replaceAllLiteral(next, `${value}이\n`, `${nominative}\n`);
@@ -491,16 +550,16 @@ function buildSynopsis(
   );
   const finalHook = pick(
     [
-      `이 드라마는 '${a}와 ${b}가 서로의 결말을 바꿀 수 있을까'를 끝까지 묻게 만드는 이야기다.`,
+      `이 드라마는 「${a}와 ${b}가 서로의 결말을 바꿀 수 있을까」를 끝까지 묻게 만드는 이야기다.`,
       `결국 시청자는 둘이 행복해지는 장면 하나를 보려고 16부작을 밤새 달리게 된다.`,
       `그리고 마지막 10초, 처음 만났던 장면의 의미가 완전히 달라진다.`,
-      `이번 생에서 안 되면 다음 생에서라도, 라는 말이 농담이 아니게 되는 이야기다.`,
+      `이번 생에서 안 되면 다음 생에서라도 이어질 수밖에 없는 이야기다.`,
     ],
     seed,
     "synopsis-final",
   );
 
-  return `${firstRole.title} ${a}는 어느 날 ${secondRole.title} ${b}와 마주친다. ${firstMeeting} ${pull} ${conflictHook} ${finalHook}`;
+  return `${firstRole.title} ${a}는 어느 날 ${secondRole.title} ${b}와 마주칩니다. ${firstMeeting} ${pull} ${conflictHook} ${finalHook}`;
 }
 
 function buildViewingPoints(a: string, b: string, firstRole: CharacterRole, secondRole: CharacterRole, seed: string): string[] {
@@ -614,7 +673,7 @@ function buildResult(first: ProtagonistInput, second: ProtagonistInput): DramaRe
   const dynamicFlavor = buildDynamicFlavor(a, b, relationship, seed);
   const viewerComments = buildViewerComments(a, b, seed);
   const endingTeaser = buildEndingTeaser(a, b, seed);
-  const shareSummary = `우리 드라마 제목이 '${title}'래. 케미 ${score}점, 장르는 ${genre}. ${a}랑 ${b} 줄거리 은근 넷플릭스 16부작 가능...`;
+  const shareSummary = `우리 드라마 제목은 「${title}」래. 케미 ${score}점, 장르는 ${genre}. ${a}랑 ${b} 줄거리는 은근 16부작 가능해 보여.`;
   const polish = (text: string) => polishKoreanParticles(text, [a, b, firstRole.tag, secondRole.tag]);
 
   return {
@@ -658,7 +717,7 @@ export default function KdramaCouplePage(): ReactElement {
 
   const t = useCallback((ko: string, en: string) => (loc === "ko" ? ko : en), [loc]);
 
-  const canSubmit = first.name.trim().length > 0 && second.name.trim().length > 0;
+  const canSubmit = sanitizeDisplayName(first.name).length > 0 && sanitizeDisplayName(second.name).length > 0;
 
   const handleSubmit = useCallback(
     (event: FormEvent) => {
@@ -669,8 +728,8 @@ export default function KdramaCouplePage(): ReactElement {
       }
       setCopied(false);
       setSubmitted({
-        first: { name: first.name.trim(), role: first.role },
-        second: { name: second.name.trim(), role: second.role },
+        first: { name: sanitizeDisplayName(first.name), role: first.role },
+        second: { name: sanitizeDisplayName(second.name), role: second.role },
       });
     },
     [canSubmit, first, second],
@@ -1157,14 +1216,13 @@ function ResultView({
           <ResultSection title={t("공유 멘트", "Shareable summary")} body={loc === "ko" ? result.shareSummary : makeEnglishSummary(result, a, b)} />
 
           <section style={cardStyle}>
-            <div style={eyebrowStyle}>{t("다른 K-드라마 테스트", "More K-drama tests")}</div>
+            <div style={eyebrowStyle}>{t("이 테스트도 해보세요", "Try these next")}</div>
             <div className="kdc-mobile-stack" style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
-              <Link href="/games/kdrama" style={linkButtonStyle}>
-                {t("K-드라마 취향 테스트", "K-drama taste test")}
-              </Link>
-              <Link href="/games/kdrama-trope" style={linkButtonStyle}>
-                {t("K-드라마 클리셰 테스트", "K-drama trope test")}
-              </Link>
+              {KDRAMA_RESULT_RECOMMENDATIONS.map((item) => (
+                <Link key={item.href} href={item.href} style={linkButtonStyle}>
+                  {t(item.ko, item.en)}
+                </Link>
+              ))}
             </div>
           </section>
 
@@ -1270,7 +1328,7 @@ function ResultSection({ title, body, quote = false }: { title: string; body: st
           wordBreak: "keep-all",
         }}
       >
-        {quote ? `"${body}"` : body}
+        {body}
       </p>
     </section>
   );

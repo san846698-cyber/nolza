@@ -63,6 +63,30 @@ function growthScore(a: number, b: number) {
 type Person = { name: string; year: string };
 type FriendSharePayload = { v: 1; a: Person; b: Person };
 
+const EDGE_NAME_PUNCT_RE = /^[\s"'`“”‘’「」『』!?.,，。！？]+|[\s"'`“”‘’「」『』!?.,，。！？]+$/g;
+
+function sanitizeDisplayName(name: string): string {
+  return name
+    .trim()
+    .replace(EDGE_NAME_PUNCT_RE, "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function finalConsonantIndex(value: string): number {
+  const last = Array.from(value.trim()).reverse().find((char) => /\S/.test(char));
+  if (!last) return 0;
+  const code = last.charCodeAt(0);
+  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28;
+  if (/x$/i.test(last)) return 0;
+  return /[0-9bcdfghjklmnpqrstvwxyz]$/i.test(last) ? 1 : 0;
+}
+
+function withJosa(value: string, pair: "과/와"): string {
+  const jong = finalConsonantIndex(value);
+  return `${value}${jong ? "과" : "와"}`;
+}
+
 function clampYear(y: string): number | null {
   const n = parseInt(y, 10);
   if (!Number.isFinite(n)) return null;
@@ -118,9 +142,12 @@ function FriendMatchInner() {
       clampYear(shared.a.year) &&
       clampYear(shared.b.year)
     ) {
+      const nameA = sanitizeDisplayName(shared.a.name);
+      const nameB = sanitizeDisplayName(shared.b.name);
+      if (!nameA || !nameB) return;
       restored = {
-        a: { name: shared.a.name, year: shared.a.year },
-        b: { name: shared.b.name, year: shared.b.year },
+        a: { name: nameA, year: shared.a.year },
+        b: { name: nameB, year: shared.b.year },
       };
     } else {
       const ap = params.get("a");
@@ -129,9 +156,12 @@ function FriendMatchInner() {
         const [an, ay] = ap.split(",");
         const [bn, by] = bp.split(",");
         if (an && ay && bn && by && clampYear(ay) && clampYear(by)) {
+          const nameA = sanitizeDisplayName(an);
+          const nameB = sanitizeDisplayName(bn);
+          if (!nameA || !nameB) return;
           restored = {
-            a: { name: an, year: ay },
-            b: { name: bn, year: by },
+            a: { name: nameA, year: ay },
+            b: { name: nameB, year: by },
           };
         }
       }
@@ -150,8 +180,8 @@ function FriendMatchInner() {
   const yearA = clampYear(a.year);
   const yearB = clampYear(b.year);
   const canSubmit =
-    a.name.trim().length > 0 &&
-    b.name.trim().length > 0 &&
+    sanitizeDisplayName(a.name).length > 0 &&
+    sanitizeDisplayName(b.name).length > 0 &&
     yearA !== null &&
     yearB !== null;
 
@@ -192,9 +222,14 @@ function FriendMatchInner() {
 
   const handleSubmit = () => {
     if (!canSubmit) return;
+    const nextA = { ...a, name: sanitizeDisplayName(a.name) };
+    const nextB = { ...b, name: sanitizeDisplayName(b.name) };
+    if (!nextA.name || !nextB.name) return;
     trackTestStart("friend-match", "Friend Match");
-    const url = encodeShareUrl(a, b);
+    const url = encodeShareUrl(nextA, nextB);
     setIsSharedResult(false);
+    setA(nextA);
+    setB(nextB);
     setSubmitted(true);
     // URL을 갱신하여 새로고침/공유에도 결과가 남도록.
     if (typeof window !== "undefined") {
@@ -218,7 +253,7 @@ function FriendMatchInner() {
     trackShareClick("friend-match", "compatibility", result.archetype.enTitle);
     const url = encodeShareUrl(a, b);
     const title = t(
-      `${a.name}와 ${b.name}: ${result.archetype.title} (${result.total}점)`,
+      `${withJosa(a.name, "과/와")} ${b.name}: ${result.archetype.title} (${result.total}점)`,
       `${a.name} × ${b.name}: ${result.total} / 100`,
     );
     const desc = locale === "ko"

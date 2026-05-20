@@ -83,6 +83,16 @@ function pickSeeded<T>(items: T[], input: string, salt: string): T {
   return items[seededIndex(input, salt, items.length)];
 }
 
+const EDGE_NAME_PUNCT_RE = /^[\s"'`“”‘’「」『』!?.,，。！？]+|[\s"'`“”‘’「」『』!?.,，。！？]+$/g;
+
+function sanitizeDisplayName(name: string): string {
+  return name
+    .trim()
+    .replace(EDGE_NAME_PUNCT_RE, "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
 const KO_FAMILY: NamePart[] = [
   { display: "김", pronunciation: "Kim" },
   { display: "이", pronunciation: "Lee" },
@@ -1008,11 +1018,12 @@ export default function KoreanNamePage(): ReactElement {
   const handleNameSubmit = useCallback(
     (e?: FormEvent) => {
       e?.preventDefault();
-      const trimmed = name.trim();
+      const trimmed = sanitizeDisplayName(name);
       if (!trimmed) {
         inputRef.current?.focus();
         return;
       }
+      setName(trimmed);
       setSubmittedName(trimmed);
       setPhase("gender");
     },
