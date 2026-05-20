@@ -325,14 +325,12 @@ export function AdSideRails() {
 
     const update = () => {
       const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
       const contentMax = pageType === "homepage" ? 1040 : 1120;
       const railWidth = 160;
       const railGutter = 28;
       const minimumSafeWidth = contentMax + railWidth * 2 + railGutter * 2;
       setViewportAllowsRails(
-        viewportWidth >= Math.max(1500, minimumSafeWidth) &&
-          viewportHeight >= 800,
+        viewportWidth >= Math.max(1536, minimumSafeWidth),
       );
     };
 

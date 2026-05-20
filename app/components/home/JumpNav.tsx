@@ -27,7 +27,7 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
 
   return (
     <nav
-      className="sticky top-0 z-40 bg-transparent"
+      className="relative z-10 bg-transparent"
       aria-label="Jump to category"
     >
       <div className="mx-auto flex max-w-col justify-start gap-2.5 overflow-x-auto px-4 py-3.5 sm:justify-center sm:gap-3 sm:px-6 sm:py-4 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">

@@ -117,6 +117,50 @@ function buildPerson(originalName: string, gender: Gender, salt: number): Person
   return { cls, name, role, original: originalName, gender };
 }
 
+function hasFinalConsonantKo(value: string): boolean {
+  const last = Array.from(value.trim()).reverse().find((char) => /\S/.test(char));
+  if (!last) return false;
+  const code = last.charCodeAt(0);
+  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 !== 0;
+  return /[0-9bcdfghjklmnpqrstvwxyz]$/i.test(last);
+}
+
+function withJosaKo(value: string, consonantForm: string, vowelForm: string): string {
+  return `${value}${hasFinalConsonantKo(value) ? consonantForm : vowelForm}`;
+}
+
+function replaceLiteralKo(text: string, from: string, to: string): string {
+  return from ? text.split(from).join(to) : text;
+}
+
+function polishKoreanParticlesKo(text: string, values: string[]): string {
+  return values
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)
+    .reduce((output, value) => {
+      let next = output;
+      const join = withJosaKo(value, "과", "와");
+      const subject = withJosaKo(value, "은", "는");
+      const nominative = withJosaKo(value, "이", "가");
+      const object = withJosaKo(value, "을", "를");
+
+      next = replaceLiteralKo(next, `${value}와(과)`, join);
+      next = replaceLiteralKo(next, `${value}과(와)`, join);
+      next = replaceLiteralKo(next, `${value}와`, join);
+      next = replaceLiteralKo(next, `${value}과`, join);
+      next = replaceLiteralKo(next, `${value}은(는)`, subject);
+      next = replaceLiteralKo(next, `${value}는(은)`, subject);
+      next = replaceLiteralKo(next, `${value}은`, subject);
+      next = replaceLiteralKo(next, `${value}는`, subject);
+      next = replaceLiteralKo(next, `${value}이(가)`, nominative);
+      next = replaceLiteralKo(next, `${value}가(이)`, nominative);
+      next = replaceLiteralKo(next, `${value}을(를)`, object);
+      next = replaceLiteralKo(next, `${value}를(을)`, object);
+
+      return next;
+    }, text);
+}
+
 function scoreInterpretationKo(score: number): string {
   if (score >= 90) {
     return `${score}점\n두 사람은 처음부터 같은 마음으로 걸어온 인연은 아니었습니다.\n그러나 서로를 알아본 뒤에는, 세상의 소란보다 서로의 침묵을 더 믿게 되는 인연입니다.`;
@@ -162,8 +206,17 @@ function buildRecordSections(result: CoupleResult): RecordSection[] {
   const p2RoleEn = p2.role.en;
   const isStrong = score >= 80;
   const isDifficult = score < 75;
+  const polishRecordKo = (line: string) =>
+    polishKoreanParticlesKo(line, [
+      p1.name.display,
+      p2.name.display,
+      p1StatusKo,
+      p2StatusKo,
+      p1RoleKo,
+      p2RoleKo,
+    ]);
 
-  return [
+  const sections: RecordSection[] = [
     {
       mark: "緣",
       titleKo: "만남의 시작",
@@ -242,6 +295,11 @@ function buildRecordSections(result: CoupleResult): RecordSection[] {
       ],
     },
   ];
+
+  return sections.map((section) => ({
+    ...section,
+    bodyKo: section.bodyKo.map(polishRecordKo),
+  }));
 }
 
 const ROMANCE_ARCHETYPES: RomanceArchetype[] = [
@@ -658,10 +716,31 @@ function buildRomanceResult(p1: Person, p2: Person, score: number, seedText: str
     score,
   };
   const built = archetype.build(ctx);
+  const polishRomanceKo = (text: string) =>
+    polishKoreanParticlesKo(text, [
+      p1.original,
+      p2.original,
+      p1.name.display,
+      p2.name.display,
+      p1.cls.ko,
+      p2.cls.ko,
+      p1.role.ko,
+      p2.role.ko,
+    ]);
+
   return {
-    titleKo: archetype.titleKo,
+    titleKo: polishRomanceKo(archetype.titleKo),
     titleEn: archetype.titleEn,
     ...built,
+    interpretationKo: polishRomanceKo(built.interpretationKo),
+    storyKo: built.storyKo.map(polishRomanceKo),
+    scenes: built.scenes.map((scene) => ({
+      ...scene,
+      titleKo: polishRomanceKo(scene.titleKo),
+      textKo: polishRomanceKo(scene.textKo),
+    })),
+    dramaLineKo: polishRomanceKo(built.dramaLineKo),
+    shareLineKo: polishRomanceKo(built.shareLineKo),
   };
 }
 
@@ -787,14 +866,15 @@ export default function JoseonCouplePage(): ReactElement {
       gender2: result.p2.gender,
       locale,
     } satisfies CoupleSharePayload);
-    const text = t(
+    const koShareText =
       `${result.p1.original}와(과) ${result.p2.original}의 조선 로맨스는 「${title}」, ${result.score}점.\n` +
-        `${shareLine}\n` +
-        `${url}`,
+      `${shareLine}\n` +
+      `${url}`;
+    const enShareText =
       `${result.p1.original} and ${result.p2.original}'s Joseon romance: "${title}", ${result.score} pts.\n` +
-        `${shareLine}\n` +
-        `${url}`,
-    );
+      `${shareLine}\n` +
+      `${url}`;
+    const text = t(polishKoreanParticlesKo(koShareText, [result.p1.original, result.p2.original]), enShareText);
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
         await navigator.share({ title, text, url });

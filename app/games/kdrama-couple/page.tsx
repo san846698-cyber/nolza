@@ -261,6 +261,52 @@ function displayName(name: string, fallback: string): string {
   return trimmed || fallback;
 }
 
+function hasFinalConsonant(value: string): boolean {
+  const last = Array.from(value.trim()).reverse().find((char) => /\S/.test(char));
+  if (!last) return false;
+  const code = last.charCodeAt(0);
+  if (code >= 0xac00 && code <= 0xd7a3) return (code - 0xac00) % 28 !== 0;
+  return /[0-9bcdfghjklmnpqrstvwxyz]$/i.test(last);
+}
+
+function withJosa(value: string, consonantForm: string, vowelForm: string): string {
+  return `${value}${hasFinalConsonant(value) ? consonantForm : vowelForm}`;
+}
+
+function replaceAllLiteral(text: string, from: string, to: string): string {
+  return from ? text.split(from).join(to) : text;
+}
+
+function polishKoreanParticles(text: string, values: string[]): string {
+  return values
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)
+    .reduce((output, value) => {
+      let next = output;
+      const join = withJosa(value, "과", "와");
+      const subject = withJosa(value, "은", "는");
+      const nominative = withJosa(value, "이", "가");
+      const casualJoin = withJosa(value, "이랑", "랑");
+
+      next = replaceAllLiteral(next, `${value}과`, join);
+      next = replaceAllLiteral(next, `${value}와`, join);
+      next = replaceAllLiteral(next, `${value}은`, subject);
+      next = replaceAllLiteral(next, `${value}는`, subject);
+      next = replaceAllLiteral(next, `${value}이 `, `${nominative} `);
+      next = replaceAllLiteral(next, `${value}가 `, `${nominative} `);
+      next = replaceAllLiteral(next, `${value}이\n`, `${nominative}\n`);
+      next = replaceAllLiteral(next, `${value}가\n`, `${nominative}\n`);
+      next = replaceAllLiteral(next, `${value}이,`, `${nominative},`);
+      next = replaceAllLiteral(next, `${value}가,`, `${nominative},`);
+      next = replaceAllLiteral(next, `${value}이.`, `${nominative}.`);
+      next = replaceAllLiteral(next, `${value}가.`, `${nominative}.`);
+      next = replaceAllLiteral(next, `${value}이랑`, casualJoin);
+      next = replaceAllLiteral(next, `${value}랑`, casualJoin);
+
+      return next;
+    }, text);
+}
+
 function rolePool(role: RoleStyle, seed: string): CharacterRole[] {
   if (role === "female") return FEMALE_ROLES;
   if (role === "male") return MALE_ROLES;
@@ -569,25 +615,26 @@ function buildResult(first: ProtagonistInput, second: ProtagonistInput): DramaRe
   const viewerComments = buildViewerComments(a, b, seed);
   const endingTeaser = buildEndingTeaser(a, b, seed);
   const shareSummary = `우리 드라마 제목이 '${title}'래. 케미 ${score}점, 장르는 ${genre}. ${a}랑 ${b} 줄거리 은근 넷플릭스 16부작 가능...`;
+  const polish = (text: string) => polishKoreanParticles(text, [a, b, firstRole.tag, secondRole.tag]);
 
   return {
-    title,
+    title: polish(title),
     score,
-    genre,
-    relationship,
-    trailerHook,
-    synopsis,
-    viewingPoints,
-    dynamicFlavor,
+    genre: polish(genre),
+    relationship: polish(relationship),
+    trailerHook: polish(trailerHook),
+    synopsis: polish(synopsis),
+    viewingPoints: viewingPoints.map(polish),
+    dynamicFlavor: polish(dynamicFlavor),
     firstRole,
     secondRole,
-    firstMeeting,
-    conflict,
-    famousLine,
-    viewerComments,
-    endingTeaser,
-    shipReason,
-    shareSummary,
+    firstMeeting: polish(firstMeeting),
+    conflict: polish(conflict),
+    famousLine: polish(famousLine),
+    viewerComments: viewerComments.map(polish),
+    endingTeaser: polish(endingTeaser),
+    shipReason: polish(shipReason),
+    shareSummary: polish(shareSummary),
   };
 }
 

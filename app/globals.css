@@ -2152,7 +2152,7 @@ img {
   display: block;
   pointer-events: none;
 }
-@media (min-width: 1500px) and (min-height: 800px) {
+@media (min-width: 1536px) {
   .ad-side-rail {
     position: fixed;
     top: 50%;
@@ -2207,7 +2207,7 @@ img {
     right: clamp(18px, 2vw, 32px);
   }
 }
-@media (max-width: 1499px), (max-height: 799px) {
+@media (max-width: 1535px) {
   .ad-side-rails {
     display: none;
   }
