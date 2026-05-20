@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 220" role="img" aria-label="nolza.fun">
+  <defs>
+    <linearGradient id="wordmark-bg" x1="30" y1="24" x2="172" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A855F7"/>
+      <stop offset="0.5" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="wordmark-play" x1="130" y1="72" x2="166" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#67E8F9"/>
+      <stop offset="1" stop-color="#F0ABFC"/>
+    </linearGradient>
+  </defs>
+  <rect x="28" y="30" width="160" height="160" rx="38" fill="url(#wordmark-bg)"/>
+  <path d="M68 140V80h18.7L129 140h-18.7L86 103v37H68Z" fill="#FFFFFF"/>
+  <path d="M133 82 164 100l-31 18V82Z" fill="url(#wordmark-play)"/>
+  <path d="M151 137h8v8h-8zM169 119h7v7h-7z" fill="#FFFFFF" opacity="0.92"/>
+  <text x="224" y="137" fill="#111827" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="82" font-weight="800" letter-spacing="-2">
+    nolza<tspan fill="#7C3AED">.fun</tspan>
+  </text>
+</svg>

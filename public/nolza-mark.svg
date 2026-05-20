@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="nolza.fun mark">
+  <defs>
+    <linearGradient id="mark-bg" x1="72" y1="56" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A855F7"/>
+      <stop offset="0.5" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="mark-play" x1="336" y1="176" x2="432" y2="272" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#67E8F9"/>
+      <stop offset="1" stop-color="#F0ABFC"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#mark-bg)"/>
+  <path d="M128 352V160h60l136 192h-60L184 233.6V352h-56Z" fill="#FFFFFF"/>
+  <path d="M340 170 424 220l-84 50V170Z" fill="url(#mark-play)"/>
+  <path d="M386 338h22v22h-22zM431 294h18v18h-18z" fill="#FFFFFF" opacity="0.92"/>
+</svg>
