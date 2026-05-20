@@ -86,6 +86,18 @@ function canUseSideRails(pageType: AdPageType) {
   return pageType === "homepage" || pageType === "content";
 }
 
+function viewportCanFitSideRails(pageType: AdPageType) {
+  if (typeof window === "undefined") return false;
+
+  const viewportWidth = window.innerWidth;
+  const contentMax = pageType === "homepage" ? 1040 : 1120;
+  const railWidth = 160;
+  const railGutter = 28;
+  const minimumSafeWidth = contentMax + railWidth * 2 + railGutter * 2;
+
+  return viewportWidth >= Math.max(1536, minimumSafeWidth);
+}
+
 // Real-ad mode: render <ins> only when both client and slot are configured.
 // Otherwise, show a clearly labelled placeholder so layout can be reviewed
 // without committing private publisher slot ids.
@@ -317,23 +329,22 @@ export function AdMobileSticky() {
 export function AdSideRails() {
   const pageType = useAdPageType();
   const railsAllowed = canUseSideRails(pageType);
-  const [viewportAllowsRails, setViewportAllowsRails] = useState(false);
+  const [viewportAllowsRails, setViewportAllowsRails] = useState(() =>
+    railsAllowed ? viewportCanFitSideRails(pageType) : false,
+  );
   const safeForRails = railsAllowed && viewportAllowsRails;
 
   useEffect(() => {
-    if (!railsAllowed) return;
+    if (!railsAllowed) {
+      setViewportAllowsRails(false);
+      return;
+    }
 
     const update = () => {
-      const viewportWidth = window.innerWidth;
-      const contentMax = pageType === "homepage" ? 1040 : 1120;
-      const railWidth = 160;
-      const railGutter = 28;
-      const minimumSafeWidth = contentMax + railWidth * 2 + railGutter * 2;
-      setViewportAllowsRails(
-        viewportWidth >= Math.max(1536, minimumSafeWidth),
-      );
+      setViewportAllowsRails(viewportCanFitSideRails(pageType));
     };
 
+    update();
     const frame = window.requestAnimationFrame(update);
     window.addEventListener("resize", update);
     window.addEventListener("orientationchange", update);
