@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+import { AdResult } from "../../components/Ads";
 import { ShareCard } from "../../components/ShareCard";
 import RecommendedGames from "../../components/game/RecommendedGames";
 import ResultActions from "../../components/game/ResultActions";
@@ -105,10 +105,6 @@ export default function MbtiDepthGame() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl px-5 pt-8 md:px-8">
-        <AdTop />
-      </div>
-
       <div className="mx-auto max-w-3xl px-5 md:px-8">
         {phase === "intro" && <IntroView onStart={start} t={t} />}
         {phase === "transition" && current && (
@@ -138,10 +134,7 @@ export default function MbtiDepthGame() {
             onRestart={restart}
           />
         )}
-
-        <AdBottom />
       </div>
-      <AdMobileSticky />
     </main>
   );
 }
@@ -612,6 +605,7 @@ function ResultView({
               onReplay={onRestart}
               replayLabel={t("다시 분석하기", "Analyze again")}
             />
+            <AdResult placement="mbti-depth-result" />
             <RecommendedGames
               currentId="mbti-depth"
               ids={["kbti", "attachment", "defense-mechanism"]}

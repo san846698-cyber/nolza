@@ -27,10 +27,10 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
 
   return (
     <nav
-      className="sticky top-0 z-40 border-b border-home-hairline bg-[rgba(255,249,239,0.86)] shadow-[0_14px_36px_rgba(48,35,24,0.06)] backdrop-blur-xl"
+      className="sticky top-0 z-40 bg-transparent"
       aria-label="Jump to category"
     >
-      <div className="mx-auto flex max-w-col gap-2.5 overflow-x-auto px-4 py-3 sm:gap-3 sm:px-6 sm:py-3.5 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+      <div className="mx-auto flex max-w-col justify-start gap-2.5 overflow-x-auto px-4 py-3.5 sm:justify-center sm:gap-3 sm:px-6 sm:py-4 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
         {categories.map((c, i) => {
           const isActive = active === c.id;
           return (

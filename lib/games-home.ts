@@ -65,10 +65,10 @@ export const CATEGORIES: Category[] = [
 export const PUBLIC_CATEGORIES: HomeCategory[] = [
   {
     id: "featured",
-    labelKo: "추천 콘텐츠",
-    labelEn: "Featured",
-    subKo: "처음 왔다면 여기서 시작하기 좋은 대표 테스트와 놀이.",
-    subEn: "Start here with the most shareable tests and plays.",
+    labelKo: "처음이라면 이 테스트부터",
+    labelEn: "Start With These Tests",
+    subKo: "놀자.fun을 처음 만난 사람에게 가장 먼저 보여주고 싶은 대표 테스트.",
+    subEn: "Three representative entry points for your first visit to Nolza.fun.",
   },
   {
     id: "tests",
@@ -433,8 +433,8 @@ export const GAMES: Game[] = [
   },
   {
     id: "mbti-depth", href: "/games/mbti-depth", cat: "self", no: "11",
-    ko: { title: "MBTI 심층 분석", sub: "당신의 MBTI를 더 구체적으로", kicker: "256가지 결과" },
-    en: { title: "Deep MBTI Analysis", sub: "Your MBTI, but make it specific", kicker: "4 axes x 4 levels = 256 results" },
+    ko: { title: "MBTI 심층 분석", sub: "16가지 MBTI를 더 구체적으로 열어보는 심층 성향 분석", kicker: "대표 테스트" },
+    en: { title: "Deep MBTI Analysis", sub: "A deeper personality read that opens up the 16 MBTI types in more detail", kicker: "Featured Test" },
     type: "test", category: "tests",
     palette: P.ink, font: "serif", thumb: "/thumbnails-generated/mbti-depth.png",
     skin: "paper",
@@ -496,8 +496,8 @@ export const GAMES: Game[] = [
   },
   {
     id: "crush-type", href: "/tests/crush-type", cat: "self", no: "18B",
-    ko: { title: "짝사랑 유형 테스트", sub: "좋아하는 사람 앞에서 나는 어떤 사람이 될까?", kicker: "관계 테스트" },
-    en: { title: "Crush Type Test", sub: "What kind of person do you become around your crush?", kicker: "Relationship test" },
+    ko: { title: "짝사랑 유형 테스트", sub: "좋아하는 사람 앞에서 내가 왜 이상해지는지 알아보기", kicker: "대표 테스트" },
+    en: { title: "Crush Type Test", sub: "Find out why you get weird around someone you like", kicker: "Featured Test" },
     type: "compatibility", category: "compatibility",
     palette: P.rosegold, font: "serif", thumb: "/thumbnails-generated/crush-type.png",
     skin: "paper", tone: 3, labels: ["new", "share"], duration: { ko: "16문항 · 약 4분", en: "16 questions · about 4 min" },
@@ -560,8 +560,8 @@ export const GAMES: Game[] = [
   },
   {
     id: "defense-mechanism", href: "/tests/defense-mechanism", cat: "self", no: "21",
-    ko: { title: "방어기제 테스트", sub: "힘들 때 내 마음은 어떤 방식으로 나를 보호할까?", kicker: "심리 테스트" },
-    en: { title: "Defense Mechanism Test", sub: "How does your mind protect you when things feel heavy?", kicker: "Psychology Test" },
+    ko: { title: "방어기제 테스트", sub: "불편한 감정이 올라올 때, 내 마음이 나를 지키는 방식", kicker: "대표 테스트" },
+    en: { title: "Defense Mechanism Test", sub: "How your mind protects you when uncomfortable feelings rise", kicker: "Featured Test" },
     type: "test", category: "tests",
     palette: P.paperGold, font: "serif", thumb: "/thumbnails-generated/defense-mechanism-painted.png",
     skin: "paper", tone: 2, labels: ["new", "recommended", "share"], duration: { ko: "약 4분", en: "4 min" },
@@ -741,11 +741,9 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   featured: [
-    "breaking-point",
-    "scene-choice",
-    "saju",
+    "mbti-depth",
     "defense-mechanism",
-    "joseon-couple",
+    "crush-type",
   ],
   tests: [
     "breaking-point",

@@ -9,11 +9,11 @@ export function HomeHeader() {
   const toggle = () => setLocale(locale === "ko" ? "en" : "ko");
 
   return (
-    <header className="relative overflow-hidden border-b border-home-hairline bg-[linear-gradient(180deg,#fffdf8_0%,#fff8ed_62%,rgba(255,255,255,0.48)_100%)]">
+    <header className="relative overflow-hidden bg-transparent">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[linear-gradient(90deg,rgba(210,91,69,0.11),transparent_38%,rgba(149,94,42,0.10))]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_-18%,rgba(255,255,255,0.88),transparent_36rem)]" />
 
-      <div className="relative mx-auto flex w-full max-w-col items-center justify-between gap-3.5 px-4 py-4 sm:px-6 lg:px-7">
+      <div className="relative mx-auto flex w-full max-w-col items-center justify-between gap-3.5 px-4 py-4 max-[640px]:mx-0 max-[640px]:max-w-none sm:px-6 lg:px-7">
         <Link
           href="#top"
           className="inline-flex shrink-0 leading-none no-underline"
@@ -22,7 +22,7 @@ export function HomeHeader() {
           <BrandMark locale={locale} className="brand-mark--home" />
         </Link>
 
-        <div className="ml-auto flex shrink-0 items-center gap-3.5">
+        <div className="ml-4 flex shrink-0 items-center gap-3.5 sm:ml-auto">
           <span className="hidden max-w-[34ch] font-inter text-[13px] font-semibold leading-snug text-home-muted sm:inline">
             {t("짧게 즐기고 바로 공유하는 테스트 스튜디오", "Quick tests made to play and share.")}
           </span>
@@ -44,7 +44,7 @@ export function HomeHeader() {
           <p className="mb-3 font-inter text-[12px] font-black uppercase tracking-[0.2em] text-home-coral">
             VIRAL TEST PLAYGROUND
           </p>
-          <h1 className="m-0 max-w-[14ch] font-serif text-[42px] font-black leading-[1.02] tracking-[-0.035em] text-home-ink sm:text-[58px] lg:text-[70px]">
+          <h1 className="m-0 max-w-[360px] font-serif text-[38px] font-black leading-[1.04] tracking-[-0.035em] text-home-ink [word-break:keep-all] sm:max-w-[14ch] sm:text-[58px] sm:leading-[1.02] lg:text-[70px]">
             {t("이상하게 나를 잘 맞히는 테스트 놀이터", "Fun tests that feel weirdly accurate.")}
           </h1>
           <p className="mt-5 max-w-[62ch] text-[16px] font-semibold leading-[1.72] text-home-ink-2/78 sm:text-[17px]">

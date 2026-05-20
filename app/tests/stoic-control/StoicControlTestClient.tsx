@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
-import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
@@ -210,14 +210,15 @@ export default function StoicControlTestClient(): ReactElement {
       </section>
 
       {phase === "result" && (
-      <RecommendedGames
-        currentId="stoic-control"
-        ids={["thinking-pattern", "value-conflict", "defense-mechanism"]}
-        title={{ ko: "다음 자기이해 테스트", en: "Try These Next" }}
-      />
+        <>
+          <AdResult placement="stoic-control-result" />
+          <RecommendedGames
+            currentId="stoic-control"
+            ids={["thinking-pattern", "value-conflict", "defense-mechanism"]}
+            title={{ ko: "다음 자기이해 테스트", en: "Try These Next" }}
+          />
+        </>
       )}
-      <AdBottom />
-      <AdMobileSticky />
 
       <style jsx global>{`
         .stoic-test {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
-import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
@@ -190,15 +190,15 @@ export default function BreakingPointTestClient() {
       </section>
 
       {phase === "result" && (
-        <RecommendedGames
-          currentId="breaking-point"
-          ids={["defense-mechanism", "scene-choice", "thinking-pattern", "value-conflict"]}
-          title={BREAKING_COPY.related}
-        />
+        <>
+          <AdResult placement="breaking-point-result" />
+          <RecommendedGames
+            currentId="breaking-point"
+            ids={["defense-mechanism", "scene-choice", "thinking-pattern", "value-conflict"]}
+            title={BREAKING_COPY.related}
+          />
+        </>
       )}
-
-      <AdBottom />
-      <AdMobileSticky />
       <style jsx>{styles}</style>
     </main>
   );
@@ -218,7 +218,6 @@ function QuestionView({
       <ReadableQuestion
         prompt={text(locale, question.prompt)}
         locale={locale}
-        situationLabel={locale === "ko" ? "반복되는 장면" : "A repeated scene"}
       />
       <div className="choices">
         {question.choices.map((choice, index) => (

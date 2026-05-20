@@ -283,15 +283,9 @@ function FriendMatchInner() {
             padding: "18px 20px",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "center",
           }}
         >
-          <Link
-            href="/"
-            style={{ fontSize: 12, color: C.sub, textDecoration: "none" }}
-          >
-            {t("← 놀자 홈으로", "← Back to Nolza.fun")}
-          </Link>
           <div style={{ fontFamily: FONT_SERIF, fontSize: 13, color: C.gold, letterSpacing: "0.05em" }}>
             ✦ {t("우리 사이, 하늘이 정해놨다", "Written in the stars")}
           </div>

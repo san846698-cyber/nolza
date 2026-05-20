@@ -61,7 +61,8 @@ const CTA_LABELS: Record<ContentType, { ko: string; en: string }> = {
   game: { ko: "플레이하기", en: "Play" },
 };
 
-function labelFor(game: Game, locale: "ko" | "en") {
+function labelFor(game: Game, locale: "ko" | "en", featured = false) {
+  if (featured) return locale === "ko" ? "대표 테스트" : "Featured Test";
   if (game.type && TYPE_LABELS[game.type]) return TYPE_LABELS[game.type][locale];
   return locale === "ko" ? game.ko.kicker : game.en.kicker;
 }
@@ -129,7 +130,7 @@ export default function GameTile({
         <div className="mb-2.5 flex items-center gap-2">
           <span className="h-px w-5 bg-[color:var(--card-accent)] opacity-72" />
           <span className="font-inter text-[11px] font-black uppercase tracking-[0.13em] text-[color:var(--card-accent)]">
-            {labelFor(game, locale)}
+            {labelFor(game, locale, featured)}
           </span>
         </div>
 

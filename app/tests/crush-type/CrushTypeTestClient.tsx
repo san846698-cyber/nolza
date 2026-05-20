@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type ReactElement } from "react";
-import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
@@ -206,14 +206,15 @@ export default function CrushTypeTestClient(): ReactElement {
       </section>
 
       {phase === "result" && (
-      <RecommendedGames
-        currentId="crush-type"
-        ids={["joseon-couple", "kdrama-couple", "friend-match", "defense-mechanism"]}
-        title={{ ko: "다음에 해볼 테스트", en: "Try These Next" }}
-      />
+        <>
+          <AdResult placement="crush-type-result" />
+          <RecommendedGames
+            currentId="crush-type"
+            ids={["joseon-couple", "kdrama-couple", "friend-match", "defense-mechanism"]}
+            title={{ ko: "다음에 해볼 테스트", en: "Try These Next" }}
+          />
+        </>
       )}
-      <AdBottom />
-      <AdMobileSticky />
 
       <style jsx global>{`
         .crush-test {

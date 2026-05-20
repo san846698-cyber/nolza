@@ -8,7 +8,7 @@ import {
   type CSSProperties,
   type ReactElement,
 } from "react";
-import { AdBottom, AdMobileSticky } from "../../components/Ads";
+import { AdResult } from "../../components/Ads";
 import { ShareCard } from "../../components/ShareCard";
 import RecommendedGames from "../../components/game/RecommendedGames";
 import ResultActions from "../../components/game/ResultActions";
@@ -455,9 +455,6 @@ export default function KbtiPage(): ReactElement {
           />
         )}
       </div>
-
-      <AdMobileSticky />
-
       <style jsx global>{`
         .kbti-page {
           min-height: 100svh;
@@ -1098,8 +1095,8 @@ function ResultView({
               onReplay={onRestart}
               replayLabel={t("다시 하기", "Try again")}
             />
+            <AdResult placement="kbti-result" />
             <RecommendedGames currentId="kbti" ids={["mbti-depth", "attachment", "defense-mechanism"]} />
-            <AdBottom />
           </div>
         </div>
       )}

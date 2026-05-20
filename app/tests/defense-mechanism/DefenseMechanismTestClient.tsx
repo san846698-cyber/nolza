@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { AdBottom } from "@/app/components/Ads";
+import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { usePersistentTestSession } from "@/hooks/usePersistentTestSession";
@@ -313,18 +313,19 @@ export default function DefenseMechanismTestClient() {
       )}
       {phase === "loading" && <Loading locale={locale} />}
       {phase === "result" && (
-        <Result
-          locale={locale}
-          result={calculated.result}
-          scores={calculated.scores}
-          onRetry={retry}
-          onShare={shareResult}
-          shareCopied={shareCopied}
-          isSharedResult={isSharedResult}
-        />
+        <>
+          <Result
+            locale={locale}
+            result={calculated.result}
+            scores={calculated.scores}
+            onRetry={retry}
+            onShare={shareResult}
+            shareCopied={shareCopied}
+            isSharedResult={isSharedResult}
+          />
+          <AdResult placement="defense-mechanism-result" />
+        </>
       )}
-
-      <AdBottom />
       <style jsx>{styles}</style>
     </main>
   );

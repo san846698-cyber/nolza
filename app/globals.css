@@ -826,15 +826,10 @@ img {
 }
 
 /* Section background tinting — drop data-cat on each <section> */
-[data-home] section[data-cat="featured"] { background: linear-gradient(180deg, var(--cat-featured), rgba(255,255,255,0.20)); }
-[data-home] section[data-cat="tests"] { background: linear-gradient(180deg, var(--cat-tests), rgba(255,255,255,0.20)); }
-[data-home] section[data-cat="compatibility"] { background: linear-gradient(180deg, var(--cat-compatibility), rgba(255,255,255,0.22)); }
-[data-home] section[data-cat="mini-games"] { background: linear-gradient(180deg, var(--cat-mini-games), rgba(255,255,255,0.20)); }
-[data-home] section[data-cat="play"]  { background: linear-gradient(180deg, var(--cat-play), rgba(255,255,255,0.20)); }
-[data-home] section[data-cat="self"]  { background: linear-gradient(180deg, var(--cat-self), rgba(255,255,255,0.20)); }
-[data-home] section[data-cat="sim"]   { background: linear-gradient(180deg, var(--cat-sim), rgba(255,255,255,0.20)); }
-[data-home] section[data-cat="world"] { background: linear-gradient(180deg, var(--cat-world), rgba(255,255,255,0.20)); }
-[data-home] section[data-cat]         { transition: background 0.4s var(--home-easing); }
+[data-home] section[data-cat] {
+  background: transparent;
+  transition: background 0.4s var(--home-easing);
+}
 
 /* Subtle paper grain over the whole homepage */
 [data-home]::before {
@@ -2084,6 +2079,49 @@ img {
   margin-block: 28px max(18px, env(safe-area-inset-bottom, 0px) + 12px);
   padding-inline: max(12px, env(safe-area-inset-left, 0px)) max(12px, env(safe-area-inset-right, 0px));
 }
+.ad-slot {
+  width: 100%;
+}
+.ad-slot--inline {
+  margin-block: 44px;
+}
+.ad-slot--result {
+  margin-block: clamp(72px, 10vw, 132px) 42px;
+}
+.ad-slot--footer {
+  margin-block: 56px 24px;
+}
+.ad-slot--mobile-inline {
+  margin-block: 34px;
+}
+.ad-placeholder {
+  display: grid;
+  width: 100%;
+  min-height: inherit;
+  place-items: start center;
+  border: 1px solid rgba(41, 33, 24, 0.12);
+  border-radius: 18px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.38)),
+    repeating-linear-gradient(
+      135deg,
+      rgba(41, 33, 24, 0.018) 0,
+      rgba(41, 33, 24, 0.018) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+  color: rgba(41, 33, 24, 0.36);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  padding-top: 13px;
+  pointer-events: none;
+  box-shadow: 0 14px 34px rgba(41, 33, 24, 0.055);
+}
+.ad-placeholder span {
+  pointer-events: none;
+}
 .ad-safe-zone[data-ad-page-type="simulation"],
 .ad-safe-zone[data-ad-page-type="mini-game"],
 .ad-safe-zone[data-ad-page-type="test"],
@@ -2114,7 +2152,7 @@ img {
   display: block;
   pointer-events: none;
 }
-@media (min-width: 1920px) and (min-height: 800px) {
+@media (min-width: 1500px) and (min-height: 800px) {
   .ad-side-rail {
     position: fixed;
     top: 50%;
@@ -2137,6 +2175,17 @@ img {
       );
     box-shadow: 0 20px 48px rgba(17, 24, 39, 0.06);
   }
+  .ad-side-rail .ad-placeholder {
+    height: 600px;
+    min-height: 600px;
+    border: 0;
+    border-radius: 18px;
+    background: transparent;
+    box-shadow: none;
+  }
+  .ad-side-rail .ad-placeholder span {
+    display: none;
+  }
   .ad-side-rail::before {
     content: "Advertisement";
     position: absolute;
@@ -2152,13 +2201,13 @@ img {
     pointer-events: none;
   }
   .ad-side-rail--left {
-    left: 24px;
+    left: clamp(18px, 2vw, 32px);
   }
   .ad-side-rail--right {
-    right: 24px;
+    right: clamp(18px, 2vw, 32px);
   }
 }
-@media (max-width: 1919px), (max-height: 799px) {
+@media (max-width: 1499px), (max-height: 799px) {
   .ad-side-rails {
     display: none;
   }
@@ -3822,4 +3871,177 @@ body {
   background: rgba(0, 0, 0, 0.3) !important;
   border-color: rgba(247, 234, 212, 0.15) !important;
   color: #fff3df !important;
+}
+
+/* Question QA: answer choices stay card-like, but the whole quiz step no longer sits in a modal-sized box. */
+.defense-page .question-card,
+.thinking-test .thinking-card:not(:has(.result)),
+.value-test .value-card:not(:has(.result)),
+.stoic-test .stoic-card:not(:has(.result)),
+.crush-test .quiz-card:not(:has(.result)),
+.breaking-page .test-card:not(:has(.result-view)),
+.scene-page .scene-card:not(:has(.result-view)) {
+  width: min(100%, 1060px) !important;
+  max-width: 1060px !important;
+  margin-inline: auto !important;
+  padding: clamp(24px, 4.8vw, 56px) clamp(20px, 4.8vw, 52px) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.defense-page .question-card .progress-head,
+.thinking-test .thinking-card:not(:has(.result)) .progress-head,
+.value-test .value-card:not(:has(.result)) .progress-head,
+.stoic-test .stoic-card:not(:has(.result)) .progress-head,
+.crush-test .quiz-card:not(:has(.result)) .progress-head,
+.breaking-page .test-card:not(:has(.result-view)) .progress-head,
+.scene-page .scene-card:not(:has(.result-view)) .progress-head {
+  margin-bottom: clamp(24px, 4vw, 40px) !important;
+}
+
+.defense-page .question-card .readable-question,
+.thinking-test .thinking-card:not(:has(.result)) .readable-question,
+.value-test .value-card:not(:has(.result)) .readable-question,
+.stoic-test .stoic-card:not(:has(.result)) .readable-question,
+.crush-test .quiz-card:not(:has(.result)) .readable-question,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question {
+  gap: clamp(18px, 2.4vw, 26px) !important;
+  margin-bottom: clamp(24px, 3.8vw, 42px) !important;
+}
+
+.defense-page .question-card .readable-question__situation,
+.thinking-test .thinking-card:not(:has(.result)) .readable-question__situation,
+.value-test .value-card:not(:has(.result)) .readable-question__situation,
+.stoic-test .stoic-card:not(:has(.result)) .readable-question__situation,
+.crush-test .quiz-card:not(:has(.result)) .readable-question__situation,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__situation,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__situation {
+  padding-bottom: clamp(16px, 2.4vw, 24px) !important;
+  border-bottom: 1px solid rgba(51, 40, 28, 0.14) !important;
+}
+
+.defense-page .question-card .readable-question__prompt h2,
+.thinking-test .thinking-card:not(:has(.result)) .readable-question__prompt h2,
+.value-test .value-card:not(:has(.result)) .readable-question__prompt h2,
+.stoic-test .stoic-card:not(:has(.result)) .readable-question__prompt h2,
+.crush-test .quiz-card:not(:has(.result)) .readable-question__prompt h2,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt h2,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt h2 {
+  font-size: clamp(1.55rem, 3.1vw, 2.25rem) !important;
+  line-height: 1.34 !important;
+  letter-spacing: 0 !important;
+}
+
+.thinking-test .thinking-card:not(:has(.result)) .answer,
+.value-test .value-card:not(:has(.result)) .answer,
+.stoic-test .stoic-card:not(:has(.result)) .answer,
+.crush-test .quiz-card:not(:has(.result)) .answer {
+  background: rgba(255, 255, 255, 0.78) !important;
+  border: 1px solid rgba(55, 43, 30, 0.13) !important;
+  box-shadow: 0 16px 34px rgba(59, 43, 28, 0.08) !important;
+  color: #2a2119 !important;
+}
+
+.thinking-test .thinking-card:not(:has(.result)) .answer:hover,
+.value-test .value-card:not(:has(.result)) .answer:hover,
+.stoic-test .stoic-card:not(:has(.result)) .answer:hover,
+.crush-test .quiz-card:not(:has(.result)) .answer:hover {
+  transform: translateY(-3px) !important;
+  border-color: color-mix(in srgb, var(--accent) 58%, rgba(55, 43, 30, 0.18)) !important;
+  box-shadow: 0 22px 44px rgba(59, 43, 28, 0.13) !important;
+}
+
+.defense-page .question-card .readable-question__situation,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__situation,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__situation {
+  border-bottom-color: rgba(255, 244, 221, 0.16) !important;
+}
+
+.defense-page .question-card .progress-head,
+.defense-page .question-card .readable-question__situation p,
+.breaking-page .test-card:not(:has(.result-view)) .progress-head,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__situation p,
+.scene-page .scene-card:not(:has(.result-view)) .progress-head,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__situation p {
+  color: rgba(255, 244, 221, 0.88) !important;
+}
+
+.defense-page .question-card .progress-head span,
+.defense-page .question-card .readable-question__situation span,
+.defense-page .question-card .readable-question__prompt span,
+.breaking-page .test-card:not(:has(.result-view)) .progress-head span,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__situation span,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt span,
+.scene-page .scene-card:not(:has(.result-view)) .progress-head span,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__situation span,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt span {
+  color: color-mix(in srgb, var(--accent) 78%, #fff4dd) !important;
+}
+
+.defense-page .question-card .readable-question__prompt h2,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt h2,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt h2 {
+  color: #fff4dd !important;
+}
+
+.defense-page .question-card .answers button,
+.breaking-page .test-card:not(:has(.result-view)) .choices button,
+.scene-page .scene-card:not(:has(.result-view)) .choices button {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 244, 221, 0.17) !important;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18) !important;
+  color: #fff4dd !important;
+}
+
+.defense-page .question-card .answers button:hover,
+.breaking-page .test-card:not(:has(.result-view)) .choices button:hover,
+.scene-page .scene-card:not(:has(.result-view)) .choices button:hover {
+  transform: translateY(-3px) !important;
+  border-color: color-mix(in srgb, var(--accent) 68%, rgba(255, 244, 221, 0.2)) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.24) !important;
+}
+
+.defense-page .question-card .answers button span,
+.breaking-page .test-card:not(:has(.result-view)) .choices button span,
+.scene-page .scene-card:not(:has(.result-view)) .choices button span {
+  background: rgba(255, 244, 221, 0.13) !important;
+  color: color-mix(in srgb, var(--accent) 80%, #fff4dd) !important;
+}
+
+.defense-page .question-card .answers strong,
+.breaking-page .test-card:not(:has(.result-view)) .choices strong,
+.scene-page .scene-card:not(:has(.result-view)) .choices strong {
+  color: inherit !important;
+}
+
+@media (max-width: 640px) {
+  .defense-page .question-card,
+  .thinking-test .thinking-card:not(:has(.result)),
+  .value-test .value-card:not(:has(.result)),
+  .stoic-test .stoic-card:not(:has(.result)),
+  .crush-test .quiz-card:not(:has(.result)),
+  .breaking-page .test-card:not(:has(.result-view)),
+  .scene-page .scene-card:not(:has(.result-view)) {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 22px 20px 40px !important;
+  }
+
+  .defense-page .question-card .readable-question__prompt h2,
+  .thinking-test .thinking-card:not(:has(.result)) .readable-question__prompt h2,
+  .value-test .value-card:not(:has(.result)) .readable-question__prompt h2,
+  .stoic-test .stoic-card:not(:has(.result)) .readable-question__prompt h2,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__prompt h2,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt h2,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt h2 {
+    font-size: clamp(1.35rem, 6.2vw, 1.75rem) !important;
+    line-height: 1.38 !important;
+  }
 }

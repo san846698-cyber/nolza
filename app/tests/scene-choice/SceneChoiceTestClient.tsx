@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
-import { AdBottom, AdMobileSticky } from "@/app/components/Ads";
+import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
@@ -177,6 +177,7 @@ export default function SceneChoiceTestClient() {
             {phase === "quiz" ? (
               <QuestionView
                 locale={locale}
+                questionIndex={questionIndex}
                 question={currentQuestion}
                 onChoose={choose}
               />
@@ -195,15 +196,15 @@ export default function SceneChoiceTestClient() {
       </section>
 
       {phase === "result" && (
-        <RecommendedGames
-          currentId="scene-choice"
-          ids={["defense-mechanism", "thinking-pattern", "value-conflict"]}
-          title={SCENE_COPY.related}
-        />
+        <>
+          <AdResult placement="scene-choice-result" />
+          <RecommendedGames
+            currentId="scene-choice"
+            ids={["defense-mechanism", "thinking-pattern", "value-conflict"]}
+            title={SCENE_COPY.related}
+          />
+        </>
       )}
-
-      <AdBottom />
-      <AdMobileSticky />
       <style jsx>{styles}</style>
     </main>
   );
@@ -211,20 +212,27 @@ export default function SceneChoiceTestClient() {
 
 function QuestionView({
   locale,
+  questionIndex,
   question,
   onChoose,
 }: {
   locale: SimpleLocale;
+  questionIndex: number;
   question: (typeof SCENE_QUESTIONS)[number];
   onChoose: (choice: SceneChoice) => void;
 }) {
+  const sceneTitle =
+    locale === "ko"
+      ? `장면 ${questionIndex + 1} · ${text(locale, question.title)}`
+      : `Scene ${questionIndex + 1} · ${text(locale, question.title)}`;
+
   return (
     <div className="question-view">
       <ReadableQuestion
         situation={text(locale, question.scene)}
         prompt={text(locale, question.prompt)}
         locale={locale}
-        situationLabel={text(locale, question.title)}
+        situationLabel={sceneTitle}
       />
       <div className="choices">
         {question.choices.map((choice, index) => (

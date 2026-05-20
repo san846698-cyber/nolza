@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AdMobileSticky } from "../../components/Ads";
+import { AdGameEnd } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
 
 type T = (ko: string, en: string) => string;
@@ -887,6 +887,7 @@ export default function AhmollaGame() {
             </button>
           </div>
         </div>
+        <AdGameEnd placement="ahmolla-result" />
       </main>
     );
   }
@@ -1076,8 +1077,6 @@ export default function AhmollaGame() {
           {getButtonText(depth, t)}
         </button>
       </div>
-
-      <AdMobileSticky />
     </main>
   );
 }

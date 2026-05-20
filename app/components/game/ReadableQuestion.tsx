@@ -13,7 +13,11 @@ type ReadableQuestionProps = {
 
 function splitPrompt(prompt: string): { situation: string; question: string } {
   const trimmed = prompt.trim();
-  const explicit = trimmed.split(/\n+/).map((part) => part.trim()).filter(Boolean);
+  const explicit = trimmed
+    .split(/\n+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
   if (explicit.length > 1) {
     return {
       situation: explicit.slice(0, -1).join("\n"),
@@ -25,11 +29,15 @@ function splitPrompt(prompt: string): { situation: string; question: string } {
     .match(/[^.!?。！？]+[.!?。！？]?/g)
     ?.map((part) => part.trim())
     .filter(Boolean);
+
   if (!sentences || sentences.length < 2 || trimmed.length < 58) {
     return { situation: "", question: trimmed };
   }
 
-  const questionIndex = sentences.findIndex((sentence, index) => index > 0 && /[?？]$/.test(sentence));
+  const questionIndex = sentences.findIndex(
+    (sentence, index) => index > 0 && /[?？]$/.test(sentence),
+  );
+
   if (questionIndex > 0) {
     return {
       situation: sentences.slice(0, questionIndex).join(" "),

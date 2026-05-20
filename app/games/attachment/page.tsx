@@ -7,7 +7,7 @@ import {
   useState,
   type ReactElement,
 } from "react";
-import { AdMobileSticky } from "../../components/Ads";
+import { AdResult } from "../../components/Ads";
 import { useLocale } from "@/hooks/useLocale";
 import {
   QUESTIONS,
@@ -309,7 +309,7 @@ export default function AttachmentPage(): ReactElement {
         </div>
       )}
 
-      {phase === "result" && <AdMobileSticky />}
+      {phase === "result" && <AdResult placement="attachment-result" />}
 
       <style
         dangerouslySetInnerHTML={{
