@@ -883,7 +883,7 @@ export default function AhmollaGame() {
                 fontWeight: 600,
               }}
             >
-              {copied ? "✓ COPIED" : t("이 고통 공유하기", "Share this suffering")}
+              {copied ? "✓ COPIED" : t("결과 공유하기", "Share result")}
             </button>
           </div>
         </div>

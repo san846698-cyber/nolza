@@ -419,7 +419,7 @@ function ResultScreen({
 
       <div className="actions" data-share-card-skip="true">
         <button type="button" className="action primary btn-press" onClick={onShare}>
-          {shareCopied ? "공유 문구 복사됨" : "친구에게 공유하기"}
+          {shareCopied ? "결과 링크가 복사됐어요!" : "결과 공유하기"}
         </button>
         <button type="button" className="action btn-press" onClick={onReplay}>
           다시 하기

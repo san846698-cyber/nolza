@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
 import BrandMark, { brandText, homeBackLabel } from "@/app/components/BrandMark";
+import PublisherContent from "@/app/components/PublisherContent";
 import { GAMES, type CatId } from "@/lib/games-home";
 
 const SECTION_NO: Record<CatId, string> = {
@@ -70,6 +71,7 @@ export default function GamesLayout({
     return (
       <div data-game-shell={isDark ? "dark" : "light"} style={{ minHeight: "100svh" }}>
         {children}
+        <PublisherContent />
       </div>
     );
   }
@@ -160,6 +162,7 @@ export default function GamesLayout({
           한 / EN
         </button>
         {children}
+        <PublisherContent />
       </div>
     );
   }
@@ -204,6 +207,7 @@ export default function GamesLayout({
       </header>
 
       {children}
+      <PublisherContent />
     </div>
   );
 }

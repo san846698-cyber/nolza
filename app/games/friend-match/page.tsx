@@ -1332,8 +1332,8 @@ function ResultView({
           }}
         >
           {shareCopied
-            ? t("✓ 링크 복사됨", "✓ Link copied")
-            : t("💬 카카오톡 공유", "💬 Share")}
+            ? t("결과 링크가 복사됐어요!", "Result link copied!")
+            : t("결과 공유하기", "Share result")}
         </button>
         <button
           type="button"

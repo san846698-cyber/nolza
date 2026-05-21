@@ -1475,7 +1475,7 @@ function ResultStep({
         >
           {copiedKey === currentProfile.country.code
             ? t("✓ 복사됨", "COPIED")
-            : t("공유하기", "SHARE")}
+            : t("결과 공유하기", "SHARE RESULT")}
         </button>
         <button type="button" onClick={onBackToPicker} style={secondaryButtonStyle}>
           ← {t("나라 다시 고르기", "Pick another country")}

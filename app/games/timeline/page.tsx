@@ -1983,7 +1983,7 @@ function FooterShare({
           boxShadow: `0 8px 24px ${ACCENT}44`,
         }}
       >
-        {copied ? t("복사됨 ✓", "Copied ✓") : t("공유하기", "Share")}
+        {copied ? t("복사됨 ✓", "Copied ✓") : t("결과 공유하기", "Share result")}
       </button>
     </div>
   );

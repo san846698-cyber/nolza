@@ -1234,7 +1234,7 @@ function ResultView({
             touchAction: "manipulation",
           }}
         >
-          {copied ? t("✓ 복사됨", "COPIED") : t("공유하기", "SHARE")}
+          {copied ? t("✓ 복사됨", "COPIED") : t("결과 공유하기", "SHARE RESULT")}
         </button>
         <button
           type="button"

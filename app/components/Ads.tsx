@@ -21,7 +21,8 @@ type AdPageType =
   | "test"
   | "mini-game"
   | "simulation"
-  | "result";
+  | "result"
+  | "no-ads";
 
 declare global {
   interface Window {
@@ -57,6 +58,14 @@ const SIMULATION_GAME_PATHS = new Set([
   "/games/traffic",
 ]);
 
+const CONTENT_AD_PATHS = new Set([
+  "/about",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/nostalgia-ai",
+]);
+
 function pushAd() {
   try {
     if (typeof window !== "undefined") {
@@ -69,9 +78,11 @@ function pushAd() {
 
 function pageTypeForPath(pathname: string): AdPageType {
   if (pathname === "/") return "homepage";
-  if (pathname.includes("/share-card")) return "result";
+  if (pathname.includes("/share-card") || pathname.includes("/share-og")) return "result";
   if (pathname.startsWith("/tests/")) return "test";
-  if (!pathname.startsWith("/games/")) return "content";
+  if (!pathname.startsWith("/games/")) {
+    return CONTENT_AD_PATHS.has(pathname) ? "content" : "no-ads";
+  }
   if (SIMULATION_GAME_PATHS.has(pathname)) return "simulation";
   if (TEST_GAME_PATHS.has(pathname)) return "test";
   return "mini-game";
@@ -83,6 +94,10 @@ function useAdPageType(): AdPageType {
 }
 
 function canUseSideRails(pageType: AdPageType) {
+  return pageType === "homepage" || pageType === "content";
+}
+
+function canRenderAds(pageType: AdPageType) {
   return pageType === "homepage" || pageType === "content";
 }
 
@@ -180,13 +195,17 @@ export function AdSlot({
   format: AdFormat;
   className?: string;
 }) {
+  const pageType = useAdPageType();
   const slot = slotForFormat(format);
   const size = sizeForFormat(format);
-  const shouldRenderRealAd = HAS_REAL_ADS && Boolean(slot);
+  const adsAllowed = canRenderAds(pageType);
+  const shouldRenderRealAd = adsAllowed && HAS_REAL_ADS && Boolean(slot);
 
   useEffect(() => {
     if (shouldRenderRealAd) pushAd();
   }, [shouldRenderRealAd]);
+
+  if (!adsAllowed) return null;
 
   return (
     <AdFrame
@@ -241,10 +260,13 @@ export function AdRail({ placement, className }: { placement: string; className?
 }
 
 export function AdTop() {
+  const pageType = useAdPageType();
+  const adsAllowed = canRenderAds(pageType);
+
   useEffect(() => {
-    if (HAS_REAL_ADS && SLOT_TOP) pushAd();
-  }, []);
-  if (!HAS_REAL_ADS || !SLOT_TOP) return null;
+    if (adsAllowed && HAS_REAL_ADS && SLOT_TOP) pushAd();
+  }, [adsAllowed]);
+  if (!adsAllowed || !HAS_REAL_ADS || !SLOT_TOP) return null;
   return (
     <AdFrame
       className="ad-inline ad-inline--top"
@@ -269,10 +291,13 @@ export function AdTop() {
 }
 
 export function AdBottom() {
+  const pageType = useAdPageType();
+  const adsAllowed = canRenderAds(pageType);
+
   useEffect(() => {
-    if (HAS_REAL_ADS && SLOT_BOTTOM) pushAd();
-  }, []);
-  if (!HAS_REAL_ADS || !SLOT_BOTTOM) return null;
+    if (adsAllowed && HAS_REAL_ADS && SLOT_BOTTOM) pushAd();
+  }, [adsAllowed]);
+  if (!adsAllowed || !HAS_REAL_ADS || !SLOT_BOTTOM) return null;
   return (
     <AdFrame
       className="ad-inline ad-inline--bottom"
@@ -299,10 +324,13 @@ export function AdBottom() {
 // Historical name kept for existing pages. It is now an inline mobile-safe
 // block, so it cannot cover controls, maps, canvases, result cards, or CTAs.
 export function AdMobileSticky() {
+  const pageType = useAdPageType();
+  const adsAllowed = canRenderAds(pageType);
+
   useEffect(() => {
-    if (HAS_REAL_ADS && SLOT_MOBILE) pushAd();
-  }, []);
-  if (!HAS_REAL_ADS || !SLOT_MOBILE) return null;
+    if (adsAllowed && HAS_REAL_ADS && SLOT_MOBILE) pushAd();
+  }, [adsAllowed]);
+  if (!adsAllowed || !HAS_REAL_ADS || !SLOT_MOBILE) return null;
   return (
     <AdFrame
       className="ad-mobile-inline md:hidden"

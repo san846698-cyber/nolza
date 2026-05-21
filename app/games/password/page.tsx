@@ -692,7 +692,7 @@ export default function PasswordGame() {
                     cursor: "pointer",
                   }}
                 >
-                  {t("여기까지 온 거 공유하기", "Share this progress")}
+                  {t("결과 공유하기", "Share result")}
                 </button>
               )}
               {demonLog && (
@@ -852,7 +852,7 @@ export default function PasswordGame() {
               {!won && revealed >= 5 && (
                 <button
                   onClick={() => setShowResult(true)}
-                  title={t("공유하기", "Share")}
+                  title={t("결과 공유하기", "Share result")}
                   style={{
                     padding: "3px 10px",
                     background: "transparent",

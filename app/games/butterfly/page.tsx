@@ -408,7 +408,7 @@ export default function ButterflyGame() {
                 letterSpacing: "0.15em",
               }}
             >
-              {copied ? "✓ COPIED" : t("공유하기", "SHARE")}
+              {copied ? "✓ COPIED" : t("결과 공유하기", "SHARE RESULT")}
             </button>
           </div>
         </div>

@@ -10,28 +10,36 @@ function fromBase64Url(value: string): string {
   return base64 + padding;
 }
 
-export function encodeSharePayload(payload: SharePayload): string {
-  const json = JSON.stringify(payload);
-  if (typeof window !== "undefined" && typeof window.btoa === "function") {
-    const bytes = new TextEncoder().encode(json);
+function encodeUtf8ToBase64(value: string): string {
+  if (typeof globalThis.btoa === "function") {
+    const bytes = new TextEncoder().encode(value);
     let binary = "";
     bytes.forEach((byte) => {
       binary += String.fromCharCode(byte);
     });
-    return toBase64Url(window.btoa(binary));
+    return globalThis.btoa(binary);
   }
-  return toBase64Url(Buffer.from(json, "utf8").toString("base64"));
+  return Buffer.from(value, "utf8").toString("base64");
+}
+
+function decodeBase64ToUtf8(value: string): string {
+  if (typeof globalThis.atob === "function") {
+    const binary = globalThis.atob(value);
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+  return Buffer.from(value, "base64").toString("utf8");
+}
+
+export function encodeSharePayload(payload: SharePayload): string {
+  const json = JSON.stringify(payload);
+  return toBase64Url(encodeUtf8ToBase64(json));
 }
 
 export function decodeSharePayload<T extends SharePayload>(value: string | null): T | null {
   if (!value) return null;
   try {
-    if (typeof window !== "undefined" && typeof window.atob === "function") {
-      const binary = window.atob(fromBase64Url(value));
-      const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-      return JSON.parse(new TextDecoder().decode(bytes)) as T;
-    }
-    return JSON.parse(Buffer.from(fromBase64Url(value), "base64").toString("utf8")) as T;
+    return JSON.parse(decodeBase64ToUtf8(fromBase64Url(value))) as T;
   } catch {
     return null;
   }

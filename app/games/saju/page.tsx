@@ -2368,8 +2368,8 @@ function ResultView({
       >
         <button type="button" onClick={onShare} style={primaryButtonStyle}>
           {copied
-            ? (locale === "ko" ? "복사됨" : "COPIED")
-            : (locale === "ko" ? "공유하기" : "SHARE")}
+            ? (locale === "ko" ? "결과 링크가 복사됐어요!" : "RESULT LINK COPIED!")
+            : (locale === "ko" ? "결과 공유하기" : "SHARE RESULT")}
         </button>
         <button type="button" onClick={onReset} style={secondaryButtonStyle}>
           ↺ 다시 보기
