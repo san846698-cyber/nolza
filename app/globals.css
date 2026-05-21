@@ -4655,3 +4655,311 @@ body {
     padding-inline: 14px !important;
   }
 }
+
+/* Game stage polish: soften the common intro/result surfaces so lightweight
+   games feel like open play areas instead of heavy modal cards. */
+.game-stage-intro {
+  align-items: center !important;
+  padding: clamp(76px, 11vh, 112px) 18px clamp(48px, 8vh, 84px) !important;
+}
+
+.game-stage-intro .game-intro {
+  width: min(100%, 760px) !important;
+  padding: clamp(22px, 4vw, 36px) !important;
+  border-color: rgba(20, 17, 14, 0.08) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(255, 250, 241, 0.44)) !important;
+  box-shadow: 0 16px 44px -38px rgba(20, 17, 14, 0.46) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.game-stage-intro .game-intro::before {
+  display: none !important;
+}
+
+.game-stage-intro .game-intro--dark {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(0, 255, 136, 0.08), transparent 22rem),
+    rgba(13, 17, 23, 0.54) !important;
+  box-shadow: 0 22px 58px -48px rgba(0, 0, 0, 0.9) !important;
+}
+
+.game-stage-intro .game-intro__eyebrow {
+  min-height: 24px !important;
+  margin-bottom: 10px !important;
+  padding: 4px 9px !important;
+  border-color: rgba(178, 16, 43, 0.16) !important;
+  background: rgba(255, 255, 255, 0.32) !important;
+  font-size: 0.68rem !important;
+  letter-spacing: 0.1em !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__eyebrow {
+  border-color: rgba(0, 255, 136, 0.18) !important;
+  background: rgba(0, 255, 136, 0.06) !important;
+  color: rgba(0, 255, 136, 0.76) !important;
+}
+
+.game-stage-intro .game-intro__title {
+  font-family: var(--font-inter), var(--font-noto-sans-kr), sans-serif !important;
+  font-size: clamp(2rem, 5vw, 3rem) !important;
+  font-weight: 850 !important;
+  line-height: 1.12 !important;
+}
+
+.game-stage-intro .game-intro__hook {
+  max-width: 35rem !important;
+  margin-top: 14px !important;
+  font-size: clamp(1.02rem, 2.2vw, 1.28rem) !important;
+  line-height: 1.48 !important;
+}
+
+.game-stage-intro .game-intro__how {
+  max-width: 42rem !important;
+  margin-top: 9px !important;
+  font-size: 0.92rem !important;
+  line-height: 1.62 !important;
+}
+
+.game-stage-intro .game-intro__meta {
+  gap: 6px !important;
+  margin-top: 16px !important;
+}
+
+.game-stage-intro .game-intro__meta span {
+  min-height: 28px !important;
+  padding: 4px 10px !important;
+  border-color: rgba(20, 17, 14, 0.1) !important;
+  font-size: 0.75rem !important;
+  font-weight: 720 !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__meta span {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.game-stage-intro .game-intro__start {
+  width: min(100%, 240px) !important;
+  min-height: 43px !important;
+  margin-top: 21px !important;
+  padding: 10px 20px !important;
+  font-size: 0.88rem !important;
+  box-shadow: 0 12px 26px -22px rgba(20, 17, 14, 0.75) !important;
+}
+
+.password-intro-actions {
+  max-width: 460px;
+  margin-inline: auto;
+}
+
+.password-intro-actions .game-intro__start {
+  width: 100% !important;
+}
+
+.reaction-game-stage__center {
+  padding-top: 78px !important;
+  padding-bottom: 64px !important;
+}
+
+.reaction-game-stage .result-screen {
+  width: min(100%, 620px) !important;
+  margin-top: 22px !important;
+}
+
+.reaction-game-stage .result-screen__card {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  box-shadow: none !important;
+}
+
+.reaction-game-stage .result-screen__card::after {
+  display: none !important;
+}
+
+.circle-game-stage {
+  background:
+    radial-gradient(circle at 50% -8%, rgba(255, 255, 255, 0.9), transparent 30rem),
+    #fafafa !important;
+}
+
+.circle-game-stage__ad {
+  padding-top: clamp(22px, 4vw, 42px) !important;
+}
+
+.circle-game-stage__content {
+  max-width: 1040px !important;
+  min-height: auto !important;
+  padding-top: clamp(18px, 3vw, 34px) !important;
+}
+
+.circle-game-stage__content > h1 {
+  font-size: clamp(1.05rem, 2.1vw, 1.38rem) !important;
+  letter-spacing: 0.04em !important;
+}
+
+.circle-game-stage__content > p {
+  margin-top: 8px !important;
+  max-width: 34rem !important;
+}
+
+.circle-game-stage__canvas {
+  max-width: min(86vmin, 620px) !important;
+  margin-top: 20px !important;
+  padding: 10px !important;
+  border-color: rgba(20, 17, 14, 0.08) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 18px 44px -38px rgba(20, 17, 14, 0.42) !important;
+}
+
+.circle-game-stage__canvas canvas {
+  border-color: rgba(20, 17, 14, 0.08) !important;
+  border-radius: 14px !important;
+}
+
+.circle-game-stage .result-screen {
+  width: min(100%, 620px) !important;
+  margin-top: 26px !important;
+}
+
+.password-game-stage {
+  background:
+    radial-gradient(circle at 20% -4%, rgba(0, 255, 136, 0.08), transparent 24rem),
+    radial-gradient(circle at 100% 10%, rgba(88, 166, 255, 0.07), transparent 26rem),
+    #0d1117 !important;
+}
+
+.password-game-stage__ad {
+  padding-top: clamp(20px, 4vw, 42px) !important;
+}
+
+.password-game-stage__shell {
+  max-width: 1180px !important;
+  padding-bottom: 86px !important;
+}
+
+.password-game-stage__shell > h1 {
+  text-align: left !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.16em !important;
+}
+
+.password-game-stage__grid {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px) !important;
+  gap: 18px !important;
+  margin-top: 18px !important;
+}
+
+.password-game-stage__terminal {
+  border-color: rgba(139, 148, 158, 0.22) !important;
+  border-radius: 16px !important;
+  background: rgba(1, 4, 9, 0.7) !important;
+  padding: 14px !important;
+  box-shadow: 0 18px 42px -36px rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.password-game-stage__terminal textarea {
+  min-height: 82px !important;
+  font-size: clamp(0.96rem, 2.4vw, 1.06rem) !important;
+}
+
+.password-game-stage__terminal button {
+  min-height: 40px !important;
+}
+
+.password-game-stage .palette-enter button {
+  padding: 5px 9px !important;
+  font-size: 0.9rem !important;
+}
+
+.password-game-stage__rules ul {
+  gap: 6px !important;
+}
+
+.password-game-stage__rules li {
+  border-radius: 11px !important;
+  padding: 7px 10px !important;
+  font-size: 0.82rem !important;
+  line-height: 1.45 !important;
+}
+
+.password-game-stage .result-screen {
+  width: min(100%, 620px) !important;
+}
+
+.circle-game-stage + .publisher-content,
+.password-game-stage + .publisher-content,
+.reaction-game-stage + .publisher-content,
+.game-stage-intro + .publisher-content {
+  padding-top: clamp(46px, 6vw, 72px) !important;
+}
+
+@media (max-width: 760px) {
+  .game-stage-intro {
+    padding: 72px 14px 44px !important;
+  }
+
+  .game-stage-intro .game-intro {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  .game-stage-intro .game-intro__title {
+    font-size: clamp(1.72rem, 8.4vw, 2.35rem) !important;
+  }
+
+  .game-stage-intro .game-intro__hook {
+    font-size: 0.98rem !important;
+  }
+
+  .game-stage-intro .game-intro__meta span {
+    min-height: 27px !important;
+    padding: 4px 8px !important;
+  }
+
+  .password-intro-actions {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .reaction-game-stage__center {
+    padding-top: 72px !important;
+  }
+
+  .circle-game-stage__content {
+    padding-inline: 14px !important;
+    padding-bottom: 34px !important;
+  }
+
+  .circle-game-stage__canvas {
+    max-width: min(100%, 430px) !important;
+    padding: 7px !important;
+  }
+
+  .password-game-stage__shell {
+    padding-inline: 14px !important;
+    padding-bottom: 54px !important;
+  }
+
+  .password-game-stage__grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .password-game-stage__terminal {
+    padding: 12px !important;
+  }
+
+  .password-game-stage__rules {
+    max-height: 42svh;
+    overflow: auto;
+    padding-right: 2px;
+  }
+}

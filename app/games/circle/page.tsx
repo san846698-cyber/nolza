@@ -244,7 +244,7 @@ export default function CircleGame() {
   if (!introDone) {
     return (
       <main
-        className="min-h-screen page-in flex items-center justify-center px-5 py-16"
+        className="game-stage-intro game-stage-intro--circle min-h-screen page-in flex items-center justify-center px-5 py-16"
         style={{ backgroundColor: "#fafafa", color: "#1a1a1a" }}
       >
         <GameIntro
@@ -272,14 +272,14 @@ export default function CircleGame() {
 
   return (
     <main
-      className="min-h-screen page-in"
+      className="circle-game-stage min-h-screen page-in"
       style={{ backgroundColor: "#fafafa", color: "#1a1a1a" }}
     >
-      <div className="mx-auto max-w-3xl px-5 pt-16 md:px-8">
+      <div className="circle-game-stage__ad mx-auto max-w-3xl px-5 pt-16 md:px-8">
         <AdTop />
       </div>
 
-      <div className="mx-auto flex max-w-3xl flex-col items-center justify-center px-5 pb-12 md:px-8" style={{ minHeight: "calc(100svh - 200px)" }}>
+      <div className="circle-game-stage__content mx-auto flex max-w-3xl flex-col items-center justify-center px-5 pb-12 md:px-8" style={{ minHeight: "calc(100svh - 200px)" }}>
         <h1
           className="text-center"
           style={{ fontSize: 22, fontWeight: 800, letterSpacing: "0.08em", color: "#1a1a1a" }}
@@ -291,7 +291,7 @@ export default function CircleGame() {
         </p>
 
         <div
-          className="relative mt-7 w-full max-w-[560px]"
+          className="circle-game-stage__canvas relative mt-7 w-full max-w-[560px]"
           style={{
             border: "1px solid #e7e2d6",
             borderRadius: 8,

@@ -184,7 +184,7 @@ export default function ReactGame() {
   if (phase === "idle") {
     return (
       <main
-        className="min-h-screen page-in flex items-center justify-center px-5 py-16"
+        className="game-stage-intro game-stage-intro--reaction min-h-screen page-in flex items-center justify-center px-5 py-16"
         style={{ backgroundColor: "#fafafa", color: "#0a0a0a" }}
       >
         <GameIntro
@@ -205,7 +205,7 @@ export default function ReactGame() {
   return (
     <main
       onPointerDown={press}
-      className="page-in relative min-h-screen select-none"
+      className="reaction-game-stage page-in relative min-h-screen select-none"
       style={{
         backgroundColor: bg,
         color: fg,
@@ -237,7 +237,7 @@ export default function ReactGame() {
       </div>
 
       {/* Main centered content */}
-      <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+      <div className="reaction-game-stage__center flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <div
           className="tabular-nums"
           style={{

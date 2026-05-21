@@ -507,7 +507,7 @@ export default function PasswordGame() {
   if (!mode) {
     return (
       <main
-        className="min-h-screen page-in flex items-center justify-center px-5 py-16"
+        className="game-stage-intro game-stage-intro--password min-h-screen page-in flex items-center justify-center px-5 py-16"
         style={{ backgroundColor: "#0d1117", color: "#c9d1d9" }}
       >
         <GameIntro
@@ -518,7 +518,7 @@ export default function PasswordGame() {
           meta={[t("라이트 10규칙", "Light 10 rules"), t("하드 30규칙", "Hard 30 rules"), t("중간 결과 공유", "Share progress")]}
           tone="dark"
         >
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 24 }}>
+          <div className="password-intro-actions" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 24 }}>
             <button type="button" className="game-intro__start btn-press" style={{ marginTop: 0 }} onClick={() => startMode("light")}>
               {t("라이트 모드", "Light Mode")}
             </button>
@@ -534,7 +534,7 @@ export default function PasswordGame() {
 
   return (
     <main
-      className="min-h-screen page-in"
+      className="password-game-stage min-h-screen page-in"
       style={{
         backgroundColor: "#0d1117",
         color: "#c9d1d9",
@@ -543,11 +543,11 @@ export default function PasswordGame() {
     >
       {won && <Confetti />}
 
-      <div className="mx-auto max-w-5xl px-5 pt-16 md:px-8">
+      <div className="password-game-stage__ad mx-auto max-w-5xl px-5 pt-16 md:px-8">
         <AdTop />
       </div>
 
-      <div className="mx-auto max-w-5xl px-5 pb-32 md:px-8">
+      <div className="password-game-stage__shell mx-auto max-w-5xl px-5 pb-32 md:px-8">
         <h1
           className="text-center"
           style={{ fontSize: 16, color: "#7d8590", letterSpacing: "0.2em" }}
@@ -555,10 +555,10 @@ export default function PasswordGame() {
           $ password-game
         </h1>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-[1fr,360px]">
+        <div className="password-game-stage__grid mt-8 grid grid-cols-1 gap-6 md:grid-cols-[1fr,360px]">
           <section>
             <div
-              className="rounded-md"
+              className="password-game-stage__terminal rounded-md"
               style={{
                 background: "#010409",
                 border: "1px solid #30363d",
@@ -829,7 +829,7 @@ export default function PasswordGame() {
             )}
           </section>
 
-          <aside>
+          <aside className="password-game-stage__rules">
             <div
               style={{
                 fontSize: 13,
