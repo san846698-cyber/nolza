@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@/hooks/useLocale";
+import { GUIDES } from "@/lib/guides";
 
 const CATEGORY_GUIDES = [
   {
@@ -124,6 +125,23 @@ export default function HomePublisherContent() {
             </article>
           ))}
         </div>
+
+        <section className="home-publisher__guides" aria-labelledby="home-guides-title">
+          <div className="home-publisher__section-title">
+            <p>{t("테스트 더 알아보기", "Learn more")}</p>
+            <h3 id="home-guides-title">
+              {t("짧게 읽고 바로 시작하는 게임 가이드", "Short guides before you play")}
+            </h3>
+          </div>
+          <div className="home-publisher__guide-list">
+            {GUIDES.map((guide) => (
+              <Link key={guide.slug} href={guide.href} className="home-publisher__guide-link">
+                <strong>{guide.homeTitle}</strong>
+                <span>{guide.homeDescription}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         <section className="home-publisher__safe">
           <h3>{t("가볍고 안전하게 즐기는 엔터테인먼트", "Light, safe entertainment")}</h3>

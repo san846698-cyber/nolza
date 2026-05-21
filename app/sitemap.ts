@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { GAMES } from "@/lib/games-home";
+import { GUIDES } from "@/lib/guides";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nolza.fun";
 
@@ -19,6 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: game.category === "featured" ? 0.9 : 0.8,
     }));
+  const guideRoutes: MetadataRoute.Sitemap = GUIDES.map((guide) => ({
+      url: `${SITE_URL}${guide.href}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    }));
 
-  return [...staticRoutes, ...gameRoutes];
+  return [...staticRoutes, ...gameRoutes, ...guideRoutes];
 }

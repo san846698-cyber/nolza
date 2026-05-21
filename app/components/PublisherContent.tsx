@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
 import { GAMES, type ContentType, type Game } from "@/lib/games-home";
+import { getGuideByGameId } from "@/lib/guides";
 
 type Localized = { ko: string; en: string };
 type ContentGame = Pick<Game, "id" | "href" | "cat" | "ko" | "en" | "type" | "category">;
@@ -744,6 +745,7 @@ export default function PublisherContent() {
   const faq = override?.faq ?? defaultFaq(game, kind);
   const related = relatedGames(game);
   const label = TYPE_LABEL[kind] ?? DEFAULT_TYPE_LABEL;
+  const guide = getGuideByGameId(game.id);
 
   return (
     <aside className="publisher-content" lang={locale}>
@@ -753,6 +755,16 @@ export default function PublisherContent() {
         </p>
         <h2>{t(`${game.ko.title} 소개`, `About ${game.en.title}`)}</h2>
         <p className="publisher-content__lead">{t(intro.ko, intro.en)}</p>
+
+        {guide ? (
+          <section className="publisher-content__guide" aria-label="관련 가이드">
+            <div>
+              <h3>{guide.publisherLinkLabel}</h3>
+              <p>{guide.publisherLinkDescription}</p>
+            </div>
+            <Link href={guide.href}>가이드 읽기</Link>
+          </section>
+        ) : null}
 
         <div className="publisher-content__grid">
           <section>
