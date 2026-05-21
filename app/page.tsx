@@ -24,23 +24,6 @@ export default function Home() {
     <main id="top" data-home>
       <HomeHeader />
       <JumpNav categories={sections.map((section) => section.cat)} />
-      <section className="home-recommendations" aria-labelledby="home-recommendations-title">
-        <div className="home-recommendations__head">
-          <p>{t("오늘 바로 해보기", "Start here")}</p>
-          <h2 id="home-recommendations-title">
-            {t("인기 테스트와 추천 콘텐츠", "Popular tests and recommended picks")}
-          </h2>
-          <span>
-            {t(
-              "처음 방문했다면 결과를 읽고 바로 공유하기 좋은 테스트부터 골라보세요. 짧게 끝나지만 친구와 비교할 이야깃거리가 남는 콘텐츠를 먼저 모았습니다.",
-              "If you are new, start with tests that are quick to finish and easy to share. These picks leave you with a result worth comparing with friends.",
-            )}
-          </span>
-        </div>
-        {HOME_RAILS.map((rail) => (
-          <CuratedRail key={rail.id} rail={rail} />
-        ))}
-      </section>
       <div className="pb-12 sm:pb-16">
         {sections.map(({ cat, games }, i) => (
           <CategorySection
@@ -51,6 +34,23 @@ export default function Home() {
           />
         ))}
       </div>
+      <section className="home-recommendations" aria-labelledby="home-recommendations-title">
+        <div className="home-recommendations__head">
+          <p>{t("테스트 안내", "Test guide")}</p>
+          <h2 id="home-recommendations-title">
+            {t("nolza.fun에서 즐길 수 있는 테스트", "What you can play on nolza.fun")}
+          </h2>
+          <span>
+            {t(
+              "결과를 읽고 공유하기 좋은 대표 콘텐츠만 짧게 묶었습니다. 위의 전체 목록에서 바로 시작하고, 아래 안내는 어떤 테스트를 고를지 가볍게 참고해보세요.",
+              "A short guide to the kinds of results you can share here. Start from the full list above, then use these notes when you want a quick pick.",
+            )}
+          </span>
+        </div>
+        {HOME_RAILS.map((rail) => (
+          <CuratedRail key={rail.id} rail={rail} />
+        ))}
+      </section>
       <HomePublisherContent />
     </main>
   );

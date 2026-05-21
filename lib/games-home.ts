@@ -702,10 +702,10 @@ export const HOME_RAILS: HomeRail[] = [
   },
   {
     id: "quick",
-    titleKo: "가볍게 해보는 심리 테스트",
-    titleEn: "Quick Psychology Tests",
-    subKo: "부담 없이 시작하지만 결과는 묘하게 오래 남는 테스트.",
-    subEn: "Low friction, strangely memorable results.",
+    titleKo: "짧은 심리 테스트",
+    titleEn: "Short Psychology Tests",
+    subKo: "짧은 질문으로 나의 반응과 생각 습관을 가볍게 읽어봅니다.",
+    subEn: "Short questions for reading your reactions and thinking habits lightly.",
     gameIds: ["breaking-point", "scene-choice", "stoic-control", "thinking-pattern", "value-conflict", "defense-mechanism", "attachment", "mbti-depth", "kbti"],
   },
   {

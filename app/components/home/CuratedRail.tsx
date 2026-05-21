@@ -5,6 +5,12 @@ import { useLocale } from "@/hooks/useLocale";
 import { gamesByIds, LABEL_TEXT, type Game, type HomeRail } from "@/lib/games-home";
 import Thumb from "./Thumb";
 
+const RAIL_LABELS: Record<HomeRail["id"], { ko: string; en: string }> = {
+  today: { ko: "추천", en: "Pick" },
+  quick: { ko: "심리", en: "Mind" },
+  share: { ko: "공유", en: "Share" },
+};
+
 function CuratedCard({ game, index }: { game: Game; index: number }) {
   const { t } = useLocale();
   const copy = t(game.ko.title, game.en.title);
@@ -35,7 +41,7 @@ function CuratedCard({ game, index }: { game: Game; index: number }) {
 
 export default function CuratedRail({ rail }: { rail: HomeRail }) {
   const { t } = useLocale();
-  const games = gamesByIds(rail.gameIds);
+  const games = gamesByIds(rail.gameIds).slice(0, 4);
 
   if (games.length === 0) return null;
 
@@ -44,7 +50,7 @@ export default function CuratedRail({ rail }: { rail: HomeRail }) {
       <div className="home-curated__head">
         <div>
           <span className="home-curated__kicker">
-            {rail.id === "today" ? "PICK" : rail.id === "quick" ? "FAST" : "SEND"}
+            {t(RAIL_LABELS[rail.id].ko, RAIL_LABELS[rail.id].en)}
           </span>
           <h2>{t(rail.titleKo, rail.titleEn)}</h2>
         </div>
