@@ -44,13 +44,17 @@ body {
 .brand-mark__dot {
   position: relative;
   top: -0.02em;
-  margin-left: -0.01em;
+  margin-left: -0.16em;
   font-family: var(--font-fraunces), var(--font-inter), serif;
   font-size: 0.58em;
   font-style: italic;
   font-weight: 750;
   letter-spacing: -0.02em;
   color: var(--home-coral, #ca614c);
+}
+
+.brand-mark--ko .brand-mark__dot {
+  margin-left: -0.18em;
 }
 
 .brand-mark--en .brand-mark__name {

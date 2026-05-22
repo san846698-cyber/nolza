@@ -20,6 +20,9 @@ export default function BrandMark({
   className,
 }: BrandMarkProps) {
   const text = domain ? "nolza.fun" : brandText(locale);
+  const [name, suffix] =
+    !domain && locale === "ko" ? ["놀자", ".fun"] : [text, ""];
+
   return (
     <span
       className={[
@@ -29,8 +32,16 @@ export default function BrandMark({
       ]
         .filter(Boolean)
         .join(" ")}
+      aria-label={text}
     >
-      {text}
+      <span className="brand-mark__name" aria-hidden="true">
+        {name}
+      </span>
+      {suffix && (
+        <span className="brand-mark__dot" aria-hidden="true">
+          {suffix}
+        </span>
+      )}
     </span>
   );
 }
