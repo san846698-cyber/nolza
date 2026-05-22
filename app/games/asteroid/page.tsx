@@ -200,7 +200,7 @@ export default function AsteroidGame() {
       <header className={s.topbar}>
         <div className={s.topbar__inner}>
           <Link href="/" className={s.topbar__back}>
-            ← {t("놀자.fun", "Nolza.fun")}
+            ← {t("놀자.fun", "nolza.fun")}
           </Link>
           <div className={s.topbar__brand}>
             <small>{t("소행성 발사대", "Asteroid Launcher")}</small>

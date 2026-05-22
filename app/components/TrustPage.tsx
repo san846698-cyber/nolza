@@ -5,7 +5,7 @@ export function TrustPage({
   eyebrow,
   title,
   subtitle,
-  backLabel = "← Back to Nolza.fun",
+  backLabel = "← Back to nolza.fun",
   lang,
   actions,
   children,

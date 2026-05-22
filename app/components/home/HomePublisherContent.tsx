@@ -71,13 +71,13 @@ export default function HomePublisherContent() {
     <section className="home-publisher" aria-labelledby="home-publisher-title">
       <div className="home-publisher__inner">
         <div className="home-publisher__intro">
-          <p className="home-publisher__eyebrow">About nolza.fun</p>
+          <p className="home-publisher__eyebrow">{t("놀자.fun 소개", "About nolza.fun")}</p>
           <h2 id="home-publisher-title">
-            {t("nolza.fun은 어떤 사이트인가요?", "What is nolza.fun?")}
+            {t("놀자.fun은 어떤 사이트인가요?", "What is nolza.fun?")}
           </h2>
           <p>
             {t(
-              "nolza.fun은 친구에게 보내기 좋은 바이럴 테스트와 짧은 브라우저 게임을 모아둔 플레이그라운드입니다. 심리, 관계, 운세형 읽을거리, 미니게임을 빠르게 즐기되 결과 화면에는 해석과 공유 맥락을 함께 담아 단순 링크 모음처럼 보이지 않도록 구성했습니다.",
+              "놀자.fun은 친구에게 보내기 좋은 바이럴 테스트와 짧은 브라우저 게임을 모아둔 플레이그라운드입니다. 심리, 관계, 운세형 읽을거리, 미니게임을 빠르게 즐기되 결과 화면에는 해석과 공유 맥락을 함께 담아 단순 링크 모음처럼 보이지 않도록 구성했습니다.",
               "nolza.fun is a playground for viral tests and short browser games that are easy to send to friends. It covers psychology, relationships, fortune-style reading, and mini games with result context designed for sharing.",
             )}
           </p>
@@ -147,7 +147,7 @@ export default function HomePublisherContent() {
           <h3>{t("가볍고 안전하게 즐기는 엔터테인먼트", "Light, safe entertainment")}</h3>
           <p>
             {t(
-              "nolza.fun의 테스트와 게임은 회원가입 없이 즐길 수 있는 엔터테인먼트 콘텐츠입니다. 이름이나 간단한 선택값을 사용하는 페이지도 결과를 만들기 위한 최소 정보만 다루며, 결과는 전문 조언이나 실제 판단을 대신하지 않습니다.",
+              "놀자.fun의 테스트와 게임은 회원가입 없이 즐길 수 있는 엔터테인먼트 콘텐츠입니다. 이름이나 간단한 선택값을 사용하는 페이지도 결과를 만들기 위한 최소 정보만 다루며, 결과는 전문 조언이나 실제 판단을 대신하지 않습니다.",
               "nolza.fun is entertainment you can use without creating an account. Pages that ask for a name or simple choices use them only to create the result, and results do not replace professional advice or real-life decisions.",
             )}
           </p>

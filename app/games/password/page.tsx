@@ -515,7 +515,7 @@ export default function PasswordGame() {
           title={t("한국판 비밀번호 게임", "Korean Password Game")}
           hook={t("규칙을 넘을수록 비밀번호는 점점 이상해집니다.", "Your password gets stranger with every rule you clear.")}
           howTo={t("가볍게 맛보려면 10규칙, 진짜 도전을 원하면 30규칙으로 시작하세요.", "Start with 10 rules for a quick run, or 30 rules for the full challenge.")}
-          context={t("비밀번호 규칙이 과해질 때 생기는 묘한 재미를 퍼즐처럼 풀어보는 게임입니다. 아래에서 규칙 구조와 결과 해석도 확인할 수 있어요.", "A puzzle about the strange fun of too many password rules. More context and result notes continue below.")}
+          context={t("실제 비밀번호가 아니라, 점점 과해지는 규칙을 퍼즐처럼 통과하는 미니게임입니다.", "Not a real password tool, but a puzzle about surviving increasingly unreasonable rules.")}
           meta={[t("라이트 10규칙", "Light 10 rules"), t("하드 30규칙", "Hard 30 rules"), t("중간 결과 공유", "Share progress")]}
           tone="dark"
         >

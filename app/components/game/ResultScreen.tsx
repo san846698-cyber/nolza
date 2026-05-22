@@ -72,7 +72,7 @@ export default function ResultScreen({
             )}
             {children}
             <div className="result-screen__brand">
-              {locale === "ko" ? "nolza.fun · 결과 카드" : "nolza.fun · result card"}
+              {locale === "ko" ? "놀자.fun · 결과 카드" : "nolza.fun · result card"}
             </div>
           </div>
         )}

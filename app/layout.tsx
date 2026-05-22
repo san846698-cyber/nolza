@@ -73,7 +73,7 @@ const pressStart = Press_Start_2P({
 });
 
 const siteDescription =
-  "Nolza.fun is a playful viral test playground for quizzes, relationship tests, fortune readings, mini games, and quick shareable results.";
+  "nolza.fun is a playful viral test playground for quizzes, relationship tests, fortune readings, mini games, and quick shareable results.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

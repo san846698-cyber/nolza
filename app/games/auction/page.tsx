@@ -169,7 +169,7 @@ export default function AuctionGame() {
       <div className={s.topbar}>
         <div className={s.topbar__inner}>
           <Link href="/" className={s.topbar__back}>
-            ← {t("놀자.fun", "Nolza.fun")}
+            ← {t("놀자.fun", "nolza.fun")}
           </Link>
           <div className={s.topbar__title}>
             {t("경매장", "The Auction House")}

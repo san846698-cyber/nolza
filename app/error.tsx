@@ -12,7 +12,7 @@ export default function ErrorPage({
       <div className="trust-shell">
         <div className="trust-topbar">
           <Link className="trust-back" href="/">
-            ← Back to Nolza.fun
+            ← Back to nolza.fun
           </Link>
         </div>
         <header className="trust-hero">

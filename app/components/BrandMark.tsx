@@ -7,11 +7,11 @@ type BrandMarkProps = {
 };
 
 export function brandText(locale: SimpleLocale = "ko") {
-  return locale === "ko" ? "놀자.fun" : "Nolza.fun";
+  return locale === "ko" ? "놀자.fun" : "nolza.fun";
 }
 
 export function homeBackLabel(locale: SimpleLocale = "ko") {
-  return locale === "ko" ? "← 놀자 홈으로" : "← Back to Nolza.fun";
+  return locale === "ko" ? "← 놀자 홈으로" : "← Back to nolza.fun";
 }
 
 export default function BrandMark({

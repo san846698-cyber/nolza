@@ -65,7 +65,7 @@ export default async function GuidePage({ params }: PageProps) {
     <main className="guide-page">
       <article className="guide-page__inner">
         <nav className="guide-page__breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">nolza.fun</Link>
+          <Link href="/">놀자.fun</Link>
           <span>/</span>
           <span>가이드</span>
         </nav>

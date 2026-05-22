@@ -1245,10 +1245,10 @@ function InputView({
             fontFamily: SERIF,
           }}
         >
-          {t("우리가 조선의 연인이었다면?", "What if we were Joseon lovers?")}
+          {t("두 이름이 조선의 인연이 됩니다.", "Two names become a Joseon romance.")}
         </h1>
         <p style={{ fontSize: 14, color: INK_SOFT, fontFamily: SERIF }}>
-          {t("신분을 넘어선 운명적 사랑", "A fateful love beyond social class")}
+          {t("이름만 넣으면 신분, 만남, 로맨스 장면이 짧은 이야기처럼 펼쳐집니다.", "Enter two names to unfold status, meeting, and romance as a short story.")}
         </p>
       </div>
 
@@ -1289,7 +1289,7 @@ function InputView({
           <SealButton
             ready={!!ready}
             stamping={stamping}
-            label={t("운명 확인하기", "Reveal Our Fate")}
+            label={t("인연 펼쳐보기", "Reveal the Romance")}
           />
         </div>
       </form>
@@ -1305,8 +1305,8 @@ function InputView({
         }}
       >
         {t(
-          "신분 차이가 클수록 더 흥미로운 이야기가 나옵니다",
-          "Larger class differences make for more dramatic tales",
+          "실제 궁합 판단이 아니라, 조선 로맨스 분위기로 즐기는 이야기형 테스트입니다.",
+          "This is a story-style test for Joseon romance vibes, not a real compatibility judgment.",
         )}
       </p>
     </div>

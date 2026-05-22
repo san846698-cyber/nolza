@@ -299,7 +299,7 @@ const OVERRIDES: Record<string, ContentOverride> = {
       en: "The short type label makes it easy to send and compare with friends.",
     },
     faq: [
-      qa("KBTI는 무엇인가요?", "What is KBTI?", "nolza.fun에서 가볍게 만든 한국식 성향 테스트 콘셉트입니다.", "It is a light Korean-style personality test concept on nolza.fun."),
+      qa("KBTI는 무엇인가요?", "What is KBTI?", "놀자.fun에서 가볍게 만든 한국식 성향 테스트 콘셉트입니다.", "It is a light Korean-style personality test concept on nolza.fun."),
       qa("결과를 진지하게 믿어야 하나요?", "Should I take it seriously?", "재미와 대화를 위한 콘텐츠로만 봐주세요.", "Treat it as entertainment and a conversation starter."),
       qa("영어로도 볼 수 있나요?", "Is English supported?", "사이트 언어 전환이 가능한 화면에서는 영어 설명도 함께 확인할 수 있습니다.", "Where the page supports language switching, English copy is available too."),
     ],

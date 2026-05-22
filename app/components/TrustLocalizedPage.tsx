@@ -72,7 +72,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
         {
           title: "운영자 정보",
           definitions: [
-            { term: "사이트명", value: "nolza.fun" },
+            { term: "사이트명", value: "놀자.fun" },
             { term: "운영자", value: "Studio4Any" },
             { term: "문의", value: CONTACT_EMAIL },
           ],
@@ -81,15 +81,15 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
     },
     en: {
       eyebrow: "About",
-      title: "About Nolza.fun",
+      title: "About nolza.fun",
       subtitle:
-        "Nolza.fun is an interactive entertainment site for browser tests, relationship results, fortune-style readings, and mini games.",
+        "nolza.fun is an interactive entertainment site for browser tests, relationship results, fortune-style readings, and mini games.",
       updated: UPDATED_EN,
       sections: [
         {
-          title: "What is Nolza.fun?",
+          title: "What is nolza.fun?",
           paragraphs: [
-            "Nolza.fun provides short browser-based experiences that can be used without account registration or app installation. The site focuses on psychology-style tests, couple and friendship compatibility, Korean culture-inspired content, fortune-style readings, and mini games designed to be read and shared.",
+            "nolza.fun provides short browser-based experiences that can be used without account registration or app installation. The site focuses on psychology-style tests, couple and friendship compatibility, Korean culture-inspired content, fortune-style readings, and mini games designed to be read and shared.",
             "Our goal is to create original web content that users can enjoy casually on their own or send to friends as a conversation starter.",
           ],
         },
@@ -103,7 +103,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
         {
           title: "Operation and Advertising",
           paragraphs: [
-            "Nolza.fun is operated by Studio4Any. We may use traffic analytics and advertising services to operate and improve the site. When ads are displayed, we try to place them so they do not interfere with result reading or core actions.",
+            "nolza.fun is operated by Studio4Any. We may use traffic analytics and advertising services to operate and improve the site. When ads are displayed, we try to place them so they do not interfere with result reading or core actions.",
             "Bug reports, content-related requests, advertising inquiries, and business inquiries can be sent through the email listed on the Contact page.",
           ],
         },
@@ -158,7 +158,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
     },
     en: {
       eyebrow: "Contact",
-      title: "Contact Nolza.fun",
+      title: "Contact nolza.fun",
       subtitle:
         "For bug reports, content requests, privacy questions, advertising inquiries, and business inquiries, please contact us by email.",
       updated: UPDATED_EN,
@@ -166,7 +166,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
         {
           title: "Email Contact",
           paragraphs: [
-            "For Nolza.fun-related inquiries, please contact us at the email below. We do not currently provide phone support or offline visitor support.",
+            "For nolza.fun-related inquiries, please contact us at the email below. We do not currently provide phone support or offline visitor support.",
             "We try to review legitimate inquiries as soon as possible. Response time may vary depending on the volume and nature of the request.",
           ],
           email: true,
@@ -278,13 +278,13 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
       eyebrow: "Privacy",
       title: "Privacy Policy",
       subtitle:
-        "This page explains what information may be used on Nolza.fun and how cookies, analytics, and advertising may relate to your visit.",
+        "This page explains what information may be used on nolza.fun and how cookies, analytics, and advertising may relate to your visit.",
       updated: UPDATED_EN,
       sections: [
         {
-          title: "1. What Nolza.fun Provides",
+          title: "1. What nolza.fun Provides",
           paragraphs: [
-            "Nolza.fun provides browser-based entertainment content such as mini games, psychology and relationship tests, fortune-style results, simulations, and culture quizzes.",
+            "nolza.fun provides browser-based entertainment content such as mini games, psychology and relationship tests, fortune-style results, simulations, and culture quizzes.",
             "Most content can be used without account registration. Names, choices, birth years, and similar inputs requested by a specific experience are used to generate and display that result.",
           ],
         },
@@ -293,7 +293,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
           paragraphs: [
             "Some tests may ask for a name, nickname, birth year, gender, or selected answers that are needed to calculate a result. These values are used to create the result screen or to create a share link when the user chooses to share.",
             "For content with share links, the minimum values needed to reopen the same result may be encoded in the URL. If you send that link to someone else, the recipient may be able to view that result.",
-            "Do not enter real passwords, national ID numbers, payment information, or sensitive personal information. Nolza.fun tests do not require such information.",
+            "Do not enter real passwords, national ID numbers, payment information, or sensitive personal information. nolza.fun tests do not require such information.",
           ],
         },
         {
@@ -306,29 +306,29 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
         {
           title: "4. Cookies and Similar Technologies",
           paragraphs: [
-            "Nolza.fun may use cookies or similar technologies to improve site functionality, remember language or usage preferences, analyze traffic, and support advertising.",
+            "nolza.fun may use cookies or similar technologies to improve site functionality, remember language or usage preferences, analyze traffic, and support advertising.",
             "You can limit or delete cookies through your browser settings. Limiting cookies may affect some features, analytics, or ad behavior.",
           ],
         },
         {
           title: "5. Analytics",
           paragraphs: [
-            "Nolza.fun may use analytics tools such as Google Analytics to understand traffic, page usage, content performance, and errors.",
+            "nolza.fun may use analytics tools such as Google Analytics to understand traffic, page usage, content performance, and errors.",
             "Analytics tools are used to understand site usage in aggregate and to improve service quality where possible.",
           ],
         },
         {
           title: "6. Advertising and Third-Party Services",
           paragraphs: [
-            "Nolza.fun may display advertisements through third-party advertising services such as Google AdSense. Advertising providers, including Google, may use cookies to serve ads based on prior visits to this or other websites.",
-            "Third-party service providers may process limited technical information for hosting, analytics, advertising, and security purposes. Nolza.fun does not sell personal information.",
+            "nolza.fun may display advertisements through third-party advertising services such as Google AdSense. Advertising providers, including Google, may use cookies to serve ads based on prior visits to this or other websites.",
+            "Third-party service providers may process limited technical information for hosting, analytics, advertising, and security purposes. nolza.fun does not sell personal information.",
             "You can manage personalized ads through Google's advertising privacy settings.",
           ],
         },
         {
           title: "7. Nature of Entertainment Results",
           paragraphs: [
-            "Tests, compatibility results, fortune-style content, simulations, and games on Nolza.fun are for entertainment and self-reflection only. Results do not replace professional diagnosis, counseling, or advice.",
+            "Tests, compatibility results, fortune-style content, simulations, and games on nolza.fun are for entertainment and self-reflection only. Results do not replace professional diagnosis, counseling, or advice.",
           ],
         },
         {
@@ -342,7 +342,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
         {
           title: "9. Children's Privacy",
           paragraphs: [
-            "Nolza.fun is intended for a general audience and does not knowingly collect personal information from children. If a parent or guardian believes a child has provided personal information, they may contact us to request removal.",
+            "nolza.fun is intended for a general audience and does not knowingly collect personal information from children. If a parent or guardian believes a child has provided personal information, they may contact us to request removal.",
           ],
         },
         {
@@ -437,26 +437,26 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
       eyebrow: "Terms",
       title: "Terms of Use",
       subtitle:
-        "Please review the entertainment nature of Nolza.fun content and the basic rules for using the site.",
+        "Please review the entertainment nature of nolza.fun content and the basic rules for using the site.",
       updated: UPDATED_EN,
       sections: [
         {
           title: "1. Acceptance of Terms",
           paragraphs: [
-            "By using Nolza.fun, you agree to these Terms of Use. If you do not agree, you may stop using the site.",
+            "By using nolza.fun, you agree to these Terms of Use. If you do not agree, you may stop using the site.",
           ],
         },
         {
           title: "2. Service Content",
           paragraphs: [
-            "Nolza.fun provides interactive entertainment content such as browser games, psychology and relationship tests, compatibility tests, fortune-style content, simulations, and culture quizzes.",
+            "nolza.fun provides interactive entertainment content such as browser games, psychology and relationship tests, compatibility tests, fortune-style content, simulations, and culture quizzes.",
             "Some content generates results from user inputs and may allow users to share a result link or result image if they choose to do so.",
           ],
         },
         {
           title: "3. Entertainment Purpose",
           paragraphs: [
-            "Nolza.fun results are for fun and self-reflection. The site does not provide real personality diagnosis, relationship judgment, fortune consultation, medical advice, legal advice, financial advice, investment advice, or dating advice.",
+            "nolza.fun results are for fun and self-reflection. The site does not provide real personality diagnosis, relationship judgment, fortune consultation, medical advice, legal advice, financial advice, investment advice, or dating advice.",
             "Important decisions should be based on your own judgment and, where necessary, advice from qualified professionals.",
           ],
         },
@@ -482,27 +482,27 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
         {
           title: "6. Intellectual Property",
           paragraphs: [
-            "Original content, design, text, graphics, logos, and interactive experiences on Nolza.fun belong to the site or its operator unless otherwise stated.",
+            "Original content, design, text, graphics, logos, and interactive experiences on nolza.fun belong to the site or its operator unless otherwise stated.",
             "Personal sharing and link sharing are allowed, but unauthorized copying, mass distribution, commercial reuse, or use for copying the service is prohibited.",
           ],
         },
         {
           title: "7. Third-Party Services and Ads",
           paragraphs: [
-            "Nolza.fun may use third-party services for hosting, analytics, advertising, security, and site operation, and may display ads through networks such as Google AdSense.",
+            "nolza.fun may use third-party services for hosting, analytics, advertising, security, and site operation, and may display ads through networks such as Google AdSense.",
             "The terms and privacy practices of third-party services may apply to those services.",
           ],
         },
         {
           title: "8. Service Changes and Interruptions",
           paragraphs: [
-            "Nolza.fun may improve or change content, features, design, advertising placement, or service methods. Some services may be temporarily interrupted for bug fixes, operational needs, or security reasons.",
+            "nolza.fun may improve or change content, features, design, advertising placement, or service methods. Some services may be temporarily interrupted for bug fixes, operational needs, or security reasons.",
           ],
         },
         {
           title: "9. Disclaimer",
           paragraphs: [
-            "Nolza.fun tries to provide a stable service, but does not guarantee the accuracy, completeness, or continuous availability of all content. The service is provided as-is.",
+            "nolza.fun tries to provide a stable service, but does not guarantee the accuracy, completeness, or continuous availability of all content. The service is provided as-is.",
           ],
         },
         {
