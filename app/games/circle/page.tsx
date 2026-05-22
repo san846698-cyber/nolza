@@ -250,8 +250,9 @@ export default function CircleGame() {
         <GameIntro
           eyebrow={t("CHALLENGE · 손맛 정확도", "CHALLENGE · PRECISION")}
           title={t("완벽한 원 그리기", "Draw a Perfect Circle")}
-          hook={t("한 획으로 원을 그리면 정확도를 바로 계산합니다.", "Draw one stroke and get an instant accuracy score.")}
-          howTo={t("손가락을 떼는 순간 결과가 나와요. 그린 선과 기준 원이 같이 남아서 캡처하기 좋습니다.", "Lift your finger to score. Your stroke and the reference circle stay visible for screenshots.")}
+          hook={t("한 번의 선으로 얼마나 완벽한 원을 그릴 수 있을까요?", "How close can one stroke get to a perfect circle?")}
+          howTo={t("손을 떼는 순간 정확도가 계산됩니다. 그린 선과 기준 원이 같이 남아서 결과를 비교하기 좋습니다.", "Lift your hand to score. Your stroke and the guide circle stay visible for comparison.")}
+          context={t("손끝 정확도와 균형 감각을 가볍게 확인하는 캔버스 챌린지입니다. 아래에서 점수 해석도 이어서 볼 수 있어요.", "A light canvas challenge for precision and balance. Score notes continue below.")}
           meta={[t("약 10초", "10 sec"), t("한 번의 선", "One stroke"), t("공유하기 쉬움", "Easy to share")]}
           startLabel={t("캔버스 열기", "Open canvas")}
           onStart={() => setIntroDone(true)}

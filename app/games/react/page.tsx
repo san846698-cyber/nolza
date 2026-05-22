@@ -190,8 +190,9 @@ export default function ReactGame() {
         <GameIntro
           eyebrow={t("CHALLENGE · 5라운드", "CHALLENGE · 5 ROUNDS")}
           title={t("반응속도", "Reaction Speed")}
-          hook={t("빨간 화면에서 기다렸다가 초록색이 되는 순간 누르세요.", "Wait on red, tap the instant it turns green.")}
-          howTo={t("총 5번 측정해서 평균 반응속도를 냅니다. 너무 빨리 누르면 그 판은 다시 시작합니다.", "Five trials make your average. Tap too early and that round restarts.")}
+          hook={t("초록색이 뜨는 순간, 당신의 손이 먼저 움직입니다.", "When green appears, your hand moves first.")}
+          howTo={t("5번 측정해서 평균 반응속도를 확인해보세요. 너무 빨리 누르면 그 판은 다시 시작합니다.", "Five trials make your average reaction time. Tap too early and that round restarts.")}
+          context={t("반응속도와 순간 집중력을 가볍게 확인하는 미니 챌린지입니다. 아래에서 결과 해석과 플레이 팁도 볼 수 있어요.", "A quick mini challenge for reaction speed and focus. Result notes and play tips continue below.")}
           meta={[t("약 20초", "20 sec"), t("5번 측정", "5 taps"), t("결과 공유", "Share result")]}
           startLabel={t("측정 시작", "Start test")}
           onStart={startTrial}

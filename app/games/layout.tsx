@@ -32,6 +32,7 @@ const DARK_GAME_IDS = new Set([
   "asteroid",
   "battle-what-if",
   "aqua-fishing",
+  "password",
 ]);
 
 const MINIMAL_HEADER_GAME_IDS = new Set([

@@ -674,7 +674,7 @@ function defaultIntro(game: ContentGame, kind: ContentType): Localized {
   const koType = TYPE_LABEL[kind]?.ko ?? DEFAULT_TYPE_LABEL.ko;
   const enType = TYPE_LABEL[kind]?.en ?? DEFAULT_TYPE_LABEL.en;
   return {
-    ko: `${koTitle}는 ${game.ko.sub}라는 주제로 만든 ${koType}입니다. 짧게 시작할 수 있지만 결과를 읽고 비교할 수 있도록 설명과 맥락을 함께 제공합니다.`,
+    ko: `${koTitle}는 "${game.ko.sub}"를 주제로 만든 ${koType}입니다. 짧게 시작할 수 있지만 결과를 읽고 비교할 수 있도록 설명과 맥락을 함께 제공합니다.`,
     en: `${enTitle} is a ${enType} built around "${game.en.sub}". It is quick to start, but includes context so the result is readable and shareable.`,
   };
 }

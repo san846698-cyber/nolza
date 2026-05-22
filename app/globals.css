@@ -5304,3 +5304,713 @@ body {
     min-height: 0;
   }
 }
+
+/* Second pass for lightweight game stages: reduce the "large guide card"
+   feeling and bring the playable surface closer to the first viewport. */
+.game-stage-intro {
+  min-height: auto !important;
+  justify-content: flex-start !important;
+  padding: clamp(70px, 8vh, 92px) 18px clamp(24px, 4.5vh, 44px) !important;
+}
+
+.game-stage-intro .game-intro {
+  position: relative !important;
+  overflow: hidden !important;
+  width: min(100%, 700px) !important;
+  padding: clamp(20px, 3.2vw, 30px) !important;
+  border-color: rgba(20, 17, 14, 0.065) !important;
+  border-radius: 16px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.56), rgba(255, 249, 238, 0.34)) !important;
+  box-shadow: 0 12px 30px -28px rgba(20, 17, 14, 0.48) !important;
+  text-align: left !important;
+}
+
+.game-stage-intro .game-intro__eyebrow {
+  justify-content: flex-start !important;
+  min-height: 22px !important;
+  margin-bottom: 9px !important;
+  padding: 3px 8px !important;
+  background: rgba(255, 255, 255, 0.42) !important;
+  font-size: 0.64rem !important;
+  letter-spacing: 0.09em !important;
+}
+
+.game-stage-intro .game-intro__title {
+  max-width: 14em !important;
+  font-size: clamp(1.75rem, 4.1vw, 2.58rem) !important;
+  font-weight: 760 !important;
+  line-height: 1.14 !important;
+}
+
+.game-stage-intro--password .game-intro__title {
+  max-width: 10em !important;
+  font-size: clamp(1.66rem, 3.8vw, 2.34rem) !important;
+}
+
+.game-stage-intro .game-intro__hook,
+.game-stage-intro .game-intro__how {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.game-stage-intro .game-intro__hook {
+  max-width: 32rem !important;
+  margin-top: 12px !important;
+  font-size: clamp(0.98rem, 1.8vw, 1.18rem) !important;
+  font-weight: 740 !important;
+  line-height: 1.48 !important;
+}
+
+.game-stage-intro .game-intro__how {
+  max-width: 38rem !important;
+  margin-top: 7px !important;
+  font-size: 0.88rem !important;
+  line-height: 1.58 !important;
+}
+
+.game-stage-intro .game-intro__meta {
+  justify-content: flex-start !important;
+  gap: 5px !important;
+  margin-top: 14px !important;
+}
+
+.game-stage-intro .game-intro__meta span {
+  min-height: 25px !important;
+  padding: 3px 9px !important;
+  border-color: rgba(20, 17, 14, 0.085) !important;
+  background: rgba(255, 255, 255, 0.46) !important;
+  color: rgba(20, 17, 14, 0.64) !important;
+  font-size: 0.7rem !important;
+  font-weight: 780 !important;
+}
+
+.game-stage-intro .game-intro__start {
+  width: auto !important;
+  min-width: 150px !important;
+  min-height: 40px !important;
+  margin-top: 18px !important;
+  padding: 9px 18px !important;
+  font-size: 0.84rem !important;
+  box-shadow: 0 10px 20px -18px rgba(20, 17, 14, 0.75) !important;
+}
+
+.game-intro__context {
+  max-width: 40rem;
+  margin: 14px 0 0;
+  padding-top: 13px;
+  border-top: 1px solid rgba(20, 17, 14, 0.065);
+  color: rgba(20, 17, 14, 0.58);
+  font-size: 0.82rem;
+  line-height: 1.58;
+  word-break: keep-all;
+}
+
+.game-stage-intro--reaction .game-intro {
+  background:
+    linear-gradient(90deg, rgba(255, 59, 48, 0.12), transparent 34%, transparent 58%, rgba(0, 255, 136, 0.14)),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.6), rgba(255, 249, 238, 0.32)) !important;
+}
+
+.game-stage-intro--reaction .game-intro::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, #ff3b30, #00ff88);
+  opacity: 0.58;
+  pointer-events: none;
+}
+
+.game-stage-intro--circle .game-intro {
+  background:
+    radial-gradient(circle at calc(100% - 64px) 50%, transparent 0 58px, rgba(26, 26, 26, 0.1) 59px 60px, transparent 61px),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(255, 249, 238, 0.36)) !important;
+}
+
+.game-stage-intro--password {
+  background:
+    radial-gradient(circle at 24% 0%, rgba(0, 255, 136, 0.09), transparent 24rem),
+    radial-gradient(circle at 100% 0%, rgba(88, 166, 255, 0.09), transparent 25rem),
+    #0d1117 !important;
+}
+
+.game-stage-intro--password .game-intro--dark {
+  border-color: rgba(148, 163, 184, 0.18) !important;
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.84), rgba(15, 23, 42, 0.84)),
+    repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.08) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.06) 0 1px, transparent 1px 22px) !important;
+  box-shadow: 0 18px 38px -32px rgba(0, 0, 0, 0.9) !important;
+}
+
+.game-stage-intro--password .game-intro--dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: 1px solid rgba(0, 255, 136, 0.18);
+  pointer-events: none;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__eyebrow {
+  border-color: rgba(52, 211, 153, 0.26) !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: rgba(167, 243, 208, 0.94) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__title {
+  color: #f8fafc !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__hook {
+  color: rgba(236, 253, 245, 0.94) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__how,
+.game-stage-intro .game-intro--dark .game-intro__context {
+  color: rgba(226, 232, 240, 0.76) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__meta span {
+  border-color: rgba(148, 163, 184, 0.18) !important;
+  background: rgba(255, 255, 255, 0.055) !important;
+  color: rgba(226, 232, 240, 0.78) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__context {
+  border-top-color: rgba(148, 163, 184, 0.14);
+}
+
+.password-intro-actions {
+  width: min(100%, 420px) !important;
+  max-width: 420px !important;
+  margin-inline: 0 !important;
+  margin-top: 18px !important;
+  gap: 8px !important;
+}
+
+.password-intro-actions .game-intro__start {
+  min-height: 40px !important;
+  padding-inline: 14px !important;
+}
+
+.circle-game-stage__ad,
+.password-game-stage__ad {
+  padding-top: clamp(8px, 2vw, 20px) !important;
+}
+
+.circle-game-stage__content {
+  padding-top: clamp(12px, 2vw, 24px) !important;
+}
+
+.password-game-stage__shell {
+  padding-top: clamp(8px, 2vw, 20px) !important;
+}
+
+.password-game-stage__shell > h1 {
+  color: rgba(226, 232, 240, 0.82) !important;
+}
+
+.password-game-stage__terminal {
+  border-color: rgba(148, 163, 184, 0.26) !important;
+  background:
+    linear-gradient(rgba(3, 7, 18, 0.78), rgba(3, 7, 18, 0.78)),
+    repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.045) 0 1px, transparent 1px 24px) !important;
+}
+
+.password-game-stage__terminal > div:first-child {
+  color: rgba(203, 213, 225, 0.76) !important;
+}
+
+.password-game-stage__rules li {
+  background-color: rgba(15, 23, 42, 0.72) !important;
+}
+
+.game-stage-intro + .publisher-content {
+  padding-top: clamp(28px, 4vw, 52px) !important;
+}
+
+@media (max-width: 760px) {
+  .game-stage-intro {
+    padding: 66px 14px 28px !important;
+  }
+
+  .game-stage-intro .game-intro {
+    width: min(100%, 440px) !important;
+    padding: 18px 16px !important;
+  }
+
+  .game-stage-intro .game-intro__title {
+    font-size: clamp(1.56rem, 7.6vw, 2.08rem) !important;
+  }
+
+  .game-stage-intro .game-intro__hook {
+    font-size: 0.94rem !important;
+  }
+
+  .game-stage-intro .game-intro__how,
+  .game-intro__context {
+    font-size: 0.8rem !important;
+    line-height: 1.52 !important;
+  }
+
+  .game-stage-intro .game-intro__meta {
+    margin-top: 12px !important;
+  }
+
+  .game-stage-intro .game-intro__start {
+    min-height: 42px !important;
+  }
+
+  .password-intro-actions {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+}
+
+/* Third pass: tighten the intro into a light playable stage instead of a
+   static information card. */
+.game-stage-intro {
+  padding: clamp(58px, 6.6vh, 78px) 18px clamp(18px, 3.4vh, 34px) !important;
+}
+
+.game-stage-intro .game-intro {
+  width: min(100%, 672px) !important;
+  padding: clamp(18px, 2.8vw, 26px) !important;
+  border-width: 1px !important;
+  border-color: rgba(20, 17, 14, 0.058) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.5), rgba(255, 249, 239, 0.28)) !important;
+  box-shadow: 0 10px 24px -24px rgba(20, 17, 14, 0.5) !important;
+}
+
+.game-stage-intro .game-intro__eyebrow {
+  width: fit-content !important;
+  min-height: 20px !important;
+  margin-bottom: 8px !important;
+  padding: 2px 7px !important;
+  border-radius: 999px !important;
+  font-size: 0.61rem !important;
+  font-weight: 820 !important;
+}
+
+.game-stage-intro .game-intro__title {
+  max-width: 12.8em !important;
+  font-size: clamp(1.58rem, 3.55vw, 2.22rem) !important;
+  font-weight: 720 !important;
+  line-height: 1.17 !important;
+  letter-spacing: 0 !important;
+  word-break: keep-all !important;
+}
+
+.game-stage-intro--password .game-intro__title {
+  max-width: 9.4em !important;
+  font-size: clamp(1.5rem, 3.25vw, 2.05rem) !important;
+  font-weight: 690 !important;
+}
+
+.game-stage-intro .game-intro__hook {
+  max-width: 31rem !important;
+  margin-top: 10px !important;
+  font-size: clamp(0.95rem, 1.55vw, 1.08rem) !important;
+  font-weight: 680 !important;
+  line-height: 1.5 !important;
+}
+
+.game-stage-intro .game-intro__how {
+  max-width: 36rem !important;
+  margin-top: 6px !important;
+  font-size: 0.84rem !important;
+  line-height: 1.55 !important;
+}
+
+.game-stage-intro .game-intro__meta {
+  margin-top: 13px !important;
+  gap: 6px !important;
+}
+
+.game-stage-intro .game-intro__meta span {
+  min-height: 24px !important;
+  padding: 3px 8px !important;
+  border-color: rgba(20, 17, 14, 0.07) !important;
+  background: rgba(255, 255, 255, 0.34) !important;
+  color: rgba(20, 17, 14, 0.58) !important;
+  font-size: 0.68rem !important;
+  font-weight: 720 !important;
+}
+
+.game-stage-intro .game-intro__start {
+  min-width: 136px !important;
+  min-height: 38px !important;
+  margin-top: 16px !important;
+  padding: 8px 16px !important;
+  font-size: 0.82rem !important;
+  box-shadow: 0 9px 18px -17px rgba(20, 17, 14, 0.78) !important;
+}
+
+.game-intro__context {
+  max-width: 37rem;
+  margin-top: 12px;
+  padding-top: 11px;
+  color: rgba(20, 17, 14, 0.54);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.game-stage-intro--reaction .game-intro {
+  background:
+    linear-gradient(90deg, rgba(255, 59, 48, 0.105), transparent 28%, transparent 62%, rgba(0, 255, 136, 0.12)),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.54), rgba(255, 249, 239, 0.28)) !important;
+}
+
+.game-stage-intro--reaction .game-intro::after {
+  width: 3px;
+  opacity: 0.5;
+}
+
+.game-stage-intro--circle .game-intro {
+  background:
+    radial-gradient(circle at calc(100% - 58px) 48%, transparent 0 50px, rgba(26, 26, 26, 0.075) 51px 52px, transparent 53px),
+    radial-gradient(circle at calc(100% - 58px) 48%, transparent 0 30px, rgba(26, 26, 26, 0.04) 31px 32px, transparent 33px),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.56), rgba(255, 249, 239, 0.3)) !important;
+}
+
+.game-stage-intro--password {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(34, 197, 94, 0.12), transparent 24rem),
+    radial-gradient(circle at 100% 0%, rgba(96, 165, 250, 0.1), transparent 26rem),
+    linear-gradient(180deg, #0d1117 0%, #0f172a 100%) !important;
+}
+
+.game-stage-intro--password .game-intro--dark {
+  border-color: rgba(203, 213, 225, 0.2) !important;
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.78), rgba(15, 23, 42, 0.78)),
+    repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.07) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.05) 0 1px, transparent 1px 24px) !important;
+  box-shadow: 0 14px 32px -26px rgba(0, 0, 0, 0.9) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__eyebrow {
+  border-color: rgba(134, 239, 172, 0.26) !important;
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: rgba(220, 252, 231, 0.92) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__title {
+  color: #f8fafc !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__hook {
+  color: rgba(241, 245, 249, 0.94) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__how,
+.game-stage-intro .game-intro--dark .game-intro__context {
+  color: rgba(226, 232, 240, 0.82) !important;
+}
+
+.game-stage-intro .game-intro--dark .game-intro__meta span {
+  border-color: rgba(203, 213, 225, 0.16) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: rgba(226, 232, 240, 0.8) !important;
+}
+
+.password-intro-actions {
+  width: min(100%, 390px) !important;
+  margin-top: 16px !important;
+}
+
+.password-intro-actions .game-intro__start {
+  min-width: 0 !important;
+}
+
+.password-intro-actions .game-intro__start:first-child {
+  border: 1px solid rgba(203, 213, 225, 0.18) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc !important;
+}
+
+.password-intro-actions .game-intro__start:last-child {
+  background: #34d399 !important;
+  color: #07130d !important;
+  box-shadow: 0 10px 22px -18px rgba(52, 211, 153, 0.9) !important;
+}
+
+.circle-game-stage__ad,
+.password-game-stage__ad {
+  padding-top: clamp(4px, 1.4vw, 14px) !important;
+}
+
+.circle-game-stage__content {
+  padding-top: clamp(8px, 1.5vw, 18px) !important;
+}
+
+.circle-game-stage__content > h1 {
+  font-size: clamp(0.98rem, 1.85vw, 1.22rem) !important;
+  font-weight: 760 !important;
+}
+
+.circle-game-stage__content > p {
+  font-size: 0.86rem !important;
+  color: rgba(26, 26, 26, 0.62) !important;
+}
+
+.circle-game-stage__canvas {
+  max-width: min(82vmin, 590px) !important;
+  margin-top: 17px !important;
+  border-color: rgba(20, 17, 14, 0.065) !important;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 31%, rgba(20, 17, 14, 0.035) 31.2% 31.6%, transparent 31.8%),
+    rgba(255, 255, 255, 0.64) !important;
+  box-shadow: 0 12px 30px -30px rgba(20, 17, 14, 0.46) !important;
+}
+
+.circle-game-stage__canvas canvas {
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 30%, rgba(20, 17, 14, 0.035) 30.2% 30.6%, transparent 30.8%),
+    #fff !important;
+}
+
+.password-game-stage {
+  background:
+    radial-gradient(circle at 15% -5%, rgba(52, 211, 153, 0.11), transparent 24rem),
+    radial-gradient(circle at 100% 5%, rgba(96, 165, 250, 0.09), transparent 26rem),
+    linear-gradient(180deg, #0d1117 0%, #0f172a 100%) !important;
+  color: #e2e8f0 !important;
+}
+
+.password-game-stage__shell {
+  padding-top: clamp(4px, 1.3vw, 14px) !important;
+  padding-bottom: clamp(54px, 7vw, 78px) !important;
+}
+
+.password-game-stage__shell > h1 {
+  color: rgba(226, 232, 240, 0.88) !important;
+  font-weight: 760 !important;
+}
+
+.password-game-stage__grid {
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 310px) !important;
+  gap: 16px !important;
+  margin-top: 15px !important;
+}
+
+.password-game-stage__terminal {
+  border-color: rgba(203, 213, 225, 0.18) !important;
+  background:
+    linear-gradient(rgba(3, 7, 18, 0.7), rgba(3, 7, 18, 0.7)),
+    repeating-linear-gradient(90deg, rgba(148, 163, 184, 0.048) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(0deg, rgba(148, 163, 184, 0.035) 0 1px, transparent 1px 24px) !important;
+  box-shadow: 0 14px 34px -30px rgba(0, 0, 0, 0.95) !important;
+}
+
+.password-game-stage__terminal > div:first-child,
+.password-game-stage__terminal textarea + div {
+  color: rgba(203, 213, 225, 0.72) !important;
+}
+
+.password-game-stage__terminal textarea {
+  color: #86efac !important;
+  caret-color: #86efac !important;
+}
+
+.password-game-stage__terminal textarea::placeholder {
+  color: rgba(203, 213, 225, 0.38) !important;
+}
+
+.password-game-stage__terminal button {
+  border-color: rgba(134, 239, 172, 0.55) !important;
+  color: #bbf7d0 !important;
+  background: rgba(34, 197, 94, 0.08) !important;
+}
+
+.password-game-stage__rules > div:first-child {
+  color: rgba(203, 213, 225, 0.74) !important;
+}
+
+.password-game-stage__rules li {
+  border-color: rgba(148, 163, 184, 0.16) !important;
+  background-color: rgba(15, 23, 42, 0.66) !important;
+}
+
+.circle-game-stage + .publisher-content,
+.password-game-stage + .publisher-content,
+.reaction-game-stage + .publisher-content {
+  padding-top: clamp(26px, 4vw, 48px) !important;
+}
+
+.game-stage-intro + .publisher-content {
+  padding-top: clamp(22px, 3.2vw, 42px) !important;
+}
+
+@media (min-width: 900px) {
+  .game-stage-intro {
+    padding-left: max(18px, calc((100vw - 1060px) / 2)) !important;
+    padding-right: max(18px, calc((100vw - 1060px) / 2)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .game-stage-intro {
+    padding: 58px 14px 22px !important;
+  }
+
+  .game-stage-intro .game-intro {
+    padding: 16px 15px !important;
+    border-radius: 14px !important;
+  }
+
+  .game-stage-intro .game-intro__title {
+    font-size: clamp(1.42rem, 7vw, 1.92rem) !important;
+    line-height: 1.18 !important;
+  }
+
+  .game-stage-intro--password .game-intro__title {
+    font-size: clamp(1.34rem, 6.4vw, 1.76rem) !important;
+  }
+
+  .game-stage-intro .game-intro__hook {
+    margin-top: 9px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .game-stage-intro .game-intro__how,
+  .game-intro__context {
+    font-size: 0.76rem !important;
+  }
+
+  .game-stage-intro .game-intro__meta span {
+    min-height: 24px !important;
+    font-size: 0.66rem !important;
+  }
+
+  .game-stage-intro .game-intro__start {
+    min-height: 40px !important;
+  }
+
+  .circle-game-stage__canvas {
+    max-width: min(100%, 410px) !important;
+    margin-top: 15px !important;
+  }
+
+  .password-game-stage__shell {
+    padding-top: 6px !important;
+    padding-bottom: 46px !important;
+  }
+
+  .password-game-stage__grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .password-game-stage__rules {
+    max-height: 38svh;
+  }
+}
+
+/* Password intro reset: remove the card shell and keep the start copy centered. */
+.game-stage-intro--password .game-intro {
+  width: min(100%, 760px) !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+.game-stage-intro--password .game-intro--dark {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.game-stage-intro--password .game-intro--dark::after {
+  display: none !important;
+}
+
+.game-stage-intro--password .game-intro__eyebrow,
+.game-stage-intro--password .game-intro__title,
+.game-stage-intro--password .game-intro__hook,
+.game-stage-intro--password .game-intro__how,
+.game-stage-intro--password .game-intro__context {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.game-stage-intro--password .game-intro__eyebrow {
+  justify-content: center !important;
+}
+
+.game-stage-intro--password .game-intro__meta {
+  justify-content: center !important;
+}
+
+.game-stage-intro--password .game-intro__context {
+  max-width: 38rem !important;
+  border-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.game-stage-intro--password .password-intro-actions {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Reaction and circle intros: keep the copy centered like a start screen. */
+.game-stage-intro--reaction .game-intro,
+.game-stage-intro--circle .game-intro {
+  border: 0 !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+.game-stage-intro--reaction .game-intro__eyebrow,
+.game-stage-intro--reaction .game-intro__title,
+.game-stage-intro--reaction .game-intro__hook,
+.game-stage-intro--reaction .game-intro__how,
+.game-stage-intro--reaction .game-intro__context,
+.game-stage-intro--circle .game-intro__eyebrow,
+.game-stage-intro--circle .game-intro__title,
+.game-stage-intro--circle .game-intro__hook,
+.game-stage-intro--circle .game-intro__how,
+.game-stage-intro--circle .game-intro__context {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.game-stage-intro--reaction .game-intro__eyebrow,
+.game-stage-intro--circle .game-intro__eyebrow {
+  justify-content: center !important;
+}
+
+.game-stage-intro--reaction .game-intro__meta,
+.game-stage-intro--circle .game-intro__meta {
+  justify-content: center !important;
+}
+
+.game-stage-intro--reaction .game-intro__start,
+.game-stage-intro--circle .game-intro__start {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.game-stage-intro--reaction .game-intro__context,
+.game-stage-intro--circle .game-intro__context {
+  border-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.game-stage-intro--circle .game-intro {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.56), rgba(255, 249, 239, 0.3)) !important;
+}
+
+/* Circle game canvas should not show a guide before the user draws. */
+.circle-game-stage__canvas {
+  background: rgba(255, 255, 255, 0.64) !important;
+}
+
+.circle-game-stage__canvas canvas {
+  background: #fff !important;
+}

@@ -7,6 +7,7 @@ type GameIntroProps = {
   title: string;
   hook: string;
   howTo: string;
+  context?: string;
   meta?: string[];
   startLabel?: string;
   onStart?: () => void;
@@ -19,6 +20,7 @@ export default function GameIntro({
   title,
   hook,
   howTo,
+  context,
   meta = [],
   startLabel,
   onStart,
@@ -44,6 +46,7 @@ export default function GameIntro({
           {startLabel ?? "시작하기"}
         </button>
       )}
+      {context && <p className="game-intro__context">{context}</p>}
     </section>
   );
 }
