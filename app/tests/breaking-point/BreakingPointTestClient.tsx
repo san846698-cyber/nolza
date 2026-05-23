@@ -66,6 +66,15 @@ export default function BreakingPointTestClient() {
   const progress = phase === "result" ? 100 : ((questionIndex + 1) / BREAKING_QUESTIONS.length) * 100;
 
   useEffect(() => {
+    if (phase !== "quiz") return;
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.scrollingElement?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [phase, questionIndex]);
+
+  useEffect(() => {
     if (phase === "result") trackResultView("breaking-point", result.id);
   }, [phase, result.id]);
 
@@ -290,8 +299,10 @@ function ResultView({
 const styles = `
   .breaking-page {
     min-height: 100vh;
+    min-height: 100svh;
     position: relative;
     overflow-x: hidden;
+    overflow-y: auto;
     color: #f4eadc;
     background:
       linear-gradient(180deg, rgba(244, 234, 220, 0.035), transparent 34%),
@@ -338,7 +349,7 @@ const styles = `
   .breaking-shell {
     width: min(1040px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 26px 0 74px;
+    padding: clamp(34px, 5vh, 60px) 0 74px;
     position: relative;
     z-index: 1;
   }
@@ -452,6 +463,7 @@ const styles = `
     transform: translateY(-2px);
   }
   .test-card {
+    margin-top: clamp(10px, 2vh, 24px);
     padding: clamp(24px, 5vw, 48px);
     border-radius: 32px;
     background:

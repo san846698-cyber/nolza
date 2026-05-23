@@ -67,6 +67,15 @@ export default function StoicControlTestClient(): ReactElement {
   const progress = phase === "result" ? 100 : ((questionIndex + 1) / STOIC_QUESTIONS.length) * 100;
 
   useEffect(() => {
+    if (phase !== "quiz") return;
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.scrollingElement?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [phase, questionIndex]);
+
+  useEffect(() => {
     if (phase === "result" && result) {
       trackResultView("stoic-control", result.id);
     }
@@ -223,6 +232,9 @@ export default function StoicControlTestClient(): ReactElement {
       <style jsx global>{`
         .stoic-test {
           min-height: 100vh;
+          min-height: 100svh;
+          overflow-x: hidden;
+          overflow-y: auto;
           color: #24231f;
           background:
             linear-gradient(180deg, rgba(255, 255, 255, 0.48), transparent 34%),
@@ -232,6 +244,7 @@ export default function StoicControlTestClient(): ReactElement {
         .stoic-shell {
           width: min(100%, 1040px);
           margin: 0 auto 34px;
+          padding-top: clamp(10px, 2.5vh, 28px);
         }
         .stoic-back {
           margin-bottom: 18px;
@@ -352,6 +365,7 @@ export default function StoicControlTestClient(): ReactElement {
           transform: translateY(-2px);
         }
         .stoic-card {
+          margin-top: clamp(12px, 3vh, 28px);
           padding: clamp(24px, 4vw, 46px);
         }
         .progress-head {

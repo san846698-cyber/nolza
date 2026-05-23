@@ -67,6 +67,15 @@ export default function CrushTypeTestClient(): ReactElement {
   const progress = phase === "result" ? 100 : ((questionIndex + 1) / CRUSH_QUESTIONS.length) * 100;
 
   useEffect(() => {
+    if (phase !== "quiz") return;
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.scrollingElement?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [phase, questionIndex]);
+
+  useEffect(() => {
     if (phase === "result" && result) {
       trackResultView("crush-type", result.id);
     }
@@ -219,6 +228,9 @@ export default function CrushTypeTestClient(): ReactElement {
       <style jsx global>{`
         .crush-test {
           min-height: 100vh;
+          min-height: 100svh;
+          overflow-x: hidden;
+          overflow-y: auto;
           color: #2b1720;
           background:
             linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%),
@@ -229,6 +241,7 @@ export default function CrushTypeTestClient(): ReactElement {
         .shell {
           width: min(100%, 1040px);
           margin: 0 auto 34px;
+          padding-top: clamp(10px, 2.5vh, 28px);
         }
 
         .back {
@@ -357,6 +370,7 @@ export default function CrushTypeTestClient(): ReactElement {
         }
 
         .quiz-card {
+          margin-top: clamp(12px, 3vh, 28px);
           padding: clamp(24px, 4vw, 46px);
         }
 

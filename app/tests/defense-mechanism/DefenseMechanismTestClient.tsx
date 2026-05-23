@@ -188,6 +188,15 @@ export default function DefenseMechanismTestClient() {
   const calculated = useMemo(() => calculateDefenseResult(answers), [answers]);
 
   useEffect(() => {
+    if (phase !== "quiz") return;
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      document.scrollingElement?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [phase, questionIndex]);
+
+  useEffect(() => {
     return () => {
       if (answerTimerRef.current !== null) {
         window.clearTimeout(answerTimerRef.current);
@@ -572,8 +581,10 @@ function Result({
 const styles = `
   .defense-page {
     min-height: 100vh;
+    min-height: 100svh;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     color: #f8efe2;
     background:
       linear-gradient(180deg, rgba(248, 239, 226, 0.05), transparent 34%),
@@ -774,7 +785,7 @@ const styles = `
     align-items: center;
   }
   .quiz {
-    padding: 24px 0 68px;
+    padding: clamp(44px, 7vh, 76px) 0 68px;
   }
   .progress {
     margin: 12px 0 14px;
@@ -1260,7 +1271,7 @@ const styles = `
     }
     .quiz {
       width: min(100% - 28px, 860px);
-      padding: 18px 0 56px;
+      padding: 30px 0 56px;
     }
     .question-card {
       padding: 18px;
