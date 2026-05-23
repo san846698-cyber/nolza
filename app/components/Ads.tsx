@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
+import Script from "next/script";
 
 const CLIENT_ID =
   process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "ca-pub-3027162336323004";
@@ -12,12 +13,14 @@ const SLOT_INLINE = process.env.NEXT_PUBLIC_ADSENSE_SLOT_INLINE ?? "";
 const SLOT_RESULT = process.env.NEXT_PUBLIC_ADSENSE_SLOT_RESULT ?? "";
 const SLOT_RAIL = process.env.NEXT_PUBLIC_ADSENSE_SLOT_RAIL ?? "";
 const SLOT_SIDE = SLOT_RAIL || process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDE || "";
+const ADSENSE_ENABLED = process.env.NEXT_PUBLIC_ADSENSE_ENABLED === "true";
 
 type AdFormat = "side-rail" | "inline" | "result" | "footer" | "mobile-inline";
 
 type AdPageType =
   | "homepage"
   | "content"
+  | "guide"
   | "test"
   | "mini-game"
   | "simulation"
@@ -78,6 +81,7 @@ function pushAd() {
 
 function pageTypeForPath(pathname: string): AdPageType {
   if (pathname === "/") return "homepage";
+  if (pathname.startsWith("/guides/")) return "guide";
   if (pathname.includes("/share-card") || pathname.includes("/share-og")) return "result";
   if (pathname.startsWith("/tests/")) return "test";
   if (!pathname.startsWith("/games/")) {
@@ -94,11 +98,11 @@ function useAdPageType(): AdPageType {
 }
 
 function canUseSideRails(pageType: AdPageType) {
-  return pageType === "homepage" || pageType === "content";
+  return pageType === "homepage" || pageType === "content" || pageType === "guide";
 }
 
 function canRenderAds(pageType: AdPageType) {
-  return pageType === "homepage" || pageType === "content";
+  return pageType === "homepage" || pageType === "content" || pageType === "guide";
 }
 
 function viewportCanFitSideRails(pageType: AdPageType) {
@@ -117,7 +121,24 @@ function viewportCanFitSideRails(pageType: AdPageType) {
 // Otherwise, show a clearly labelled placeholder so layout can be reviewed
 // without committing private publisher slot ids.
 export const HAS_REAL_ADS =
-  CLIENT_ID.length > 0 && !CLIENT_ID.startsWith("ca-pub-XXX");
+  ADSENSE_ENABLED && CLIENT_ID.length > 0 && !CLIENT_ID.startsWith("ca-pub-XXX");
+
+export function AdSenseScript() {
+  const pathname = usePathname() ?? "/";
+  const pageType = useMemo(() => pageTypeForPath(pathname), [pathname]);
+
+  if (!canRenderAds(pageType) || !HAS_REAL_ADS) return null;
+
+  return (
+    <Script
+      id="adsense-loader"
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CLIENT_ID}`}
+      crossOrigin="anonymous"
+      strategy="afterInteractive"
+    />
+  );
+}
 
 function slotForFormat(format: AdFormat) {
   switch (format) {
@@ -205,7 +226,7 @@ export function AdSlot({
     if (shouldRenderRealAd) pushAd();
   }, [shouldRenderRealAd]);
 
-  if (!adsAllowed) return null;
+  if (!adsAllowed || !HAS_REAL_ADS || !slot) return null;
 
   return (
     <AdFrame
@@ -389,7 +410,7 @@ export function AdSideRails() {
     pushAd();
   }, [safeForRails]);
 
-  if (!safeForRails) return null;
+  if (!safeForRails || !HAS_REAL_ADS || !SLOT_SIDE) return null;
 
   return (
     <div className="ad-side-rails" data-ad-page-type={pageType}>

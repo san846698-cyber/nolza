@@ -10,7 +10,7 @@ import {
   Press_Start_2P,
 } from "next/font/google";
 import "./globals.css";
-import { AdSideRails } from "./components/Ads";
+import { AdSenseScript, AdSideRails } from "./components/Ads";
 import Analytics from "./components/Analytics";
 import LocaleToggle from "./components/LocaleToggle";
 import SiteFooter from "./components/SiteFooter";
@@ -146,13 +146,6 @@ export default function RootLayout({
       className={`${notoSans.variable} ${notoSerif.variable} ${jetBrains.variable} ${inter.variable} ${caveat.variable} ${gaegu.variable} ${fraunces.variable} ${pressStart.variable}`}
     >
       <head>
-        {adsenseClient && !adsenseClient.startsWith("ca-pub-XXX") && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
-            crossOrigin="anonymous"
-          />
-        )}
         <meta
           name="google-adsense-account"
           content={adsenseClient}
@@ -160,6 +153,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased">
         <Analytics />
+        <AdSenseScript />
         <LocaleToggle />
         {children}
         <SiteFooter />
