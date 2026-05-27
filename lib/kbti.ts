@@ -483,13 +483,13 @@ export const QUESTIONS: Question[] = [
         effects: [eff("planning", "H")],
       },
       {
-        ko: "조금 바꿨지만 방향은 유지 중이다",
-        en: "Changed it a bit, but still keeping the direction.",
+        ko: "주간 루틴으로 쪼개서 아직 끌고 가는 중이다",
+        en: "Broke it into weekly routines and still keeping it alive.",
         effects: [eff("planning", "M"), eff("reality", "M")],
       },
       {
-        ko: "현실에 맞게 계속 수정하고 있다",
-        en: "Keep adjusting it to match reality.",
+        ko: "처음 목표는 내려놓고 지금 생활에 맞게 다시 짰다",
+        en: "Let go of the original version and rebuilt it around real life.",
         effects: [eff("justify", "M"), eff("reality", "M")],
       },
       {
@@ -582,18 +582,18 @@ export const QUESTIONS: Question[] = [
     en: "Why are you taking this test?",
     choices: [
       {
-        ko: "진짜로 나를 알고 싶어서",
-        en: "Genuinely want to know myself.",
+        ko: "내 성향을 꽤 진지하게 확인해보고 싶어서",
+        en: "Genuinely want to check my tendencies.",
         effects: [eff("perfection", "H")],
       },
       {
-        ko: "친구한테 보내기 전에 내가 먼저 해보려고",
-        en: "Trying it before sending it to friends.",
+        ko: "친구한테 보내기 전에 결과 톤을 먼저 보려고",
+        en: "Checking the result vibe before sending it to friends.",
         effects: [eff("nunchi", "M"), eff("energy", "M")],
       },
       {
-        ko: "심심한데 결과가 웃기면 공유하려고",
-        en: "Bored, and will share it if the result is funny.",
+        ko: "심심한데 결과가 웃기면 바로 공유하려고",
+        en: "Bored, and will share it right away if it is funny.",
         effects: [eff("reality", "M")],
       },
       {

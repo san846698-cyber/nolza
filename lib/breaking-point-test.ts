@@ -154,7 +154,7 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
     },
     choices: [
       { id: "a", text: { ko: "기준을 먼저 정하지 않으면 더는 움직이기 어렵다", en: "If the standard is not clarified first, it is hard for me to keep moving." }, scores: { uncontrollableChaos: 3 } },
-      { id: "b", text: { ko: "불확실한 부분과 확실한 부분을 나눠본다", en: "I separate what is uncertain from what is clear." }, scores: { uncontrollableChaos: 2 } },
+      { id: "b", text: { ko: "확정된 것과 가정인 것을 따로 적어본다", en: "I write down what is confirmed and what is only assumed." }, scores: { uncontrollableChaos: 2 } },
       { id: "c", text: { ko: "계속 바뀌는 흐름 때문에 점점 여유가 없어진다", en: "The constant changes leave me with less and less room to breathe." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 2 } },
       { id: "d", text: { ko: "다들 혼란스러울 수 있으니 조금 더 지켜본다", en: "Everyone may be confused, so I watch a bit longer." }, scores: { abandonedFeeling: 1 } },
     ],
@@ -168,7 +168,7 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
     choices: [
       { id: "a", text: { ko: "말을 줄이고, 기대도 조금 줄이게 된다", en: "I speak less and lower my expectations a little." }, scores: { abandonedFeeling: 3 } },
       { id: "b", text: { ko: "한 사람에게라도 구체적으로 말해볼까 생각한다", en: "I consider telling at least one person more specifically." }, scores: { misunderstoodSincerity: 1, abandonedFeeling: 1 } },
-      { id: "c", text: { ko: "분위기를 깨고 싶지 않아 평소처럼 반응한다", en: "I respond as usual because I do not want to disturb the mood." }, scores: { abandonedFeeling: 2 } },
+      { id: "c", text: { ko: "내 마음은 접어두고 대화가 끊기지 않게 맞장구친다", en: "I put my feelings aside and keep reacting so the conversation does not stop." }, scores: { abandonedFeeling: 2 } },
       { id: "d", text: { ko: "내가 표현을 충분히 안 했을 수도 있다고 본다", en: "I consider that maybe I have not expressed enough." }, scores: { misunderstoodSincerity: 1 } },
     ],
   },

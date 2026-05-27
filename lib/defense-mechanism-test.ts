@@ -554,7 +554,7 @@ export const DEFENSE_RESULTS: Record<DefenseMechanismId, DefenseResult> = {
 export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
   {
     "id": "dm_01",
-    "targetDimension": "humor/rationalization/avoidance/intellectualization",
+    "targetDimension": "suppression/humor/rationalization/intellectualization",
     "rationale": "Mild social hurt reveals the first protective move without naming defense styles.",
     "scene": {
       "ko": "친구가 별생각 없이 한 말에 조금 기분이 상했습니다. 바로 티 내기엔 애매한 분위기입니다.",
@@ -568,8 +568,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "평소처럼 받아주지만 답장이 조금 짧아진다.",
-          "en": "I reply as usual, but my messages get a little shorter."
+          "ko": "상처 난 티는 숨기고 평소처럼 답하되 말수가 줄어든다.",
+          "en": "I hide that it hurt and reply normally, but with fewer words."
         },
         "scores": {
           "suppression": 2
@@ -588,8 +588,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "별 의미 없었을 거라고 보고 금방 넘기려 한다.",
-          "en": "I tell myself it probably meant nothing and try to move on."
+          "ko": "그럴 뜻은 아니었을 거라고 이유를 붙여 넘긴다.",
+          "en": "I add a reason like they probably did not mean it and let it pass."
         },
         "scores": {
           "rationalization": 2

@@ -825,10 +825,10 @@ export const QUESTIONS: Question[] = [
       en: "Starting a new project:",
     },
     options: [
-      opt("구체적인 계획과 데이터부터", "Concrete plan + data first", +4),
-      opt("현실적인 목표 먼저", "Realistic goals first", +2.5),
-      opt("큰 그림 그리고 세부는 나중에", "Big picture, details later", -2),
-      opt("일단 상상부터 한다", "Imagine wildly first", -4),
+      opt("필요한 자료와 제약 조건부터 확인한다", "Check needed data and constraints first", +4),
+      opt("당장 실행할 첫 단계부터 정한다", "Define the first practical step", +2.5),
+      opt("이 일이 어디로 이어질지 큰 흐름을 그린다", "Map where this could lead", -2),
+      opt("가능한 방향을 넓게 펼쳐보고 싶다", "Open up every possible direction first", -4),
     ],
   },
   {
@@ -840,10 +840,10 @@ export const QUESTIONS: Question[] = [
       en: "Friend brings you a problem:",
     },
     options: [
-      opt("현실적인 해결책을 준다", "Give a practical solution", +4),
-      opt("실질적인 조언을 한다", "Give grounded advice", +2.5),
-      opt("가능성을 같이 탐색한다", "Explore possibilities together", -2),
-      opt("아이디어를 쏟아낸다", "Pour out ideas", -3.5),
+      opt("먼저 상황을 정리하고 원인을 짚어준다", "First organize the situation and identify the cause", +4),
+      opt("오늘 바로 해볼 수 있는 행동을 제안한다", "Suggest one action they can try today", +2.5),
+      opt("친구가 진짜 원하는 방향을 같이 찾아본다", "Explore what they truly want from here", -2),
+      opt("뜻밖의 선택지까지 넓게 던져본다", "Offer unexpected options they may not have considered", -3.5),
     ],
   },
   {
@@ -885,10 +885,10 @@ export const QUESTIONS: Question[] = [
       en: "About the future:",
     },
     options: [
-      opt("구체적인 계획이 있다", "I have a concrete plan", +3.5),
-      opt("현실적인 목표가 있다", "I have realistic goals", +2),
-      opt("막연하지만 비전이 있다", "Vague but a vision exists", -2),
-      opt("가능성이 무한하다고 생각한다", "Possibilities are infinite", -3.5),
+      opt("연도별로 해야 할 일이 꽤 분명하다", "I can name what needs to happen by year", +3.5),
+      opt("가까운 목표부터 현실적으로 잡아둔다", "I set realistic near-term goals first", +2),
+      opt("정확한 계획보다 되고 싶은 모습이 먼저 있다", "I see who I want to become before the exact plan", -2),
+      opt("하나로 정하기보다 여러 가능성을 열어두고 싶다", "I prefer keeping several possibilities open", -3.5),
     ],
   },
   {
@@ -962,10 +962,10 @@ export const QUESTIONS: Question[] = [
       en: "Someone is crying in front of you:",
     },
     options: [
-      opt("왜 우는지 원인 파악부터", "Identify the root cause first", +4),
-      opt("해결책을 찾아준다", "Find them a solution", +2.5),
-      opt("일단 공감하고 나서 도움", "Empathize first, then help", -1.5),
-      opt("같이 울 것 같다", "I'd cry too, probably", -4),
+      opt("무슨 일이 있었는지 차분히 물어본다", "Calmly ask what happened", +4),
+      opt("지금 필요한 도움을 바로 찾아준다", "Look for the help they need right now", +2.5),
+      opt("먼저 곁에 있어주고 감정을 받아준다", "Stay beside them and receive the feeling first", -1.5),
+      opt("감정이 같이 올라와 한동안 말없이 있어준다", "Feel it with them and sit quietly for a while", -4),
     ],
   },
   {
@@ -1007,10 +1007,10 @@ export const QUESTIONS: Question[] = [
       en: "Your friend made a bad choice:",
     },
     options: [
-      opt("바로 말한다. 알아야 하니까", "I tell them right away — they should know", +4),
-      opt("결과를 보여주며 설득한다", "Show them the consequences and persuade", +2.5),
-      opt("조심스럽게 의견을 말한다", "Carefully offer my opinion", -1.5),
-      opt("본인이 결정한 거니까 지지한다", "It's their call — I support them", -3.5),
+      opt("위험한 부분을 바로 짚는다. 알아야 하니까", "Point out the risk directly because they need to know", +4),
+      opt("예상되는 결과를 보여주며 다시 생각하게 한다", "Show likely consequences so they reconsider", +2.5),
+      opt("상처받지 않게 조심스럽게 걱정을 전한다", "Share my concern carefully so it does not hurt", -1.5),
+      opt("결정은 존중하되 곁에는 있어준다", "Respect their choice and stay beside them", -3.5),
     ],
   },
   {
@@ -1022,10 +1022,10 @@ export const QUESTIONS: Question[] = [
       en: "When you get praised:",
     },
     options: [
-      opt("당연한 결과다", "It's the expected outcome", +3.5),
-      opt("기분 좋지만 티 안 낸다", "Feels good but I hide it", +1.5),
-      opt("기분 좋고 더 잘하고 싶다", "Feels good — motivates me", -2),
-      opt("엄청 기분 좋고 오래 기억한다", "Huge mood — I remember it forever", -3.5),
+      opt("어떤 점이 좋았는지 구체적으로 알고 싶다", "I want to know exactly what worked well", +3.5),
+      opt("고맙다고 하고 다음 개선점도 같이 떠올린다", "Say thanks, then also think of the next improvement", +1.5),
+      opt("나를 좋게 봐준 마음이 고맙게 느껴진다", "I feel grateful that they saw me warmly", -2),
+      opt("그 말 하나가 오래 힘이 된다", "That one sentence gives me energy for a long time", -3.5),
     ],
   },
 
@@ -1129,10 +1129,10 @@ export const QUESTIONS: Question[] = [
       en: "Replying to messages:",
     },
     options: [
-      opt("바로 답장한다", "Reply right away", +3.5),
-      opt("읽고 시간날 때 답장한다", "Read it, reply when free", +1.5),
-      opt("나중에 하려다 까먹는다", "Mean to reply later, forget", -2),
-      opt("읽씹이 기본이다", "Read and ignore is my default", -3.5),
+      opt("읽으면 바로 처리한다. 남겨두는 게 싫다", "If I read it, I handle it right away", +3.5),
+      opt("답장할 시간을 정해두고 한 번에 처리한다", "Batch replies at a time I set aside", +1.5),
+      opt("머릿속으로 답한 뒤 실제 전송을 미룬다", "Reply in my head, then delay sending it", -2),
+      opt("흐름이 오면 답하고 아니면 며칠 지나간다", "Reply when the mood hits, otherwise days pass", -3.5),
     ],
   },
 ];

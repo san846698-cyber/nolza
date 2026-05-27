@@ -379,8 +379,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "결과가 기대와 다르면 어떻게 할지 머릿속이 바쁘다.",
-          "en": "My mind gets busy with what I will do if the result disappoints me."
+          "ko": "결과가 기대와 다르면 내 노력이 어떻게 평가될지 붙잡힌다.",
+          "en": "I get stuck on what the result will say about my effort."
         },
         "weights": {
           "outcome": 2,
@@ -400,8 +400,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "앞으로의 흐름이 어디로 갈지 계속 계산한다.",
-          "en": "I keep calculating where things may go from here."
+          "ko": "이 피드백 이후 일정과 선택지가 어떻게 바뀔지 경우의 수를 돌린다.",
+          "en": "I run scenarios about how this feedback could change the schedule and options."
         },
         "weights": {
           "future": 2

@@ -42,10 +42,10 @@ export const QUESTIONS: Question[] = [
   {
     id: 1,
     dim: "anxiety",
-    ko: "가까운 사람이 평소보다 조용해진 날, 관계의 분위기가 달라진 것처럼 느껴진다",
-    en: "When someone close is quieter than usual, I feel the relationship atmosphere has changed",
-    subKo: "상대의 반응이 내 안정감에 얼마나 영향을 주나요",
-    subEn: "How much does their response affect your sense of safety?",
+    ko: "가까운 사람이 평소보다 조용하면, 오늘 나를 대하는 마음이 달라졌는지 먼저 신경 쓰인다",
+    en: "When someone close is quieter than usual, I first wonder whether their feeling toward me changed today",
+    subKo: "상대의 작은 반응이 내 안정감에 얼마나 영향을 주나요",
+    subEn: "How much do small reactions affect your sense of safety?",
   },
   {
     id: 2,
@@ -58,10 +58,10 @@ export const QUESTIONS: Question[] = [
   {
     id: 3,
     dim: "anxiety",
-    ko: "함께 있던 분위기가 좋았는데 헤어진 뒤 상대방의 온도가 식은 것 같아 신경 쓰인다",
-    en: "After a warm time together, I worry if they seem less warm afterward",
-    subKo: "관계의 온도 변화에 마음이 얼마나 흔들리나요",
-    subEn: "How much do shifts in warmth affect you?",
+    ko: "좋은 시간을 보낸 뒤에도, 헤어진 후 답장이 차분하면 내가 뭔가 실수했는지 되짚게 된다",
+    en: "Even after a warm time together, a calmer reply afterward makes me replay whether I did something wrong",
+    subKo: "좋았던 장면 뒤에도 확인이 필요한지 살펴보세요",
+    subEn: "Notice whether you still need reassurance after a good moment",
   },
   {
     id: 4,
@@ -210,10 +210,10 @@ export const QUESTIONS: Question[] = [
   {
     id: 22,
     dim: "anxiety",
-    ko: "상대방의 작은 변화가 보이면, 관계가 괜찮은지 먼저 확인하고 싶어진다",
-    en: "When I notice a small change in them, I want to check whether the relationship is still okay",
-    subKo: "작은 변화가 안정감 확인으로 이어지는지 봅니다",
-    subEn: "Notice whether small changes lead to checking for security",
+    ko: "상대의 말투나 연락 패턴이 달라지면, 직접 확인하지 않으면 마음이 오래 불편하다",
+    en: "When their tone or contact pattern changes, I stay uneasy unless I check directly",
+    subKo: "불안할 때 직접 확인해야 안정되는지 봅니다",
+    subEn: "Notice whether direct checking is what restores security",
   },
   {
     id: 23,
