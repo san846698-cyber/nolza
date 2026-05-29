@@ -6406,3 +6406,467 @@ body {
     min-height: 42px !important;
   }
 }
+
+/* UI/UX QA pass 1: mobile chrome, lighter guide sections, and denser result heroes. */
+.locale-floating-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(20, 17, 14, 0.82);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+}
+
+.publisher-content,
+.guide-page {
+  background:
+    linear-gradient(135deg, rgba(251, 247, 255, 0.96), rgba(255, 245, 249, 0.9) 46%, rgba(240, 248, 255, 0.94)) !important;
+}
+
+.publisher-content__inner {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.publisher-content__grid section,
+.guide-section--cards article {
+  border-color: rgba(120, 104, 180, 0.11) !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.5), rgba(248, 243, 255, 0.28)) !important;
+  box-shadow: none !important;
+}
+
+.publisher-content__faq details,
+.guide-faq details {
+  border-color: rgba(120, 104, 180, 0.14) !important;
+  background: rgba(255, 255, 255, 0.44) !important;
+  box-shadow: none !important;
+}
+
+.publisher-content__related a,
+.guide-related a,
+.home-publisher__guide-link,
+.home-publisher__category {
+  border-color: rgba(120, 104, 180, 0.12) !important;
+  background: rgba(255, 255, 255, 0.46) !important;
+  box-shadow: none !important;
+}
+
+.publisher-content__guide,
+.guide-cta,
+.home-publisher__safe {
+  border-color: rgba(139, 92, 246, 0.13) !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.5), rgba(255, 241, 248, 0.38)) !important;
+  box-shadow: none !important;
+}
+
+.guide-hero {
+  max-width: 760px;
+}
+
+.guide-hero h1 {
+  max-width: 13ch;
+  line-height: 1.08 !important;
+}
+
+.guide-hero__intro {
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.guide-section {
+  margin-top: clamp(30px, 5vw, 58px);
+}
+
+.value-hero,
+.value-card,
+.stoic-hero,
+.stoic-card,
+.thinking-hero,
+.thinking-card,
+.guide-section--cards article,
+.guide-related a,
+.guide-faq details,
+.publisher-content__grid section,
+.publisher-content__faq details,
+.publisher-content__related a {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.value-test .result,
+.stoic-test .result,
+.thinking-test .result,
+.breaking-page .result-view,
+.scene-page .result-view {
+  gap: 16px !important;
+}
+
+.value-test .result-title,
+.stoic-test .result-title,
+.thinking-test .result-title,
+.breaking-page .result-title,
+.scene-page .result-title {
+  border: 1px solid rgba(139, 92, 246, 0.14) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(139, 92, 246, 0.12), transparent 18rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 242, 248, 0.48)) !important;
+  padding: clamp(18px, 3vw, 26px) !important;
+  box-shadow: 0 14px 34px rgba(73, 54, 128, 0.07) !important;
+}
+
+.value-test .result-title h2,
+.stoic-test .result-title h2,
+.thinking-test .result-title h2,
+.breaking-page .result-title h2,
+.scene-page .result-title h2 {
+  margin-top: 0 !important;
+  font-size: clamp(2.15rem, 8vw, 4.6rem) !important;
+  line-height: 1.08 !important;
+}
+
+.value-test .result-description,
+.stoic-test .result-description,
+.thinking-test .result-description,
+.breaking-page .result-description,
+.scene-page .result-description {
+  font-size: clamp(1rem, 3.7vw, 1.16rem) !important;
+  line-height: 1.72 !important;
+}
+
+.value-test .result .result-title,
+.stoic-test .result .result-title,
+.thinking-test .result .result-title {
+  order: 1;
+}
+
+.value-test .result .result-description,
+.stoic-test .result .result-description,
+.thinking-test .result .result-description {
+  order: 2;
+}
+
+.value-test .result > .result-actions,
+.stoic-test .result > .result-actions,
+.thinking-test .result > .result-actions {
+  order: 3;
+  margin-top: 0 !important;
+}
+
+.value-test .result > :not(.shared-label):not(.result-title):not(.result-description):not(.result-actions),
+.stoic-test .result > :not(.shared-label):not(.result-title):not(.result-description):not(.result-actions),
+.thinking-test .result > :not(.shared-label):not(.result-title):not(.result-description):not(.result-actions) {
+  order: 4;
+}
+
+.value-test .result-actions,
+.stoic-test .result-actions,
+.thinking-test .result-actions,
+.breaking-page .actions,
+.scene-page .actions,
+.defense-page .actions {
+  gap: 10px !important;
+  margin-top: 10px !important;
+}
+
+.value-test .result-actions .primary,
+.stoic-test .result-actions .primary,
+.thinking-test .result-actions .primary,
+.breaking-page .actions .primary,
+.scene-page .actions .primary,
+.defense-page .actions .share {
+  min-height: 48px !important;
+}
+
+@media (max-width: 780px) {
+  .publisher-content {
+    padding: 34px 16px 54px !important;
+  }
+
+  .publisher-content__lead {
+    margin-top: 12px !important;
+    font-size: 0.98rem !important;
+    line-height: 1.68 !important;
+  }
+
+  .publisher-content__grid {
+    gap: 0 !important;
+    margin-top: 24px !important;
+  }
+
+  .publisher-content__grid section {
+    border-width: 1px 0 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding: 18px 2px !important;
+  }
+
+  .publisher-content__faq,
+  .publisher-content__related {
+    margin-top: 26px !important;
+  }
+
+  .publisher-content__faq > div,
+  .publisher-content__related > div,
+  .guide-faq,
+  .guide-related {
+    gap: 8px !important;
+  }
+
+  .publisher-content__faq details,
+  .guide-faq details {
+    border-radius: 14px !important;
+    padding: 13px 14px !important;
+  }
+
+  .publisher-content__related a,
+  .guide-related a,
+  .home-publisher__guide-link,
+  .home-publisher__category {
+    border-radius: 14px !important;
+    padding: 14px 16px !important;
+  }
+
+  .home-publisher__panel,
+  .home-publisher__step,
+  .home-publisher__safe {
+    border-radius: 14px !important;
+    padding: 16px !important;
+    box-shadow: none !important;
+  }
+
+  .guide-page {
+    padding: 58px 16px 48px !important;
+  }
+
+  .guide-page__inner,
+  .guide-hero,
+  .guide-section {
+    width: calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .guide-hero {
+    padding-top: 18px !important;
+  }
+
+  .guide-hero h1 {
+    max-width: 14ch;
+    font-size: clamp(1.85rem, 8vw, 2.25rem) !important;
+    line-height: 1.12 !important;
+  }
+
+  .guide-hero__intro p,
+  .guide-section p,
+  .guide-faq p {
+    font-size: 0.96rem !important;
+    line-height: 1.68 !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .guide-section--cards article {
+    border-radius: 16px !important;
+    padding: 16px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .locale-floating-toggle {
+    position: absolute;
+    top: max(12px, calc(env(safe-area-inset-top, 0px) + 8px));
+    right: max(14px, calc(env(safe-area-inset-right, 0px) + 10px));
+    min-height: 34px;
+    padding: 6px 11px;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
+    box-shadow: 0 8px 18px rgba(42, 30, 18, 0.16);
+  }
+
+  .game-shell-floating-toggle {
+    position: absolute !important;
+    top: max(14px, calc(env(safe-area-inset-top, 0px) + 10px)) !important;
+    left: auto !important;
+    right: max(12px, calc(env(safe-area-inset-right, 0px) + 8px)) !important;
+    width: auto !important;
+    max-width: 72px !important;
+    height: 34px !important;
+    min-width: 40px !important;
+    padding: 0 10px !important;
+    font-size: 11px !important;
+    opacity: 0.9 !important;
+    box-shadow: 0 8px 18px rgba(42, 30, 18, 0.14) !important;
+  }
+
+  .game-shell-floating-brand {
+    display: none !important;
+  }
+
+  .game-shell-floating-back {
+    max-width: 118px !important;
+    height: 34px !important;
+    padding: 0 10px !important;
+    font-size: 12px !important;
+  }
+
+  .game-stage-intro .game-intro__title,
+  .mbti-depth-page h1,
+  .kbti-page h1 {
+    max-width: 330px !important;
+    margin-inline: auto !important;
+    font-size: clamp(1.95rem, 8vw, 2.35rem) !important;
+    line-height: 1.12 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .kbti-page h1 span {
+    display: block !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: keep-all !important;
+  }
+
+  .kbti-page .kbti-stage > div {
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  .kbti-page .kbti-stage > div > div.kbti-reveal:nth-of-type(2) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .game-stage-intro .game-intro__hook,
+  .game-stage-intro .game-intro__how,
+  .kbti-page p,
+  .mbti-depth-page p {
+    line-height: 1.62 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .value-test .value-hero,
+  .stoic-test .stoic-hero,
+  .thinking-test .thinking-hero {
+    align-items: flex-start !important;
+    min-height: auto !important;
+    padding-inline: 16px !important;
+    padding-top: 28px !important;
+  }
+
+  .value-test .value-shell,
+  .stoic-test .stoic-shell,
+  .thinking-test .thinking-shell {
+    width: calc(100vw - 28px) !important;
+    max-width: calc(100vw - 28px) !important;
+    margin-inline: auto !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  .value-test .hero-copy,
+  .stoic-test .hero-copy,
+  .thinking-test .hero-copy {
+    width: 100% !important;
+    max-width: 320px !important;
+    margin-inline: auto !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  main.value-test section.value-hero,
+  main.stoic-test section.stoic-hero,
+  main.thinking-test section.thinking-hero,
+  main.value-test section.value-card,
+  main.stoic-test section.stoic-card,
+  main.thinking-test section.thinking-card {
+    width: calc(100vw - 28px) !important;
+    max-width: calc(100vw - 28px) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  main.value-test .primary,
+  main.stoic-test .primary,
+  main.thinking-test .primary {
+    width: min(100%, calc(100vw - 72px)) !important;
+    margin-inline: auto !important;
+  }
+
+  .value-test h1,
+  .stoic-test h1,
+  .thinking-test h1 {
+    font-size: clamp(1.95rem, 8.8vw, 2.45rem) !important;
+    line-height: 1.14 !important;
+    max-width: 13ch !important;
+  }
+
+  .value-test .description,
+  .value-test .subtitle,
+  .value-test .notice,
+  .stoic-test .description,
+  .stoic-test .subtitle,
+  .stoic-test .notice,
+  .thinking-test .subtitle,
+  .thinking-test .notice,
+  .thinking-test .description {
+    line-height: 1.64 !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .value-test .value-card,
+  .stoic-test .stoic-card,
+  .thinking-test .thinking-card {
+    padding: 20px 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .value-test .result-title,
+  .stoic-test .result-title,
+  .thinking-test .result-title,
+  .breaking-page .result-title,
+  .scene-page .result-title {
+    border-radius: 18px !important;
+    padding: 18px !important;
+  }
+
+  .value-test .result-title h2,
+  .stoic-test .result-title h2,
+  .thinking-test .result-title h2,
+  .breaking-page .result-title h2,
+  .scene-page .result-title h2 {
+    font-size: clamp(1.95rem, 9vw, 2.65rem) !important;
+  }
+
+  .value-test .result-actions,
+  .stoic-test .result-actions,
+  .thinking-test .result-actions,
+  .breaking-page .actions,
+  .scene-page .actions,
+  .defense-page .actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .value-test .result-actions .primary,
+  .stoic-test .result-actions .primary,
+  .thinking-test .result-actions .primary,
+  .breaking-page .actions .primary,
+  .scene-page .actions .primary,
+  .defense-page .actions .share {
+    grid-column: 1 / -1;
+  }
+}
