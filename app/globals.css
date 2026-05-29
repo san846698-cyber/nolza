@@ -891,6 +891,160 @@ a:focus-visible {
   flex-shrink: 0;
 }
 
+.likert-question {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.likert-question__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.likert-question__head span,
+.likert-question__head strong {
+  color: rgba(82, 55, 110, 0.78);
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.likert-question__help {
+  margin: -4px 0 0;
+  color: rgba(33, 24, 18, 0.68);
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.55;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.likert-question__labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
+.likert-question__labels span {
+  min-width: 0;
+  color: rgba(33, 24, 18, 0.54);
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.likert-question__labels span:nth-child(2) {
+  text-align: center;
+}
+
+.likert-question__labels span:nth-child(3) {
+  text-align: right;
+}
+
+.likert-question__items {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.likert-item {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba(120, 104, 180, 0.14);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.likert-item p {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 9px;
+  align-items: start;
+  min-width: 0;
+  margin: 0;
+  color: #211812;
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: clamp(0.98rem, 1.5vw, 1.06rem);
+  font-weight: 760;
+  line-height: 1.52;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.likert-item p span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(33, 24, 18, 0.9);
+  color: #fff8ef;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.likert-scale {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  min-width: 0;
+}
+
+.likert-scale button {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 38px;
+  border: 1px solid rgba(82, 55, 110, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: rgba(33, 24, 18, 0.76);
+  cursor: pointer;
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  transition: background 140ms ease, border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+.likert-scale button:hover,
+.likert-scale button.is-selected {
+  border-color: rgba(139, 92, 246, 0.42);
+  background: linear-gradient(135deg, rgba(160, 94, 236, 0.92), rgba(236, 94, 162, 0.84), rgba(92, 154, 236, 0.82));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(94, 72, 150, 0.14);
+}
+
+.likert-submit {
+  justify-self: end;
+  min-height: 46px;
+  min-width: min(100%, 172px);
+  border: 0;
+  border-radius: 999px;
+  background: #211812;
+  color: #fff8ef;
+  cursor: pointer;
+  font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+  font-size: 0.96rem;
+  font-weight: 900;
+  padding: 0 22px;
+}
+
+.likert-submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
 .progress-head,
 .progress > div {
   margin-bottom: 10px;
@@ -942,6 +1096,32 @@ a:focus-visible {
   .test-card .readable-question h2 {
     font-size: clamp(1.35rem, 6vw, 1.62rem) !important;
     line-height: 1.43 !important;
+  }
+
+  .likert-question {
+    gap: 12px;
+  }
+
+  .likert-question__labels span {
+    font-size: 0.7rem;
+  }
+
+  .likert-item {
+    padding: 12px;
+  }
+
+  .likert-scale {
+    gap: 4px;
+  }
+
+  .likert-scale button {
+    min-height: 34px;
+    font-size: 0.86rem;
+  }
+
+  .likert-submit {
+    justify-self: stretch;
+    width: 100%;
   }
 }
 

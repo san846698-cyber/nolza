@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState, type ReactElement } from "re
 import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
-import ReadableQuestion from "@/app/components/game/ReadableQuestion";
+import LikertScaleQuestion, { type LikertRating } from "@/app/components/game/LikertScaleQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -20,7 +20,6 @@ import {
   calculateValueResult,
   getValueResultById,
   type ValueAnswer,
-  type ValueChoice,
   type ValueConflictId,
   type ValueResult,
 } from "@/lib/value-conflict-test";
@@ -38,6 +37,17 @@ function t(locale: SimpleLocale, ko: string, en: string): string {
 
 function text(locale: SimpleLocale, copy: { ko: string; en: string }): string {
   return locale === "ko" ? copy.ko : copy.en;
+}
+
+function remapLikertWeights(ratings: LikertRating<ValueConflictId>[]): Partial<Record<ValueConflictId, number>> {
+  const weights: Partial<Record<ValueConflictId, number>> = {};
+  for (const rating of ratings) {
+    const agreement = (rating.value - 1) / 6;
+    for (const [id, value] of Object.entries(rating.weights) as Array<[ValueConflictId, number]>) {
+      weights[id] = (weights[id] ?? 0) + value * agreement;
+    }
+  }
+  return weights;
 }
 
 export default function ValueConflictTestClient(): ReactElement {
@@ -91,12 +101,12 @@ export default function ValueConflictTestClient(): ReactElement {
     window.history.replaceState(null, "", "/tests/value-conflict");
   }, []);
 
-  const choose = useCallback((choice: ValueChoice) => {
+  const choose = useCallback((ratings: LikertRating<ValueConflictId>[]) => {
     trackQuestionAnswered("value-conflict", questionIndex + 1);
     const nextAnswer: ValueAnswer = {
       questionId: currentQuestion.id,
-      choiceId: choice.id,
-      weights: choice.weights,
+      choiceId: `likert:${ratings.map((rating) => `${rating.choiceId}${rating.value}`).join(",")}`,
+      weights: remapLikertWeights(ratings),
     };
     const nextAnswers = [...answers, nextAnswer];
     setAnswers(nextAnswers);
@@ -201,15 +211,12 @@ export default function ValueConflictTestClient(): ReactElement {
 
             {phase === "quiz" ? (
               <>
-                <ReadableQuestion prompt={text(locale, currentQuestion.prompt)} locale={locale} />
-                <div className="answers">
-                  {currentQuestion.choices.map((choice) => (
-                    <button key={choice.id} type="button" onClick={() => choose(choice)} className="answer">
-                      <span>{choice.id.toUpperCase()}</span>
-                      <strong>{text(locale, choice.text)}</strong>
-                    </button>
-                  ))}
-                </div>
+                <LikertScaleQuestion
+                  choices={currentQuestion.choices}
+                  locale={locale}
+                  onSubmit={choose}
+                  prompt={text(locale, currentQuestion.prompt)}
+                />
               </>
             ) : (
               <ResultView locale={locale} result={result} shared={Boolean(sharedResult)} onRetry={start} onShare={share} shareStatus={shareStatus} />
