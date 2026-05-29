@@ -3696,6 +3696,36 @@ body {
   text-transform: uppercase !important;
 }
 
+@media (max-width: 640px) {
+  .progress-head,
+  .progress > div {
+    min-width: 0;
+    min-height: 24px;
+    align-items: center;
+    overflow: visible !important;
+    line-height: 1.35 !important;
+  }
+
+  .progress-head span,
+  .progress-head strong,
+  .progress span,
+  .progress strong {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.35em;
+    padding-block: 2px;
+    line-height: 1.35 !important;
+    overflow: visible !important;
+  }
+
+  .defense-page .quiz > .progress,
+  .signal-page .quiz > .progress {
+    overflow: visible !important;
+    border-radius: 0 !important;
+    padding-top: 2px;
+  }
+}
+
 .readable-question__situation p {
   margin: 0 !important;
   color: rgba(47, 37, 29, 0.74) !important;
