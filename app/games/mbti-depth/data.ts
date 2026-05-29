@@ -75,7 +75,7 @@ export const DIMENSION_INTROS: Record<
 export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   E: {
     4: {
-      title: { ko: "에너지 뱀파이어", en: "Energy Vampire" },
+      title: { ko: "사람 속에서 켜지는 에너지 스위치", en: "Energy Vampire" },
       persona: {
         ko: "당신은 에너지를 주는 게 아니라 빨아먹는 사람이에요. 사람들 속에서 진짜로 살아있는 느낌을 받아요. 혼자 있으면 1시간도 못 견뎌요. 누구라도 옆에 있어야 하고 조용한 건 못 참아요.",
         en: "You don't give energy — you take it. You feel truly alive only when surrounded by people. An hour alone is too long. Anyone, please. Silence is unbearable.",
@@ -94,7 +94,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "사교형", en: "Social Type" },
+      title: { ko: "약속이 있어야 살아나는 사교형", en: "Social Type" },
       persona: {
         ko: "사람이 있어야 충전돼요. 혼자 있으면 뭔가 허전하고 심심해요. 약속이 줄줄이 잡혀 있어야 하루가 알찬 느낌이에요. 그래서 캘린더가 늘 빡빡해요.",
         en: "People charge you up. Alone time feels hollow and dull. Your day only feels full when there's a string of plans on it. Your calendar is always packed.",
@@ -113,7 +113,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "선택적 외향", en: "Selective Extrovert" },
+      title: { ko: "내 사람 앞에서 켜지는 외향형", en: "Selective Extrovert" },
       persona: {
         ko: "외향적이지만 아무하고나 친해지진 않아요. 좋아하는 사람들과 있으면 에너지 폭발하지만, 모르는 사람들 사이에선 거리를 둬요. 본인이 컨트롤할 수 있는 사회생활을 좋아해요.",
         en: "Extroverted, but selective about who gets in. With your people, you go all-in. With strangers, you keep distance. You like a social life you can actually control.",
@@ -132,7 +132,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     1: {
-      title: { ko: "경계선 (E 쪽)", en: "Borderline (E-leaning)" },
+      title: { ko: "외향 모드가 가능한 경계형", en: "Borderline (E-leaning)" },
       persona: {
         ko: "외향인 척하는 내향인이거나 내향인 척하는 외향인이에요. 본인도 헷갈려요. 사람을 좋아하긴 하는데 너무 많으면 지쳐요.",
         en: "Either an introvert pretending to be extroverted, or vice versa. Even you aren't sure. You like people, just not too many of them at once.",
@@ -153,7 +153,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   },
   I: {
     1: {
-      title: { ko: "경계선 (I 쪽)", en: "Borderline (I-leaning)" },
+      title: { ko: "혼자 충전도 필요한 경계형", en: "Borderline (I-leaning)" },
       persona: {
         ko: "내향이긴 하지만 사람 자체가 싫은 건 아니에요. 그냥 에너지를 선택적으로 써요. 친한 사람들이랑은 잘 놀고, 모르는 사람한테는 거리를 둬요.",
         en: "Introverted, but not antisocial. You spend energy selectively. With your people you're warm; with strangers you keep distance.",
@@ -172,7 +172,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "충전형 내향", en: "Recharging Introvert" },
+      title: { ko: "혼자 있어야 돌아오는 충전형", en: "Recharging Introvert" },
       persona: {
         ko: "혼자 있어야 충전돼요. 사람 만나면 재밌긴 한데 집에 오면 방전돼요. 그래서 약속 사이엔 회복 시간이 꼭 필요해요. 사람이 싫은 게 아니라, 에너지가 한정돼 있을 뿐이에요.",
         en: "Alone time is mandatory for you. People are fun but draining. You need recovery time between plans. It's not that you dislike people — your energy is just finite.",
@@ -191,7 +191,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "은둔형", en: "Hermit" },
+      title: { ko: "집에서 가장 안정되는 은둔형", en: "Hermit" },
       persona: {
         ko: "약속이 잡히면 취소하고 싶고 집이 제일 편해요. 사람 만나는 게 일처럼 느껴져요. 만나기 전에는 부담스럽고, 만나는 동안엔 즐겁지만, 끝나면 진이 빠져요. 그래서 점점 더 안 만나게 돼요.",
         en: "Every plan tempts you to cancel. Home is the only place that feels safe. Before: dread. During: actually fun. After: completely drained. So you go out less and less.",
@@ -210,7 +210,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     4: {
-      title: { ko: "완전 은둔", en: "Total Hermit" },
+      title: { ko: "혼자만의 세계가 깊은 타입", en: "Total Hermit" },
       persona: {
         ko: "당신에게 사람은 에너지 드레인 그 자체예요. 혼자가 가장 편하고, 그게 문제라고 생각하지도 않아요. 약속은 거의 잡지 않아요. 잡혀도 가까스로 가요.",
         en: "People are pure energy drains to you. Alone is your default and you see no problem with that. You almost never make plans, and when you do, you barely show up.",
@@ -231,7 +231,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   },
   S: {
     4: {
-      title: { ko: "극현실주의자", en: "Extreme Realist" },
+      title: { ko: "증거가 있어야 움직이는 현실파", en: "Extreme Realist" },
       persona: {
         ko: "꿈? 비전? 그게 밥 먹여줘요? 지금 눈앞의 것만 믿어요. 추상적인 얘기하면 졸려요. '그럴 수도 있다'는 가설은 무의미해요. 직접 보고 만져서 증명되어야 해요.",
         en: "Dreams? Vision? Does that pay rent? Only what's right in front of you is real. Abstract talk puts you to sleep. 'Might happen' is meaningless. Show me, prove it.",
@@ -250,7 +250,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "현실주의자", en: "Realist" },
+      title: { ko: "구체적인 근거를 보는 현실주의자", en: "Realist" },
       persona: {
         ko: "계획은 구체적이어야 하고 증거가 있어야 믿어요. 가능성보다 현실, 추상보다 구체가 중요해요. '그냥 느낌으로'는 당신 사전에 없어요. 항상 데이터와 사실을 본 뒤에 움직여요.",
         en: "Plans need to be concrete. Evidence required. Reality over possibility, specifics over abstractions. 'Just a feeling' doesn't exist in your vocabulary. You move only after the data is in.",
@@ -269,7 +269,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "중간형 현실", en: "Practical Imaginer" },
+      title: { ko: "가능성을 실행으로 바꾸는 현실형", en: "Practical Imaginer" },
       persona: {
         ko: "현실적이지만 가끔 상상도 해요. 단, 실현 가능한 것만요. 새로운 아이디어를 들으면 일단 '실제로 어떻게 할 건데?'를 묻고 싶어요. 가능성과 현실의 다리를 놓는 사람이에요.",
         en: "Realistic, but occasionally imaginative — only about things that could actually happen. When you hear a wild idea, your first instinct is 'okay, but how?' You bridge possibility and reality.",
@@ -288,7 +288,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     1: {
-      title: { ko: "경계선 (S 쪽)", en: "Borderline (S-leaning)" },
+      title: { ko: "현실 쪽으로 기운 균형형", en: "Borderline (S-leaning)" },
       persona: {
         ko: "현실과 가능성 사이를 왔다갔다 해요. 상황에 따라 달라져요. 어떨 땐 팩트 위주, 어떨 땐 직관적으로 결정해요.",
         en: "You drift between reality and possibility depending on the day. Sometimes data-first, sometimes intuition-first.",
@@ -309,7 +309,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   },
   N: {
     1: {
-      title: { ko: "경계선 (N 쪽)", en: "Borderline (N-leaning)" },
+      title: { ko: "가능성 쪽으로 기운 균형형", en: "Borderline (N-leaning)" },
       persona: {
         ko: "아이디어는 많은데 현실 감각도 있어요. 그래서 실제로 뭔가를 만들어요. 머릿속 상상이 그냥 상상으로 끝나지 않아요.",
         en: "Lots of ideas, plus enough realism to actually ship them. Your imagination doesn't just stay in your head.",
@@ -328,7 +328,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "몽상가", en: "Dreamer" },
+      title: { ko: "아이디어가 먼저 떠오르는 몽상가", en: "Dreamer" },
       persona: {
         ko: "아이디어가 끊임없이 나와요. 실행은… 나중에요. 지금은 구상 중이에요. 머릿속에 노트북 100개가 동시에 열려 있는 느낌이에요. 정리는 못 했어요.",
         en: "Ideas keep arriving. Execution? Later. You're still ideating. Mentally it's like 100 browser tabs are open. None are organized.",
@@ -347,7 +347,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "미래주의자", en: "Futurist" },
+      title: { ko: "다음 장면을 먼저 보는 미래형", en: "Futurist" },
       persona: {
         ko: "지금보다 10년 후가 더 재밌어요. 현실의 디테일은 지루해요. 큰 그림만 봐요. 머릿속엔 늘 '만약 이렇게 되면…'이라는 시나리오가 돌아가요. 그게 당신의 디폴트 모드예요.",
         en: "Ten years from now is more interesting than today. Present-day details bore you — you only see the big picture. Your default state is running 'what if…' simulations in the background.",
@@ -366,7 +366,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     4: {
-      title: { ko: "완전 몽상가", en: "Pure Dreamer" },
+      title: { ko: "머릿속 세계가 먼저 달리는 타입", en: "Pure Dreamer" },
       persona: {
         ko: "현실이요? 그게 중요한가요? 머릿속엔 이미 완벽한 세계가 있어요. 실행은 남들이 하면 되죠. 당신의 일은 비전을 그리는 거예요. 디테일은 디테일러들에게 맡겨요.",
         en: "Reality? Is that important? You already have a perfect world in your head. Execution is someone else's job. You paint the vision; others fill in the details.",
@@ -387,7 +387,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   },
   T: {
     4: {
-      title: { ko: "거의 사이코패스", en: "Borderline Sociopath" },
+      title: { ko: "감정보다 기준이 먼저 서는 타입", en: "Borderline Sociopath" },
       persona: {
         ko: "감정은 비효율적이에요. 논리로 모든 걸 처리해요. 상대방이 상처받았는지엔 큰 관심 없어요. 틀렸으면 틀린 거고, 맞았으면 맞은 거예요. 단순해요.",
         en: "Emotions are inefficient. Logic handles everything. Whether someone got hurt is not your concern. Wrong is wrong, right is right. Simple.",
@@ -406,7 +406,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "냉정한 논리주의자", en: "Cold Logician" },
+      title: { ko: "상황을 구조로 보는 논리형", en: "Cold Logician" },
       persona: {
         ko: "공감을 못 하는 게 아니에요. 하는데 감정보다 사실이 먼저예요. 누가 울면 왜 우는지 원인 파악부터 하고 해결책을 찾아드리는 게 위로라고 생각해요.",
         en: "It's not that you can't empathize — you do, but facts come first. When someone cries, you start by diagnosing the cause and offering a solution. That, to you, is comfort.",
@@ -425,7 +425,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "논리 우선", en: "Logic First" },
+      title: { ko: "감정보다 기준을 먼저 보는 타입", en: "Logic First" },
       persona: {
         ko: "감정을 이해하려고 노력해요. 근데 결국 결정은 머리로 해요. 데이터와 논리가 우선이고, 감정은 참고 자료예요. 실용적인 친절을 베풀어요.",
         en: "You try to understand feelings. But final decisions come from the head. Logic leads, emotion is reference material. Your kindness is practical.",
@@ -444,7 +444,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     1: {
-      title: { ko: "경계선 (T 쪽)", en: "Borderline (T-leaning)" },
+      title: { ko: "분석 쪽으로 기운 균형형", en: "Borderline (T-leaning)" },
       persona: {
         ko: "논리적이고 싶은데 감정도 많이 신경 써요. T인지 F인지 테스트마다 달라요. 머리로 결정하려 하지만 끝에 가서 마음이 흔들려요.",
         en: "You want to be logical but feelings creep in. T or F? Depends on the test that day. The head leads but the heart edits.",
@@ -465,7 +465,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   },
   F: {
     1: {
-      title: { ko: "경계선 (F 쪽)", en: "Borderline (F-leaning)" },
+      title: { ko: "공감 쪽으로 기운 균형형", en: "Borderline (F-leaning)" },
       persona: {
         ko: "공감을 잘 하는데 가끔은 냉정하게 볼 수도 있어요. 상황에 따라 달라요. 마음과 머리 사이를 자주 오가요.",
         en: "Empathic, but capable of cold-eyed assessment when needed. Situational. You move between heart and head often.",
@@ -484,7 +484,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "공감형", en: "Empath" },
+      title: { ko: "사람의 맥락을 놓치지 않는 공감형", en: "Empath" },
       persona: {
         ko: "상대방 감정이 먼저 느껴져요. 해결보다 공감이 중요해요. 근데 본인 감정도 잘 챙겨요. 들어주는 게 곧 해결이라는 걸 알아요. 듣는 능력이 강점이에요.",
         en: "You sense others' feelings first. Empathy before solutions. You also take care of your own feelings, though. You know that listening is itself the solution.",
@@ -503,7 +503,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "감정 스펀지", en: "Emotional Sponge" },
+      title: { ko: "분위기를 깊게 흡수하는 타입", en: "Emotional Sponge" },
       persona: {
         ko: "주변 감정을 다 흡수해요. 누가 힘들면 같이 힘들어요. 경계선이 필요한데 어떻게 긋는지 몰라요. 분위기에 따라 본인 기분도 출렁여요.",
         en: "You absorb every emotion in the room. When someone struggles, you struggle. You need boundaries but don't know how to set them. Your mood rides whatever's in the air.",
@@ -522,7 +522,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     4: {
-      title: { ko: "감정 과부하", en: "Emotional Overload" },
+      title: { ko: "마음의 파도를 크게 느끼는 타입", en: "Emotional Overload" },
       persona: {
         ko: "감정이 너무 많아서 가끔 본인도 감당이 안 돼요. 드라마 보다가 울고, 광고 보다가 울어요. 감정이 디폴트 상태예요. 모든 결정에 감정이 깊게 관여해요.",
         en: "You have so many feelings even you can't keep up. You cry at dramas, you cry at commercials. Emotion is your default state. Every decision is emotionally tinted.",
@@ -543,7 +543,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   },
   J: {
     4: {
-      title: { ko: "통제 광", en: "Control Freak" },
+      title: { ko: "모든 변수를 정리하고 싶은 사람", en: "Control Freak" },
       persona: {
         ko: "계획 없이는 못 움직여요. 갑작스러운 변경은 스트레스예요. 다른 사람이 계획을 안 지키면 화가 나요. 모든 게 예측 가능해야 마음이 편해요.",
         en: "You can't move without a plan. Last-minute changes are pure stress. When others don't follow the plan, you get genuinely angry. Predictability = peace.",
@@ -562,7 +562,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "계획주의자", en: "Planner" },
+      title: { ko: "계획표가 있어야 편한 사람", en: "Planner" },
       persona: {
         ko: "할 일 리스트가 없으면 불안해요. 일정이 정해져 있어야 편해요. 즉흥은 가끔만 괜찮아요. 캘린더와 To-Do가 당신의 안전벨트예요.",
         en: "Without a to-do list you're anxious. A locked schedule equals comfort. Spontaneity is fine, occasionally. Calendar and tasks are your seatbelts.",
@@ -581,7 +581,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "중간형 계획", en: "Flexible Planner" },
+      title: { ko: "유연함을 남겨두는 계획형", en: "Flexible Planner" },
       persona: {
         ko: "계획을 세우지만 유연하게 바꿀 수 있어요. 완벽하지 않아도 괜찮아요. 80% 정도의 계획으로 움직이고 20%는 즉흥이에요. 변화가 있어도 흔들리지 않아요.",
         en: "You make plans but adjust them on the fly. Imperfect is fine. About 80% planned, 20% improvised. Change doesn't rattle you.",
@@ -600,7 +600,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     1: {
-      title: { ko: "경계선 (J 쪽)", en: "Borderline (J-leaning)" },
+      title: { ko: "정리 쪽으로 기운 균형형", en: "Borderline (J-leaning)" },
       persona: {
         ko: "계획도 세우고 즉흥도 즐겨요. 그때그때 달라요. 상황에 따라 모드를 바꿀 수 있어요.",
         en: "You plan, you also improvise. It depends on the day. You shift modes by situation.",
@@ -621,7 +621,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
   },
   P: {
     1: {
-      title: { ko: "경계선 (P 쪽)", en: "Borderline (P-leaning)" },
+      title: { ko: "열어두기 쪽으로 기운 균형형", en: "Borderline (P-leaning)" },
       persona: {
         ko: "즉흥적이지만 중요한 건 미리 준비해요. 완전 자유롭진 않아요. 큰 줄기는 잡고 디테일은 즉흥이에요.",
         en: "Spontaneous, but you prep the important things. Not fully free-spirited. Big strokes locked, details improvised.",
@@ -640,7 +640,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     2: {
-      title: { ko: "즉흥형", en: "Spontaneous" },
+      title: { ko: "흐름을 보며 움직이는 즉흥형", en: "Spontaneous" },
       persona: {
         ko: "계획은 답답해요. 그때그때 결정하는 게 더 재밌어요. 근데 가끔 후회해요. 미리 정해놓은 게 너무 많으면 숨이 막혀요. 가능성을 열어두는 게 좋아요.",
         en: "Plans feel suffocating. In-the-moment decisions are more fun — though occasionally you regret them. Too much pre-decided feels claustrophobic. You like keeping doors open.",
@@ -659,7 +659,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     3: {
-      title: { ko: "자유형", en: "Free Spirit" },
+      title: { ko: "선택지를 열어두는 자유형", en: "Free Spirit" },
       persona: {
         ko: "마감이 있어야 시작해요. 계획은 참고용이에요. 인생은 즉흥이 맞아요. 미리 다 정해놓으면 재미가 없어요. 흐름을 따라가는 게 진짜예요.",
         en: "Deadlines are your only ignition. Plans are just suggestions. Life is meant to be improvised. Pre-decided = no fun. Riding the flow is the real thing.",
@@ -678,7 +678,7 @@ export const LEVELS: Record<Side, Record<Level, LevelInfo>> = {
       },
     },
     4: {
-      title: { ko: "완전 카오스", en: "Pure Chaos" },
+      title: { ko: "즉흥이 기본값인 자유형", en: "Pure Chaos" },
       persona: {
         ko: "계획이요? 그게 뭐예요? 오늘 할 일을 오늘 알아요. 근데 신기하게 어떻게든 돼요. 모든 게 마지막 순간에 정해져요. 그 압박 속에서 살아요.",
         en: "Plans? What are those? You find out today's agenda today. Somehow it always works out. Everything gets decided at the last second. You live in that pressure.",
@@ -718,10 +718,10 @@ export const QUESTIONS: Question[] = [
       en: "How you recharge after a long day:",
     },
     options: [
-      opt("친구들 만나서 떠든다", "Meet friends and chat loudly", +4),
-      opt("적당한 사람들과 가볍게 논다", "Hang out lightly with a few", +2.5),
-      opt("혼자 조용히 쉰다", "Quiet time, alone", -2.5),
-      opt("완전히 혼자 아무것도 안 한다", "Total solitude, doing nothing", -4),
+      opt("단톡에 사람을 모아 바로 약속을 잡는다", "Gather people in a chat and make plans right away", +4),
+      opt("편한 사람 한두 명과 가볍게 수다 떤다", "Chat lightly with one or two comfortable people", +2.5),
+      opt("혼자 좋아하는 콘텐츠를 보며 회복한다", "Recharge alone with content I like", -2.5),
+      opt("알림을 끄고 아무에게도 반응하지 않는다", "Turn off notifications and respond to no one", -4),
     ],
   },
   {
@@ -733,10 +733,10 @@ export const QUESTIONS: Question[] = [
       en: "Suddenly invited to a party:",
     },
     options: [
-      opt("신난다, 바로 간다", "Excited — going right now", +4),
-      opt("가긴 가는데 일찍 나온다", "Will go, but leave early", +1.5),
-      opt("핑계 찾아본다", "Looking for excuses", -2.5),
-      opt("절대 안 간다", "Absolutely not", -4),
+      opt("누가 오는지 묻기도 전에 갈 준비를 한다", "Start getting ready before even asking who is going", +4),
+      opt("인사 돌리고 분위기 좋을 때 일찍 나온다", "Say hello around the room and leave while the mood is good", +1.5),
+      opt("친한 사람이 없으면 자연스럽게 빠질 이유를 찾는다", "If no close friend is going, look for a natural reason to skip", -2.5),
+      opt("초대만 봐도 에너지가 빠져 바로 거절한다", "The invite alone drains me, so I decline right away", -4),
     ],
   },
   {
@@ -778,10 +778,10 @@ export const QUESTIONS: Question[] = [
       en: "You feel most alive when:",
     },
     options: [
-      opt("사람들 사이에 있을 때", "Surrounded by people", +4),
-      opt("친한 사람들이랑 있을 때", "With close friends", +2.5),
-      opt("혼자 좋아하는 거 할 때", "Alone, doing what I love", -2),
-      opt("완전히 아무도 없을 때", "Completely by myself", -3.5),
+      opt("여러 사람 반응을 주고받으며 말이 붙을 때", "When I trade reactions with a lively group", +4),
+      opt("친한 사람들과 깊지 않아도 계속 웃을 때", "When I keep laughing with familiar people", +2.5),
+      opt("혼자 좋아하는 것에 오래 몰입할 때", "When I stay absorbed in what I like alone", -2),
+      opt("아무도 나를 찾지 않는 시간이 길게 생길 때", "When no one needs me for a long stretch", -3.5),
     ],
   },
   {
@@ -793,10 +793,10 @@ export const QUESTIONS: Question[] = [
       en: "Eating alone:",
     },
     options: [
-      opt("어색하다 누구라도 부른다", "Awkward — I'd call someone", +4),
-      opt("가끔은 괜찮다", "Sometimes okay", +2),
-      opt("오히려 편하다", "Actually comfortable", -2),
-      opt("제일 좋다", "It's the best", -4),
+      opt("빈자리 하나가 신경 쓰여 누구라도 부른다", "The empty seat bothers me, so I call someone", +4),
+      opt("짧게 먹는 날이면 혼자도 괜찮다", "If it is a quick meal, alone is fine", +2),
+      opt("메뉴와 속도를 내 마음대로 정해서 편하다", "I like choosing the menu and pace myself", -2),
+      opt("말 안 해도 되는 식사라 제일 좋다", "It is the best because I do not have to talk", -4),
     ],
   },
   {
@@ -808,10 +808,10 @@ export const QUESTIONS: Question[] = [
       en: "Why you use social media:",
     },
     options: [
-      opt("사람들이랑 소통하려고", "To stay connected with people", +3.5),
-      opt("관심받는 게 좋아서", "I like the attention", +2),
-      opt("그냥 보기만 한다", "I just lurk", -2),
-      opt("거의 안 한다", "I barely use it", -3.5),
+      opt("댓글과 DM으로 계속 연결돼 있으려고", "To stay connected through comments and DMs", +3.5),
+      opt("올린 뒤 반응을 확인하는 재미가 있어서", "Because checking reactions after posting is fun", +2),
+      opt("남들 근황만 조용히 훑어보려고", "To quietly skim other people's updates", -2),
+      opt("내 생활을 굳이 밖에 열고 싶지 않아서", "Because I do not want to open my life outward much", -3.5),
     ],
   },
 
@@ -856,9 +856,9 @@ export const QUESTIONS: Question[] = [
     },
     options: [
       opt("모든 일정 분단위로 짠다", "Schedule every minute", +4),
-      opt("주요 일정만 잡는다", "Lock in the major stuff", +2),
-      opt("대략적인 방향만 정한다", "Rough direction only", -2),
-      opt("그냥 가서 생각한다", "Show up and figure it out", -4),
+      opt("꼭 갈 곳만 찍어두고 사이 시간은 비워둔다", "Mark the must-visit spots and leave gaps open", +2),
+      opt("그날의 분위기에 맞춰 동네만 정해둔다", "Choose the neighborhood and follow the day’s mood", -2),
+      opt("도착해서 배고픔과 날씨에 맞춰 정한다", "Decide after arriving based on hunger and weather", -4),
     ],
   },
   {
@@ -870,10 +870,10 @@ export const QUESTIONS: Question[] = [
       en: "When you explain something:",
     },
     options: [
-      opt("구체적인 예시와 데이터로", "With specific examples + data", +3.5),
-      opt("사실 위주로 간결하게", "Concise, fact-driven", +2),
-      opt("비유와 개념으로", "Metaphors and concepts", -2),
-      opt("큰 그림과 가능성으로", "Big picture and possibility", -3.5),
+      opt("상대가 따라 할 수 있게 순서대로 보여준다", "Show it step by step so they can follow", +3.5),
+      opt("핵심 사실만 짧게 말하고 바로 결론을 준다", "Give only the key facts and the conclusion", +2),
+      opt("비유나 장면으로 느낌이 오게 만든다", "Use a metaphor or scene so it clicks", -2),
+      opt("먼저 왜 중요한지 큰 흐름부터 보여준다", "Start with why it matters in the bigger picture", -3.5),
     ],
   },
   {
@@ -900,10 +900,10 @@ export const QUESTIONS: Question[] = [
       en: "When you read the news:",
     },
     options: [
-      opt("팩트와 수치 위주로 본다", "Facts and figures first", +4),
-      opt("사건의 흐름을 파악한다", "Follow the story arc", +2),
-      opt("의미와 영향을 생각한다", "Think about meaning and impact", -2),
-      opt("미래 시나리오를 상상한다", "Imagine future scenarios", -4),
+      opt("숫자와 출처부터 확인한다", "Check the numbers and sources first", +4),
+      opt("누가 무엇을 했는지 순서대로 정리한다", "Put who did what in order", +2),
+      opt("이 일이 사람들에게 어떤 의미인지 본다", "Look at what it means for people", -2),
+      opt("이후에 무엇으로 번질지 상상한다", "Imagine what it could lead to next", -4),
     ],
   },
   {
@@ -915,10 +915,10 @@ export const QUESTIONS: Question[] = [
       en: "When you shop:",
     },
     options: [
-      opt("필요한 것만 산다", "Only what I need", +3.5),
-      opt("미리 조사하고 산다", "Research first, then buy", +2),
-      opt("끌리면 산다", "If I'm drawn to it, I buy", -2),
-      opt("영감받으면 충동구매한다", "Inspired = impulse buy", -3.5),
+      opt("목록에 없던 건 마음에 들어도 내려놓는다", "If it is not on the list, I put it back even if I like it", +3.5),
+      opt("가격과 후기를 비교한 뒤 필요한 것만 산다", "Compare price and reviews, then buy only what is needed", +2),
+      opt("매장이나 피드에서 꽂히면 일단 장바구니에 넣는다", "If it catches me in a shop or feed, I add it to the cart", -2),
+      opt("새 콘셉트가 떠오르면 세트로 한꺼번에 산다", "If a new concept hits, I buy the whole set at once", -3.5),
     ],
   },
 
@@ -932,10 +932,10 @@ export const QUESTIONS: Question[] = [
       en: "A friend says something wrong:",
     },
     options: [
-      opt("바로 지적한다. 틀린 건 틀린 거", "Correct them. Wrong is wrong", +4),
-      opt("부드럽게 사실을 말한다", "Gently state the facts", +2.5),
-      opt("상황 봐서 말한다", "Depends on the situation", -1),
-      opt("상처받을까봐 그냥 넘긴다", "Let it slide so they're not hurt", -3.5),
+      opt("그 자리에서 근거를 들어 바로잡는다", "Correct it on the spot with evidence", +4),
+      opt("대화가 끝나기 전 조용히 사실을 알려준다", "Quietly tell them the fact before the conversation ends", +2.5),
+      opt("사람들 앞인지 둘만 있는지 보고 정한다", "Decide based on whether others are there", -1),
+      opt("틀린 걸 알아도 마음 상할까 봐 넘긴다", "Even if I know it is wrong, I let it pass to avoid hurting them", -3.5),
     ],
   },
   {
@@ -947,10 +947,10 @@ export const QUESTIONS: Question[] = [
       en: "Making an important decision:",
     },
     options: [
-      opt("100% 논리와 데이터로", "100% logic and data", +4),
-      opt("주로 논리, 감정은 참고", "Mostly logic, feelings as input", +2.5),
-      opt("논리와 감정 반반", "Half logic, half feelings", 0),
-      opt("느낌이 더 중요하다", "Gut feeling matters most", -3.5),
+      opt("표를 만들어 장단점과 숫자로 고른다", "Make a table and choose by pros, cons, and numbers", +4),
+      opt("근거를 먼저 보고 마음은 마지막에 확인한다", "Check the evidence first and feelings last", +2.5),
+      opt("관련된 사람에게 어떤 영향이 갈지 같이 본다", "Consider how it will affect the people involved", 0),
+      opt("몸이 계속 당기는 쪽을 믿고 움직인다", "Trust the direction my body keeps leaning toward", -3.5),
     ],
   },
   {
@@ -977,10 +977,10 @@ export const QUESTIONS: Question[] = [
       en: "Watching dramas or movies:",
     },
     options: [
-      opt("스토리 개연성이 먼저 보인다", "I notice plot holes first", +3.5),
-      opt("재밌으면 됐다", "Fun is fun, that's enough", +2),
-      opt("감정 이입도 하고 분석도 한다", "Both feel and analyze", -1),
-      opt("완전히 감정 이입해서 본다", "Fully emotionally invested", -3.5),
+      opt("설정 오류나 개연성이 먼저 걸린다", "Continuity and plot logic catch me first", +3.5),
+      opt("전개가 시원하면 깊게 따지지 않는다", "If the pacing works, I do not overthink it", +2),
+      opt("인물의 선택이 왜 그랬는지 따라간다", "I follow why each character chose that", -1),
+      opt("인물 감정에 들어가서 같이 흔들린다", "I get pulled into the character's feelings", -3.5),
     ],
   },
   {
@@ -992,10 +992,10 @@ export const QUESTIONS: Question[] = [
       en: "When you get hurt by words:",
     },
     options: [
-      opt("잘 안 받는다. 사실이면 맞는 말", "Rarely. If it's true, it's true", +4),
-      opt("받긴 하는데 금방 넘긴다", "I get hurt but move on fast", +2.5),
-      opt("받고 한동안 생각한다", "It stays with me for a while", -2),
-      opt("오래 간다. 말 한마디가 크다", "It lingers. Words matter so much", -3.5),
+      opt("맞는 말이면 바로 고칠 부분부터 본다", "If it is true, I look at what to fix first", +4),
+      opt("잠깐 찔리지만 다른 일로 금방 전환한다", "It stings briefly, then I switch to something else", +2.5),
+      opt("그 말투와 상황을 몇 번 다시 떠올린다", "I replay the tone and situation a few times", -2),
+      opt("괜찮은 척해도 말 한마디가 오래 남는다", "Even if I act fine, one sentence stays for a long time", -3.5),
     ],
   },
   {
@@ -1039,10 +1039,10 @@ export const QUESTIONS: Question[] = [
       en: "When you wake up:",
     },
     options: [
-      opt("오늘 할 일 리스트 확인한다", "Check today's to-do list", +4),
-      opt("대략적인 계획을 머릿속에 그린다", "Sketch a rough mental plan", +2.5),
-      opt("그때그때 생각한다", "Figure it out as I go", -2),
-      opt("일어난 것만으로도 대단하다", "Just being awake is an achievement", -4),
+      opt("앱을 열어 오늘 할 일을 순서대로 확인한다", "Open the app and check today's tasks in order", +4),
+      opt("꼭 해야 할 두세 가지만 머릿속에 잡는다", "Hold only two or three must-dos in my head", +2.5),
+      opt("첫 일정 전까지는 몸 가는 대로 움직인다", "Until the first plan, I move by feel", -2),
+      opt("일단 누워서 오늘이 어떤 날인지 감을 본다", "Stay in bed first and sense what kind of day it is", -4),
     ],
   },
   {
@@ -1054,10 +1054,10 @@ export const QUESTIONS: Question[] = [
       en: "When there's a deadline:",
     },
     options: [
-      opt("미리미리 끝낸다", "Finish way ahead of time", +3.5),
-      opt("적당히 미리 한다", "Get it done early-ish", +2),
-      opt("마감 전날 한다", "Day before, every time", -2.5),
-      opt("마감 당일 한다", "Day of, every time", -4),
+      opt("초반에 큰 틀을 끝내고 마지막엔 확인만 한다", "Finish the main structure early and only check at the end", +3.5),
+      opt("중간 체크포인트를 잡아두고 나눠서 한다", "Set midpoints and split the work", +2),
+      opt("압박이 와야 집중돼서 전날 몰아친다", "I focus when pressure arrives, so I sprint the day before", -2.5),
+      opt("마감 당일의 긴장감으로 겨우 불을 붙인다", "The deadline-day tension is what finally lights the fire", -4),
     ],
   },
   {
@@ -1069,10 +1069,10 @@ export const QUESTIONS: Question[] = [
       en: "Packing for a trip:",
     },
     options: [
-      opt("일주일 전에 다 싼다", "Packed a week in advance", +4),
-      opt("2-3일 전에 싼다", "Packed 2–3 days before", +2.5),
-      opt("전날 밤에 싼다", "Night before", -2),
-      opt("당일 아침에 싼다", "Morning of departure", -3.5),
+      opt("체크리스트를 만들고 일주일 전부터 채운다", "Make a checklist and start filling it a week ahead", +4),
+      opt("필수품만 먼저 챙기고 나머지는 며칠 전 정리한다", "Pack essentials first and sort the rest a few days before", +2.5),
+      opt("전날 밤에 옷을 펼쳐놓고 그때그때 고른다", "Lay things out the night before and decide as I go", -2),
+      opt("출발 직전에 눈에 보이는 것부터 가방에 넣는다", "Right before leaving, I throw in whatever I see first", -3.5),
     ],
   },
   {
@@ -1084,10 +1084,10 @@ export const QUESTIONS: Question[] = [
       en: "Plans suddenly change:",
     },
     options: [
-      opt("스트레스 받는다. 미리 알았어야지", "Stressed. Should've been warned", +4),
-      opt("아쉽지만 적응한다", "Bummed, but I adapt", +2.5),
-      opt("괜찮다. 어떻게든 된다", "Fine. It works out", -2),
-      opt("오히려 좋다. 즉흥이 재밌다", "Even better — spontaneity rules", -3.5),
+      opt("바뀐 이유와 새 일정을 바로 확인해야 한다", "I need the reason and new schedule right away", +4),
+      opt("아쉽지만 가능한 대안을 빠르게 다시 짠다", "I am bummed, but quickly rebuild a workable option", +2.5),
+      opt("일단 움직이면서 맞춰도 된다고 본다", "I think we can adjust while moving", -2),
+      opt("정해진 게 풀리면 오히려 선택지가 많아져 좋다", "When fixed plans loosen, I like having more options", -3.5),
     ],
   },
   {
@@ -1099,10 +1099,10 @@ export const QUESTIONS: Question[] = [
       en: "Your room or desk:",
     },
     options: [
-      opt("항상 정리돼 있다", "Always organized", +3.5),
-      opt("대체로 깔끔하다", "Mostly clean", +2),
-      opt("약간 어수선하다", "A bit messy", -2),
-      opt("카오스지만 나는 어디있는지 안다", "Chaos, but I know where everything is", -3.5),
+      opt("물건마다 자리가 정해져 있고 바로 돌려놓는다", "Every item has a place and goes back there", +3.5),
+      opt("보이는 곳은 깔끔하게 유지하려고 한다", "I try to keep visible areas clean", +2),
+      opt("쓰는 물건은 손 닿는 곳에 펼쳐둔다", "I leave active items within reach", -2),
+      opt("남이 보면 혼돈이지만 내 동선에는 맞다", "It looks chaotic to others but fits my flow", -3.5),
     ],
   },
   {
@@ -1114,10 +1114,10 @@ export const QUESTIONS: Question[] = [
       en: "Unexpected free time:",
     },
     options: [
-      opt("밀린 할 일을 처리한다", "Tackle the backlog", +4),
-      opt("계획했던 것 중 하나 한다", "Do one of the things I'd planned", +2),
-      opt("하고 싶은 거 즉흥으로 한다", "Whatever I feel like, in the moment", -2),
-      opt("아무것도 안 하다 끝난다", "End up doing nothing", -3.5),
+      opt("미뤄둔 일을 하나 골라 바로 끝낸다", "Pick one delayed task and finish it", +4),
+      opt("언젠가 하려던 작은 계획 하나를 꺼낸다", "Pull out one small plan I meant to do someday", +2),
+      opt("그 순간 끌리는 곳으로 바로 움직인다", "Move toward whatever draws me in that moment", -2),
+      opt("뭘 할지 고르다 시간이 다 지나간다", "Time passes while I choose what to do", -3.5),
     ],
   },
   {
@@ -1140,22 +1140,22 @@ export const QUESTIONS: Question[] = [
 // ─────────────────────── Type taglines (16 MBTI codes) ───────────────────────
 
 export const TYPE_TAGLINES: Record<string, Bilingual> = {
-  ESTJ: { ko: "냉정한 현실 계획형", en: "Cold Pragmatic Planner" },
-  ESTP: { ko: "즉흥적 현실 행동가", en: "Realistic Improviser" },
-  ESFJ: { ko: "따뜻한 현실 계획형", en: "Warm Practical Planner" },
-  ESFP: { ko: "활기찬 즉흥 사교형", en: "Vivid Social Improviser" },
-  ENTJ: { ko: "추진하는 비전 사령관", en: "Driving Visionary Commander" },
-  ENTP: { ko: "끝없는 가능성 토론가", en: "Endless Possibility Debater" },
-  ENFJ: { ko: "사람 중심의 비전가", en: "People-First Visionary" },
-  ENFP: { ko: "영감 가득한 자유 영혼", en: "Inspired Free Spirit" },
-  ISTJ: { ko: "묵묵한 현실 수행자", en: "Quiet Realistic Executor" },
-  ISTP: { ko: "조용한 실용 분석가", en: "Quiet Pragmatic Analyst" },
-  ISFJ: { ko: "헌신적인 현실 수호자", en: "Devoted Realistic Guardian" },
-  ISFP: { ko: "조용한 감성 자유인", en: "Quiet Sensitive Wanderer" },
-  INTJ: { ko: "전략적 비전 설계자", en: "Strategic Visionary Architect" },
-  INTP: { ko: "사색하는 가능성 탐구자", en: "Pondering Possibility Researcher" },
-  INFJ: { ko: "깊이 있는 통찰 안내자", en: "Deep Insightful Guide" },
-  INFP: { ko: "내면의 의미 탐구자", en: "Inner Meaning Seeker" },
+  ESTJ: { ko: "현실을 정리해 굴러가게 만드는 사람", en: "Cold Pragmatic Planner" },
+  ESTP: { ko: "상황을 보고 바로 몸이 먼저 나가는 사람", en: "Realistic Improviser" },
+  ESFJ: { ko: "사람과 일을 동시에 챙기는 생활 관리자", en: "Warm Practical Planner" },
+  ESFP: { ko: "지금 이 순간을 살려내는 분위기 스위치", en: "Vivid Social Improviser" },
+  ENTJ: { ko: "큰 그림을 실행표로 바꾸는 추진가", en: "Driving Visionary Commander" },
+  ENTP: { ko: "가능성에 불을 붙이는 질문러", en: "Endless Possibility Debater" },
+  ENFJ: { ko: "사람의 방향까지 함께 보는 리더", en: "People-First Visionary" },
+  ENFP: { ko: "아이디어와 감정이 같이 뛰는 자유형", en: "Inspired Free Spirit" },
+  ISTJ: { ko: "말보다 결과로 신뢰를 쌓는 사람", en: "Quiet Realistic Executor" },
+  ISTP: { ko: "조용히 뜯어보고 정확히 고치는 사람", en: "Quiet Pragmatic Analyst" },
+  ISFJ: { ko: "눈에 안 띄게 관계를 지탱하는 사람", en: "Devoted Realistic Guardian" },
+  ISFP: { ko: "조용하지만 취향과 선이 분명한 사람", en: "Quiet Sensitive Wanderer" },
+  INTJ: { ko: "머릿속 설계도를 현실에 맞추는 전략가", en: "Strategic Visionary Architect" },
+  INTP: { ko: "생각의 지도를 혼자 끝까지 펼치는 사람", en: "Pondering Possibility Researcher" },
+  INFJ: { ko: "사람 마음의 결을 깊게 읽는 안내자", en: "Deep Insightful Guide" },
+  INFP: { ko: "마음속 기준선이 조용히 뚜렷한 사람", en: "Inner Meaning Seeker" },
 };
 
 // ─────────────────────── Scoring ───────────────────────

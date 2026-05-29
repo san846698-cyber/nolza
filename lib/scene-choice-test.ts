@@ -94,10 +94,10 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
     },
     prompt: { ko: "가장 먼저 눈에 들어오는 것은?", en: "What catches your eye first?" },
     choices: [
-      { id: "a", text: { ko: "열려 있는 창문", en: "The open window" }, scores: { freedomChange: 3 } },
-      { id: "b", text: { ko: "책상 위의 편지", en: "The letter on the desk" }, scores: { memoryAttachment: 3 } },
-      { id: "c", text: { ko: "꺼져가는 조명", en: "The fading light" }, scores: { safetyStability: 3 } },
-      { id: "d", text: { ko: "문 뒤의 그림자", en: "The shadow behind the door" }, scores: { hiddenThreat: 3 } },
+      { id: "a", text: { ko: "밖으로 나갈 수 있는 열린 창", en: "The open window leading outside" }, scores: { freedomChange: 3 } },
+      { id: "b", text: { ko: "누군가 남긴 책상 위 편지", en: "The letter someone left on the desk" }, scores: { memoryAttachment: 3 } },
+      { id: "c", text: { ko: "곧 꺼질 듯한 조명의 밝기", en: "The light about to fade out" }, scores: { safetyStability: 3 } },
+      { id: "d", text: { ko: "문 뒤에서 움직인 듯한 그림자", en: "The shadow that seems to move behind the door" }, scores: { hiddenThreat: 3 } },
     ],
   },
   {
@@ -109,10 +109,10 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
     },
     prompt: { ko: "가장 먼저 신경 쓰이는 것은?", en: "What draws your attention first?" },
     choices: [
-      { id: "a", text: { ko: "문틈으로 새어 나오는 빛", en: "Light leaking through the door" }, scores: { recognitionMeaning: 2, curiosityUnknown: 1 } },
-      { id: "b", text: { ko: "유리창에 남은 손자국", en: "Fingerprints left on the glass" }, scores: { memoryAttachment: 2, emotionalDepth: 1 } },
-      { id: "c", text: { ko: "골목 끝에 서 있는 낯선 사람", en: "A stranger standing at the end" }, scores: { hiddenThreat: 3 } },
-      { id: "d", text: { ko: "가게 앞에 놓인 젖은 우산", en: "A wet umbrella by the shop" }, scores: { safetyStability: 2, memoryAttachment: 1 } },
+      { id: "a", text: { ko: "아직 누군가 있는 듯한 문틈의 빛", en: "Light through the door, as if someone is still there" }, scores: { recognitionMeaning: 2, curiosityUnknown: 1 } },
+      { id: "b", text: { ko: "방금 지나간 사람의 유리창 손자국", en: "Fingerprints from someone who just passed" }, scores: { memoryAttachment: 2, emotionalDepth: 1 } },
+      { id: "c", text: { ko: "다가올지 모르는 골목 끝 사람", en: "The person at the alley end who may come closer" }, scores: { hiddenThreat: 3 } },
+      { id: "d", text: { ko: "주인을 기다리는 젖은 우산", en: "The wet umbrella waiting for its owner" }, scores: { safetyStability: 2, memoryAttachment: 1 } },
     ],
   },
   {
@@ -124,10 +124,10 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
     },
     prompt: { ko: "당신의 시선이 먼저 머무는 곳은?", en: "Where does your gaze rest first?" },
     choices: [
-      { id: "a", text: { ko: "창밖으로 지나가는 불빛", en: "Lights passing outside the window" }, scores: { freedomChange: 2, curiosityUnknown: 1 } },
-      { id: "b", text: { ko: "빈 좌석 위에 놓인 가방", en: "A bag on an empty seat" }, scores: { recognitionMeaning: 2, memoryAttachment: 1 } },
-      { id: "c", text: { ko: "멀리서 들리는 안내 방송", en: "A distant announcement" }, scores: { curiosityUnknown: 3 } },
-      { id: "d", text: { ko: "닫힌 객실 문", en: "The closed carriage door" }, scores: { controlOrder: 2, hiddenThreat: 1 } },
+      { id: "a", text: { ko: "어딘가로 지나가는 창밖 불빛", en: "The lights passing toward somewhere outside" }, scores: { freedomChange: 2, curiosityUnknown: 1 } },
+      { id: "b", text: { ko: "주인이 돌아올 것 같은 빈 좌석의 가방", en: "The bag on an empty seat whose owner may return" }, scores: { recognitionMeaning: 2, memoryAttachment: 1 } },
+      { id: "c", text: { ko: "다음 역을 예고하는 먼 안내 방송", en: "The distant announcement hinting at the next stop" }, scores: { curiosityUnknown: 3 } },
+      { id: "d", text: { ko: "안쪽을 확인하고 싶은 닫힌 객실 문", en: "The closed carriage door I want to check" }, scores: { controlOrder: 2, hiddenThreat: 1 } },
     ],
   },
   {
@@ -139,10 +139,10 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
     },
     prompt: { ko: "가장 먼저 확인하고 싶은 것은?", en: "What do you want to check first?" },
     choices: [
-      { id: "a", text: { ko: "열려 있는 창밖", en: "Outside the open window" }, scores: { freedomChange: 3 } },
-      { id: "b", text: { ko: "책상 위에 펼쳐진 노트", en: "The notebook open on the desk" }, scores: { recognitionMeaning: 2, controlOrder: 1 } },
-      { id: "c", text: { ko: "바닥에 떨어진 책갈피", en: "A bookmark on the floor" }, scores: { memoryAttachment: 2, emotionalDepth: 1 } },
-      { id: "d", text: { ko: "어두운 책장 사이", en: "The space between dark shelves" }, scores: { hiddenThreat: 2, curiosityUnknown: 1 } },
+      { id: "a", text: { ko: "지금 방 밖으로 이어지는 열린 창", en: "The open window leading out of the room" }, scores: { freedomChange: 3 } },
+      { id: "b", text: { ko: "누가 무엇을 쓰다 멈춘 펼친 노트", en: "The open notebook where someone stopped writing" }, scores: { recognitionMeaning: 2, controlOrder: 1 } },
+      { id: "c", text: { ko: "읽던 자리를 잃어버린 책갈피", en: "The bookmark that lost its page" }, scores: { memoryAttachment: 2, emotionalDepth: 1 } },
+      { id: "d", text: { ko: "무언가 숨었을 듯한 어두운 책장 사이", en: "The dark shelf gap where something may hide" }, scores: { hiddenThreat: 2, curiosityUnknown: 1 } },
     ],
   },
   {
@@ -154,10 +154,10 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
     },
     prompt: { ko: "가장 먼저 기억에 남는 것은?", en: "What do you remember first?" },
     choices: [
-      { id: "a", text: { ko: "멀리 떠 있는 배의 불빛", en: "A boat light far away" }, scores: { curiosityUnknown: 2, freedomChange: 1 } },
-      { id: "b", text: { ko: "묶여 있는 밧줄", en: "The tied rope" }, scores: { controlOrder: 2, safetyStability: 1 } },
-      { id: "c", text: { ko: "물 위에 비친 달", en: "The moon reflected on the water" }, scores: { emotionalDepth: 3 } },
-      { id: "d", text: { ko: "아무도 없는 의자", en: "An empty chair" }, scores: { memoryAttachment: 2, emotionalDepth: 1 } },
+      { id: "a", text: { ko: "곧 떠날 것 같은 먼 배의 불빛", en: "The far boat light that may soon leave" }, scores: { curiosityUnknown: 2, freedomChange: 1 } },
+      { id: "b", text: { ko: "배를 붙잡아두는 묶인 밧줄", en: "The tied rope holding the boat in place" }, scores: { controlOrder: 2, safetyStability: 1 } },
+      { id: "c", text: { ko: "물결에 흔들리는 달빛", en: "Moonlight trembling on the water" }, scores: { emotionalDepth: 3 } },
+      { id: "d", text: { ko: "누군가 앉았을 것 같은 빈 의자", en: "The empty chair someone may have sat in" }, scores: { memoryAttachment: 2, emotionalDepth: 1 } },
     ],
   },
   {
@@ -169,10 +169,10 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
     },
     prompt: { ko: "가장 먼저 눈에 들어오는 것은?", en: "What do you notice first?" },
     choices: [
-      { id: "a", text: { ko: "접힌 편지", en: "A folded letter" }, scores: { memoryAttachment: 3 } },
-      { id: "b", text: { ko: "닫힌 여행 가방", en: "A closed suitcase" }, scores: { controlOrder: 1, freedomChange: 2 } },
-      { id: "c", text: { ko: "아직 따뜻한 찻잔", en: "A teacup still warm" }, scores: { emotionalDepth: 2, safetyStability: 1 } },
-      { id: "d", text: { ko: "벽에 남은 빈 액자 자국", en: "The empty mark where a frame was" }, scores: { recognitionMeaning: 2, memoryAttachment: 1 } },
+      { id: "a", text: { ko: "차마 버리지 못한 접힌 편지", en: "The folded letter someone could not throw away" }, scores: { memoryAttachment: 3 } },
+      { id: "b", text: { ko: "떠날 준비가 끝난 닫힌 여행 가방", en: "The closed suitcase ready to leave" }, scores: { controlOrder: 1, freedomChange: 2 } },
+      { id: "c", text: { ko: "방금 놓고 간 듯 따뜻한 찻잔", en: "The warm teacup someone just left" }, scores: { emotionalDepth: 2, safetyStability: 1 } },
+      { id: "d", text: { ko: "벽에 남은 빈 액자 자리", en: "The empty frame mark left on the wall" }, scores: { recognitionMeaning: 2, memoryAttachment: 1 } },
     ],
   },
   {
@@ -270,8 +270,8 @@ export const SCENE_QUESTIONS: SceneQuestion[] = [
 export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
   "open-window": {
     id: "open-window",
-    title: { ko: "열린 창문을 먼저 보는 사람", en: "The One Who Notices the Open Window" },
-    oneLiner: { ko: "막힌 공간에서도 가능성을 먼저 찾는 사람", en: "You notice possibility even inside a closed room." },
+    title: { ko: "틈을 발견하는 가능성 탐험가", en: "The One Who Notices the Open Window" },
+    oneLiner: { ko: "막힌 장면에서도 빠져나갈 방향과 다음 가능성을 먼저 보는 타입입니다.", en: "You notice possibility even inside a closed room." },
     description: {
       ko: "당신의 마음은 막힌 공간 안에서도 출구와 가능성을 먼저 찾습니다. 지금 있는 곳보다 아직 가지 않은 곳에 시선이 먼저 닿는 사람입니다.",
       en: "Your mind looks for exits and possibilities even in a closed space. Your attention often reaches the place you have not gone yet before it fully settles where you are.",
@@ -287,13 +287,13 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "막힌 상황에서도 변화의 통로를 찾아내는 힘이 있습니다.", en: "You can find a path for change even when a situation feels closed." },
     watchOut: { ko: "너무 빨리 떠날 방향을 찾다 보면, 지금 장면 안에 남은 의미를 놓칠 수 있습니다.", en: "If you look for the way out too quickly, you may miss meaning that still exists where you are." },
     friendQuestion: { ko: "나 답답하면 바로 다른 가능성부터 찾는 편이야?", en: "When I feel stuck, do I start looking for other possibilities first?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “열린 창문을 먼저 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Open Window” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “틈을 발견하는 가능성 탐험가”가 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Open Window” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#c89455",
   },
   letter: {
     id: "letter",
-    title: { ko: "남겨진 편지를 먼저 보는 사람", en: "The One Who Notices the Letter" },
-    oneLiner: { ko: "말하지 못한 마음의 흔적을 먼저 읽는 사람", en: "You notice the feelings that were left unsaid." },
+    title: { ko: "남은 문장을 오래 읽는 사람", en: "The One Who Notices the Letter" },
+    oneLiner: { ko: "끝난 장면에서도 아직 말해지지 않은 마음을 먼저 찾는 타입입니다.", en: "You notice the feelings that were left unsaid." },
     description: {
       ko: "당신은 사건보다 그 안에 남겨진 마음을 먼저 읽는 사람입니다. 말하지 못한 감정, 끝나지 않은 관계, 오래 남은 문장에 민감합니다.",
       en: "You often read the feeling left inside an event before the event itself. Unspoken emotions, unfinished relationships, and sentences that linger are easy for you to notice.",
@@ -303,13 +303,13 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "사람 사이의 미묘한 여운을 잘 읽고, 마음의 맥락을 놓치지 않습니다.", en: "You are good at reading emotional traces and keeping the human context in view." },
     watchOut: { ko: "상대가 남긴 조각을 오래 붙잡다가, 내 마음의 현재 시간을 늦게 확인할 수 있습니다.", en: "You may hold onto another person's traces for so long that you check your own present feeling late." },
     friendQuestion: { ko: "나는 끝난 일에서도 남은 말이나 감정을 오래 생각하는 편이야?", en: "Do I keep thinking about leftover words or feelings even after something ends?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “남겨진 편지를 먼저 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Letter” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “남은 문장을 오래 읽는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Letter” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#ad6f62",
   },
   "fading-light": {
     id: "fading-light",
-    title: { ko: "꺼져가는 조명을 먼저 보는 사람", en: "The One Who Notices the Fading Light" },
-    oneLiner: { ko: "분위기의 약한 변화를 먼저 감지하는 사람", en: "You notice when the atmosphere begins to fade." },
+    title: { ko: "분위기의 밝기를 재는 사람", en: "The One Who Notices the Fading Light" },
+    oneLiner: { ko: "공간과 사람의 에너지가 약해지는 순간을 빠르게 감지하는 타입입니다.", en: "You notice when the atmosphere begins to fade." },
     description: {
       ko: "당신은 분위기의 변화와 에너지의 소진을 빠르게 감지합니다. 겉으로는 괜찮아 보여도 무언가 약해지고 있는 순간을 먼저 알아차립니다.",
       en: "You quickly sense changes in atmosphere and fading energy. Even when things look fine on the surface, you notice when something is getting weaker.",
@@ -319,13 +319,13 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "무리하기 전에 에너지를 점검하고, 분위기를 부드럽게 회복시키는 감각이 있습니다.", en: "You can check energy before things are overextended and help restore the mood gently." },
     watchOut: { ko: "작은 피로 신호를 너무 크게 읽으면, 아직 남아 있는 힘까지 과소평가할 수 있습니다.", en: "If you read every small sign of fatigue too strongly, you may underestimate the strength that still remains." },
     friendQuestion: { ko: "나는 분위기가 지치거나 약해지는 걸 남들보다 빨리 알아차려?", en: "Do I notice when the mood is getting tired before others do?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “꺼져가는 조명을 먼저 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Fading Light” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “분위기의 밝기를 재는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Fading Light” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#d6a747",
   },
   "door-shadow": {
     id: "door-shadow",
-    title: { ko: "문 뒤의 그림자를 먼저 보는 사람", en: "The One Who Notices the Shadow Behind the Door" },
-    oneLiner: { ko: "숨겨진 신호와 애매한 위험을 먼저 감지하는 사람", en: "You notice hidden signals before the scene explains itself." },
+    title: { ko: "닫힌 문 뒤를 살피는 감지자", en: "The One Who Notices the Shadow Behind the Door" },
+    oneLiner: { ko: "장면이 설명되기 전부터 숨은 기척과 애매한 위험을 읽는 타입입니다.", en: "You notice hidden signals before the scene explains itself." },
     description: {
       ko: "당신은 보이는 것보다 숨겨진 신호에 먼저 반응합니다. 조심성이 많아서라기보다, 놓치면 안 되는 위험과 애매한 분위기를 빠르게 감지하는 편입니다.",
       en: "You react to hidden signals before obvious ones. It is not simply caution; you tend to sense unclear tension or risk that should not be missed.",
@@ -335,13 +335,13 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "남들이 지나치는 위험 신호나 어색한 공기를 빠르게 읽습니다.", en: "You can read warning signs and awkward tension that others may pass by." },
     watchOut: { ko: "모든 그림자를 위협으로 보면, 궁금함이나 가능성까지 긴장으로 느낄 수 있습니다.", en: "If every shadow becomes a threat, curiosity and possibility may also feel tense." },
     friendQuestion: { ko: "나는 분위기가 애매하면 숨은 위험부터 보는 편이야?", en: "When the mood is unclear, do I look for hidden risks first?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “문 뒤의 그림자를 먼저 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Shadow Behind the Door” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “닫힌 문 뒤를 살피는 감지자”가 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Shadow Behind the Door” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#746b8f",
   },
   crack: {
     id: "crack",
-    title: { ko: "바닥의 균열을 먼저 보는 사람", en: "The One Who Notices the Crack" },
-    oneLiner: { ko: "멀쩡해 보이는 구조 안의 흔들림을 보는 사람", en: "You notice what might break beneath the surface." },
+    title: { ko: "멀쩡함 속 균열을 보는 사람", en: "The One Who Notices the Crack" },
+    oneLiner: { ko: "겉으로 괜찮아 보여도 오래 버틸 구조인지 먼저 확인하는 타입입니다.", en: "You notice what might break beneath the surface." },
     description: {
       ko: "당신은 겉으로 멀쩡해 보이는 것 안의 작은 균열을 잘 봅니다. 관계든 상황이든, 무너지기 전의 작은 흔들림을 먼저 알아차리는 사람입니다.",
       en: "You are good at seeing the small crack inside what looks intact. In relationships or situations, you notice the early tremor before anything collapses.",
@@ -351,13 +351,13 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "문제가 커지기 전에 구조를 점검하고, 오래 버틸 수 있는 방식을 찾습니다.", en: "You can inspect the structure before problems grow and look for what can last." },
     watchOut: { ko: "균열을 너무 빨리 찾다 보면, 아직 단단한 부분의 힘을 충분히 믿지 못할 수 있습니다.", en: "If you search for cracks too quickly, you may not fully trust the parts that are still solid." },
     friendQuestion: { ko: "나는 겉으로 괜찮아 보여도 작은 불안정함을 먼저 찾는 편이야?", en: "Do I notice small instability even when things look fine?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “바닥의 균열을 먼저 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Crack” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “멀쩡함 속 균열을 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Crack” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#8c745a",
   },
   "distant-sound": {
     id: "distant-sound",
-    title: { ko: "먼 곳의 소리를 먼저 듣는 사람", en: "The One Who Hears the Distant Sound" },
-    oneLiner: { ko: "아직 오지 않은 신호에 먼저 끌리는 사람", en: "You are drawn to signals that have not arrived yet." },
+    title: { ko: "먼 신호에 먼저 끌리는 사람", en: "The One Who Hears the Distant Sound" },
+    oneLiner: { ko: "눈앞의 답보다 아직 오지 않은 변화의 예고에 마음이 먼저 움직이는 타입입니다.", en: "You are drawn to signals that have not arrived yet." },
     description: {
       ko: "당신의 마음은 눈앞의 것보다 아직 오지 않은 신호에 끌립니다. 설명되지 않은 가능성, 멀리서 다가오는 변화에 민감합니다.",
       en: "Your mind is drawn to signals that have not fully arrived. You are sensitive to unexplained possibility and change coming from far away.",
@@ -367,13 +367,13 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "새로운 가능성의 기척을 잘 포착하고, 아직 이름 붙지 않은 방향을 상상할 수 있습니다.", en: "You can catch the first signs of new possibility and imagine directions that do not have names yet." },
     watchOut: { ko: "멀리 있는 신호에 집중하다 보면, 가까이에 있는 감정이나 약속을 늦게 볼 수 있습니다.", en: "If you focus on distant signals, you may notice nearby feelings or commitments late." },
     friendQuestion: { ko: "나는 눈앞의 일보다 곧 올 변화에 더 먼저 끌리는 편이야?", en: "Am I drawn to coming changes before what is right in front of me?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “먼 곳의 소리를 먼저 듣는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Hears the Distant Sound” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “먼 신호에 먼저 끌리는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Hears the Distant Sound” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#587a8e",
   },
   "closed-drawer": {
     id: "closed-drawer",
-    title: { ko: "닫힌 서랍을 먼저 보는 사람", en: "The One Who Notices the Closed Drawer" },
-    oneLiner: { ko: "숨겨둔 마음과 닫힌 이야기에 끌리는 사람", en: "You are drawn to the feelings people keep closed." },
+    title: { ko: "닫힌 마음의 손잡이를 보는 사람", en: "The One Who Notices the Closed Drawer" },
+    oneLiner: { ko: "겉말보다 아직 꺼내지 못한 이야기와 조심스러운 마음에 끌리는 타입입니다.", en: "You are drawn to the feelings people keep closed." },
     description: {
       ko: "당신은 드러난 말보다 숨겨둔 마음에 더 끌립니다. 사람의 표면보다, 말하지 못한 이야기와 조용히 닫아둔 감정을 읽으려 합니다.",
       en: "You are more drawn to hidden feelings than obvious words. You try to read the stories people could not say and the emotions quietly closed away.",
@@ -383,13 +383,13 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "겉말 뒤의 조심스러운 마음을 배려하고, 쉽게 단정하지 않는 깊이가 있습니다.", en: "You can respect careful feelings behind surface words and avoid quick judgment." },
     watchOut: { ko: "모든 닫힌 것을 열어야 할 이야기로 느끼면, 상대의 침묵을 쉬게 두기 어려울 수 있습니다.", en: "If every closed thing feels like a story to open, it may be hard to let another person's silence rest." },
     friendQuestion: { ko: "나는 사람들이 숨겨둔 마음을 자꾸 읽으려고 하는 편이야?", en: "Do I often try to read the feelings people keep hidden?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “닫힌 서랍을 먼저 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Closed Drawer” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “닫힌 마음의 손잡이를 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Closed Drawer” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#6c665f",
   },
   "empty-chair": {
     id: "empty-chair",
-    title: { ko: "방 한가운데 빈 의자를 먼저 보는 사람", en: "The One Who Notices the Empty Chair" },
-    oneLiner: { ko: "비어 있는 자리의 의미를 먼저 느끼는 사람", en: "You feel the meaning of what is absent." },
+    title: { ko: "빈자리의 온도를 느끼는 사람", en: "The One Who Notices the Empty Chair" },
+    oneLiner: { ko: "있는 것만큼이나 빠진 것과 남겨진 자리를 강하게 느끼는 타입입니다.", en: "You feel the meaning of what is absent." },
     description: {
       ko: "당신은 존재하는 것만큼이나 비어 있는 자리를 강하게 느끼는 사람입니다. 누가 없는지, 무엇이 빠졌는지, 왜 그 자리가 남아 있는지를 먼저 생각합니다.",
       en: "You feel empty spaces as strongly as visible things. You first wonder who is missing, what has been left out, and why that place remains.",
@@ -399,7 +399,7 @@ export const SCENE_RESULTS: Record<SceneResultId, SceneResult> = {
     strength: { ko: "빠진 부분을 알아차리고, 누군가의 빈자리를 쉽게 지나치지 않는 다정함이 있습니다.", en: "You notice what is missing and carry a tenderness that does not ignore someone's empty place." },
     watchOut: { ko: "부재를 너무 깊게 느끼면, 지금 곁에 있는 것의 온도를 늦게 받을 수 있습니다.", en: "If you feel absence too deeply, you may receive the warmth of what is present a little late." },
     friendQuestion: { ko: "나는 누가 없거나 무엇이 빠졌는지를 먼저 느끼는 편이야?", en: "Do I first notice who is missing or what is absent?" },
-    shareText: { ko: "나는 무의식 장면 테스트에서 “방 한가운데 빈 의자를 먼저 보는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Empty Chair” on The Scene You Notice First. What scene would you notice first?" },
+    shareText: { ko: "나는 무의식 장면 테스트에서 “빈자리의 온도를 느끼는 사람”이 나왔다. 너는 어떤 장면을 먼저 볼까?", en: "I got “The One Who Notices the Empty Chair” on The Scene You Notice First. What scene would you notice first?" },
     accent: "#9a6f7d",
   },
 };

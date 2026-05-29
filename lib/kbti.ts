@@ -93,13 +93,13 @@ export const QUESTIONS: Question[] = [
         effects: [eff("action", "H")],
       },
       {
-        ko: "조금 있다가 답한다. 지금 답하면 흐름이 애매하다",
-        en: "Reply a bit later. Right now the timing feels awkward.",
+        ko: "상대가 바쁠까 봐 타이밍을 보고 답한다",
+        en: "Wait for the timing because they may be busy.",
         effects: [eff("nunchi", "M"), eff("planning", "M")],
       },
       {
-        ko: "머릿속으로 답장은 했는데 실제 전송은 나중에 한다",
-        en: "Mentally replied already, but actually send it later.",
+        ko: "문장을 몇 번 고치다 실제 전송을 미룬다",
+        en: "Rewrite the sentence a few times and delay sending it.",
         effects: [eff("justify", "H"), eff("perfection", "M")],
       },
       {
@@ -145,13 +145,13 @@ export const QUESTIONS: Question[] = [
         effects: [eff("action", "H"), eff("planning", "M")],
       },
       {
-        ko: "조금 미루지만 마감 전에는 꼭 한다",
-        en: "Delay a bit, but definitely finish before the deadline.",
+        ko: "캘린더에 다시 넣고 정한 시간에는 한다",
+        en: "Put it back on the calendar and do it at the set time.",
         effects: [eff("planning", "M"), eff("justify", "M")],
       },
       {
-        ko: "준비만 하다가 에너지를 절반 쓴다",
-        en: "Spend half the energy just getting ready.",
+        ko: "책상 정리와 자료 찾기로 시작이 늦어진다",
+        en: "Desk cleanup and research delay the actual start.",
         effects: [eff("perfection", "M"), eff("justify", "H")],
       },
       {
@@ -166,23 +166,23 @@ export const QUESTIONS: Question[] = [
     en: "10 minutes before the meetup. You:",
     choices: [
       {
-        ko: "이미 도착해서 기다리는 중",
-        en: "Already there, waiting.",
+        ko: "이미 도착해서 장소 확인까지 끝냈다",
+        en: "Already there and already checked the place.",
         effects: [eff("planning", "H")],
       },
       {
-        ko: "근처에 도착했다. 카페나 역에서 시간 맞춘다",
-        en: "Nearby already. Timing it from a cafe or station.",
+        ko: "근처에서 상대 도착 시간에 맞춰 움직인다",
+        en: "Nearby, moving according to when the other person arrives.",
         effects: [eff("planning", "M"), eff("nunchi", "M")],
       },
       {
-        ko: "지금 가는 중이다. 늦진 않지만 늘 아슬아슬",
-        en: "On the way. Not late, but always close.",
+        ko: "가는 중이다. 늦진 않지만 변명 후보도 떠올린다",
+        en: "On the way. Not late, but already thinking of possible excuses.",
         effects: [eff("justify", "M")],
       },
       {
-        ko: "아직 준비 중이다. 마음만은 이미 출발했다",
-        en: "Still getting ready. Emotionally already left.",
+        ko: "아직 준비 중인데 단톡에는 곧 도착이라고 쓴다",
+        en: "Still getting ready, but telling the group chat I am almost there.",
         effects: [eff("justify", "H"), eff("reality", "L")],
       },
     ],
@@ -197,13 +197,13 @@ export const QUESTIONS: Question[] = [
         effects: [eff("action", "H")],
       },
       {
-        ko: "두세 개 보고 멈춘다. 나름 선은 지킨다",
-        en: "Watch two or three and stop. Boundaries, kind of.",
+        ko: "저장해둔 영상 두세 개만 보고 끊는다",
+        en: "Watch only two or three saved videos and stop.",
         effects: [eff("obsession", "M")],
       },
       {
-        ko: "보다가 갑자기 다른 주제로 깊게 들어간다",
-        en: "Suddenly go deep into a completely different topic.",
+        ko: "관련 영상 타고 전혀 다른 주제까지 파고든다",
+        en: "Follow related videos into a completely different topic.",
         effects: [eff("obsession", "H")],
       },
       {
@@ -270,13 +270,13 @@ export const QUESTIONS: Question[] = [
     en: "A friend asks for an honest opinion. Honesty would sting:",
     choices: [
       {
-        ko: "솔직하게 말하되 표현은 최대한 부드럽게 한다",
-        en: "Tell the truth, but make the wording gentle.",
+        ko: "핵심 문제를 한 문장으로 솔직하게 말한다",
+        en: "State the core issue honestly in one sentence.",
         effects: [eff("emotion", "H")],
       },
       {
-        ko: "먼저 좋은 점을 말하고 조심스럽게 덧붙인다",
-        en: "Start with the good parts, then add the concern carefully.",
+        ko: "좋은 점을 먼저 짚고 고칠 점을 조심스럽게 붙인다",
+        en: "Name the good part first, then carefully add what to fix.",
         effects: [eff("nunchi", "H"), eff("emotion", "M")],
       },
       {
@@ -348,13 +348,13 @@ export const QUESTIONS: Question[] = [
     en: "You have something to say. But it's hard:",
     choices: [
       {
-        ko: "말한다. 안 하면 더 오래 남는다",
-        en: "Say it. Otherwise it stays with me longer.",
+        ko: "바로 말한다. 안 하면 마음에 오래 남는다",
+        en: "Say it right away. Otherwise it stays with me longer.",
         effects: [eff("emotion", "H")],
       },
       {
-        ko: "타이밍을 보고 최대한 짧게 말한다",
-        en: "Wait for the right timing and keep it short.",
+        ko: "상대가 편한 순간에 짧게 꺼낸다",
+        en: "Bring it up briefly when the other person seems comfortable.",
         effects: [eff("nunchi", "H"), eff("emotion", "M")],
       },
       {
@@ -400,18 +400,18 @@ export const QUESTIONS: Question[] = [
     en: "You made a mistake:",
     choices: [
       {
-        ko: "바로 인정하고 사과한다",
-        en: "Own it. Apologize immediately.",
+        ko: "바로 인정하고 변명 없이 사과한다",
+        en: "Own it immediately and apologize without excuses.",
         effects: [eff("emotion", "H")],
       },
       {
-        ko: "사과하고, 필요한 설명은 짧게 붙인다",
-        en: "Apologize, then add a short explanation if needed.",
+        ko: "사과한 뒤 다음에 어떻게 고칠지 짧게 말한다",
+        en: "Apologize, then briefly say how I will fix it next time.",
         effects: [eff("emotion", "M"), eff("nunchi", "M")],
       },
       {
-        ko: "왜 그랬는지 맥락부터 정리하고 싶다",
-        en: "Want to explain the context first.",
+        ko: "왜 그랬는지 맥락을 먼저 설명하고 싶어진다",
+        en: "I want to explain the context of why it happened first.",
         effects: [eff("justify", "M"), eff("perfection", "M")],
       },
       {
@@ -478,8 +478,8 @@ export const QUESTIONS: Question[] = [
     en: "About those New Year resolutions:",
     choices: [
       {
-        ko: "잘 지키고 있다",
-        en: "Sticking to them.",
+        ko: "체크표를 보며 아직 잘 지키고 있다",
+        en: "Still keeping them with a checklist.",
         effects: [eff("planning", "H")],
       },
       {
@@ -493,8 +493,8 @@ export const QUESTIONS: Question[] = [
         effects: [eff("justify", "M"), eff("reality", "M")],
       },
       {
-        ko: "세웠던 건 기억나는데 내용이 흐릿하다",
-        en: "Remember setting it, but not exactly what it was.",
+        ko: "목표를 세운 기억만 있고 내용은 흐릿하다",
+        en: "I remember setting goals, but the details are blurry.",
         effects: [eff("reality", "L")],
       },
     ],
@@ -556,13 +556,13 @@ export const QUESTIONS: Question[] = [
     en: "Suddenly: \"What am I even doing?\"",
     choices: [
       {
-        ko: "거의 없다. 지금 잘 하고 있음",
-        en: "Rarely. Doing fine right now.",
+        ko: "거의 없다. 오늘 할 일부터 처리한다",
+        en: "Rarely. I just handle today's tasks first.",
         effects: [eff("reality", "H")],
       },
       {
-        ko: "가끔 오지만 금방 현실로 돌아온다",
-        en: "Sometimes, but return to reality quickly.",
+        ko: "가끔 오지만 일정표를 보며 현실로 돌아온다",
+        en: "Sometimes, but I return to reality by checking my schedule.",
         effects: [eff("reality", "M"), eff("planning", "M")],
       },
       {
@@ -597,8 +597,8 @@ export const QUESTIONS: Question[] = [
         effects: [eff("reality", "M")],
       },
       {
-        ko: "하다 보니 여기까지 왔다",
-        en: "Got here somehow.",
+        ko: "누르다 보니 여기까지 와서 끝까지 해본다",
+        en: "Tapped around and got here, so I may as well finish.",
         effects: [eff("justify", "H")],
       },
     ],
