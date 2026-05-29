@@ -633,8 +633,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "상대가 나쁘게 말한 건 아닐 거라고 이유를 찾아본다.",
-          "en": "I look for reasons why they probably did not mean it badly."
+          "ko": "말투가 거칠진 않았다고 스스로 납득해본다.",
+          "en": "I tell myself their tone was not harsh and try to accept it."
         },
         "scores": {
           "rationalization": 2
@@ -653,8 +653,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "어떤 부분이 평범해 보였는지 혼자 차분히 분석한다.",
-          "en": "I calmly analyze what may have looked ordinary."
+          "ko": "구성, 예시, 말투 중 무엇이 약했는지 뜯어본다.",
+          "en": "I break down whether the structure, examples, or delivery felt weak."
         },
         "scores": {
           "intellectualization": 2
@@ -688,8 +688,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "내가 예민한 걸 수도 있다고 생각하며 감정을 눌러둔다.",
-          "en": "I think I may be being sensitive and hold the feeling down."
+          "ko": "괜히 묻지 말자고 마음을 누르고 평소처럼 답한다.",
+          "en": "I tell myself not to ask and reply as usual while holding it in."
         },
         "scores": {
           "suppression": 2,
@@ -709,8 +709,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "바쁠 가능성이 크다고 보고 오늘은 더 묻지 않는다.",
-          "en": "I assume they may be busy and do not ask more today."
+          "ko": "바쁜 날이라 짧았을 거라고 이유를 붙인다.",
+          "en": "I explain it as a busy day and give the short reply a reason."
         },
         "scores": {
           "rationalization": 2
@@ -734,8 +734,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "일단 감정은 접어두고 오늘 할 수 있는 만큼만 쪼갠다.",
-          "en": "I set the feeling aside and break today’s work into manageable pieces."
+          "ko": "힘든 티는 미루고 오늘 끝낼 한 가지만 잡는다.",
+          "en": "I set aside how hard it feels and pick one thing to finish today."
         },
         "scores": {
           "suppression": 1,
@@ -765,8 +765,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "무엇이 부담인지 항목별로 정리해야 진정된다.",
-          "en": "I calm down only after listing exactly what is making it feel heavy."
+          "ko": "기대, 마감, 체력 중 뭐가 부담인지 분리해본다.",
+          "en": "I separate whether the pressure is expectation, deadline, or fatigue."
         },
         "scores": {
           "intellectualization": 2
@@ -800,8 +800,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "악의는 없었을 거라고 생각하며 납득하려 한다.",
-          "en": "I tell myself they probably meant no harm and try to accept it."
+          "ko": "장난 분위기였으니 깊게 받을 일은 아니라고 넘긴다.",
+          "en": "I tell myself it was just a joking mood and not something to take deeply."
         },
         "scores": {
           "rationalization": 2
@@ -820,8 +820,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "왜 그렇게 민망했는지 혼자 차분히 되짚어본다.",
-          "en": "I calmly replay why it felt so embarrassing."
+          "ko": "어떤 말이 민망함을 키웠는지 혼자 짚어본다.",
+          "en": "I privately identify which part of the joke made it feel embarrassing."
         },
         "scores": {
           "intellectualization": 2
@@ -955,8 +955,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "그 자리에서는 표정을 정리하고 넘어간다.",
-          "en": "I steady my expression and let the moment pass."
+          "ko": "속상한 티를 숨기고 자리에 계속 앉아 있는다.",
+          "en": "I hide that I am hurt and stay in the moment."
         },
         "scores": {
           "suppression": 1,
@@ -976,8 +976,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "잠깐 말수를 줄이고 다음 주제로 넘어간다.",
-          "en": "I speak less for a moment and move to the next topic."
+          "ko": "그 뒤로는 듣는 쪽으로 빠지고 말을 아낀다.",
+          "en": "After that, I step into listening mode and speak less."
         },
         "scores": {
           "avoidance": 2
@@ -1021,8 +1021,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "사람들이 생각할 시간이 필요했을 거라고 본다.",
-          "en": "I assume people may have needed time to think."
+          "ko": "다들 바로 반응할 만큼 익숙한 주제가 아니었다고 본다.",
+          "en": "I assume the topic was not familiar enough for people to react right away."
         },
         "scores": {
           "rationalization": 2
@@ -1041,8 +1041,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "어떤 맥락에서 반응이 멈췄는지 구조를 다시 본다.",
-          "en": "I review the context to understand why the reaction stopped."
+          "ko": "질문 순서와 설명 흐름 중 어디서 끊겼는지 본다.",
+          "en": "I review where the sequence of questions or explanation flow broke."
         },
         "scores": {
           "intellectualization": 2
@@ -1241,8 +1241,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "그 말에 왜 서운했는지 혼자 정리한다.",
-          "en": "I privately sort out why it touched me."
+          "ko": "어떤 단어가 나를 찔렀는지 혼자 짚어본다.",
+          "en": "I privately identify which word or phrase hit me."
         },
         "scores": {
           "intellectualization": 2
@@ -1341,8 +1341,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "감정은 잠시 미루고 피드백을 항목별로 정리한다.",
-          "en": "I postpone the emotion and organize the feedback by category."
+          "ko": "감정은 미루고 칭찬과 수정점을 표처럼 나눈다.",
+          "en": "I postpone the emotion and split praise and revisions like a table."
         },
         "scores": {
           "intellectualization": 2
@@ -1361,8 +1361,8 @@ export const DEFENSE_QUESTIONS: DefenseQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "속상함은 티 내지 않고 다음 수정에 반영한다.",
-          "en": "I do not show the hurt and apply it to the next revision."
+          "ko": "속상함은 숨긴 채 바로 수정 파일을 연다.",
+          "en": "I hide that it hurt and immediately open the revision file."
         },
         "scores": {
           "suppression": 1,
