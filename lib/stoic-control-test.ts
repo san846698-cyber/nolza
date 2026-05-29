@@ -48,13 +48,13 @@ export type StoicAnswer = {
 export const STOIC_RESULTS: StoicResult[] = [
   {
     id: "present-action",
-    title: { ko: "지금 할 수 있는 행동으로 돌아오는 사람", en: "Returning to Present Action" },
+    title: { ko: "오늘의 한 칸을 움직이는 사람", en: "Returning to Present Action" },
     oneLiner: {
-      ko: "불안한 순간에도 지금 선택할 수 있는 작은 행동을 찾는 사람",
+      ko: "불안이 커질수록 손에 잡히는 다음 행동을 찾는 타입입니다.",
       en: "Even under stress, you look for the small action available now.",
     },
     description: {
-      ko: "당신은 불확실한 상황에서 모든 것을 붙잡기보다, 지금 손에 있는 행동으로 마음을 돌리려는 편입니다. 결과나 평가를 완전히 내려놓는 것은 아니지만, 멈춰 있기보다 다음 한 걸음을 정하면 조금 안정됩니다.",
+      ko: "당신은 불확실한 상황에서 모든 것을 붙잡기보다, 지금 할 수 있는 작은 행동으로 마음을 데려오는 편입니다. 결과나 평가를 완전히 내려놓는 것은 아니지만, 다음 한 걸음이 정해지면 호흡이 조금 안정됩니다. 스스로에게 필요한 것은 거대한 결론보다 오늘 움직일 수 있는 한 칸입니다.",
       en: "In uncertain moments, you tend to return to what can be done now instead of trying to hold everything at once. You do not ignore outcomes or opinions, but choosing a next step helps you feel steadier.",
     },
     cannotControl: {
@@ -74,19 +74,19 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "When anxiety grows, ask: \"What is the smallest thing I can actually do now?\"",
     },
     shareLine: {
-      ko: "나는 스토아 철학 테스트에서 지금 할 수 있는 행동으로 돌아오는 사람 유형이 나왔다.",
+      ko: "나는 스토아 철학 테스트에서 오늘의 한 칸을 움직이는 사람으로 나왔다.",
       en: "My Stoic Control result is Returning to Present Action.",
     },
   },
   {
     id: "others-opinion",
-    title: { ko: "타인의 평가를 통제하려는 사람", en: "Trying to Control How Others See You" },
+    title: { ko: "시선의 소음을 크게 듣는 사람", en: "Trying to Control How Others See You" },
     oneLiner: {
-      ko: "남들이 나를 어떻게 볼지에 마음이 오래 머무는 사람",
+      ko: "내 선택보다 그 선택이 어떻게 보일지에 마음이 오래 머무는 타입입니다.",
       en: "Your mind lingers on how others may see you.",
     },
     description: {
-      ko: "당신은 자신의 행동보다 그 행동이 어떻게 보일지를 먼저 생각할 때가 있습니다. 좋은 인상을 남기고 싶은 마음이 크지만, 그만큼 타인의 시선이 마음의 방향을 자주 흔들 수 있어요.",
+      ko: "당신은 행동 자체보다 그 행동이 어떻게 보일지를 먼저 계산할 때가 있습니다. 좋은 인상을 남기고 싶은 마음은 관계를 세심하게 만드는 장점이지만, 모든 시선을 통제하려 하면 내 선택이 점점 작아질 수 있어요. 남의 평가 대신 내가 지키고 싶은 태도를 먼저 정해보세요.",
       en: "You may think about how your actions will look before thinking about the actions themselves. Wanting to leave a good impression is natural, but other people's gaze can pull your mind around.",
     },
     cannotControl: {
@@ -106,19 +106,19 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "Today, ask 'What attitude do I want to act from?' before 'How will this look?'",
     },
     shareLine: {
-      ko: "나는 타인의 평가를 놓기 어려운 스토아 타입이래.",
+      ko: "나는 시선의 소음을 크게 듣는 스토아 타입이래.",
       en: "My Stoic control pattern is trying to control how others see me.",
     },
   },
   {
     id: "future",
-    title: { ko: "미래를 통제하려는 사람", en: "Trying to Control the Future" },
+    title: { ko: "아직 오지 않은 일을 미리 살아보는 사람", en: "Trying to Control the Future" },
     oneLiner: {
-      ko: "아직 오지 않은 일을 머릿속에서 여러 번 살아보는 사람",
+      ko: "미래의 경우의 수를 먼저 살아보고 오늘의 불안을 줄이려는 타입입니다.",
       en: "You live through future scenarios many times in your head.",
     },
     description: {
-      ko: "당신은 미래의 변수들을 미리 계산하며 불안을 줄이려는 편입니다. 준비하는 힘은 좋지만, 아직 오지 않은 일을 너무 오래 붙잡으면 오늘의 에너지까지 먼저 써버릴 수 있어요.",
+      ko: "당신은 미래의 변수를 미리 계산하며 불안을 줄이려는 편입니다. 이 준비성은 큰 장점이지만, 아직 오지 않은 장면을 너무 오래 붙잡으면 오늘의 에너지까지 먼저 써버릴 수 있어요. 시나리오를 줄이는 대신 실제로 확인할 수 있는 정보 하나를 정해보세요.",
       en: "You try to reduce anxiety by calculating future variables in advance. Preparation is useful, but holding the future too tightly can spend today's energy early.",
     },
     cannotControl: {
@@ -138,19 +138,19 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "Put down one mental scenario and write one small preparation you can actually do.",
     },
     shareLine: {
-      ko: "나는 아직 오지 않은 미래를 자꾸 붙잡는 타입이래.",
+      ko: "나는 아직 오지 않은 일을 머릿속에서 먼저 살아보는 타입이래.",
       en: "My Stoic control pattern is trying to control the future.",
     },
   },
   {
     id: "emotions",
-    title: { ko: "감정을 통제하려는 사람", en: "Trying to Control Your Emotions" },
+    title: { ko: "흔들림까지 정리하려는 사람", en: "Trying to Control Your Emotions" },
     oneLiner: {
-      ko: "흔들리면 안 된다고 스스로를 다그치는 사람",
+      ko: "감정이 올라오는 순간에도 곧장 단정한 상태로 돌아가고 싶은 타입입니다.",
       en: "You push yourself not to be shaken.",
     },
     description: {
-      ko: "당신은 감정이 올라오는 것 자체를 약함처럼 느낄 때가 있습니다. 그래서 불안, 서운함, 화를 빨리 정리하려 하지만, 감정은 명령만으로 바로 사라지지는 않아요.",
+      ko: "당신은 감정이 올라오는 것 자체를 약함이나 실수처럼 느낄 때가 있습니다. 그래서 불안, 서운함, 화를 빠르게 정리하려 하지만 감정은 명령만으로 바로 사라지지 않습니다. 흔들림을 없애려 하기보다, 흔들리는 채로 어떤 행동을 선택할지 묻는 편이 더 단단합니다.",
       en: "You may treat the arrival of emotion as weakness. You try to quickly organize anxiety, hurt, or anger, but emotions do not disappear by command.",
     },
     cannotControl: {
@@ -170,19 +170,19 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "Instead of 'This feeling must disappear,' ask 'What can I choose while this feeling is here?'",
     },
     shareLine: {
-      ko: "나는 감정까지 통제하려다 지치는 타입이래.",
+      ko: "나는 흔들림까지 정리하려다 지치는 스토아 타입이래.",
       en: "My Stoic control pattern is trying to control my emotions.",
     },
   },
   {
     id: "outcome",
-    title: { ko: "결과를 통제하려는 사람", en: "Trying to Control the Outcome" },
+    title: { ko: "결과표를 먼저 펼쳐보는 사람", en: "Trying to Control the Outcome" },
     oneLiner: {
-      ko: "과정보다 결과가 마음을 더 크게 흔드는 사람",
+      ko: "아직 나오지 않은 결과가 오늘의 마음까지 흔드는 타입입니다.",
       en: "The outcome shakes you more than the process.",
     },
     description: {
-      ko: "당신은 노력보다 결과가 어떻게 나올지를 더 오래 붙잡을 수 있습니다. 잘하고 싶은 마음이 큰 만큼, 아직 나오지 않은 결과가 현재의 마음까지 크게 흔들 때가 있어요.",
+      ko: "당신은 과정에 최선을 다하면서도 결과가 어떻게 나올지를 오래 붙잡는 편입니다. 잘하고 싶은 마음이 크기 때문에 평가표가 나오기도 전에 마음이 먼저 긴장할 수 있어요. 결과가 여러 조건의 합이라는 사실을 기억하고, 오늘은 과정에 담은 태도를 기준으로 삼아보세요.",
       en: "You may hold onto the outcome longer than the effort itself. Because you care about doing well, an unfinished result can disturb the present.",
     },
     cannotControl: {
@@ -202,19 +202,19 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "Try measuring today by what you put into the process, not only by the result.",
     },
     shareLine: {
-      ko: "나는 결과를 놓기 어려운 스토아 타입이래.",
+      ko: "나는 결과표를 먼저 펼쳐보는 스토아 타입이래.",
       en: "My Stoic control pattern is trying to control the outcome.",
     },
   },
   {
     id: "relationships",
-    title: { ko: "관계의 흐름을 통제하려는 사람", en: "Trying to Control Relationships" },
+    title: { ko: "관계의 온도를 붙잡고 싶은 사람", en: "Trying to Control Relationships" },
     oneLiner: {
-      ko: "멀어지는 느낌을 견디기 어려운 사람",
+      ko: "답장, 거리감, 분위기 변화가 오래 마음에 남는 타입입니다.",
       en: "Distance in relationships is hard for you to sit with.",
     },
     description: {
-      ko: "당신은 관계의 거리, 답장, 분위기 변화를 오래 신경 쓰는 편입니다. 가까움을 소중히 여기기 때문에 작은 변화도 크게 느껴질 수 있어요.",
+      ko: "당신은 관계의 거리, 답장, 분위기 변화를 오래 신경 쓰는 편입니다. 가까움을 소중히 여기기 때문에 작은 변화도 크게 느껴질 수 있어요. 상대의 마음을 붙잡으려 하기보다, 내가 전할 수 있는 진심과 지킬 수 있는 경계를 먼저 정리하면 덜 흔들립니다.",
       en: "You may spend a long time thinking about distance, replies, and shifts in mood. Because closeness matters to you, small changes can feel large.",
     },
     cannotControl: {
@@ -234,19 +234,19 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "Before holding onto their reaction, name the relationship attitude you want to keep.",
     },
     shareLine: {
-      ko: "나는 관계의 흐름을 통제하고 싶어지는 타입이래.",
+      ko: "나는 관계의 온도를 자꾸 붙잡고 싶어지는 타입이래.",
       en: "My Stoic control pattern is trying to control relationships.",
     },
   },
   {
     id: "perfect-self",
-    title: { ko: "완벽한 나를 통제하려는 사람", en: "Trying to Control Your Perfect Self" },
+    title: { ko: "완성된 나만 허락하는 사람", en: "Trying to Control Your Perfect Self" },
     oneLiner: {
-      ko: "실수 없는 나를 만들려다 지치는 사람",
+      ko: "부족한 모습이 보이는 순간 스스로에게 가장 엄격해지는 타입입니다.",
       en: "You get tired trying to become someone who never slips.",
     },
     description: {
-      ko: "당신은 부족한 모습을 보이는 것을 쉽게 받아들이지 못할 수 있습니다. 더 나은 사람이 되고 싶은 마음이 강하지만, 완벽한 나만 허락하려 하면 숨 쉴 공간이 줄어들어요.",
+      ko: "당신은 더 나은 사람이 되고 싶은 마음이 강해서 부족한 모습을 쉽게 허락하지 못할 수 있습니다. 그 기준은 성장의 힘이 되지만, 완성된 나만 인정하려 하면 회복할 공간이 줄어듭니다. 오늘은 완벽한 나보다 다시 일어날 수 있는 나를 기준으로 삼아보세요.",
       en: "You may struggle to accept showing your unfinished parts. Wanting to improve is meaningful, but allowing only a perfect self can shrink your breathing room.",
     },
     cannotControl: {
@@ -266,19 +266,19 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "Today, measure yourself by being recoverable, not perfect.",
     },
     shareLine: {
-      ko: "나는 완벽한 나를 통제하려다 지치는 타입이래.",
+      ko: "나는 완성된 나만 허락하려다 지치는 타입이래.",
       en: "My Stoic control pattern is trying to control my perfect self.",
     },
   },
   {
     id: "past",
-    title: { ko: "지나간 일을 통제하려는 사람", en: "Trying to Control the Past" },
+    title: { ko: "지난 장면을 다시 편집하는 사람", en: "Trying to Control the Past" },
     oneLiner: {
-      ko: "이미 지난 장면을 마음속에서 계속 고쳐 쓰는 사람",
+      ko: "끝난 대화와 선택을 마음속에서 여러 번 다시 돌려보는 타입입니다.",
       en: "You keep rewriting scenes that have already passed.",
     },
     description: {
-      ko: "당신은 과거의 말, 선택, 실수를 자주 다시 떠올릴 수 있습니다. 그때 다르게 했더라면 어땠을지 생각하며, 이미 지나간 장면을 마음속에서 여러 번 고쳐 쓰는 편이에요.",
+      ko: "당신은 과거의 말, 선택, 실수를 자주 다시 떠올리는 편입니다. 그때 다르게 했더라면 어땠을지 마음속에서 장면을 편집하지만, 이미 지난 장면은 실제로 바뀌지 않습니다. 후회가 올라올 때는 그때의 나에게 지금만큼의 정보가 있었는지 조용히 물어보세요.",
       en: "You may often replay old words, choices, and mistakes. Your mind rewrites scenes that already passed, wondering what would have happened if you had acted differently.",
     },
     cannotControl: {
@@ -298,7 +298,7 @@ export const STOIC_RESULTS: StoicResult[] = [
       en: "When regret rises, ask gently: 'Did I know then what I know now?'",
     },
     shareLine: {
-      ko: "나는 지나간 일을 마음속에서 자주 고쳐 쓰는 타입이래.",
+      ko: "나는 지난 장면을 마음속에서 다시 편집하는 타입이래.",
       en: "My Stoic control pattern is trying to control the past.",
     },
   },
@@ -317,8 +317,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "지금 내가 다시 정할 수 있는 부분부터 본다.",
-          "en": "I first look at what I can decide again right now."
+          "ko": "지금 다시 정할 수 있는 일정과 역할부터 적는다.",
+          "en": "I write down the schedule and role I can reset right now."
         },
         "weights": {
           "present-action": 2
@@ -327,8 +327,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "앞으로 일이 계속 꼬일까 봐 여러 경우를 돌려본다.",
-          "en": "I run through scenarios in case things keep going wrong."
+          "ko": "이후에 꼬일 일을 예상해 대비안을 여러 개 만든다.",
+          "en": "I make several backup plans for what may go wrong next."
         },
         "weights": {
           "future": 2
@@ -337,8 +337,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "사람들이 나를 어떻게 볼지 신경 쓰인다.",
-          "en": "I worry about how people will see me."
+          "ko": "기다리는 사람들에게 내가 무능해 보일까 신경 쓴다.",
+          "en": "I worry I may look incapable to the people waiting."
         },
         "weights": {
           "others-opinion": 2
@@ -347,8 +347,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "이런 일에 흔들리는 내가 답답해서 스스로를 다그친다.",
-          "en": "I scold myself for being shaken by this."
+          "ko": "당황한 티를 숨기고 아무렇지 않은 척한다.",
+          "en": "I hide that I am rattled and act like I am fine."
         },
         "weights": {
           "emotions": 1,
@@ -369,8 +369,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "기다리는 동안 할 수 있는 다음 작은 일을 정한다.",
-          "en": "I choose one small next action I can do while waiting."
+          "ko": "기다리는 동안 손댈 수 있는 다음 일을 하나 끝낸다.",
+          "en": "I finish one thing I can handle while waiting."
         },
         "weights": {
           "present-action": 2
@@ -379,8 +379,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "결과가 기대와 다르면 내 노력이 어떻게 평가될지 붙잡힌다.",
-          "en": "I get stuck on what the result will say about my effort."
+          "ko": "결과가 낮으면 그동안의 노력이 묻힐까 붙잡힌다.",
+          "en": "I get stuck on whether a low result will erase my effort."
         },
         "weights": {
           "outcome": 2,
@@ -390,8 +390,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "평가하는 사람이 나를 어떻게 판단할지가 걸린다.",
-          "en": "I worry how the evaluator will judge me."
+          "ko": "평가자가 나를 어떤 사람으로 기억할지 떠올린다.",
+          "en": "I picture what kind of person the evaluator will remember me as."
         },
         "weights": {
           "others-opinion": 2
@@ -400,8 +400,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "이 피드백 이후 일정과 선택지가 어떻게 바뀔지 경우의 수를 돌린다.",
-          "en": "I run scenarios about how this feedback could change the schedule and options."
+          "ko": "피드백 뒤 일정이 어떻게 밀릴지 다시 계산한다.",
+          "en": "I recalculate how the schedule may shift after the feedback."
         },
         "weights": {
           "future": 2
@@ -421,8 +421,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "감정이 티 나지 않게 바로 눌러야 할 것 같다.",
-          "en": "I feel I need to press the emotion down immediately."
+          "ko": "목소리가 떨리지 않게 숨을 참고 감정을 누른다.",
+          "en": "I hold my breath and press the feeling down so my voice will not shake."
         },
         "weights": {
           "emotions": 2
@@ -431,8 +431,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "이 정도로 흔들리면 안 된다고 나를 다그친다.",
-          "en": "I scold myself that I should not be this shaken."
+          "ko": "왜 이 정도에 흔들리냐고 속으로 나를 혼낸다.",
+          "en": "I silently scold myself for being shaken by this much."
         },
         "weights": {
           "perfect-self": 2,
@@ -442,8 +442,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "잠깐 멈추고 다음 말을 어떻게 할지 고른다.",
-          "en": "I pause briefly and choose what to say next."
+          "ko": "잠깐 멈추고 지금 할 말 한 문장만 고른다.",
+          "en": "I pause and choose only the next sentence to say."
         },
         "weights": {
           "present-action": 2
@@ -452,8 +452,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "조금 전 말을 다르게 했어야 했나 되감는다.",
-          "en": "I rewind whether I should have said the earlier words differently."
+          "ko": "방금 전 표현을 다시 떠올리며 고쳐 말하고 싶어진다.",
+          "en": "I replay the wording I just used and want to revise it."
         },
         "weights": {
           "past": 2
@@ -473,8 +473,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "관계의 분위기가 달라졌을까 봐 신경 쓰인다.",
-          "en": "I worry the relationship mood may have changed."
+          "ko": "답장 텀이 관계의 거리 변화처럼 느껴져 계속 본다.",
+          "en": "I keep checking because the delay feels like a change in distance."
         },
         "weights": {
           "relationships": 2
@@ -483,8 +483,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "상대가 나를 어떻게 생각하는지 자꾸 궁금하다.",
-          "en": "I keep wondering what they think of me."
+          "ko": "내가 귀찮은 사람으로 보였는지 먼저 떠올린다.",
+          "en": "I first wonder whether I seemed bothersome."
         },
         "weights": {
           "others-opinion": 2
@@ -493,8 +493,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "앞으로도 계속 이런 식이면 어쩌나 생각한다.",
-          "en": "I think about what if it keeps being like this."
+          "ko": "앞으로 답장이 계속 늦어질 상황을 미리 그린다.",
+          "en": "I picture future replies continuing to arrive late."
         },
         "weights": {
           "future": 2
@@ -503,8 +503,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "오늘 내가 할 일을 먼저 해두고 나중에 확인한다.",
-          "en": "I do what I need to do today and check later."
+          "ko": "휴대폰을 내려놓고 오늘 할 일부터 처리한다.",
+          "en": "I put the phone down and handle today's tasks first."
         },
         "weights": {
           "present-action": 2
@@ -524,8 +524,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "그 순간으로 돌아가 고치고 싶어진다.",
-          "en": "I want to go back and fix that moment."
+          "ko": "그 장면을 머릿속에서 되감아 다른 말로 바꿔본다.",
+          "en": "I rewind the scene in my head and swap in different words."
         },
         "weights": {
           "past": 2
@@ -534,8 +534,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "실수 없는 사람처럼 보이고 싶었다는 생각이 든다.",
-          "en": "I realize I wanted to look like someone who does not make mistakes."
+          "ko": "사람들 앞에서는 실수 없는 모습만 보여야 했다고 느낀다.",
+          "en": "I feel I should have shown only a mistake-free version in front of people."
         },
         "weights": {
           "perfect-self": 2
@@ -544,8 +544,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "사람들이 그 장면을 어떻게 기억할지 신경 쓰인다.",
-          "en": "I worry how people will remember that moment."
+          "ko": "사람들이 그 실수로 나를 판단할까 봐 표정을 살핀다.",
+          "en": "I watch people's faces, worried they will judge me by that mistake."
         },
         "weights": {
           "others-opinion": 2
@@ -554,8 +554,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "다음에 덜 흔들리도록 하나만 정리한다.",
-          "en": "I note one thing that can help me be steadier next time."
+          "ko": "다음에 바로 쓸 수 있는 대처 문장 하나를 적는다.",
+          "en": "I write one response sentence I can use next time."
         },
         "weights": {
           "present-action": 2
@@ -575,8 +575,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "가능한 경우의 수를 계속 머릿속에서 돌려본다.",
-          "en": "I keep running possible scenarios in my head."
+          "ko": "앞으로 몇 달의 경우의 수를 노트에 계속 늘린다.",
+          "en": "I keep expanding possible next-month scenarios in my notes."
         },
         "weights": {
           "future": 2
@@ -585,8 +585,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "오늘 확인할 수 있는 정보 하나부터 본다.",
-          "en": "I start with one piece of information I can check today."
+          "ko": "오늘 확인 가능한 정보 하나를 찾아 바로 묻는다.",
+          "en": "I find one piece of information I can check today and ask about it."
         },
         "weights": {
           "present-action": 2
@@ -595,8 +595,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "불안하지 않아야 한다고 스스로를 조인다.",
-          "en": "I tighten up, thinking I should not feel anxious."
+          "ko": "불안한 티를 없애려고 표정과 말투를 조인다.",
+          "en": "I tighten my face and tone to erase any sign of anxiety."
         },
         "weights": {
           "emotions": 2
@@ -605,8 +605,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "완전히 준비되기 전에는 움직이면 안 될 것 같다.",
-          "en": "It feels like I should not move until I am fully ready."
+          "ko": "준비가 완벽해질 때까지 시작을 미룬다.",
+          "en": "I delay starting until the preparation feels perfect."
         },
         "weights": {
           "perfect-self": 2
@@ -678,8 +678,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "결과가 낮으면 과정도 의미가 줄어드는 것 같다.",
-          "en": "If the result is low, the process feels less meaningful too."
+          "ko": "낮은 숫자를 보자마자 과정까지 실패처럼 느낀다.",
+          "en": "As soon as I see the low number, even the process feels like failure."
         },
         "weights": {
           "outcome": 2
@@ -688,8 +688,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "과정에서 남은 것과 다음 행동을 분리해서 본다.",
-          "en": "I separate what remains from the process and what action comes next."
+          "ko": "과정에서 남은 자료와 다음 수정 항목을 나눠 적는다.",
+          "en": "I list what remains from the process and the next fixes separately."
         },
         "weights": {
           "present-action": 2
@@ -698,8 +698,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "주변이 내 노력을 알아줄지 신경 쓰인다.",
-          "en": "I care whether people will recognize my effort."
+          "ko": "주변 사람이 내 노력을 봐줬는지 반응을 확인한다.",
+          "en": "I check reactions to see whether people noticed my effort."
         },
         "weights": {
           "others-opinion": 2
@@ -708,8 +708,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "다음 결과도 이렇게 나오면 어쩌나 걱정된다.",
-          "en": "I worry the next result may come out like this too."
+          "ko": "다음번에도 같은 점수가 나올 장면을 미리 걱정한다.",
+          "en": "I worry in advance about getting the same result next time."
         },
         "weights": {
           "future": 2
@@ -729,8 +729,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "내가 선택할 수 있는 범위를 차분히 말한다.",
-          "en": "I calmly state the range I can choose."
+          "ko": "가능한 범위와 어려운 범위를 짧게 나눠 말한다.",
+          "en": "I briefly separate what I can do from what is hard."
         },
         "weights": {
           "present-action": 2
@@ -739,8 +739,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "상대가 어떤 반응을 보일지 결과가 계속 걸린다.",
-          "en": "I keep worrying about what reaction will result."
+          "ko": "말한 뒤 상대 반응이 어떻게 나올지 계속 계산한다.",
+          "en": "I keep calculating how they may react after I say it."
         },
         "weights": {
           "outcome": 2,
@@ -750,8 +750,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "완벽한 문장을 찾느라 말을 미루게 된다.",
-          "en": "I delay speaking while searching for the perfect wording."
+          "ko": "오해 없는 완벽한 문장을 찾느라 전송을 미룬다.",
+          "en": "I delay sending while looking for a perfectly clear sentence."
         },
         "weights": {
           "perfect-self": 2
@@ -760,8 +760,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "불편한 감정을 티 내지 않으려고 먼저 눌러본다.",
-          "en": "I first try to press down the uncomfortable emotion."
+          "ko": "미안함이나 불편함이 티 나지 않게 먼저 누른다.",
+          "en": "I first press down guilt or discomfort so it will not show."
         },
         "weights": {
           "emotions": 2
@@ -832,8 +832,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "사람들이 나를 어떤 사람으로 볼지 신경 쓰인다.",
-          "en": "I worry what kind of person people will think I am."
+          "ko": "공개 후 사람들이 나를 어떤 수준으로 볼지 신경 쓴다.",
+          "en": "I worry what level people will think I am after it is shown."
         },
         "weights": {
           "others-opinion": 2
@@ -842,8 +842,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "최종 결과가 기대에 못 미칠까 봐 붙잡힌다.",
-          "en": "I get stuck on whether the final result will meet expectations."
+          "ko": "최종물이 기대치에 닿을지 계속 미리 채점한다.",
+          "en": "I keep pre-grading whether the final work will meet expectations."
         },
         "weights": {
           "outcome": 2
@@ -852,8 +852,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "부족하더라도 마감 안에서 할 수 있는 보완을 정한다.",
-          "en": "Even if it is lacking, I choose what I can improve within the deadline."
+          "ko": "마감 안에서 고칠 수 있는 한 가지를 골라 바로 한다.",
+          "en": "I pick one thing I can fix before the deadline and do it."
         },
         "weights": {
           "present-action": 2
@@ -862,8 +862,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "반응에 따라 관계나 이미지가 달라질까 봐 걱정된다.",
-          "en": "I worry reactions may change my image or relationships."
+          "ko": "반응이 안 좋으면 관계와 이미지가 식을까 걱정한다.",
+          "en": "I worry bad reactions may cool my image and relationships."
         },
         "weights": {
           "relationships": 1,
@@ -884,8 +884,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "이 감정을 빨리 정리하고 잠들고 싶다.",
-          "en": "I want to organize this feeling quickly and sleep."
+          "ko": "이 감정을 빨리 없애려고 원인을 계속 정리한다.",
+          "en": "I keep sorting the cause so I can get rid of the feeling quickly."
         },
         "weights": {
           "emotions": 2
@@ -894,8 +894,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "오늘은 여기까지라고 정하고 작은 루틴을 한다.",
-          "en": "I decide today is enough and do a small routine."
+          "ko": "오늘은 여기까지라고 정하고 씻거나 물을 마신다.",
+          "en": "I decide today is enough and wash up or drink water."
         },
         "weights": {
           "present-action": 2
@@ -904,8 +904,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "내일 이후 벌어질 가능성을 계속 생각한다.",
-          "en": "I keep thinking about what might happen tomorrow and after."
+          "ko": "내일 이후 생길 일을 시간순으로 계속 그린다.",
+          "en": "I keep picturing what may happen tomorrow and after in order."
         },
         "weights": {
           "future": 2
@@ -914,8 +914,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "이미 지나간 말이나 선택이 다시 떠오른다.",
-          "en": "Words or choices that already passed return to mind."
+          "ko": "낮에 했던 말과 선택을 다시 고쳐 말해본다.",
+          "en": "I replay and revise the words and choices I made earlier."
         },
         "weights": {
           "past": 2
@@ -935,8 +935,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "아쉬움은 인정하고 오늘 시간을 어떻게 쓸지 정한다.",
-          "en": "I admit the disappointment and decide how to use today’s time."
+          "ko": "아쉬움은 인정하고 남은 시간을 어디에 쓸지 정한다.",
+          "en": "I admit the disappointment and decide where to use the remaining time."
         },
         "weights": {
           "present-action": 2,
@@ -946,8 +946,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "나를 덜 중요하게 생각하는 건 아닌지 신경 쓰인다.",
-          "en": "I worry they may not see me as important."
+          "ko": "취소가 나와의 거리감처럼 느껴져 메시지를 다시 본다.",
+          "en": "The cancellation feels like distance, so I reread the message."
         },
         "weights": {
           "relationships": 2
@@ -956,8 +956,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "내가 아쉬워하는 모습 자체가 싫다.",
-          "en": "I dislike seeing myself disappointed."
+          "ko": "아쉬워하는 티를 빨리 지우려고 다른 일을 찾는다.",
+          "en": "I look for something else to quickly erase the sign of disappointment."
         },
         "weights": {
           "emotions": 2,
@@ -967,8 +967,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "섭섭해하면 부담스러운 사람으로 보일까 걱정된다.",
-          "en": "I worry I may look burdensome if I show disappointment."
+          "ko": "섭섭하다고 말하면 부담스러워 보일까 봐 숨긴다.",
+          "en": "I hide the disappointment because saying it may make me look burdensome."
         },
         "weights": {
           "others-opinion": 2
@@ -988,8 +988,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "조건이 어떻게 변할지 경우의 수를 계속 계산한다.",
-          "en": "I keep calculating how the conditions might change."
+          "ko": "조건이 바뀔 가능성을 표로 나눠 계속 계산한다.",
+          "en": "I keep charting and calculating how the conditions might change."
         },
         "weights": {
           "future": 2
@@ -998,8 +998,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "최종 선택이 틀릴까 봐 결과가 먼저 걱정된다.",
-          "en": "I worry first that the final choice may be wrong."
+          "ko": "나중에 후회할 선택이 될까 봐 결론부터 무겁다.",
+          "en": "The outcome feels heavy first because I may regret the choice later."
         },
         "weights": {
           "outcome": 2
@@ -1008,8 +1008,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "지금 확인할 질문을 정리해서 물어본다.",
-          "en": "I organize the questions I can ask now."
+          "ko": "지금 확인해야 할 조건 세 가지만 적어 물어본다.",
+          "en": "I write three conditions to check now and ask about them."
         },
         "weights": {
           "present-action": 2
@@ -1018,8 +1018,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "다른 사람들이 이 선택을 어떻게 볼지 떠오른다.",
-          "en": "I think about how others would see this choice."
+          "ko": "사람들이 이 선택을 무모하다고 볼지 먼저 떠오른다.",
+          "en": "I first imagine whether others would see this choice as reckless."
         },
         "weights": {
           "others-opinion": 2
@@ -1039,8 +1039,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "더 괜찮은 모습이어야 했다고 스스로를 몰아붙인다.",
-          "en": "I push myself that I should have been a better version."
+          "ko": "오늘도 더 단정한 모습이어야 했다고 나를 몰아붙인다.",
+          "en": "I push myself that I should have been more composed today."
         },
         "weights": {
           "perfect-self": 2
@@ -1049,8 +1049,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "이런 기분부터 빨리 없애야 할 것 같다.",
-          "en": "I feel I need to get rid of this mood quickly."
+          "ko": "이 기분이 보이지 않게 빨리 눌러야 할 것 같다.",
+          "en": "I feel I need to press this mood down before it shows."
         },
         "weights": {
           "emotions": 2
@@ -1059,8 +1059,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "오늘 어디서부터 어긋났는지 되감는다.",
-          "en": "I rewind where the day started going off."
+          "ko": "오늘 어디서부터 어긋났는지 장면을 되감는다.",
+          "en": "I rewind the scenes to find where the day went off."
         },
         "weights": {
           "past": 2
@@ -1069,8 +1069,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "내일 나아질 수 있는 작은 행동 하나를 정한다.",
-          "en": "I choose one small action that can make tomorrow better."
+          "ko": "내일 아침 바로 할 작은 행동 하나를 정한다.",
+          "en": "I choose one small action to do tomorrow morning."
         },
         "weights": {
           "present-action": 2
@@ -1090,8 +1090,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "지금 확인 가능한 담당, 시간, 다음 단계만 먼저 정리한다.",
-          "en": "I first clarify only the owner, time, and next step that can be checked now."
+          "ko": "지금 확인 가능한 담당자, 시간, 다음 단계만 적는다.",
+          "en": "I write only the owner, time, and next step that can be checked now."
         },
         "weights": {
           "present-action": 2
@@ -1100,8 +1100,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "앞으로 더 꼬일 가능성이 계속 떠오른다.",
-          "en": "I keep seeing ways this could get more tangled later."
+          "ko": "앞으로 더 꼬일 일정 변수를 계속 떠올린다.",
+          "en": "I keep picturing schedule variables that could get more tangled."
         },
         "weights": {
           "future": 2
@@ -1110,8 +1110,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "사람들 사이 흐름이 틀어질까 봐 신경 쓰인다.",
-          "en": "I worry the flow between people may become strained."
+          "ko": "사람들 사이 말투와 분위기가 틀어질까 봐 살핀다.",
+          "en": "I watch whether people's tones and mood may become strained."
         },
         "weights": {
           "relationships": 2
@@ -1120,8 +1120,8 @@ export const STOIC_QUESTIONS: StoicQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "최종 결과가 엉망이 될까 봐 계속 신경 쓰인다.",
-          "en": "My mind gets stuck on whether the final result will be messy."
+          "ko": "최종 결과물이 엉망으로 보일까 봐 계속 미리 본다.",
+          "en": "I keep previewing whether the final result will look messy."
         },
         "weights": {
           "outcome": 2

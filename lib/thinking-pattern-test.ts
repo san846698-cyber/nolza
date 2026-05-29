@@ -49,13 +49,13 @@ export type ThinkingAnswer = {
 export const THINKING_RESULTS: ThinkingResult[] = [
   {
     id: "catastrophizing",
-    title: { ko: "파국화", en: "Catastrophizing" },
+    title: { ko: "걱정이 먼저 달려가는 예보관", en: "Catastrophizing" },
     oneLiner: {
-      ko: "작은 불안이 금방 최악의 시나리오로 커지는 사람",
+      ko: "작은 신호 하나에도 마음속 경보가 빠르게 켜지는 타입입니다.",
       en: "Small uncertainty can quickly become the worst-case scenario.",
     },
     description: {
-      ko: "당신은 문제가 생기면 최악의 경우를 먼저 떠올리는 편입니다. 이는 겁이 많아서라기보다, 마음이 미리 대비책을 찾으려는 방식일 수 있어요.",
+      ko: "당신은 문제가 생기면 가장 나쁜 경우부터 떠올리며 마음의 안전거리를 확보하려는 편입니다. 덕분에 위험을 빨리 감지하지만, 아직 일어나지 않은 일까지 오늘의 부담으로 끌고 올 때가 있어요. 불안이 올라올수록 '확정된 사실'과 '가능한 시나리오'를 나눠보는 것이 도움이 됩니다.",
       en: "When something feels uncertain, your mind may jump to what could go wrong. It is less about being weak and more about trying to prepare before getting hurt.",
     },
     flow: {
@@ -75,19 +75,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "One possibility can start feeling like a fixed ending, which can exhaust you.",
     },
     shareLine: {
-      ko: "나는 생각이 꼬일 때 파국화가 먼저 켜지는 타입이래.",
+      ko: "나는 생각이 꼬이면 최악의 경우부터 예보하는 타입이래.",
       en: "My thinking tends to turn on catastrophizing first.",
     },
   },
   {
     id: "all-or-nothing",
-    title: { ko: "흑백논리", en: "All-or-Nothing Thinking" },
+    title: { ko: "완벽과 실패 사이가 좁은 사람", en: "All-or-Nothing Thinking" },
     oneLiner: {
-      ko: "성공 아니면 실패처럼 느끼기 쉬운 사람",
+      ko: "중간 점수보다 선명한 결론이 먼저 보이는 타입입니다.",
       en: "Things can feel like either success or failure, with little middle ground.",
     },
     description: {
-      ko: "당신은 중간 지대보다 확실한 결과를 먼저 보는 편입니다. 잘하고 싶다는 기준이 강해서, 애매한 성과나 작은 실수도 크게 느껴질 수 있어요.",
+      ko: "당신은 잘하고 싶은 기준이 분명해서, 작은 실수도 전체 결과를 흔드는 것처럼 느낄 수 있습니다. 이 기준은 완성도를 높이는 힘이지만, 70점짜리 시작까지 실패로 보이게 만들 수 있어요. 완벽하지 않아도 고쳐갈 수 있는 결과라면 이미 앞으로 가고 있는 중입니다.",
       en: "You may see clear outcomes before nuance. Because your standards matter, a partial success or small mistake can feel much bigger than it is.",
     },
     flow: {
@@ -107,19 +107,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "If you cannot accept middle progress, both starting and continuing become harder.",
     },
     shareLine: {
-      ko: "나는 흑백논리 쪽으로 생각이 꼬일 때가 있대.",
+      ko: "나는 완벽 아니면 실패처럼 느껴질 때가 있는 타입이래.",
       en: "My thinking sometimes gets caught in all-or-nothing mode.",
     },
   },
   {
     id: "mind-reading",
-    title: { ko: "마음읽기", en: "Mind Reading" },
+    title: { ko: "표정 사이를 읽는 레이더", en: "Mind Reading" },
     oneLiner: {
-      ko: "상대가 날 어떻게 생각할지 먼저 추측하는 사람",
+      ko: "말보다 말투와 답장 텀에서 먼저 의미를 찾는 타입입니다.",
       en: "You quickly guess what others might be thinking about you.",
     },
     description: {
-      ko: "당신은 상대의 표정, 말투, 답장 속도에서 의미를 빠르게 찾는 편입니다. 눈치가 빠른 장점도 있지만, 확인되지 않은 추측이 마음을 무겁게 만들 수 있어요.",
+      ko: "당신은 상대의 표정, 말투, 답장 속도에서 미묘한 변화를 빠르게 잡아냅니다. 그 섬세함은 관계를 살피는 장점이지만, 확인하지 않은 추측이 사실처럼 굳어지면 마음이 먼저 지칩니다. 강한 느낌이 들수록 한 문장으로 확인할 여지를 남겨두세요.",
       en: "You read meaning quickly from expressions, tone, and response time. That sensitivity can be useful, but unconfirmed guesses may become heavy.",
     },
     flow: {
@@ -139,19 +139,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "Too many guesses can make the conversation in your head louder than the real one.",
     },
     shareLine: {
-      ko: "나는 마음읽기 습관이 강한 편이래.",
+      ko: "나는 표정과 말투 사이를 너무 잘 읽는 타입이래.",
       en: "I have a strong mind-reading thinking habit.",
     },
   },
   {
     id: "overgeneralization",
-    title: { ko: "과잉일반화", en: "Overgeneralization" },
+    title: { ko: "한 장면을 전체로 번역하는 사람", en: "Overgeneralization" },
     oneLiner: {
-      ko: "한 번의 일이 전체처럼 느껴지는 사람",
+      ko: "한 번의 일이 오래된 패턴처럼 크게 번지는 타입입니다.",
       en: "One event can start feeling like the whole pattern.",
     },
     description: {
-      ko: "당신은 한 번의 실패나 실망이 앞으로도 계속될 것처럼 느껴질 수 있습니다. 마음이 비슷한 상처를 빠르게 연결하기 때문에 생기는 생각 습관일 수 있어요.",
+      ko: "당신은 한 번의 실패나 실망을 과거의 비슷한 장면들과 빠르게 연결하는 편입니다. 그래서 패턴을 빨리 알아차리는 힘이 있지만, 아직 다른 가능성이 남아 있을 때도 결론이 커질 수 있어요. '늘'이나 '항상'이 떠오를 때는 예외 한 가지를 일부러 찾아보세요.",
       en: "One failure or disappointment may feel like it will keep repeating. Your mind quickly connects similar hurts into a larger pattern.",
     },
     flow: {
@@ -171,19 +171,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "If one scene grows too large, it becomes harder to see new possibilities.",
     },
     shareLine: {
-      ko: "나는 한 번의 일을 크게 확장해서 보는 타입이래.",
+      ko: "나는 한 장면이 전체 패턴처럼 커질 때가 있는 타입이래.",
       en: "I tend to expand one event into a bigger pattern.",
     },
   },
   {
     id: "emotional-reasoning",
-    title: { ko: "감정적 추론", en: "Emotional Reasoning" },
+    title: { ko: "감정의 온도를 사실로 믿는 사람", en: "Emotional Reasoning" },
     oneLiner: {
-      ko: "불안하니까 진짜 위험한 것처럼 느끼는 사람",
+      ko: "마음이 뜨거워지면 상황도 그만큼 심각하게 보이는 타입입니다.",
       en: "When you feel anxious, the danger can feel real.",
     },
     description: {
-      ko: "당신은 감정이 강하게 올라오면 그 감정을 현실의 증거처럼 느낄 때가 있습니다. 마음이 보내는 신호가 선명해서, 사실과 감정의 거리가 가까워질 수 있어요.",
+      ko: "당신은 감정 신호가 선명해서, 불안하거나 서운한 순간에는 그 느낌이 곧 현실의 증거처럼 다가올 수 있습니다. 덕분에 마음의 변화를 빨리 알아차리지만, 감정이 강한 날에는 확인보다 결론이 먼저 나기도 해요. 감정을 무시하기보다 '이 느낌이 알려주는 것'과 '아직 확인할 것'을 나눠보세요.",
       en: "When a feeling becomes strong, it may start to feel like evidence. Your emotional signals are vivid, so facts and feelings can move close together.",
     },
     flow: {
@@ -203,19 +203,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "On emotionally intense days, conclusions may arrive before fact-checking.",
     },
     shareLine: {
-      ko: "나는 감정이 강하면 그게 사실처럼 느껴지는 타입이래.",
+      ko: "나는 감정의 온도가 올라가면 상황도 크게 보이는 타입이래.",
       en: "When my emotions get strong, they can feel like facts.",
     },
   },
   {
     id: "should-statements",
-    title: { ko: "당위진술", en: "Should Statements" },
+    title: { ko: "해야 한다에 묶이는 기준 관리자", en: "Should Statements" },
     oneLiner: {
-      ko: "“나는 반드시 그래야 해”에 자주 묶이는 사람",
+      ko: "스스로에게 적용하는 기준선이 누구보다 선명한 타입입니다.",
       en: "You can get tied to 'I should' and 'I must.'",
     },
     description: {
-      ko: "당신은 자신에게 높은 기준을 두고, 그 기준에서 벗어나면 쉽게 압박을 느낄 수 있습니다. 책임감과 성실함이 강한 만큼 '해야 한다'는 말이 마음을 조일 때가 있어요.",
+      ko: "당신은 스스로에게 높은 기준을 두고, 그 기준을 지키려는 책임감이 강합니다. 그래서 믿고 맡길 수 있는 사람이지만, 쉬어야 하는 순간에도 '이러면 안 된다'는 문장이 먼저 올라올 수 있어요. 기준을 낮추는 것이 아니라, 지금 가능한 기준으로 다시 조정하는 연습이 필요합니다.",
       en: "You hold yourself to high standards, and stepping away from them can feel pressuring. Your responsibility is real, but 'should' can become tight.",
     },
     flow: {
@@ -235,19 +235,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "If standards become too rigid, even caring for yourself can feel wrong.",
     },
     shareLine: {
-      ko: "나는 ‘해야 한다’에 자주 묶이는 타입이래.",
+      ko: "나는 해야 한다는 기준선에 자주 묶이는 타입이래.",
       en: "I often get tied to 'I should.'",
     },
   },
   {
     id: "discounting-positive",
-    title: { ko: "긍정 무시", en: "Discounting the Positive" },
+    title: { ko: "잘한 일에 형광펜을 못 긋는 사람", en: "Discounting the Positive" },
     oneLiner: {
-      ko: "잘한 건 당연하고, 부족한 것만 크게 보이는 사람",
+      ko: "칭찬은 빨리 넘기고 아쉬운 부분은 오래 붙잡는 타입입니다.",
       en: "Good things feel expected, while flaws look bigger.",
     },
     description: {
-      ko: "당신은 좋은 결과나 칭찬을 쉽게 받아들이지 못하고, 부족한 부분을 더 크게 볼 수 있습니다. 더 잘하고 싶은 마음이 강해서 성과가 마음에 오래 머물지 못할 때가 있어요.",
+      ko: "당신은 좋은 결과를 얻어도 '이 정도는 당연하지' 하고 넘긴 뒤, 부족했던 부분을 더 오래 들여다보는 편입니다. 이 눈은 성장에 도움이 되지만, 잘한 사실까지 지워버리면 자신감이 쌓일 자리가 줄어듭니다. 다음 개선점을 적기 전에 오늘 실제로 해낸 것 하나를 먼저 표시해보세요.",
       en: "You may struggle to receive good results or praise, while flaws stand out more. Wanting to do better can make achievements pass by too quickly.",
     },
     flow: {
@@ -267,19 +267,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "If you keep erasing good results, confidence has less room to build.",
     },
     shareLine: {
-      ko: "나는 잘한 건 넘기고 부족한 것만 보는 타입이래.",
+      ko: "나는 잘한 일보다 부족한 점에 먼저 형광펜 치는 타입이래.",
       en: "I tend to skip what I did well and focus on what was missing.",
     },
   },
   {
     id: "personalization",
-    title: { ko: "개인화", en: "Personalization" },
+    title: { ko: "분위기의 책임을 먼저 떠안는 사람", en: "Personalization" },
     oneLiner: {
-      ko: "일이 잘못되면 내 책임부터 떠올리는 사람",
+      ko: "상황이 어긋나면 내 몫부터 찾는 책임감 강한 타입입니다.",
       en: "When something goes wrong, you first look for your own responsibility.",
     },
     description: {
-      ko: "당신은 상황의 여러 원인 중에서도 내 탓을 먼저 찾는 편일 수 있습니다. 책임감이 강하기 때문에 생기는 습관이지만, 모든 일을 혼자 떠안게 만들 수도 있어요.",
+      ko: "당신은 일이 꼬이거나 분위기가 식으면 내가 놓친 부분부터 떠올리는 편입니다. 관계를 책임 있게 다루려는 태도는 장점이지만, 모두의 감정과 변수까지 혼자 들고 있으면 쉽게 무거워질 수 있어요. 내 영향이 있는 부분과 내 몫이 아닌 부분을 분리해도 관계를 덜 소중히 여기는 것은 아닙니다.",
       en: "Among many possible causes, you may look for your own fault first. It can come from responsibility, but it may also make you carry too much alone.",
     },
     flow: {
@@ -299,19 +299,19 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "Taking on what is not yours can make your mind heavy.",
     },
     shareLine: {
-      ko: "나는 일이 틀어지면 내 탓부터 생각하는 타입이래.",
+      ko: "나는 분위기가 어긋나면 내 책임부터 찾는 타입이래.",
       en: "When things go wrong, I tend to blame myself first.",
     },
   },
   {
     id: "balanced-perspective",
-    title: { ko: "균형 판단형", en: "Balanced Perspective" },
+    title: { ko: "결론을 잠깐 보류할 줄 아는 사람", en: "Balanced Perspective" },
     oneLiner: {
-      ko: "생각이 흔들려도 바로 결론 내리지 않는 사람",
+      ko: "마음이 흔들려도 한 번 더 정보를 기다릴 줄 아는 타입입니다.",
       en: "You can feel unsettled without rushing to a conclusion.",
     },
     description: {
-      ko: "당신은 불편한 상황에서도 한 번의 신호만으로 전체를 판단하지 않으려는 편입니다. 감정이 올라와도 잠시 멈추고, 아직 모르는 정보가 있다는 것을 인정할 수 있습니다.",
+      ko: "당신은 불편한 상황에서도 한 번의 신호만으로 전체를 판단하지 않으려는 편입니다. 감정이 올라와도 잠시 멈추고, 아직 모르는 정보가 있다는 것을 인정할 수 있어요. 다만 차분함이 감정 무시로 바뀌지 않도록, 같은 불편함이 반복될 때는 이유를 구체적으로 살피는 것이 좋습니다.",
       en: "Even when a situation feels uncomfortable, you tend not to judge the whole picture from one signal. You can pause, notice your feelings, and leave room for missing context.",
     },
     flow: {
@@ -331,7 +331,7 @@ export const THINKING_RESULTS: ThinkingResult[] = [
       en: "Just make sure calmness does not become ignoring your feelings when the same discomfort keeps repeating.",
     },
     shareLine: {
-      ko: "나는 생각이 꼬일 때도 일단 판단을 보류하는 균형 판단형이래.",
+      ko: "나는 생각이 흔들려도 결론을 잠깐 보류할 줄 아는 타입이래.",
       en: "My thinking pattern is Balanced Perspective. I tend to pause before jumping to conclusions.",
     },
   },
@@ -350,8 +350,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "바쁠 수도 있으니 오늘은 더 기다려본다.",
-          "en": "They may be busy, so I wait a little longer today."
+          "ko": "바쁠 수도 있다고 보고 오늘은 추가 메시지를 참는다.",
+          "en": "I assume they may be busy and hold back from sending more today."
         },
         "weights": {
           "balanced-perspective": 2
@@ -360,8 +360,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "내가 너무 무겁게 보냈나 싶어 메시지를 다시 읽어본다.",
-          "en": "I reread my message, wondering if I made it too heavy."
+          "ko": "내 문장이 부담스러웠는지 다시 읽고 표현을 탓한다.",
+          "en": "I reread my wording and blame the way I phrased it."
         },
         "weights": {
           "personalization": 2
@@ -370,8 +370,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "앞으로 중요한 얘기를 해도 아무도 받아주지 않을 것 같아 가라앉는다.",
-          "en": "I sink into the thought that nobody will receive important things from me."
+          "ko": "이제 중요한 얘기는 누구에게도 못 꺼낼 것 같아진다.",
+          "en": "I start feeling like I will not be able to bring up important things with anyone."
         },
         "weights": {
           "catastrophizing": 2,
@@ -381,8 +381,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "지금 기분이 상한 걸 보면 친구가 나를 피하는 게 맞는 것처럼 느껴진다.",
-          "en": "Because I feel hurt, it seems like they really are avoiding me."
+          "ko": "속상한 감정이 강해서 실제로 피하는 것처럼 믿어진다.",
+          "en": "Because the hurt feels strong, it seems like they really are avoiding me."
         },
         "weights": {
           "emotional-reasoning": 2
@@ -402,8 +402,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "좋았던 부분과 고칠 부분을 나눠서 본다.",
-          "en": "I separate what worked from what needs revision."
+          "ko": "좋았던 부분은 표시하고 고칠 부분은 따로 체크한다.",
+          "en": "I mark what worked and check what needs revision separately."
         },
         "weights": {
           "balanced-perspective": 2
@@ -412,8 +412,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "정리되지 않았다는 말이 들리니 전체가 실패처럼 느껴진다.",
-          "en": "Hearing that it was not organized makes the whole thing feel like a failure."
+          "ko": "정리가 부족했다는 말 하나로 전체가 실패처럼 보인다.",
+          "en": "One comment about organization makes the whole thing look like failure."
         },
         "weights": {
           "all-or-nothing": 2
@@ -422,8 +422,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "상대가 사실은 별로라고 생각했을 것 같다.",
-          "en": "It feels like they actually thought it was not good."
+          "ko": "겉으로는 좋다 했지만 속으로는 별로라 했을 것 같다.",
+          "en": "They said it was good, but I feel they secretly thought it was poor."
         },
         "weights": {
           "mind-reading": 2
@@ -432,8 +432,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "좋다는 말보다 부족하다는 부분만 계속 보인다.",
-          "en": "The weak part keeps standing out more than the praise."
+          "ko": "칭찬은 넘기고 수정할 부분만 메모장에 남긴다.",
+          "en": "I pass over the praise and leave only the revision point in my notes."
         },
         "weights": {
           "discounting-positive": 2
@@ -453,8 +453,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "타이밍이 안 맞았을 수도 있다고 본다.",
-          "en": "I think the timing may simply have been off."
+          "ko": "타이밍이 안 맞았을 수도 있어 대화 흐름을 더 본다.",
+          "en": "I watch the chat longer because the timing may simply have been off."
         },
         "weights": {
           "balanced-perspective": 2
@@ -463,8 +463,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "사람들이 나를 어색하게 생각한 것 같다.",
-          "en": "It feels like people found me awkward."
+          "ko": "사람들이 내 말을 어색하다고 여겼을 것 같다.",
+          "en": "It feels like people thought my message was awkward."
         },
         "weights": {
           "mind-reading": 2
@@ -473,8 +473,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "내가 분위기를 끊은 것 같아 신경 쓰인다.",
-          "en": "I worry that I broke the mood."
+          "ko": "내 말 때문에 흐름이 끊겼다고 책임을 느낀다.",
+          "en": "I feel responsible, as if my message broke the flow."
         },
         "weights": {
           "personalization": 2
@@ -483,8 +483,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "이런 일이 또 반복될 것 같아 다음 말이 조심스러워진다.",
-          "en": "It feels like this will happen again, so I become careful next time."
+          "ko": "또 이런 반응일 것 같아 다음엔 말을 줄이게 된다.",
+          "en": "I expect the same reaction next time, so I speak less."
         },
         "weights": {
           "overgeneralization": 2
@@ -504,8 +504,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "아쉽지만 바뀐 조건에서 가능한 선택지를 본다.",
-          "en": "I feel disappointed, then look at the options under the new conditions."
+          "ko": "아쉽지만 바뀐 조건에서 가능한 선택지를 다시 고른다.",
+          "en": "I feel disappointed, then choose again from the new options."
         },
         "weights": {
           "balanced-perspective": 2
@@ -514,8 +514,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "이 정도 변화에 흔들리면 안 된다고 나를 다그친다.",
-          "en": "I push myself, thinking I should not be shaken by this much."
+          "ko": "이 정도 변경에 흔들리면 안 된다고 나를 몰아붙인다.",
+          "en": "I push myself that I should not be shaken by this small change."
         },
         "weights": {
           "should-statements": 2
@@ -524,8 +524,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "이렇게 불편한 걸 보면 뭔가 잘못된 것 같다.",
-          "en": "Because I feel this uncomfortable, it seems something is wrong."
+          "ko": "불편함이 큰 걸 보면 실제로 문제가 생긴 것 같다.",
+          "en": "Because the discomfort is strong, it seems like a real problem happened."
         },
         "weights": {
           "emotional-reasoning": 2
@@ -534,8 +534,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "앞으로도 계속 꼬일까 봐 여러 경우를 돌려본다.",
-          "en": "I run through scenarios, worrying things may keep going wrong."
+          "ko": "이후 일정도 줄줄이 꼬일 장면을 미리 떠올린다.",
+          "en": "I picture later plans getting tangled one after another."
         },
         "weights": {
           "catastrophizing": 2
@@ -555,8 +555,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "오늘 컨디션일 수 있으니 조금 더 지켜본다.",
-          "en": "It may be their condition today, so I watch a little longer."
+          "ko": "컨디션 문제일 수 있어 먼저 물어볼 타이밍을 본다.",
+          "en": "It may be their condition, so I wait for a moment to ask."
         },
         "weights": {
           "balanced-perspective": 2
@@ -565,8 +565,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "내가 뭔가 잘못 말했나 먼저 떠올린다.",
-          "en": "I first wonder if I said something wrong."
+          "ko": "내가 한 말 중 거슬렸을 부분을 먼저 찾는다.",
+          "en": "I first look for what I may have said wrong."
         },
         "weights": {
           "personalization": 2
@@ -575,8 +575,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "나를 불편해하는 신호처럼 느껴진다.",
-          "en": "It feels like a signal that they are uncomfortable with me."
+          "ko": "조용한 태도가 나를 불편해한다는 신호처럼 보인다.",
+          "en": "Their quietness looks like a signal that they are uncomfortable with me."
         },
         "weights": {
           "mind-reading": 2
@@ -585,8 +585,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "불편하게 느껴지니 실제로 관계에 문제가 있는 것 같다.",
-          "en": "Because it feels uncomfortable, it seems there is actually a relationship problem."
+          "ko": "내 마음이 불편하니 관계가 실제로 틀어진 것 같다.",
+          "en": "Because I feel uneasy, it seems the relationship is actually off."
         },
         "weights": {
           "emotional-reasoning": 2
@@ -606,8 +606,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "어색해도 고맙다고 받고, 부족한 점은 따로 본다.",
-          "en": "Even if it feels awkward, I accept it and look at improvements separately."
+          "ko": "어색해도 고맙다고 말하고 부족한 점은 따로 본다.",
+          "en": "Even if it feels awkward, I say thanks and look at improvements separately."
         },
         "weights": {
           "balanced-perspective": 2
@@ -616,8 +616,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "그 정도는 누구나 할 수 있는 일이라고 생각한다.",
-          "en": "I think anyone could have done that much."
+          "ko": "그 정도는 운이 좋았거나 누구나 할 수 있었다고 넘긴다.",
+          "en": "I brush it off as luck or something anyone could have done."
         },
         "weights": {
           "discounting-positive": 2
@@ -626,8 +626,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "완벽하지 않으니 잘했다고 보기 어렵다.",
-          "en": "Since it was not perfect, it is hard to see it as good."
+          "ko": "완벽하지 않은 부분이 보여 잘했다고 말하기 어렵다.",
+          "en": "Because I see the imperfect part, it is hard to call it good."
         },
         "weights": {
           "all-or-nothing": 2
@@ -636,8 +636,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "칭찬받기 전에 더 잘했어야 했다고 느낀다.",
-          "en": "I feel I should have done better before being praised."
+          "ko": "칭찬받기 전에 더 완성도 있게 했어야 한다고 다그친다.",
+          "en": "I push myself that it should have been more complete before being praised."
         },
         "weights": {
           "should-statements": 2
@@ -657,8 +657,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "어긋난 부분을 보고 다음 조정을 생각한다.",
-          "en": "I look at what went off and think about the next adjustment."
+          "ko": "어긋난 부분을 표시하고 다음 조정 하나를 정한다.",
+          "en": "I mark what went off and choose one next adjustment."
         },
         "weights": {
           "balanced-perspective": 2
@@ -667,8 +667,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "이 흐름이면 다음 일도 안 좋게 갈 것 같다.",
-          "en": "If this is the flow, the next thing may go badly too."
+          "ko": "다음 일도 같은 흐름으로 망가질 장면을 떠올린다.",
+          "en": "I picture the next thing going badly in the same way."
         },
         "weights": {
           "catastrophizing": 2
@@ -677,8 +677,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "역시 나는 이런 걸 계속 잘 못하는 편인 것 같다.",
-          "en": "It feels like I am always bad at this kind of thing."
+          "ko": "역시 나는 이런 종류의 일을 늘 못한다고 결론낸다.",
+          "en": "I conclude that I am always bad at this kind of thing."
         },
         "weights": {
           "overgeneralization": 2
@@ -687,8 +687,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "내가 더 잘했으면 막을 수 있었을 것 같다.",
-          "en": "It feels like I could have prevented it if I had done better."
+          "ko": "내가 더 꼼꼼했으면 막았을 거라고 내 몫부터 찾는다.",
+          "en": "I look for my part first, thinking I could have prevented it by being more careful."
         },
         "weights": {
           "personalization": 2
@@ -708,8 +708,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "민망하지만 작은 실수였다고 보고 넘어간다.",
-          "en": "It is embarrassing, but I treat it as a small mistake and move on."
+          "ko": "민망하지만 작은 실수로 적고 다음 일로 넘어간다.",
+          "en": "It is embarrassing, but I label it a small mistake and move on."
         },
         "weights": {
           "balanced-perspective": 2
@@ -718,8 +718,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "사람들이 그 장면을 계속 기억할 것 같다.",
-          "en": "It feels like people will keep remembering that scene."
+          "ko": "사람들이 그 장면을 계속 떠올릴 거라고 예상한다.",
+          "en": "I assume people will keep remembering that scene."
         },
         "weights": {
           "mind-reading": 2
@@ -728,8 +728,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "부끄러운 걸 보면 정말 크게 실수한 것 같다.",
-          "en": "Because I feel embarrassed, it seems like I really messed up badly."
+          "ko": "부끄러움이 커서 실제 실수도 크게 느껴진다.",
+          "en": "Because the embarrassment is strong, the mistake feels large too."
         },
         "weights": {
           "emotional-reasoning": 2
@@ -738,8 +738,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "그 정도 실수는 하지 말았어야 했다고 반복한다.",
-          "en": "I keep repeating that I should not have made even that mistake."
+          "ko": "그 정도 실수도 하지 말았어야 한다고 되뇐다.",
+          "en": "I repeat that I should not have made even that small mistake."
         },
         "weights": {
           "should-statements": 2
@@ -759,7 +759,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "상황을 모르니 바로 의미를 정하지 않는다.",
+          "ko": "전체 상황을 모르니 바로 의미를 정하지 않는다.",
           "en": "I do not know the full situation, so I do not decide what it means yet."
         },
         "weights": {
@@ -769,7 +769,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "내가 불편한 사람이라 빠진 것 같다고 느낀다.",
+          "ko": "내가 불편한 사람이라 초대에서 빠졌다고 느낀다.",
           "en": "It feels like I was left out because I am uncomfortable to be around."
         },
         "weights": {
@@ -779,8 +779,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "일부러 나를 빼고 싶었던 것 같다.",
-          "en": "It feels like they intentionally wanted to leave me out."
+          "ko": "그들이 일부러 나를 빼고 만났을 거라고 추측한다.",
+          "en": "I guess they intentionally met without me."
         },
         "weights": {
           "mind-reading": 2
@@ -789,8 +789,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "관계가 이대로 멀어질 신호일까 봐 걱정된다.",
-          "en": "I worry this may be a sign the relationship is drifting."
+          "ko": "이 일이 관계가 멀어지는 시작일까 봐 걱정된다.",
+          "en": "I worry this may be the start of the relationship drifting."
         },
         "weights": {
           "catastrophizing": 2
@@ -810,8 +810,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "괜찮은 부분과 아쉬운 부분을 함께 본다.",
-          "en": "I look at both the okay parts and the disappointing parts."
+          "ko": "괜찮은 부분과 아쉬운 부분을 표로 나눠 본다.",
+          "en": "I split the okay parts and disappointing parts into a table."
         },
         "weights": {
           "balanced-perspective": 2
@@ -820,8 +820,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "기대에 못 미치면 성공이라고 하기 어렵다.",
-          "en": "If it did not meet expectations, it is hard to call it a success."
+          "ko": "기대에 못 미친 순간 성공 목록에서 빼버린다.",
+          "en": "Once it misses expectations, I remove it from the success list."
         },
         "weights": {
           "all-or-nothing": 2
@@ -830,8 +830,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "괜찮았다는 말은 잘 안 들어오고 부족한 점만 남는다.",
-          "en": "The “it was fine” part does not land; only the flaws remain."
+          "ko": "괜찮았다는 말은 흘리고 부족한 점만 다시 본다.",
+          "en": "I let the 'it was fine' part pass and review only the flaws."
         },
         "weights": {
           "discounting-positive": 2
@@ -840,8 +840,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "늘 마지막에 이렇게 애매해지는 것 같다.",
-          "en": "It feels like things always end up this lukewarm for me."
+          "ko": "늘 마지막에는 이렇게 애매하게 끝난다고 묶어버린다.",
+          "en": "I bundle it into a pattern that things always end lukewarm for me."
         },
         "weights": {
           "overgeneralization": 2
@@ -861,8 +861,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "오늘 컨디션의 영향도 있다고 보고 무리하지 않는다.",
-          "en": "I see that my condition may be affecting it and try not to push too hard."
+          "ko": "오늘 컨디션 영향도 있다고 보고 답을 늦춘다.",
+          "en": "I see my condition may be affecting it and delay my response."
         },
         "weights": {
           "balanced-perspective": 2
@@ -871,8 +871,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "이렇게 힘든 걸 보면 정말 문제가 큰 것 같다.",
-          "en": "Because I feel this bad, the problem must be serious."
+          "ko": "이렇게 힘든 걸 보면 실제 문제가 큰 것 같다.",
+          "en": "Because I feel this bad, the real problem must be serious."
         },
         "weights": {
           "emotional-reasoning": 2
@@ -881,8 +881,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "앞으로도 계속 이런 상태일까 봐 걱정된다.",
-          "en": "I worry I will keep feeling like this."
+          "ko": "앞으로도 계속 이런 상태일 장면을 미리 걱정한다.",
+          "en": "I worry in advance that I will keep feeling this way."
         },
         "weights": {
           "catastrophizing": 2
@@ -891,8 +891,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "내가 너무 예민해서 상황을 어렵게 만든 것 같다.",
-          "en": "It feels like I made the situation hard by being too sensitive."
+          "ko": "내 예민함 때문에 상황이 커졌다고 내 탓부터 한다.",
+          "en": "I blame myself first, thinking my sensitivity made the situation bigger."
         },
         "weights": {
           "personalization": 2
@@ -912,8 +912,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "처음부터 잘할 필요는 없으니 작게 시작한다.",
-          "en": "I do not need to be good from the start, so I begin small."
+          "ko": "처음부터 잘할 필요는 없다고 보고 10분만 시작한다.",
+          "en": "I decide I do not need to be good from the start and try ten minutes."
         },
         "weights": {
           "balanced-perspective": 2
@@ -922,8 +922,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "준비가 충분하지 않으면 시작하면 안 될 것 같다.",
-          "en": "If I am not fully prepared, it feels like I should not start."
+          "ko": "준비가 충분하지 않으면 시작하면 안 된다고 멈춘다.",
+          "en": "I stop because if I am not fully prepared, I should not start."
         },
         "weights": {
           "should-statements": 2
@@ -932,8 +932,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "잘 못 할 거면 시작 의미가 줄어드는 것 같다.",
-          "en": "If I cannot do it well, starting feels less meaningful."
+          "ko": "잘 못 할 거면 시작해도 의미가 없다고 본다.",
+          "en": "If I cannot do it well, I see little point in starting."
         },
         "weights": {
           "all-or-nothing": 2
@@ -942,8 +942,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "조금 해내도 부족한 점만 보일 것 같다.",
-          "en": "Even if I do somewhat well, I feel like I will only see what is lacking."
+          "ko": "해낸 부분보다 부족한 점만 보일 것 같아 망설인다.",
+          "en": "I hesitate because I expect to see only what is lacking."
         },
         "weights": {
           "discounting-positive": 2
@@ -963,8 +963,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "말투만으로 판단하기엔 정보가 부족하다고 본다.",
-          "en": "I think tone alone is not enough information to decide."
+          "ko": "말투만으로는 부족해서 다음 대화를 기다려본다.",
+          "en": "Tone alone is not enough, so I wait for the next exchange."
         },
         "weights": {
           "balanced-perspective": 2
@@ -973,8 +973,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "나에게 실망했거나 화난 것 같다.",
-          "en": "It seems like they are disappointed in me or angry."
+          "ko": "상대가 나에게 실망했거나 화났다고 읽는다.",
+          "en": "I read it as them being disappointed in me or angry."
         },
         "weights": {
           "mind-reading": 2
@@ -983,8 +983,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "내가 뭔가 건드린 게 있었나부터 생각한다.",
-          "en": "I first think about whether I touched a nerve somehow."
+          "ko": "내가 무언가 건드렸는지 대화 내용을 되짚는다.",
+          "en": "I replay the conversation to see whether I touched a nerve."
         },
         "weights": {
           "personalization": 2
@@ -993,8 +993,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "불편하게 느껴지니 실제로 문제가 있는 것 같다.",
-          "en": "Because it feels uncomfortable, there must be a real problem."
+          "ko": "불편함이 커서 실제로 문제가 있는 것처럼 믿어진다.",
+          "en": "Because the discomfort is strong, it feels like there is a real problem."
         },
         "weights": {
           "emotional-reasoning": 2
@@ -1014,8 +1014,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "오늘은 느린 날이었다고 보고 내일 할 작은 일을 정한다.",
-          "en": "I treat today as a slower day and set one small task for tomorrow."
+          "ko": "오늘은 느린 날이었다고 보고 내일 할 일 하나만 정한다.",
+          "en": "I treat today as a slower day and set only one task for tomorrow."
         },
         "weights": {
           "balanced-perspective": 2
@@ -1024,8 +1024,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "나는 늘 이렇게 흐트러지는 사람 같다.",
-          "en": "It feels like I am always someone who falls apart like this."
+          "ko": "나는 늘 이런 식으로 흐트러지는 사람이라고 묶는다.",
+          "en": "I label myself as someone who always falls apart like this."
         },
         "weights": {
           "overgeneralization": 2
@@ -1034,8 +1034,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "이 정도는 해냈어야 한다고 나를 몰아붙인다.",
-          "en": "I push myself, thinking I should have done at least this much."
+          "ko": "이 정도는 해냈어야 한다며 밤에도 나를 몰아붙인다.",
+          "en": "I push myself at night, saying I should have done at least this much."
         },
         "weights": {
           "should-statements": 2
@@ -1044,8 +1044,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "이러다 중요한 것들을 전부 놓칠까 봐 불안하다.",
-          "en": "I worry I may end up losing all the important things."
+          "ko": "이러다 중요한 것들을 전부 놓칠 장면을 걱정한다.",
+          "en": "I worry about a scene where I end up losing all the important things."
         },
         "weights": {
           "catastrophizing": 2
@@ -1065,8 +1065,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "짧아도 긍정적인 말로 받아들이고 다음 일을 본다.",
-          "en": "Even if it is brief, I take it as positive and move to the next task."
+          "ko": "짧아도 긍정 피드백으로 받고 다음 일로 넘어간다.",
+          "en": "Even if it is brief, I take it as positive feedback and move on."
         },
         "weights": {
           "balanced-perspective": 2
@@ -1075,8 +1075,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "더 말이 없는 걸 보면 뭔가 부족했나 싶다.",
-          "en": "Because there is nothing more, I wonder if something was lacking."
+          "ko": "더 말이 없는 걸 보며 내가 뭘 놓쳤는지 찾는다.",
+          "en": "Because there is nothing more, I look for what I may have missed."
         },
         "weights": {
           "personalization": 2
@@ -1085,8 +1085,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "예의상 한 말일 가능성이 먼저 떠오른다.",
-          "en": "I first think it may have just been politeness."
+          "ko": "표정이 담담해서 예의상 한 말이라고 추측한다.",
+          "en": "Because their face was neutral, I guess it was just politeness."
         },
         "weights": {
           "mind-reading": 2
@@ -1095,8 +1095,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "잘한 부분보다 더 완성도 높일 점이 먼저 보인다.",
-          "en": "I notice what could be improved before what went well."
+          "ko": "잘한 부분보다 보완할 점부터 메모한다.",
+          "en": "I note what needs improvement before what went well."
         },
         "weights": {
           "discounting-positive": 2
@@ -1116,7 +1116,7 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "a",
         "text": {
-          "ko": "관계에서 이런 대화도 생길 수 있다고 보고 시간을 둔다.",
+          "ko": "관계에도 이런 대화가 생길 수 있다고 보고 시간을 둔다.",
           "en": "I accept that relationships can have these conversations and give it time."
         },
         "weights": {
@@ -1126,8 +1126,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "b",
         "text": {
-          "ko": "관계가 예전처럼 돌아가지 않을까 봐 걱정된다.",
-          "en": "I worry the relationship may not return to how it was."
+          "ko": "관계가 예전처럼 돌아가지 않을 장면을 걱정한다.",
+          "en": "I worry about the relationship not returning to how it was."
         },
         "weights": {
           "catastrophizing": 2
@@ -1136,8 +1136,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "c",
         "text": {
-          "ko": "한 번 부딪혔으니 이미 어긋난 것처럼 느껴진다.",
-          "en": "Because we clashed once, it feels like something is already broken."
+          "ko": "한 번 부딪혔으니 관계가 이미 깨진 것처럼 본다.",
+          "en": "Because we clashed once, I see the relationship as already broken."
         },
         "weights": {
           "all-or-nothing": 2
@@ -1146,8 +1146,8 @@ export const THINKING_QUESTIONS: ThinkingQuestion[] = [
       {
         "id": "d",
         "text": {
-          "ko": "역시 가까워지면 결국 이런 일이 생기는 것 같다.",
-          "en": "It feels like this always happens when people get close."
+          "ko": "역시 가까워지면 늘 이런 일이 생긴다고 묶는다.",
+          "en": "I bundle it into 'this always happens when people get close.'"
         },
         "weights": {
           "overgeneralization": 2
