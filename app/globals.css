@@ -4631,6 +4631,31 @@ body {
 }
 
 @media (max-width: 640px) {
+  .joseon-life {
+    padding-top: max(72px, calc(env(safe-area-inset-top, 0px) + 64px)) !important;
+  }
+
+  .value-test--quiz,
+  .stoic-test--quiz,
+  .thinking-test--quiz {
+    padding-top: max(28px, calc(env(safe-area-inset-top, 0px) + 18px)) !important;
+  }
+
+  .value-test--quiz .value-shell,
+  .stoic-test--quiz .stoic-shell,
+  .thinking-test--quiz .thinking-shell {
+    padding-top: 0 !important;
+  }
+
+  .breaking-page--quiz .breaking-shell,
+  .scene-page .scene-shell {
+    padding-top: max(30px, calc(env(safe-area-inset-top, 0px) + 22px)) !important;
+  }
+
+  .defense-page .quiz {
+    padding-top: max(36px, calc(env(safe-area-inset-top, 0px) + 28px)) !important;
+  }
+
   .defense-page .question-card,
   .thinking-test .thinking-card:not(:has(.result)),
   .value-test .value-card:not(:has(.result)),
@@ -4640,7 +4665,72 @@ body {
   .scene-page .scene-card:not(:has(.result-view)) {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 22px 20px 40px !important;
+    padding: max(26px, calc(env(safe-area-inset-top, 0px) + 18px)) 20px 40px !important;
+    overflow: visible !important;
+  }
+
+  .defense-page .question-card .progress-head,
+  .thinking-test .thinking-card:not(:has(.result)) .progress-head,
+  .value-test .value-card:not(:has(.result)) .progress-head,
+  .stoic-test .stoic-card:not(:has(.result)) .progress-head,
+  .crush-test .quiz-card:not(:has(.result)) .progress-head,
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head,
+  .defense-page .quiz > .progress > div {
+    min-height: 42px !important;
+    align-items: center !important;
+    overflow: visible !important;
+    gap: 12px !important;
+    padding-block: 3px !important;
+    line-height: 1.45 !important;
+  }
+
+  .defense-page .question-card .progress-head span,
+  .defense-page .question-card .progress-head strong,
+  .thinking-test .thinking-card:not(:has(.result)) .progress-head span,
+  .thinking-test .thinking-card:not(:has(.result)) .progress-head strong,
+  .value-test .value-card:not(:has(.result)) .progress-head span,
+  .value-test .value-card:not(:has(.result)) .progress-head strong,
+  .stoic-test .stoic-card:not(:has(.result)) .progress-head span,
+  .stoic-test .stoic-card:not(:has(.result)) .progress-head strong,
+  .crush-test .quiz-card:not(:has(.result)) .progress-head span,
+  .crush-test .quiz-card:not(:has(.result)) .progress-head strong,
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head span,
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head strong,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head span,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head strong,
+  .defense-page .quiz > .progress span,
+  .defense-page .quiz > .progress strong {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 1.55em !important;
+    margin-block: 0 !important;
+    padding-block: 3px !important;
+    line-height: 1.45 !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+  }
+
+  .defense-page .question-card .readable-question__situation span,
+  .defense-page .question-card .readable-question__prompt span,
+  .thinking-test .thinking-card:not(:has(.result)) .readable-question__situation span,
+  .thinking-test .thinking-card:not(:has(.result)) .readable-question__prompt span,
+  .value-test .value-card:not(:has(.result)) .readable-question__situation span,
+  .value-test .value-card:not(:has(.result)) .readable-question__prompt span,
+  .stoic-test .stoic-card:not(:has(.result)) .readable-question__situation span,
+  .stoic-test .stoic-card:not(:has(.result)) .readable-question__prompt span,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__situation span,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__prompt span,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__situation span,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt span,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__situation span,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt span {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 1.55em !important;
+    padding-block: 3px !important;
+    line-height: 1.45 !important;
+    overflow: visible !important;
   }
 
   .defense-page .question-card .readable-question__prompt h2,
