@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState, type ReactElement } from "re
 import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
-import LikertScaleQuestion, { type LikertRating } from "@/app/components/game/LikertScaleQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -20,6 +19,7 @@ import {
   calculateThinkingResult,
   getThinkingResultById,
   type ThinkingAnswer,
+  type ThinkingChoice,
   type ThinkingPatternId,
   type ThinkingResult,
 } from "@/lib/thinking-pattern-test";
@@ -39,13 +39,84 @@ function text(locale: SimpleLocale, copy: { ko: string; en: string }): string {
   return locale === "ko" ? copy.ko : copy.en;
 }
 
-function remapLikertWeights(ratings: LikertRating<ThinkingPatternId>[]): Partial<Record<ThinkingPatternId, number>> {
-  const weights: Partial<Record<ThinkingPatternId, number>> = {};
-  for (const rating of ratings) {
-    const agreement = (rating.value - 1) / 6;
-    for (const [id, value] of Object.entries(rating.weights) as Array<[ThinkingPatternId, number]>) {
-      weights[id] = (weights[id] ?? 0) + value * agreement;
+type ThinkingStatement = {
+  id: string;
+  sourceQuestionId: string;
+  choice: ThinkingChoice;
+};
+
+const THINKING_STATEMENT_KEYS = [
+  "tp_01:a",
+  "tp_01:b",
+  "tp_01:c",
+  "tp_01:d",
+  "tp_02:b",
+  "tp_02:c",
+  "tp_02:d",
+  "tp_03:b",
+  "tp_03:c",
+  "tp_03:d",
+  "tp_04:b",
+  "tp_04:c",
+  "tp_04:d",
+  "tp_05:a",
+  "tp_05:b",
+  "tp_05:c",
+  "tp_05:d",
+  "tp_06:b",
+  "tp_06:c",
+  "tp_06:d",
+  "tp_07:a",
+  "tp_07:b",
+  "tp_07:c",
+  "tp_07:d",
+] as const;
+
+const THINKING_STATEMENTS: ThinkingStatement[] = THINKING_STATEMENT_KEYS.map((key) => {
+  const [questionId, choiceId] = key.split(":");
+  const question = THINKING_QUESTIONS.find((item) => item.id === questionId);
+  const choice = question?.choices.find((item) => item.id === choiceId);
+  if (!question || !choice) {
+    throw new Error(`Missing thinking-pattern statement: ${key}`);
+  }
+  return {
+    id: key,
+    sourceQuestionId: question.id,
+    choice,
+  };
+});
+
+const THINKING_DIM_COLORS: Record<ThinkingPatternId, string> = {
+  catastrophizing: "#d97706",
+  "all-or-nothing": "#7c3aed",
+  "mind-reading": "#2563eb",
+  overgeneralization: "#dc2626",
+  "emotional-reasoning": "#db2777",
+  "should-statements": "#9333ea",
+  "discounting-positive": "#0f766e",
+  personalization: "#ea580c",
+  "balanced-perspective": "#16a34a",
+};
+
+const LIKERT_COLORS = ["#ef4444", "#f97316", "#f59e0b", "#64748b", "#14b8a6", "#3b82f6", "#8b5cf6"];
+
+function primaryPattern(weights: Partial<Record<ThinkingPatternId, number>>): ThinkingPatternId {
+  let winner: ThinkingPatternId = "balanced-perspective";
+  let best = -Infinity;
+  for (const [id, score] of Object.entries(weights) as Array<[ThinkingPatternId, number]>) {
+    if (score > best) {
+      winner = id;
+      best = score;
     }
+  }
+  return winner;
+}
+
+function remapLikertWeights(choice: ThinkingChoice, value: number): Partial<Record<ThinkingPatternId, number>> {
+  const weights: Partial<Record<ThinkingPatternId, number>> = {};
+  const agreement = (value - 1) / 6;
+  for (const [id, score] of Object.entries(choice.weights) as Array<[ThinkingPatternId, number]>) {
+    weights[id] = (weights[id] ?? 0) + score * agreement;
   }
   return weights;
 }
@@ -65,16 +136,15 @@ export default function ThinkingPatternTestClient(): ReactElement {
       const restoreId = window.setTimeout(() => {
         setSharedResult(result);
         setPhase("result");
-        setQuestionIndex(THINKING_QUESTIONS.length - 1);
+        setQuestionIndex(THINKING_STATEMENTS.length - 1);
         setAnswers([]);
       }, 0);
       return () => window.clearTimeout(restoreId);
     }
   }, []);
 
-  const currentQuestion = THINKING_QUESTIONS[questionIndex];
+  const currentStatement = THINKING_STATEMENTS[questionIndex];
   const result = useMemo(() => sharedResult ?? calculateThinkingResult(answers), [answers, sharedResult]);
-  const progress = phase === "result" ? 100 : ((questionIndex + 1) / THINKING_QUESTIONS.length) * 100;
 
   useEffect(() => {
     if (phase !== "quiz") return;
@@ -101,17 +171,17 @@ export default function ThinkingPatternTestClient(): ReactElement {
     window.history.replaceState(null, "", "/tests/thinking-pattern");
   }, []);
 
-  const choose = useCallback((ratings: LikertRating<ThinkingPatternId>[]) => {
+  const choose = useCallback((value: number) => {
     trackQuestionAnswered("thinking-pattern", questionIndex + 1);
     const nextAnswer: ThinkingAnswer = {
-      questionId: currentQuestion.id,
-      choiceId: `likert:${ratings.map((rating) => `${rating.choiceId}${rating.value}`).join(",")}`,
-      weights: remapLikertWeights(ratings),
+      questionId: currentStatement.sourceQuestionId,
+      choiceId: `likert:${currentStatement.id}:${value}`,
+      weights: remapLikertWeights(currentStatement.choice, value),
     };
     const nextAnswers = [...answers, nextAnswer];
     setAnswers(nextAnswers);
     setShareStatus("");
-    if (questionIndex >= THINKING_QUESTIONS.length - 1) {
+    if (questionIndex >= THINKING_STATEMENTS.length - 1) {
       const nextResult = calculateThinkingResult(nextAnswers);
       const url = buildShareUrl("/tests/thinking-pattern", {
         v: 1,
@@ -123,7 +193,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
       return;
     }
     setQuestionIndex((value) => value + 1);
-  }, [answers, currentQuestion.id, locale, questionIndex]);
+  }, [answers, currentStatement.choice, currentStatement.id, currentStatement.sourceQuestionId, locale, questionIndex]);
 
   const share = useCallback(async () => {
     trackShareClick("thinking-pattern", "test", result.id);
@@ -181,7 +251,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
                 )}
               </p>
               <div className="intro-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
-                <span>{t(locale, "16문항", "16 questions")}</span>
+                <span>{t(locale, "24문장", "24 statements")}</span>
                 <span>{t(locale, "약 4분", "About 4 min")}</span>
                 <span>{t(locale, "생각 패턴", "Thinking pattern")}</span>
               </div>
@@ -197,38 +267,34 @@ export default function ThinkingPatternTestClient(): ReactElement {
               </p>
             </div>
           </section>
+        ) : phase === "quiz" ? (
+          <ThinkingAttachmentQuizView
+            key={currentStatement.id}
+            locale={locale}
+            onAnswer={choose}
+            onBack={() => {
+              setPhase("intro");
+              setQuestionIndex(0);
+              setAnswers([]);
+              setShareStatus("");
+            }}
+            questionIdx={questionIndex}
+            statement={currentStatement}
+            total={THINKING_STATEMENTS.length}
+          />
         ) : (
           <section className="thinking-card">
-            <div className={`progress-head ${phase === "quiz" ? "progress-head--active" : ""}`}>
-              {phase === "quiz" ? (
-                <Link href="/" className="test-exit-link" aria-label={homeBackLabel(locale)}>
-                  ←
-                </Link>
-              ) : (
-                <span>{t(locale, "결과", "Result")}</span>
-              )}
+            <div className="progress-head">
+              <span>{t(locale, "결과", "Result")}</span>
               <strong>
-                {phase === "result"
-                  ? `${THINKING_QUESTIONS.length} / ${THINKING_QUESTIONS.length}`
-                  : `${questionIndex + 1} / ${THINKING_QUESTIONS.length}`}
+                {THINKING_STATEMENTS.length} / {THINKING_STATEMENTS.length}
               </strong>
             </div>
             <div className="progress-bar" aria-hidden>
-              <span style={{ width: `${progress}%` }} />
+              <span style={{ width: "100%" }} />
             </div>
 
-            {phase === "quiz" ? (
-              <>
-                <LikertScaleQuestion
-                  choices={currentQuestion.choices}
-                  locale={locale}
-                  onSubmit={choose}
-                  prompt={text(locale, currentQuestion.prompt)}
-                />
-              </>
-            ) : (
-              <ResultView locale={locale} result={result} shared={Boolean(sharedResult)} onRetry={start} onShare={share} shareStatus={shareStatus} />
-            )}
+            <ResultView locale={locale} result={result} shared={Boolean(sharedResult)} onRetry={start} onShare={share} shareStatus={shareStatus} />
           </section>
         )}
       </section>
@@ -374,6 +440,224 @@ export default function ThinkingPatternTestClient(): ReactElement {
         .thinking-card {
           margin-top: clamp(12px, 3vh, 28px);
           padding: clamp(24px, 4vw, 46px);
+        }
+        .thinking-test--quiz {
+          padding: 0;
+          background: linear-gradient(180deg, #fbf7ee 0%, #f0e8dc 58%, #f8f0e6 100%);
+        }
+        .thinking-test--quiz .thinking-shell {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+        }
+        .thinking-flow-shell {
+          min-height: 100svh;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+        .thinking-flow-topbar {
+          position: relative;
+          z-index: 25;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 24px 40px;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 16px;
+          font-weight: 650;
+        }
+        .thinking-flow-back {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border: 0;
+          background: transparent;
+          color: rgba(42, 42, 42, 0.7);
+          cursor: pointer;
+          font: inherit;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+          padding: 6px 0;
+          transition: color 0.18s ease, transform 0.18s ease;
+        }
+        .thinking-flow-back:hover {
+          color: #24232a;
+          transform: translateX(-2px);
+        }
+        .thinking-flow-counter {
+          color: rgba(42, 42, 42, 0.65);
+          font-weight: 700;
+          letter-spacing: 0.02em;
+        }
+        .thinking-flow-body {
+          position: relative;
+          z-index: 1;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: clamp(28px, 6vh, 56px);
+          padding: 24px;
+        }
+        .thinking-flow-question-area {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+        }
+        .thinking-flow-kicker {
+          margin: 0 0 12px;
+          color: rgba(111, 90, 166, 0.78);
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .thinking-flow-question {
+          max-width: 800px;
+          margin: 0;
+          padding: 0 28px;
+          color: #24232a;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: clamp(24px, 3.2vw, 34px);
+          font-weight: 820;
+          line-height: 1.42;
+          letter-spacing: 0;
+          text-align: center;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+        .thinking-flow-subtext {
+          max-width: 680px;
+          margin: 12px 0 0;
+          padding: 0 28px;
+          color: rgba(42, 42, 42, 0.62);
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: clamp(15px, 1.8vw, 17px);
+          line-height: 1.62;
+          text-align: center;
+          word-break: keep-all;
+        }
+        .thinking-flow-likert-area {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+        }
+        .thinking-flow-scale-wrap {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 18px;
+          width: 100%;
+          padding: 0 16px;
+        }
+        .thinking-flow-likert-row {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          width: 100%;
+          max-width: 600px;
+        }
+        .thinking-flow-likert-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 72px;
+          height: 72px;
+          min-width: 0;
+          border-width: 2.5px;
+          border-style: solid;
+          border-radius: 50%;
+          background: transparent;
+          cursor: pointer;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 22px;
+          font-weight: 760;
+          padding: 0;
+          transition: background 0.2s ease, opacity 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .thinking-flow-likert-btn:hover {
+          transform: scale(1.08);
+        }
+        .thinking-flow-scale-labels {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          width: min(100%, 600px);
+          gap: 8px;
+          color: rgba(42, 42, 42, 0.58);
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 13px;
+          font-weight: 760;
+          line-height: 1.35;
+        }
+        .thinking-flow-scale-labels span:nth-child(2) {
+          text-align: center;
+        }
+        .thinking-flow-scale-labels span:nth-child(3) {
+          text-align: right;
+        }
+        .thinking-side-rail {
+          position: fixed;
+          right: 40px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 25;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .thinking-side-rail-track {
+          position: relative;
+          width: 2px;
+          background: #e5e7eb;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .thinking-side-rail-fill {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          transition: height 0.4s cubic-bezier(0.22, 0.9, 0.35, 1), background 0.3s ease;
+        }
+        .thinking-side-rail-dot {
+          position: relative;
+          border-radius: 50%;
+          transition: all 0.25s ease;
+        }
+        .thinking-side-rail-label {
+          position: absolute;
+          right: 22px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #8b8f99;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          white-space: nowrap;
+        }
+        .thinking-mobile-progress {
+          display: none;
+        }
+        .thinking-flow-bg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          color: #24232a;
+          opacity: 0.04;
+          pointer-events: none;
+          z-index: 0;
         }
         .progress-head {
           display: flex;
@@ -532,6 +816,23 @@ export default function ThinkingPatternTestClient(): ReactElement {
             opacity: 0.28;
             transform: scale(0.84);
           }
+          .thinking-side-rail {
+            display: none;
+          }
+          .thinking-mobile-progress {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(42, 42, 42, 0.06);
+            z-index: 40;
+          }
+          .thinking-mobile-progress-fill {
+            height: 100%;
+            transition: width 0.4s cubic-bezier(0.22, 0.9, 0.35, 1), background 0.3s ease;
+          }
           .answers,
           .result-grid {
             grid-template-columns: 1fr;
@@ -549,6 +850,43 @@ export default function ThinkingPatternTestClient(): ReactElement {
             min-height: auto;
             padding-top: 18px;
           }
+          .thinking-flow-topbar {
+            padding: 18px 22px;
+            font-size: 14px;
+          }
+          .thinking-flow-counter,
+          .thinking-flow-back {
+            font-size: 14px;
+          }
+          .thinking-flow-body {
+            gap: 34px;
+            padding: 24px 12px 32px;
+          }
+          .thinking-flow-question {
+            padding: 0 18px;
+            font-size: 22px;
+            line-height: 1.45;
+          }
+          .thinking-flow-subtext {
+            margin-top: 10px;
+            padding: 0 18px;
+            font-size: 14.5px;
+            line-height: 1.58;
+          }
+          .thinking-flow-likert-row {
+            gap: 8px;
+            max-width: 384px;
+          }
+          .thinking-flow-likert-btn {
+            width: 48px;
+            height: 48px;
+            border-width: 2px;
+            font-size: 16px;
+          }
+          .thinking-flow-scale-labels {
+            width: min(100%, 384px);
+            font-size: 11.5px;
+          }
           .primary,
           .secondary {
             width: 100%;
@@ -556,6 +894,200 @@ export default function ThinkingPatternTestClient(): ReactElement {
         }
       `}</style>
     </main>
+  );
+}
+
+function ThinkingAttachmentQuizView({
+  locale,
+  onAnswer,
+  onBack,
+  questionIdx,
+  statement,
+  total,
+}: {
+  locale: SimpleLocale;
+  onAnswer: (value: number) => void;
+  onBack: () => void;
+  questionIdx: number;
+  statement: ThinkingStatement;
+  total: number;
+}): ReactElement {
+  const dim = primaryPattern(statement.choice.weights);
+  const progress = (questionIdx + 1) / total;
+
+  return (
+    <section className="thinking-flow-shell">
+      <ThinkingMobileProgress value={progress} dim={dim} />
+      <ThinkingSideRail currentIdx={questionIdx} total={total} currentDim={dim} />
+      <ThinkingQuestionBackground idx={questionIdx} />
+
+      <div className="thinking-flow-topbar">
+        <button
+          type="button"
+          onClick={onBack}
+          className="thinking-flow-back"
+          aria-label={t(locale, "나가기", "Exit test")}
+        >
+          <span aria-hidden>←</span>
+          <span>{t(locale, "나가기", "Exit")}</span>
+        </button>
+        <span className="thinking-flow-counter tabular-nums">
+          {questionIdx + 1} / {total}
+        </span>
+      </div>
+
+      <div className="thinking-flow-body">
+        <div className="thinking-flow-question-area">
+          <p className="thinking-flow-kicker">{t(locale, "지금 떠오르는 생각", "Current thought")}</p>
+          <h2 key={`thinking-statement-${statement.id}`} className="thinking-flow-question">
+            {text(locale, statement.choice.text)}
+          </h2>
+          <p className="thinking-flow-subtext">
+            {t(locale, "이 문장이 내 반응과 얼마나 가까운지 골라주세요.", "Choose how closely this statement matches your reaction.")}
+          </p>
+        </div>
+
+        <div className="thinking-flow-likert-area">
+          <ThinkingLikertScale
+            key={`thinking-scale-${statement.id}`}
+            locale={locale}
+            onAnswer={onAnswer}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ThinkingSideRail({
+  currentIdx,
+  currentDim,
+  total,
+}: {
+  currentIdx: number;
+  currentDim: ThinkingPatternId;
+  total: number;
+}): ReactElement {
+  const color = THINKING_DIM_COLORS[currentDim] ?? "#8b5cf6";
+  const dotSpacing = 20;
+  const trackHeight = (total - 1) * dotSpacing;
+  const fillHeight = total > 1 ? (currentIdx / (total - 1)) * trackHeight : 0;
+
+  return (
+    <div className="thinking-side-rail" aria-hidden>
+      <div className="thinking-side-rail-track" style={{ height: trackHeight }}>
+        <div className="thinking-side-rail-fill" style={{ height: fillHeight, background: color }} />
+        {Array.from({ length: total }, (_, i) => {
+          const isCurrent = i === currentIdx;
+          const isDone = i < currentIdx;
+          const size = isCurrent ? 14 : 10;
+          const dotColor = isCurrent ? color : isDone ? "#6b7280" : "#d1d5db";
+          return (
+            <div
+              key={i}
+              className="thinking-side-rail-dot"
+              style={{
+                width: size,
+                height: size,
+                background: dotColor,
+                marginTop: i === 0 ? 0 : dotSpacing - size,
+                boxShadow: isCurrent ? `0 0 0 4px ${color}22` : undefined,
+              }}
+            >
+              {isCurrent && (
+                <span className="thinking-side-rail-label tabular-nums">
+                  {currentIdx + 1} / {total}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ThinkingMobileProgress({ dim, value }: { dim: ThinkingPatternId; value: number }): ReactElement {
+  const color = THINKING_DIM_COLORS[dim] ?? "#8b5cf6";
+  return (
+    <div className="thinking-mobile-progress" aria-hidden>
+      <div
+        className="thinking-mobile-progress-fill"
+        style={{ width: `${Math.max(0, Math.min(1, value)) * 100}%`, background: color }}
+      />
+    </div>
+  );
+}
+
+function ThinkingLikertScale({
+  locale,
+  onAnswer,
+}: {
+  locale: SimpleLocale;
+  onAnswer: (value: number) => void;
+}): ReactElement {
+  const [pendingValue, setPendingValue] = useState<number | null>(null);
+  const endpoints = locale === "ko" ? ["전혀 아니다", "보통이다", "매우 그렇다"] : ["Strongly disagree", "Neutral", "Strongly agree"];
+
+  const handleClick = useCallback(
+    (value: number) => {
+      if (pendingValue !== null) return;
+      setPendingValue(value);
+      window.setTimeout(() => onAnswer(value), 300);
+    },
+    [onAnswer, pendingValue],
+  );
+
+  return (
+    <div className="thinking-flow-scale-wrap">
+      <div className="thinking-flow-likert-row" role="radiogroup" aria-label={t(locale, "7점 척도", "7-point scale")}>
+        {Array.from({ length: 7 }, (_, i) => {
+          const value = i + 1;
+          const color = LIKERT_COLORS[i];
+          const isSelected = pendingValue === value;
+          const dimmed = pendingValue !== null && !isSelected;
+          return (
+            <button
+              key={value}
+              type="button"
+              onClick={() => handleClick(value)}
+              aria-checked={isSelected}
+              aria-label={`${value}`}
+              className={`thinking-flow-likert-btn${isSelected ? " is-selected" : ""}`}
+              role="radio"
+              style={{
+                borderColor: color,
+                background: isSelected ? color : "transparent",
+                color: isSelected ? "#fff" : color,
+                opacity: dimmed ? 0.3 : 1,
+                transform: isSelected ? "scale(1.15)" : "scale(1)",
+                boxShadow: isSelected ? `0 4px 16px ${color}66` : "0 2px 6px rgba(0,0,0,0.04)",
+              }}
+            >
+              {value}
+            </button>
+          );
+        })}
+      </div>
+      <div className="thinking-flow-scale-labels" aria-hidden>
+        <span>1 {endpoints[0]}</span>
+        <span>4 {endpoints[1]}</span>
+        <span>7 {endpoints[2]}</span>
+      </div>
+    </div>
+  );
+}
+
+function ThinkingQuestionBackground({ idx }: { idx: number }): ReactElement {
+  const rotate = (idx % 5) * 18;
+  return (
+    <svg className="thinking-flow-bg" viewBox="0 0 800 800" aria-hidden>
+      <g fill="none" stroke="currentColor" strokeWidth="2" transform={`rotate(${rotate} 400 400)`}>
+        <circle cx="400" cy="400" r="240" />
+        <circle cx="400" cy="400" r="150" />
+        <path d="M160 400h480M400 160v480M230 230l340 340M570 230 230 570" />
+      </g>
+    </svg>
   );
 }
 
