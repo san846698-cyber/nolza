@@ -10,8 +10,20 @@ import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 
 type LifeSharePayload = { v: 2; name: string; locale?: SimpleLocale };
 type Pair = { ko: string; en: string };
+type LifeStoryContext = {
+  name: string;
+  birthYear: number;
+  finalYear: number;
+  region: Pair;
+  role: Pair;
+  remembered: Pair;
+  season: Pair;
+  finalObject: Pair;
+};
+type LifeStoryBuilder = (context: LifeStoryContext, locale: SimpleLocale) => string[];
 type Archetype = {
   title: Pair;
+  subtitle?: Pair;
   roles: Pair[];
   regions: Pair[];
   remembered: Pair[];
@@ -23,6 +35,7 @@ type Archetype = {
   achievement: Pair;
   later: Pair;
   finalLine: Pair;
+  lifeStory?: LifeStoryBuilder;
 };
 type LifeResult = {
   archetype: Archetype;
@@ -235,6 +248,345 @@ const ARCHETYPES: Archetype[] = [
   },
 ];
 
+const JOSEON_LIFE_OVERRIDES: Array<
+  Partial<Archetype> & {
+    title: Pair;
+    subtitle: Pair;
+    roles: Pair[];
+    remembered: Pair[];
+    finalObjects: Pair[];
+    finalLine: Pair;
+    lifeStory: LifeStoryBuilder;
+  }
+> = [
+  {
+    title: { ko: "금서의 밤을 건넨 서책가", en: "The Bookseller Who Crossed a Forbidden Night" },
+    subtitle: { ko: "금지된 문장 하나가 평생의 문이 된 삶", en: "A life opened by one forbidden sentence." },
+    roles: [{ ko: "서책가", en: "bookseller" }, { ko: "역관 견습", en: "interpreter's apprentice" }, { ko: "비밀 필사공", en: "secret copyist" }],
+    remembered: [{ ko: "시대보다 먼저 질문한 사람", en: "the one who questioned before the age was ready" }, { ko: "금지된 글을 밤새 지킨 사람", en: "the one who guarded forbidden pages through the night" }],
+    finalObjects: [{ ko: "마룻장 밑의 금서 한 권", en: "a forbidden book under the floorboards" }, { ko: "끝까지 닳은 먹붓", en: "an ink brush worn down to the end" }],
+    finalLine: { ko: "그 사람의 이름은 금서보다 오래, 누군가의 첫 질문으로 남았다.", en: "That name lasted longer than the banned book, as someone's first question." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 집안은 큰 벼슬도 큰 재산도 없었지만, 장터 끝 헌책 더미를 뒤지는 아이 하나만은 늘 사람들의 눈에 띄었다.`,
+      `열일곱 되던 겨울, ${ctx.name}은 역관이 숨겨 둔 낡은 책에서 조정이 금한 문장을 읽었다. "사람은 태어난 자리보다 묻는 질문으로 멀리 간다"는 한 줄 때문에, 그날 밤 잠을 이루지 못했다.`,
+      `이후 ${ctx.name}은 ${ctx.role.ko}로 살며 책을 팔고, 베끼고, 때로는 숨겼다. 어느 봄에는 젊은 선비에게 금지된 주석을 몰래 건넸고, 어느 장맛비 밤에는 관아의 수색을 피해 책 상자를 우물 뒤에 묻었다.`,
+      `위험은 늘 가까웠다. 믿었던 손님 하나가 이름을 팔았고, ${ctx.name}은 사흘 동안 문초를 받았다. 하지만 함께 글을 읽던 어린 제자가 눈빛으로 "그 책을 제가 외웠습니다"라고 말했을 때, 두려움은 이상하게도 부끄러움보다 작아졌다.`,
+      `말년의 ${ctx.name}은 가게 문을 일찍 닫고 마룻장 밑에 얇은 종이들을 숨겼다. 거기에는 남의 이름으로도 남기지 못한 질문, 반쯤 지워진 주석, 그리고 "언젠가 읽을 사람에게"라는 짧은 말이 있었다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 마지막 숨을 거두었다. 훗날 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. The family had no great office or fortune, but one child was always seen searching through old books at the end of the market.`,
+      `In the winter at seventeen, ${ctx.name} read a banned line in a book hidden by an interpreter: "A person travels farther by the questions they ask than by the place they were born." Sleep did not come that night.`,
+      `Later, ${ctx.name} lived as a ${ctx.role.en}, selling, copying, and sometimes hiding books. One spring, a forbidden annotation was passed to a young scholar; one rainy night, a box of books was buried behind a well to escape inspection.`,
+      `Danger stayed close. A trusted customer sold the name, and ${ctx.name} was questioned for three days. But when a young pupil silently signaled, "I memorized the book," fear became smaller than shame.`,
+      `In old age, ${ctx.name} closed the shop early and hid thin papers beneath the floor. They held questions that could not be signed, half-erased notes, and one short line: "For whoever reads later."`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} died beside ${ctx.finalObject.en}. Later, people remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "한양의 장부를 고친 실패한 선비", en: "The Failed Scholar Who Corrected Hanyang's Ledger" },
+    subtitle: { ko: "과거에는 떨어졌지만, 숫자 사이의 억울함은 놓치지 않은 삶", en: "A failed exam life that still found injustice between numbers." },
+    roles: [{ ko: "서리", en: "clerk" }, { ko: "장부 관리인", en: "ledger keeper" }, { ko: "낙방한 선비", en: "failed scholar" }],
+    remembered: [{ ko: "이름보다 장부를 깨끗하게 남긴 사람", en: "the one who left the ledger cleaner than the name" }, { ko: "억울한 숫자를 그냥 넘기지 않은 사람", en: "the one who did not ignore unjust numbers" }],
+    finalObjects: [{ ko: "붉은 먹으로 고친 장부", en: "a ledger corrected in red ink" }, { ko: "끝내 부치지 못한 고향 편지", en: "an unsent letter home" }],
+    finalLine: { ko: "그는 높은 문턱을 넘지 못했으나, 낮은 사람들의 몫을 지켜 냈다.", en: "He never crossed the highest threshold, but protected the share of those below it." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 집안 어른들은 과거 급제를 기대했고, 어린 ${ctx.name}도 언젠가 한양의 큰길을 당당히 걷는 꿈을 품었다.`,
+      `스물셋, 세 번째 낙방 뒤에 남은 것은 젖은 짚신과 빈 주머니뿐이었다. 돌아가면 실망한 얼굴들을 봐야 했기에, ${ctx.name}은 한양 작은 관청의 ${ctx.role.ko} 자리를 받아들였다.`,
+      `일은 지루했지만 숫자는 거짓말을 했다. 쌀 스무 섬이 열다섯 섬으로 줄어 있었고, 어느 과부의 세금은 두 번 적혀 있었다. ${ctx.name}은 밤마다 촛불을 낮추고 붉은 먹으로 장부의 거짓을 고쳤다.`,
+      `그 때문에 윗사람에게 미움을 샀고, 한때는 관청에서 쫓겨날 뻔했다. 그러나 세금을 돌려받은 노파가 새벽 문 앞에 콩 한 되를 놓고 갔을 때, ${ctx.name}은 처음으로 낙방이 인생의 끝이 아니었다는 사실을 믿었다.`,
+      `말년에는 출세보다 기록의 정확함에 더 매달렸다. 고향에 보내려던 편지는 끝내 부치지 못했지만, 그 편지 한쪽에는 "나는 아직 부끄럽지 않게 살고 있다"는 문장이 남았다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 옆에서 조용히 생을 마쳤다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 불렀다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. The elders expected a civil service pass, and the child imagined walking Hanyang's broad roads with pride.`,
+      `At twenty-three, after a third failed exam, only wet straw shoes and an empty purse remained. Rather than face disappointed eyes at home, ${ctx.name} accepted work as a ${ctx.role.en} in a small capital office.`,
+      `The work was dull, but the numbers lied. Twenty sacks of rice became fifteen; one widow's tax appeared twice. Each night, ${ctx.name} lowered the candle and corrected the ledger in red ink.`,
+      `Superiors grew hostile, and dismissal almost came. Yet when an old woman who received her tax back left a measure of beans at the door, ${ctx.name} first believed failure was not the end of a life.`,
+      `In old age, accuracy mattered more than advancement. The letter to home was never sent, but one sentence remained: "I am still living without shame."`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} died beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "역병의 마을을 지킨 약방 사람", en: "The Healer Who Stayed During the Fever" },
+    subtitle: { ko: "떠날 수 있었지만, 문을 잠그지 않은 사람", en: "A person who could have left, but did not lock the door." },
+    roles: [{ ko: "약방 조력자", en: "apothecary aide" }, { ko: "마을 의원", en: "village healer" }, { ko: "아이들을 가르친 노인", en: "elder teacher" }],
+    remembered: [{ ko: "문이 닫히지 않는 집 같던 사람", en: "the one whose door never closed" }, { ko: "열병의 밤에 이름을 불러 준 사람", en: "the one who called names through fevered nights" }],
+    finalObjects: [{ ko: "마른 약초가 든 보자기", en: "a cloth bundle of dried herbs" }, { ko: "문턱에 놓인 찻잔", en: "a teacup left by the threshold" }],
+    finalLine: { ko: "마을 사람들은 그가 살린 목숨보다, 끝까지 떠나지 않은 등을 더 오래 기억했다.", en: "The village remembered not only the lives saved, but the back that never left." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 어려서부터 울음소리의 높낮이만 듣고도 누가 아픈지, 누가 서러운지 먼저 알아차렸다.`,
+      `젊은 시절 한양 약방으로 갈 기회가 있었지만, 아버지가 쓰러지고 마을에 열병이 돌기 시작했다. ${ctx.name}은 보따리를 풀고 ${ctx.role.ko}로 남았다.`,
+      `그해 여름, ${ctx.name}은 논둑을 건너 열이 오른 아이에게 찬 수건을 갈아 주고, 밤에는 상여 소리를 피해 약초를 달였다. 어느 날은 살린 아이의 어머니가 절을 했고, 다음 날은 끝내 손을 놓은 아이의 이름을 혼자 불렀다.`,
+      `사람을 살리는 일은 늘 고마움만 남기지 않았다. 약값을 두고 다투는 이도 있었고, 왜 우리 집부터 오지 않았느냐며 멱살을 잡는 이도 있었다. 그래도 ${ctx.name}은 다음 날 같은 길을 다시 걸었다.`,
+      `말년에는 마을 아이들에게 글자를 가르쳤다. 아이들은 약초 이름보다 먼저 "아픈 사람 앞에서는 목소리를 낮춘다"는 말을 배웠다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 눈을 감았다. 훗날 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. Even as a child, ${ctx.name} could hear in a cry who was sick and who was grieving.`,
+      `There was once a chance to go to a Hanyang apothecary, but a father collapsed and fever began moving through the village. ${ctx.name} unpacked the bundle and remained as a ${ctx.role.en}.`,
+      `That summer, ${ctx.name} crossed rice paths to change cool cloths for burning children and boiled herbs at night while funeral sounds passed by. One day a mother bowed in thanks; the next, ${ctx.name} whispered the name of a child who did not survive.`,
+      `Healing did not leave only gratitude. Some fought over payment, and some grabbed the collar asking why their house had not come first. Still, ${ctx.name} walked the same road again the next day.`,
+      `In later years, village children learned letters from ${ctx.name}. Before herb names, they learned this: lower your voice before someone in pain.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} closed their eyes beside ${ctx.finalObject.en}. Later, people remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "사라진 이름을 베껴 둔 필사공", en: "The Copyist of Vanishing Names" },
+    subtitle: { ko: "공식 기록 밖의 사람들을 종이에 남긴 삶", en: "A life that kept people outside official records on paper." },
+    roles: [{ ko: "필사공", en: "copyist" }, { ko: "문집 편집자", en: "editor of writings" }, { ko: "서책가", en: "bookseller" }],
+    remembered: [{ ko: "잊힌 이름을 종이에 붙잡은 사람", en: "the one who held forgotten names on paper" }, { ko: "기록되지 못한 사연의 편에 선 사람", en: "the one who stood with stories denied a record" }],
+    finalObjects: [{ ko: "끈으로 묶은 이름 없는 문집", en: "an unsigned collection tied with cord" }, { ko: "먹 번진 청원서 한 장", en: "an ink-blurred petition" }],
+    finalLine: { ko: "그가 남긴 책에는 왕의 이름보다, 사라질 뻔한 사람들의 숨이 더 많았다.", en: "The book held more breaths of nearly erased people than names of kings." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 어려서부터 말보다 글씨에 마음이 먼저 갔고, 남이 버린 종이 조각도 곧장 접어 품에 넣었다.`,
+      `${ctx.role.ko}가 된 뒤, ${ctx.name}의 작은 방에는 이상한 부탁이 모였다. 억울하게 죽은 남편의 이름을 남기고 싶은 과부, 족보에 오르지 못한 아이, 관아 문턱을 넘지 못한 종의 사연이 밤마다 찾아왔다.`,
+      `가장 위험했던 날은 수색이 있던 초겨울이었다. ${ctx.name}은 이름 없는 문집을 쌀독 아래 숨기고, 손님에게는 장부를 태운 척 재를 보여 주었다. 그날 이후 손끝의 떨림은 오래 갔다.`,
+      `곁에는 매번 첫 독자가 되어 주는 사람이 있었다. 그 사람은 칭찬보다 더 자주 "이 문장은 너무 곱다. 이 사람은 이렇게 곱게만 살지 못했을 것이다"라고 말했다.`,
+      `말년의 ${ctx.name}은 글씨가 흐려져도 이름만은 또박또박 썼다. 누군가를 아름답게 꾸미기보다, 그 사람이 실제로 견딘 날을 숨기지 않는 일이 더 중요해졌다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 옆에서 생을 마쳤다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. Writing reached the heart before speech did, and even discarded scraps of paper were folded and kept.`,
+      `After becoming a ${ctx.role.en}, strange requests gathered in ${ctx.name}'s small room: a widow wanting her wrongly killed husband's name preserved, a child missing from a genealogy, a servant whose story could not cross the office threshold.`,
+      `The most dangerous day came during an early winter search. ${ctx.name} hid the unsigned collection beneath a rice jar and showed ash as if the ledger had burned. The trembling in the fingers stayed for years.`,
+      `There was someone nearby who always read first. More often than praise, they said, "This sentence is too pretty. This person could not have lived only prettily."`,
+      `In old age, even as the handwriting blurred, names were written clearly. It became more important not to hide what people had endured than to make them beautiful.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} died beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "흉년의 장터를 건넌 보부상", en: "The Peddler Who Crossed a Famine Market" },
+    subtitle: { ko: "이익보다 사람의 사정을 먼저 셈한 장사꾼", en: "A trader who counted people's circumstances before profit." },
+    roles: [{ ko: "보부상", en: "traveling peddler" }, { ko: "무명 장사꾼", en: "cloth trader" }, { ko: "장터 중개인", en: "market broker" }],
+    remembered: [{ ko: "굶주린 장터에서 값을 낮춘 사람", en: "the one who lowered prices in a hungry market" }, { ko: "길 위의 약속을 끝까지 갚은 사람", en: "the one who repaid promises made on the road" }],
+    finalObjects: [{ ko: "손때 묻은 저울", en: "a hand-worn scale" }, { ko: "비에 젖어 바랜 비단 조각", en: "a rain-faded scrap of silk" }],
+    finalLine: { ko: "그는 큰 부자가 되지 못했지만, 굶주린 해의 장터에서 사람값을 깎지 않았다.", en: "Great wealth never came, but in a hungry year, he never discounted a human life." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 말이 빠르고 귀가 밝아, 어른들은 장터에 나가면 굶지는 않겠다고 말했다.`,
+      `${ctx.role.ko}가 된 ${ctx.name}은 봇짐 하나로 고개와 나루를 넘었다. 어느 해 홍수가 길을 끊자, 젖은 비단을 말리며 아이 업은 여인에게 외상으로 옷감을 내주었다.`,
+      `흉년이 들자 장터는 웃음보다 한숨이 많아졌다. 곡식값은 뛰었고, 사람들은 그릇과 비녀를 팔아 하루를 버텼다. ${ctx.name}은 저울추를 속이지 않았고, 굶주린 집 앞에서는 이문을 거의 남기지 않았다.`,
+      `동료 상인은 미련하다고 했다. 하지만 몇 해 뒤 눈보라 속에서 길을 잃었을 때, 예전에 외상으로 옷감을 받았던 여인이 ${ctx.name}을 자기 집 아랫목으로 데려갔다.`,
+      `말년에는 장사보다 사람을 이어 주는 일을 더 많이 했다. 길을 잃은 장돌뱅이에게 새 길을 알려 주고, 서로 원수가 된 두 집안의 혼례 물목을 조용히 맞췄다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko}을 곁에 두고 떠났다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. Quick speech and sharp ears made elders say the child would never starve in a marketplace.`,
+      `As a ${ctx.role.en}, ${ctx.name} crossed passes and ferries with one bundle. When a flood broke the road, wet silk was dried and cloth was given on credit to a woman carrying a child.`,
+      `In famine years, the market held more sighs than laughter. Grain prices rose, and people sold bowls and hairpins to survive one more day. ${ctx.name} did not cheat the weights and left almost no profit at hungry doors.`,
+      `Other merchants called it foolish. Years later, lost in a snowstorm, ${ctx.name} was led to a warm floor by the woman who had once received cloth on credit.`,
+      `In old age, connecting people became more important than selling goods. Lost traders were shown new roads, and wedding goods were quietly arranged between families that had become enemies.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} departed beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "사랑보다 탄원을 택한 유배 선비", en: "The Exiled Scholar Who Chose Petition Over Love" },
+    subtitle: { ko: "고백하지 못한 마음과 끝까지 접지 않은 신념", en: "An unconfessed love and a conviction never folded away." },
+    roles: [{ ko: "상소문 필사공", en: "petition copyist" }, { ko: "향교 선생", en: "local academy teacher" }, { ko: "유배 선비", en: "exiled scholar" }],
+    remembered: [{ ko: "사랑 앞에서도 글을 접지 않은 사람", en: "the one who did not fold the petition even before love" }, { ko: "외로움 속에서도 기준을 버리지 않은 사람", en: "the one who kept a standard inside loneliness" }],
+    finalObjects: [{ ko: "부치지 못한 연서", en: "an unsent love letter" }, { ko: "붉은 실로 묶은 탄원문", en: "petitions tied with red thread" }],
+    finalLine: { ko: "그가 잃은 것은 한 사람의 곁이었고, 지킨 것은 여러 사람의 억울함이었다.", en: "What was lost was one person's nearness; what was kept was the grievance of many." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 어릴 때부터 옳다고 믿은 일 앞에서는 목소리가 작아져도 물러서지 않았다.`,
+      `젊은 ${ctx.name}은 ${ctx.role.ko}로 살며 억울한 사람들의 말을 상소문으로 옮겼다. 첫 번째 탄원은 매 맞아 죽은 노비의 누이를 위한 것이었고, 두 번째는 세금을 두 번 낸 마을을 위한 것이었다.`,
+      `그 무렵 마음을 주고받던 사람이 있었다. 혼례 이야기가 오가던 밤, ${ctx.name}은 탄원문을 포기하면 함께 살 수 있다는 말을 들었다. 하지만 손에 쥔 붓을 끝내 내려놓지 못했다.`,
+      `결국 유배 길이 열렸다. 바닷가 먼 마을에서 ${ctx.name}은 아이들에게 글을 가르치고, 밤마다 보내지 못한 편지를 다시 접었다. 사랑은 사라지지 않았지만, 더 이상 돌아갈 길을 요구하지 않았다.`,
+      `말년에는 성난 글보다 정확한 글을 썼다. 누군가의 분노가 오래 버티려면, 문장이 먼저 무너지지 않아야 한다는 것을 배웠기 때문이다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 옆에서 눈을 감았다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 불렀다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. Since childhood, the voice could become small before what felt right, but the feet did not step back.`,
+      `As a young ${ctx.role.en}, ${ctx.name} turned wronged voices into petitions. The first was for the sister of a servant beaten to death; the second for a village taxed twice.`,
+      `There was someone exchanging affection then. On a night when marriage was being discussed, ${ctx.name} was told that life together was possible if the petition was abandoned. The brush could not be put down.`,
+      `Exile followed. In a distant seaside village, ${ctx.name} taught children letters and refolded unsent letters each night. Love did not vanish, but it no longer demanded a road back.`,
+      `In old age, the writing became more precise than angry. ${ctx.name} had learned that for anger to endure, the sentence must not collapse first.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} closed their eyes beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "늦게 물든 옷감을 팔던 차집 주인", en: "The Teahouse Keeper Who Dyed Cloth Late" },
+    subtitle: { ko: "무너진 뒤에야 자기 색을 찾은 사람", en: "A person who found their own color only after breaking." },
+    roles: [{ ko: "염색 장인", en: "dyer" }, { ko: "차집 주인", en: "teahouse keeper" }, { ko: "손재주 있는 과부", en: "widowed artisan" }],
+    remembered: [{ ko: "늦게 피었지만 오래 향을 남긴 사람", en: "the one who bloomed late and left a long scent" }, { ko: "상처 뒤의 색을 꺼낸 사람", en: "the one who drew color out after wounds" }],
+    finalObjects: [{ ko: "쪽빛 물감이 든 작은 접시", en: "a small dish of indigo pigment" }, { ko: "차 향이 밴 나무 상자", en: "a wooden box scented with tea" }],
+    finalLine: { ko: "그 사람은 봄을 놓쳤지만, 늦여름의 색으로 오래 남았다.", en: "That life missed spring, but remained in the color of late summer." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 손끝이 야무져 천 조각, 찻잎, 작은 꽃잎만 있어도 금세 무언가를 만들어 냈다.`,
+      `이른 혼인은 오래 가지 못했다. 시집의 빚과 상처만 남은 채 돌아온 ${ctx.name}은 한동안 사람들 눈을 피해 살았다. 그러다 비 오는 날, 버려진 흰 옷감을 쪽빛 물에 담갔다.`,
+      `그 색이 마음을 붙잡았다. ${ctx.name}은 ${ctx.role.ko}로 다시 문을 열었고, 낮에는 옷감을 팔고 저녁에는 따뜻한 차를 냈다. 사람들은 물건을 사러 왔다가 말하지 못한 이야기를 놓고 갔다.`,
+      `어느 겨울, 굶주린 아이 하나가 가게 처마 밑에서 잠들었다. ${ctx.name}은 그 아이에게 밥과 글자를 주었고, 훗날 아이는 가게의 색 이름을 새로 지어 주는 사람이 되었다.`,
+      `말년의 가게에는 서두르는 말이 없었다. 실패한 혼인, 늦은 시작, 다시 사랑하지 못한 마음까지도 그곳에서는 이상하지 않았다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 조용히 떠났다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. Skillful hands made things from scraps of cloth, tea leaves, and tiny petals.`,
+      `An early marriage did not last. Returning with only debt and wounds from the in-laws, ${ctx.name} avoided people's eyes for a long time. Then, on a rainy day, a discarded white cloth was lowered into indigo dye.`,
+      `The color held the heart. ${ctx.name} reopened life as a ${ctx.role.en}, selling cloth by day and serving warm tea by evening. People came to buy goods and left behind stories they could not say elsewhere.`,
+      `One winter, a hungry child fell asleep beneath the shop eaves. ${ctx.name} gave the child rice and letters; later, the child became the one who named the shop's colors anew.`,
+      `In old age, no hurried words filled the shop. Failed marriage, late beginnings, and a heart that never loved again were not strange there.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} quietly departed beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "궁궐 문밖의 비밀 심부름꾼", en: "The Secret Runner Outside the Palace Gate" },
+    subtitle: { ko: "권력의 그림자에서 약한 사람의 말을 옮긴 삶", en: "A life carrying fragile words through the shadow of power." },
+    roles: [{ ko: "문서 전달꾼", en: "document courier" }, { ko: "궁 밖 심부름꾼", en: "palace errand runner" }, { ko: "관청 서리", en: "bureau clerk" }],
+    remembered: [{ ko: "작은 쪽지로 큰 사람들을 흔든 사람", en: "the one who unsettled powerful people with small notes" }, { ko: "문밖에서 가장 위험한 말을 나른 사람", en: "the one who carried the most dangerous words outside the gate" }],
+    finalObjects: [{ ko: "소매 안쪽의 비단 주머니", en: "a silk pouch sewn inside a sleeve" }, { ko: "접힌 쪽지 세 장", en: "three folded notes" }],
+    finalLine: { ko: "그는 역사에 이름을 쓰지 못했지만, 역사가 숨긴 문장을 건넸다.", en: "The name was not written into history, but it carried sentences history tried to hide." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 발걸음이 가볍고 낯빛을 잘 숨겨, 어려서부터 심부름을 맡기면 실수가 없었다.`,
+      `${ctx.role.ko}가 된 뒤, ${ctx.name}은 궁궐 문밖과 관청 골목을 오갔다. 처음에는 평범한 문서였지만, 곧 억울하게 쫓겨난 궁녀의 이름, 사라진 장부의 위치, 병든 세자의 소문 같은 것들이 소매 안으로 들어왔다.`,
+      `가장 긴 밤은 눈발이 날리던 보름이었다. ${ctx.name}은 순라꾼을 피해 담장 밑을 기어가 한 장의 쪽지를 전했고, 그 쪽지 때문에 한 가문은 몰락했지만 한 아이는 목숨을 건졌다.`,
+      `곁에는 이름을 묻지 않는 벗이 있었다. 둘은 서로의 과거를 거의 알지 못했지만, 위험한 일을 끝낸 새벽마다 같은 주막에서 식은 국을 나눠 먹었다.`,
+      `말년의 ${ctx.name}은 더 이상 빠르게 걷지 못했다. 그래도 젊은 심부름꾼들에게 "말은 가볍게 들고, 사람의 목숨은 무겁게 들어라"라고 가르쳤다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko}을 남기고 떠났다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. Light feet and a guarded face made every errand reliable from childhood.`,
+      `As a ${ctx.role.en}, ${ctx.name} moved between palace gates and office alleys. At first the documents were ordinary, but soon a dismissed court woman's name, the location of a missing ledger, and rumors of a sick crown prince slipped into the sleeve.`,
+      `The longest night came under falling snow. ${ctx.name} crawled beneath a wall to avoid patrols and delivered one note; because of it, a family fell, but a child survived.`,
+      `There was a friend who never asked for a name. They knew little of each other's past, but after dangerous work, they shared cold soup in the same tavern at dawn.`,
+      `In old age, ${ctx.name} could no longer walk quickly. Still, young runners were taught, "Carry words lightly, but lives heavily."`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} departed leaving ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "길 위에서 소문을 노래로 바꾼 이야기꾼", en: "The Storyteller Who Turned Rumor Into Song" },
+    subtitle: { ko: "떠도는 삶이 사람들의 기억을 묶어 준 여정", en: "A wandering life that tied people's memories together." },
+    roles: [{ ko: "떠돌이 이야기꾼", en: "wandering storyteller" }, { ko: "광대패 서기", en: "troupe scribe" }, { ko: "장터 노래꾼", en: "market singer" }],
+    remembered: [{ ko: "남의 슬픔을 노래로 돌려준 사람", en: "the one who returned sorrow as song" }, { ko: "소문을 사람의 이야기로 바꾼 사람", en: "the one who turned rumor into human story" }],
+    finalObjects: [{ ko: "가죽끈으로 묶은 노래책", en: "a songbook tied with leather cord" }, { ko: "금 간 장구채", en: "a cracked janggu stick" }],
+    finalLine: { ko: "그가 떠난 뒤에도 장터의 아이들은 모르는 사람의 슬픔을 흥얼거렸다.", en: "After leaving, market children still hummed the grief of strangers." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났지만, 오래 한곳에 머문 기억은 적었다. 어머니를 일찍 잃은 뒤, ${ctx.name}은 남의 이야기를 듣는 법부터 배웠다.`,
+      `${ctx.role.ko}로 떠돈 세월 동안, ${ctx.name}은 마을마다 다른 소문을 들었다. 버림받은 신부, 돌아오지 않는 군역자, 굶주린 겨울에 쌀독을 나눈 이웃의 이야기가 노래가 되었다.`,
+      `한 번은 양반가의 비밀을 노래했다가 매를 맞고 쫓겨났다. 하지만 그 노래를 들은 하녀가 밤새 울었다는 말을 듣고, ${ctx.name}은 웃기는 이야기만으로는 세상을 견딜 수 없다는 걸 알았다.`,
+      `사랑은 늘 길 위에 잠깐 머물렀다. 주막집 딸과 함께 살자는 약속을 한 적도 있었지만, 봄 장이 열리자 ${ctx.name}은 다시 떠났다. 머무르면 이야기가 멈출까 두려웠다.`,
+      `말년에는 아이들에게 노래의 끝을 바꾸게 했다. "네가 들은 슬픔이라면, 네가 살릴 수도 있다"는 말과 함께 장구채를 넘겼다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 조용히 사라졌다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 불렀다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}, but remembered little of staying anywhere long. After losing a mother early, listening to other people's stories became the first lesson.`,
+      `As a ${ctx.role.en}, ${ctx.name} heard different rumors in every village. An abandoned bride, a conscript who never returned, neighbors sharing rice in a starving winter: all became songs.`,
+      `Once, after singing a noble family's secret, ${ctx.name} was beaten and driven out. But hearing that a maid cried all night after the song, ${ctx.name} learned that jokes alone could not carry the world.`,
+      `Love never stayed long off the road. There was once a promise to live with a tavern keeper's daughter, but when the spring market opened, ${ctx.name} left again, afraid that staying would stop the stories.`,
+      `In old age, children were taught to change the endings of songs. "If it is a sorrow you heard, perhaps you can also save it," ${ctx.name} said, handing over the drumstick.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} quietly vanished beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "이름 없이 아이들을 살린 여의", en: "The Woman Healer Who Saved Children Without a Name" },
+    subtitle: { ko: "공식 이름보다 살아남은 아이들의 숨으로 남은 삶", en: "A life remembered less by official name than by children's breath." },
+    roles: [{ ko: "여의", en: "woman physician" }, { ko: "산파", en: "midwife" }, { ko: "약초꾼", en: "herb gatherer" }],
+    remembered: [{ ko: "울음이 끊긴 집에 다시 숨을 돌려준 사람", en: "the one who returned breath to houses gone silent" }, { ko: "이름 없이 아이들을 살린 사람", en: "the one who saved children without a name" }],
+    finalObjects: [{ ko: "작은 은침 꾸러미", en: "a small bundle of silver needles" }, { ko: "약초 냄새 밴 손수건", en: "a handkerchief scented with herbs" }],
+    finalLine: { ko: "관청 기록에는 희미했으나, 살아남은 아이들의 이름 속에 그는 또렷했다.", en: "Faint in office records, she was clear in the names of surviving children." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 어릴 적 동생을 열병으로 잃은 뒤, ${ctx.name}은 아픈 숨소리를 외면하지 못하는 사람이 되었다.`,
+      `${ctx.role.ko}가 된 ${ctx.name}은 밤마다 불려 다녔다. 비 오는 산길을 넘어 산모의 손을 잡았고, 새벽에는 파랗게 질린 아이의 입가에 따뜻한 물을 적셨다.`,
+      `하지만 여자의 손이라는 이유로 문전박대를 당한 날도 많았다. 어느 양반집에서는 이름을 부르지 않고 "그 사람"이라 불렀고, 치료가 끝나자 뒷문으로 나가라고 했다.`,
+      `가장 오래 남은 인연은 자신이 받아 낸 아이였다. 그 아이는 해마다 생일이면 약초 한 줌을 가져왔고, 자라서는 ${ctx.name}의 왕진길에 등불을 들었다.`,
+      `말년의 ${ctx.name}은 누구의 공도 따지지 않았다. 다만 아이가 첫 울음을 터뜨리는 순간마다, 세상이 아주 잠깐 다시 시작된다고 믿었다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 숨을 거두었다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. After losing a younger sibling to fever, ${ctx.name} became unable to turn away from a struggling breath.`,
+      `As a ${ctx.role.en}, ${ctx.name} was called out at night: over rainy mountain paths to hold a mother's hand, at dawn to wet the lips of a child gone blue.`,
+      `Many doors still closed because the hands were a woman's. In one noble house, no name was used; after the treatment, ${ctx.name} was told to leave through the back gate.`,
+      `The longest bond was with a child ${ctx.name} had delivered. Every birthday, the child brought a handful of herbs and later carried a lantern on house calls.`,
+      `In old age, ${ctx.name} no longer measured credit. Each time a newborn cried, the world seemed to begin again for a moment.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} died beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "강을 건너 사람을 숨겨 준 뱃사공", en: "The Ferryman Who Hid People Across the River" },
+    subtitle: { ko: "물길과 침묵으로 누군가의 도망을 지킨 삶", en: "A life protecting escape with river routes and silence." },
+    roles: [{ ko: "뱃사공", en: "ferryman" }, { ko: "나루터 주인", en: "ferry crossing keeper" }, { ko: "강가 농부", en: "riverside farmer" }],
+    remembered: [{ ko: "물살보다 조용히 사람을 건넨 사람", en: "the one who carried people more quietly than the current" }, { ko: "묻지 않는 나루터의 주인", en: "the keeper of the ferry that did not ask" }],
+    finalObjects: [{ ko: "닳은 노 한 자루", en: "a worn wooden oar" }, { ko: "강물에 닳은 작은 돌", en: "a small stone smoothed by river water" }],
+    finalLine: { ko: "그가 건넨 것은 강이 아니라, 돌아갈 수 없던 사람들의 다음 날이었다.", en: "What was crossed was not the river, but the next day of people who could not go back." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko} 강가에서 태어났다. 물소리를 들으면 날씨보다 사람의 마음이 먼저 읽히는 아이였다.`,
+      `${ctx.role.ko}가 된 뒤, ${ctx.name}은 낮에는 장꾼과 농부를 건넸고 밤에는 말 없는 손님을 건넸다. 빚을 피해 도망친 종, 억울한 누명을 쓴 청년, 아이를 업은 과부가 그 배에 올랐다.`,
+      `관아의 추격이 있던 밤, ${ctx.name}은 배를 일부러 모래톱에 걸린 듯 세웠다. 숨은 아이가 기침을 삼키는 동안, ${ctx.name}은 순라꾼에게 강물의 깊이를 오래 설명했다.`,
+      `가족은 늘 불안했다. 왜 남의 일에 목숨을 거느냐는 말도 들었다. 하지만 ${ctx.name}은 언젠가 자기 집도 누군가의 침묵 덕분에 살아남았다는 사실을 잊지 않았다.`,
+      `말년에는 배를 젊은이에게 넘기고 강가에 앉아 물살을 보았다. 묻지 말아야 살 수 있는 이야기가 있다는 것을, 그제야 마을 사람들도 알게 되었다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 생을 마쳤다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} beside the river in ${ctx.region.en}. Hearing the water, the child read people's hearts before the weather.`,
+      `As a ${ctx.role.en}, ${ctx.name} ferried merchants and farmers by day and silent passengers by night: a servant escaping debt, a young man falsely accused, a widow carrying a child.`,
+      `On a night of pursuit, ${ctx.name} made the boat seem stuck on a sandbar. While a hidden child swallowed a cough, the river depth was explained to patrolmen at great length.`,
+      `Family lived with fear. Why risk life for strangers, they asked. But ${ctx.name} never forgot that one day, their own house had survived because someone else stayed silent.`,
+      `In old age, the boat was handed to a younger person, and ${ctx.name} sat watching the current. Only then did the village understand that some stories survive because no one asks.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} died beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "마지막 편지를 품은 군역 파발", en: "The Military Messenger Who Carried the Last Letter" },
+    subtitle: { ko: "전쟁 뒤의 말들을 끝까지 전달한 사람", en: "A life carrying words left after war." },
+    roles: [{ ko: "군역 파발", en: "military messenger" }, { ko: "역참 마부", en: "post-station rider" }, { ko: "전장 기록 전달자", en: "battlefield courier" }],
+    remembered: [{ ko: "돌아오지 못한 이들의 말을 끝까지 전한 사람", en: "the one who delivered words from those who could not return" }, { ko: "전쟁 뒤의 침묵을 건넌 사람", en: "the one who crossed the silence after war" }],
+    finalObjects: [{ ko: "피 묻은 편지 주머니", en: "a bloodstained letter pouch" }, { ko: "말방울 하나", en: "a single horse bell" }],
+    finalLine: { ko: "그는 승전보다, 기다리는 사람에게 도착한 한 줄의 말을 더 믿었다.", en: "More than victory, he trusted one line arriving to someone who waited." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 달리는 말소리에 가슴이 뛰었고, 길을 외우는 데에는 누구보다 빨랐다.`,
+      `${ctx.role.ko}가 된 ${ctx.name}은 전쟁의 뒤편을 달렸다. 승전보보다 더 무거운 것은 부상자의 이름, 돌아오지 못한 아들의 편지, 마지막으로 부탁한 논밭의 위치였다.`,
+      `어느 겨울 전투 뒤, ${ctx.name}은 죽어 가는 병사의 편지를 품고 사흘 밤을 달렸다. 집에 도착했을 때 어머니는 이미 소문을 알고 있었지만, 편지 첫 줄을 듣고서야 무너졌다.`,
+      `그 뒤로 ${ctx.name}은 편지를 전할 때마다 문 앞에서 숨을 골랐다. 말 한 줄이 사람을 살리기도 하고, 남은 생을 완전히 바꾸기도 한다는 것을 알았기 때문이다.`,
+      `말년에는 역참의 낡은 방에서 젊은 파발들에게 길보다 사람의 얼굴을 기억하라고 가르쳤다. 빠른 발보다 늦지 않는 마음이 더 중요하다고 했다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 눈을 감았다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. The sound of running horses quickened the heart, and roads were memorized faster than anyone else could.`,
+      `As a ${ctx.role.en}, ${ctx.name} rode behind war. Heavier than victory reports were the names of the wounded, letters from sons who would not return, and the location of fields mentioned at the end.`,
+      `After one winter battle, ${ctx.name} carried a dying soldier's letter for three nights. The mother already knew the rumor, but only collapsed when the first line was read aloud.`,
+      `After that, ${ctx.name} paused at every door before delivering a letter. One line could save a person, or alter the rest of a life completely.`,
+      `In old age, young messengers in the post-station room were taught to remember faces more than roads. A heart that did not arrive late mattered more than fast feet.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} closed their eyes beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "달빛 아래 도망친 노비", en: "The Runaway Servant Under Moonlight" },
+    subtitle: { ko: "자유가 죄가 되던 밤에도 이름을 되찾으려 한 삶", en: "A life seeking a name on a night when freedom was treated as a crime." },
+    roles: [{ ko: "도망친 노비", en: "runaway servant" }, { ko: "산골 농부", en: "mountain farmer" }, { ko: "숯 굽는 사람", en: "charcoal burner" }],
+    remembered: [{ ko: "자기 이름을 끝내 되찾은 사람", en: "the one who reclaimed a name in the end" }, { ko: "달빛 아래 사라져 산이 된 사람", en: "the one who vanished under moonlight and became a mountain tale" }],
+    finalObjects: [{ ko: "이름을 새긴 나무패", en: "a wooden tag carved with a name" }, { ko: "숯가루 묻은 헝겊", en: "a cloth stained with charcoal dust" }],
+    finalLine: { ko: "공식 기록은 그를 도망자라 불렀지만, 산마을은 그를 처음으로 자기 이름을 가진 사람이라 불렀다.", en: "Official records called them a runaway; the mountain village called them a person with a name." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}의 남의 집 뒤꼍에서 태어났다. 이름은 있었지만 아무도 제대로 불러 주지 않았고, 명령이 이름보다 먼저 날아왔다.`,
+      `스무 살 무렵, ${ctx.name}은 굶주린 동생이 매 맞는 것을 보고 밤에 도망쳤다. 달빛이 너무 밝아 들킬 것 같았지만, 그 밝음 덕분에 산길의 돌부리를 피할 수 있었다.`,
+      `${ctx.role.ko}로 숨어 산 세월은 자유롭기만 하지 않았다. 추적꾼이 온다는 소문이 돌면 며칠씩 굴속에 숨었고, 장에 나갈 때마다 고개를 숙였다.`,
+      `그래도 산마을 사람 하나가 ${ctx.name}을 이름으로 불러 주었다. 처음 들은 그 한마디 때문에, ${ctx.name}은 다시 붙잡히더라도 자신이 물건은 아니었다는 사실을 잊지 않게 되었다.`,
+      `말년에는 숯을 팔아 굶주린 아이들을 거두었다. 아이들에게 가장 먼저 가르친 것은 글자가 아니라, 서로의 이름을 정확히 불러 주는 일이었다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko}을 남기고 떠났다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} behind another family's house in ${ctx.region.en}. There was a name, but no one used it properly; orders arrived before the name did.`,
+      `Around twenty, after seeing a hungry younger sibling beaten, ${ctx.name} ran at night. The moon was so bright that discovery seemed certain, but that same brightness showed the stones on the mountain path.`,
+      `Life as a ${ctx.role.en} was not only freedom. Whenever rumors of trackers came, ${ctx.name} hid in caves for days and lowered the head at every market.`,
+      `Still, one mountain villager called ${ctx.name} by name. Because of that first true sound, ${ctx.name} never forgot, even if captured again, that they were not an object.`,
+      `In old age, charcoal was sold to take in hungry children. The first lesson was not letters, but calling one another's names correctly.`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} departed leaving ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+  {
+    title: { ko: "눈보라 속 가마 불을 지킨 옹기장이", en: "The Potter Who Kept the Kiln Fire in a Snowstorm" },
+    subtitle: { ko: "큰 빛은 아니었지만 가장 추운 밤에 꺼지지 않은 삶", en: "Not a great light, but an ember that stayed alive on the coldest night." },
+    roles: [{ ko: "옹기장이", en: "potter" }, { ko: "가마지기", en: "kiln keeper" }, { ko: "전란 뒤의 마을 일꾼", en: "village worker after war" }],
+    remembered: [{ ko: "가장 추운 밤의 불씨를 지킨 사람", en: "the one who kept the ember on the coldest night" }, { ko: "깨진 그릇보다 사람을 먼저 붙인 사람", en: "the one who mended people before broken bowls" }],
+    finalObjects: [{ ko: "금 간 밥그릇 하나", en: "one cracked rice bowl" }, { ko: "재 속에 남은 작은 불씨", en: "a small ember left in ash" }],
+    finalLine: { ko: "그가 만든 그릇은 깨졌어도, 그가 지킨 밤들은 오래 식지 않았다.", en: "The bowls he made broke, but the nights he protected did not cool for a long time." },
+    lifeStory: (ctx, locale) => locale === "ko" ? [
+      `${ctx.name}은 ${ctx.birthYear}년 ${ctx.region.ko}에서 태어났다. 흙을 만지면 마음이 가라앉았고, 깨진 그릇을 보면 그냥 버리지 못했다.`,
+      `전란 뒤 마을은 집보다 먼저 그릇이 모자랐다. ${ctx.name}은 ${ctx.role.ko}로 밤마다 가마 불을 지켰고, 피난 온 아이들에게는 밥그릇부터 만들어 주었다.`,
+      `가장 혹독한 겨울, 눈보라가 가마 입구를 막았다. 사람들은 불을 포기하자고 했지만, ${ctx.name}은 젖은 장작을 잘게 쪼개 새벽까지 불씨를 살렸다. 그 가마에서 나온 항아리들은 다음 봄 굶주린 집들의 장독이 되었다.`,
+      `가족을 잃은 죄책감은 오래 남았다. 그래서 ${ctx.name}은 버려진 아이 하나를 거두었고, 아이가 처음으로 "아버지"라고 부르던 날 혼자 가마 뒤에서 울었다.`,
+      `말년에는 더 이상 큰 그릇을 만들지 못했다. 대신 금 간 그릇을 고쳐 주며 "깨진 자리가 있어야 오래 쓰는 법을 배운다"고 말했다.`,
+      `${ctx.finalYear}년 ${ctx.season.ko}, ${ctx.name}은 ${ctx.finalObject.ko} 곁에서 마지막 숨을 쉬었다. 사람들은 ${ctx.name}을 ${ctx.remembered.ko}으로 기억했다.`,
+    ] : [
+      `${ctx.name} was born in ${ctx.birthYear} in ${ctx.region.en}. Touching clay settled the heart, and broken bowls could never simply be thrown away.`,
+      `After war, the village lacked bowls before houses. As a ${ctx.role.en}, ${ctx.name} kept the kiln fire at night and made rice bowls first for refugee children.`,
+      `In the harshest winter, snow blocked the kiln mouth. Others said to give up the fire, but ${ctx.name} split wet wood into thin pieces and kept the ember alive until dawn. The jars from that kiln became sauce jars for hungry homes the next spring.`,
+      `Guilt over lost family remained long. So ${ctx.name} took in one abandoned child, and when the child first said "father," ${ctx.name} cried alone behind the kiln.`,
+      `In old age, large vessels could no longer be made. Instead, cracked bowls were mended while ${ctx.name} said, "A broken place teaches something how to last."`,
+      `In the ${ctx.season.en} of ${ctx.finalYear}, ${ctx.name} took a final breath beside ${ctx.finalObject.en}. People remembered ${ctx.name} as ${ctx.remembered.en}.`,
+    ],
+  },
+];
+
+ARCHETYPES.forEach((archetype, index) => {
+  Object.assign(archetype, JOSEON_LIFE_OVERRIDES[index]);
+});
+
 const SEASONS: Pair[] = [
   { ko: "늦봄", en: "late spring" },
   { ko: "초여름", en: "early summer" },
@@ -315,6 +667,14 @@ function getInitialSharedName(): string {
 
 function makeParagraphs(name: string, result: Omit<LifeResult, "paragraphs">): { ko: string[]; en: string[] } {
   const { archetype, birthYear, finalYear, region, role, remembered, season, finalObject } = result;
+  const storyContext = { name, birthYear, finalYear, region, role, remembered, season, finalObject };
+  if (archetype.lifeStory) {
+    return {
+      ko: archetype.lifeStory(storyContext, "ko"),
+      en: archetype.lifeStory(storyContext, "en"),
+    };
+  }
+
   return {
     ko: [
       `${withJosa(name, "은/는")} ${birthYear}년, ${region.ko}의 작은 계절 속에서 태어났습니다. 그해 마을에는 유난히 바람이 오래 머물렀고, 사람들은 아이의 눈빛이 또렷하다고 말했습니다.`,
@@ -452,10 +812,12 @@ export default function JoseonLifePage(): ReactElement {
           <p className="eyebrow">{t("가상의 조선 일대기", "Fictional Joseon Life")}</p>
           <h1>「{locale === "ko" ? result.archetype.title.ko : result.archetype.title.en}」</h1>
           <p className="lead">
-            {t(
-              `${submittedName}의 이름으로 남은, 한 사람의 가상 생애 기록입니다.`,
-              `A fictional life record left under the name ${submittedName}.`,
-            )}
+            {result.archetype.subtitle
+              ? (locale === "ko" ? result.archetype.subtitle.ko : result.archetype.subtitle.en)
+              : t(
+                `${submittedName}의 이름으로 남은, 한 사람의 가상 생애 기록입니다.`,
+                `A fictional life record left under the name ${submittedName}.`,
+              )}
           </p>
           <div className="record-grid">
             <span>{t("출생", "Born")}<strong>{result.birthYear}{t(`년, ${result.region.ko}`, `, ${result.region.en}`)}</strong></span>
