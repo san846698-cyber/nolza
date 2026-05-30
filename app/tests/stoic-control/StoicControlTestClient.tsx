@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState, type ReactElement } from "re
 import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
-import LikertScaleQuestion, { type LikertRating } from "@/app/components/game/LikertScaleQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -16,7 +15,6 @@ import {
 } from "@/lib/analytics";
 import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 import {
-  STOIC_QUESTIONS,
   calculateStoicResult,
   getStoicResultById,
   type StoicAnswer,
@@ -31,6 +29,212 @@ type StoicSharePayload = {
   locale?: SimpleLocale;
 };
 
+type StoicStatement = {
+  id: string;
+  text: {
+    ko: string;
+    en: string;
+  };
+  weights: Partial<Record<StoicControlId, number>>;
+};
+
+const SCALE_VALUES = [1, 2, 3, 4, 5, 6, 7] as const;
+
+const STOIC_STATEMENTS: StoicStatement[] = [
+  {
+    id: "sc_l01",
+    text: {
+      ko: "당황스러운 일이 생기면, 먼저 내가 지금 통제할 수 있는 것부터 정리하려 한다.",
+      en: "When something unsettling happens, I first sort out what I can actually control right now.",
+    },
+    weights: { "present-action": 2 },
+  },
+  {
+    id: "sc_l02",
+    text: {
+      ko: "불안할수록 모든 가능성을 통제하려고 머릿속으로 여러 시나리오를 반복한다.",
+      en: "The more anxious I feel, the more I replay possible scenarios in my head to control what may happen.",
+    },
+    weights: { future: 2 },
+  },
+  {
+    id: "sc_l03",
+    text: {
+      ko: "선택을 한 뒤에도 사람들이 나를 어떻게 볼지 오래 신경 쓰인다.",
+      en: "Even after making a choice, I keep thinking about how people may see me.",
+    },
+    weights: { "others-opinion": 2 },
+  },
+  {
+    id: "sc_l04",
+    text: {
+      ko: "감정이 흔들리면, 흔들렸다는 사실 자체를 들키고 싶지 않다.",
+      en: "When I feel shaken, I do not want others to notice that I was shaken at all.",
+    },
+    weights: { emotions: 2 },
+  },
+  {
+    id: "sc_l05",
+    text: {
+      ko: "결과가 나오기 전부터 잘될지 망칠지를 계속 머릿속으로 판정한다.",
+      en: "Before the result arrives, I keep judging in my head whether it will go well or fail.",
+    },
+    weights: { outcome: 2 },
+  },
+  {
+    id: "sc_l06",
+    text: {
+      ko: "상대의 답장이 늦어지면, 관계의 온도가 달라진 것 같아 마음이 불편해진다.",
+      en: "When someone replies late, I feel uneasy as if the temperature of the relationship has changed.",
+    },
+    weights: { relationships: 2 },
+  },
+  {
+    id: "sc_l07",
+    text: {
+      ko: "작은 실수도 내가 아직 부족한 사람이라는 증거처럼 느껴질 때가 있다.",
+      en: "Even a small mistake can feel like proof that I am still not good enough.",
+    },
+    weights: { "perfect-self": 2 },
+  },
+  {
+    id: "sc_l08",
+    text: {
+      ko: "이미 지나간 장면도 ‘그때 다르게 말했어야 했는데’ 하며 오래 되감는다.",
+      en: "I often rewind scenes that already passed, thinking I should have said something differently.",
+    },
+    weights: { past: 2 },
+  },
+  {
+    id: "sc_l09",
+    text: {
+      ko: "상황이 복잡해질수록, 완벽한 답보다 지금 가능한 다음 행동 하나를 찾으려 한다.",
+      en: "When things get complicated, I try to find one possible next action rather than the perfect answer.",
+    },
+    weights: { "present-action": 2 },
+  },
+  {
+    id: "sc_l10",
+    text: {
+      ko: "아직 일어나지 않은 문제까지 대비해야 마음이 조금 놓인다.",
+      en: "I feel a little safer only after preparing for problems that have not happened yet.",
+    },
+    weights: { future: 2 },
+  },
+  {
+    id: "sc_l11",
+    text: {
+      ko: "내 의도보다 내 행동이 어떻게 해석될지가 먼저 떠오를 때가 많다.",
+      en: "I often think first about how my action will be interpreted, rather than what I intended.",
+    },
+    weights: { "others-opinion": 2 },
+  },
+  {
+    id: "sc_l12",
+    text: {
+      ko: "화나거나 서운해도, 일단 빨리 정리하고 평정심을 되찾아야 한다고 느낀다.",
+      en: "Even when I am angry or hurt, I feel I should quickly organize myself and regain composure.",
+    },
+    weights: { emotions: 2 },
+  },
+  {
+    id: "sc_l13",
+    text: {
+      ko: "과정에 최선을 다했어도, 결과가 애매하면 내가 실패한 것처럼 느껴진다.",
+      en: "Even if I did my best in the process, an unclear result can still feel like my failure.",
+    },
+    weights: { outcome: 2 },
+  },
+  {
+    id: "sc_l14",
+    text: {
+      ko: "관계가 어색해지면, 내가 무엇을 해야 다시 괜찮아질지 계속 계산한다.",
+      en: "When a relationship feels awkward, I keep calculating what I should do to make it okay again.",
+    },
+    weights: { relationships: 2 },
+  },
+  {
+    id: "sc_l15",
+    text: {
+      ko: "준비가 덜 된 모습을 보이면, 사람들이 나를 가볍게 볼까 봐 긴장된다.",
+      en: "If I show an unfinished side of myself, I worry people may take me less seriously.",
+    },
+    weights: { "perfect-self": 2 },
+  },
+  {
+    id: "sc_l16",
+    text: {
+      ko: "지난 선택을 떠올리며, 지금의 정보로 과거의 나를 엄하게 평가할 때가 있다.",
+      en: "I sometimes judge my past self harshly using information I only have now.",
+    },
+    weights: { past: 2 },
+  },
+  {
+    id: "sc_l17",
+    text: {
+      ko: "불확실한 상황에서도 내가 할 수 있는 작은 책임을 찾으면 마음이 안정된다.",
+      en: "Even in uncertainty, finding one small responsibility I can take helps me feel steadier.",
+    },
+    weights: { "present-action": 2 },
+  },
+  {
+    id: "sc_l18",
+    text: {
+      ko: "계획이 틀어질 가능성을 생각하지 않으면 오히려 더 불안해진다.",
+      en: "If I do not think about how a plan might go wrong, I feel even more anxious.",
+    },
+    weights: { future: 2 },
+  },
+  {
+    id: "sc_l19",
+    text: {
+      ko: "사람들이 나를 오해할 것 같으면, 행동하기 전부터 마음이 좁아진다.",
+      en: "When I think people may misunderstand me, my mind tightens before I even act.",
+    },
+    weights: { "others-opinion": 2 },
+  },
+  {
+    id: "sc_l20",
+    text: {
+      ko: "내 안에 감정이 남아 있어도 겉으로는 이미 괜찮은 사람처럼 보이고 싶다.",
+      en: "Even when emotion remains inside me, I want to look like someone who is already fine.",
+    },
+    weights: { emotions: 2 },
+  },
+  {
+    id: "sc_l21",
+    text: {
+      ko: "결과가 내 손을 떠난 뒤에도, 마음은 계속 결과를 붙잡고 있다.",
+      en: "Even after the result has left my hands, my mind keeps holding onto it.",
+    },
+    weights: { outcome: 2 },
+  },
+  {
+    id: "sc_l22",
+    text: {
+      ko: "상대의 기분이나 거리감이 변하면, 내가 관계를 놓친 것처럼 느껴진다.",
+      en: "When someone’s mood or distance changes, it can feel like I have lost hold of the relationship.",
+    },
+    weights: { relationships: 2 },
+  },
+  {
+    id: "sc_l23",
+    text: {
+      ko: "나답게 성장하고 싶지만, 부족한 모습을 허용하는 일은 여전히 어렵다.",
+      en: "I want to grow in my own way, but allowing my unfinished parts is still difficult.",
+    },
+    weights: { "perfect-self": 2 },
+  },
+  {
+    id: "sc_l24",
+    text: {
+      ko: "후회가 올라오면, 과거를 바꿀 수 없다는 사실을 받아들이기까지 시간이 걸린다.",
+      en: "When regret rises, it takes time for me to accept that the past cannot be changed.",
+    },
+    weights: { past: 2 },
+  },
+];
+
 function t(locale: SimpleLocale, ko: string, en: string): string {
   return locale === "ko" ? ko : en;
 }
@@ -39,13 +243,11 @@ function text(locale: SimpleLocale, copy: { ko: string; en: string }): string {
   return locale === "ko" ? copy.ko : copy.en;
 }
 
-function remapLikertWeights(ratings: LikertRating<StoicControlId>[]): Partial<Record<StoicControlId, number>> {
+function remapLikertWeights(statement: StoicStatement, value: number): Partial<Record<StoicControlId, number>> {
   const weights: Partial<Record<StoicControlId, number>> = {};
-  for (const rating of ratings) {
-    const agreement = (rating.value - 1) / 6;
-    for (const [id, value] of Object.entries(rating.weights) as Array<[StoicControlId, number]>) {
-      weights[id] = (weights[id] ?? 0) + value * agreement;
-    }
+  const agreement = (value - 1) / 6;
+  for (const [id, weight] of Object.entries(statement.weights) as Array<[StoicControlId, number]>) {
+    weights[id] = (weights[id] ?? 0) + weight * agreement;
   }
   return weights;
 }
@@ -57,6 +259,7 @@ export default function StoicControlTestClient(): ReactElement {
   const [answers, setAnswers] = useState<StoicAnswer[]>([]);
   const [sharedResult, setSharedResult] = useState<StoicResult | null>(null);
   const [shareStatus, setShareStatus] = useState("");
+  const [selectedValue, setSelectedValue] = useState<number | null>(null);
 
   useEffect(() => {
     const payload = decodeSharePayload<StoicSharePayload>(new URLSearchParams(window.location.search).get("s"));
@@ -65,19 +268,19 @@ export default function StoicControlTestClient(): ReactElement {
       const restoreId = window.setTimeout(() => {
         setSharedResult(result);
         setPhase("result");
-        setQuestionIndex(STOIC_QUESTIONS.length - 1);
+        setQuestionIndex(STOIC_STATEMENTS.length - 1);
         setAnswers([]);
       }, 0);
       return () => window.clearTimeout(restoreId);
     }
   }, []);
 
-  const currentQuestion = STOIC_QUESTIONS[questionIndex];
+  const currentStatement = STOIC_STATEMENTS[questionIndex];
   const result = useMemo(() => sharedResult ?? calculateStoicResult(answers), [answers, sharedResult]);
-  const progress = phase === "result" ? 100 : ((questionIndex + 1) / STOIC_QUESTIONS.length) * 100;
+  const progress = phase === "result" ? 100 : ((questionIndex + 1) / STOIC_STATEMENTS.length) * 100;
 
   useEffect(() => {
-    if (phase !== "quiz") return;
+    if (phase === "intro") return;
     const frame = window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       document.scrollingElement?.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -98,20 +301,24 @@ export default function StoicControlTestClient(): ReactElement {
     setAnswers([]);
     setSharedResult(null);
     setShareStatus("");
+    setSelectedValue(null);
     window.history.replaceState(null, "", "/tests/stoic-control");
   }, []);
 
-  const choose = useCallback((ratings: LikertRating<StoicControlId>[]) => {
+  const choose = useCallback(() => {
+    if (selectedValue === null) return;
     trackQuestionAnswered("stoic-control", questionIndex + 1);
     const nextAnswer: StoicAnswer = {
-      questionId: currentQuestion.id,
-      choiceId: `likert:${ratings.map((rating) => `${rating.choiceId}${rating.value}`).join(",")}`,
-      weights: remapLikertWeights(ratings),
+      questionId: currentStatement.id,
+      choiceId: `likert:${currentStatement.id}:${selectedValue}`,
+      weights: remapLikertWeights(currentStatement, selectedValue),
     };
     const nextAnswers = [...answers, nextAnswer];
     setAnswers(nextAnswers);
     setShareStatus("");
-    if (questionIndex >= STOIC_QUESTIONS.length - 1) {
+    setSelectedValue(null);
+
+    if (questionIndex >= STOIC_STATEMENTS.length - 1) {
       const nextResult = calculateStoicResult(nextAnswers);
       const url = buildShareUrl("/tests/stoic-control", {
         v: 1,
@@ -122,8 +329,9 @@ export default function StoicControlTestClient(): ReactElement {
       setPhase("result");
       return;
     }
+
     setQuestionIndex((value) => value + 1);
-  }, [answers, currentQuestion.id, locale, questionIndex]);
+  }, [answers, currentStatement, locale, questionIndex, selectedValue]);
 
   const share = useCallback(async () => {
     trackShareClick("stoic-control", "test", result.id);
@@ -174,12 +382,12 @@ export default function StoicControlTestClient(): ReactElement {
               <p className="description">
                 {t(
                   locale,
-                  "통제할 수 있는 것과 없는 것을 구분하는 나의 마음 습관을 알아보세요.",
-                  "Explore how you separate what you can control from what you cannot.",
+                  "통제할 수 있는 것과 없는 것을 구분하는 나의 마음 습관을 24개의 짧은 문장으로 살펴보세요.",
+                  "Explore how you separate what you can control from what you cannot through 24 short statements.",
                 )}
               </p>
               <div className="intro-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
-                <span>{t(locale, "16문항", "16 questions")}</span>
+                <span>{t(locale, "24문장", "24 statements")}</span>
                 <span>{t(locale, "약 4분", "About 4 min")}</span>
                 <span>{t(locale, "철학 기반", "Philosophy lens")}</span>
               </div>
@@ -189,7 +397,7 @@ export default function StoicControlTestClient(): ReactElement {
               <p className="notice">
                 {t(
                   locale,
-                  "이 테스트는 전문적인 진단이 아닌, 심리학/철학 개념을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
+                  "이 테스트는 전문적인 진단이 아닌, 심리학과 철학 개념을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
                   "This is not a professional diagnosis. It is an entertainment and self-reflection experience based on psychology/philosophy concepts.",
                 )}
               </p>
@@ -198,11 +406,11 @@ export default function StoicControlTestClient(): ReactElement {
         ) : (
           <section className="stoic-card">
             <div className="progress-head">
-              <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "질문", "Question")}</span>
+              <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "문장", "Statement")}</span>
               <strong>
                 {phase === "result"
-                  ? `${STOIC_QUESTIONS.length}/${STOIC_QUESTIONS.length}`
-                  : `${questionIndex + 1}/${STOIC_QUESTIONS.length}`}
+                  ? `${STOIC_STATEMENTS.length}/${STOIC_STATEMENTS.length}`
+                  : `${questionIndex + 1}/${STOIC_STATEMENTS.length}`}
               </strong>
             </div>
             <div className="progress-bar" aria-hidden>
@@ -210,14 +418,13 @@ export default function StoicControlTestClient(): ReactElement {
             </div>
 
             {phase === "quiz" ? (
-              <>
-                <LikertScaleQuestion
-                  choices={currentQuestion.choices}
-                  locale={locale}
-                  onSubmit={choose}
-                  prompt={text(locale, currentQuestion.prompt)}
-                />
-              </>
+              <SingleStatementLikert
+                locale={locale}
+                onSelect={setSelectedValue}
+                onSubmit={choose}
+                selectedValue={selectedValue}
+                statement={currentStatement}
+              />
             ) : (
               <ResultView locale={locale} result={result} shared={Boolean(sharedResult)} onRetry={start} onShare={share} shareStatus={shareStatus} />
             )}
@@ -286,7 +493,8 @@ export default function StoicControlTestClient(): ReactElement {
           text-align: center;
         }
         .eyebrow,
-        .progress-head span {
+        .progress-head span,
+        .stoic-single-likert__kicker {
           margin: 0 0 12px;
           color: #896538;
           font-size: 13px;
@@ -308,14 +516,8 @@ export default function StoicControlTestClient(): ReactElement {
           word-break: keep-all;
           overflow-wrap: normal;
         }
-        h2 {
-          margin: 28px 0 22px;
-          font-size: clamp(25px, 4vw, 40px);
-          color: #211d18;
-        }
         .subtitle,
         .description,
-        .meta-line,
         .notice {
           max-width: 660px;
           margin-left: auto;
@@ -332,13 +534,6 @@ export default function StoicControlTestClient(): ReactElement {
         .description {
           margin: 14px 0 28px;
           font-size: 16.5px;
-        }
-        .meta-line {
-          margin: 13px 0 0;
-          color: #80603b;
-          font-size: 14px;
-          font-weight: 900;
-          letter-spacing: 0.04em;
         }
         .notice {
           margin: 10px 0 0;
@@ -367,8 +562,7 @@ export default function StoicControlTestClient(): ReactElement {
           border: 1px solid rgba(71, 56, 35, 0.18);
         }
         .primary:hover,
-        .secondary:hover,
-        .answer:hover {
+        .secondary:hover {
           transform: translateY(-2px);
         }
         .stoic-card {
@@ -401,44 +595,95 @@ export default function StoicControlTestClient(): ReactElement {
           background: linear-gradient(90deg, #9b7445, #717c83);
           transition: width 220ms ease;
         }
-        .answers {
+        .stoic-single-likert {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 24px;
+          padding-top: clamp(30px, 6vw, 58px);
+        }
+        .stoic-single-likert__intro {
+          display: grid;
           gap: 14px;
+          max-width: 780px;
+          margin-inline: auto;
+          text-align: center;
         }
-        .answer {
-          display: grid;
-          grid-template-columns: auto 1fr;
-          gap: 12px;
-          align-items: start;
-          border: 1px solid rgba(71, 56, 35, 0.16);
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.62);
+        .stoic-single-likert__kicker {
+          margin: 0;
+        }
+        .stoic-single-likert h2 {
+          margin: 0;
           color: #211d18;
-          cursor: pointer;
-          padding: 18px;
-          text-align: left;
-          box-shadow: 0 12px 28px rgba(40, 32, 24, 0.08);
-          transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+          font-size: clamp(26px, 4.8vw, 46px);
+          line-height: 1.32;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
         }
-        .answer span {
-          display: grid;
-          place-items: center;
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          background: #24211c;
-          color: #fff4e3;
-          font-size: 13px;
-          font-weight: 900;
-        }
-        .answer strong {
-          font-size: 16px;
+        .stoic-single-likert__help {
+          margin: 0;
+          color: rgba(36, 35, 31, 0.62);
+          font-size: 15px;
+          font-weight: 700;
           line-height: 1.55;
         }
-        .answer:hover {
-          border-color: rgba(137, 101, 56, 0.42);
-          box-shadow: 0 18px 34px rgba(89, 66, 39, 0.13);
+        .stoic-single-likert__labels {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          max-width: 720px;
+          width: 100%;
+          margin: 8px auto 0;
+          color: rgba(36, 35, 31, 0.64);
+          font-size: 13px;
+          font-weight: 850;
+          line-height: 1.4;
+        }
+        .stoic-single-likert__labels span:nth-child(1) {
+          text-align: left;
+        }
+        .stoic-single-likert__labels span:nth-child(2) {
+          text-align: center;
+        }
+        .stoic-single-likert__labels span:nth-child(3) {
+          text-align: right;
+        }
+        .stoic-single-likert__scale {
+          display: grid;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          gap: 10px;
+          max-width: 720px;
+          width: 100%;
+          margin: 0 auto;
+        }
+        .stoic-single-likert__scale button {
+          aspect-ratio: 1;
+          min-width: 0;
+          border: 1px solid rgba(71, 56, 35, 0.18);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.7);
+          color: #493827;
+          cursor: pointer;
+          font-size: clamp(15px, 3.6vw, 18px);
+          font-weight: 950;
+          transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+        }
+        .stoic-single-likert__scale button:hover,
+        .stoic-single-likert__scale button.is-selected {
+          transform: translateY(-2px);
+          border-color: rgba(79, 91, 76, 0.5);
+          background: linear-gradient(135deg, #967144, #4f5b4c);
+          color: #fff9ee;
+          box-shadow: 0 14px 28px rgba(79, 91, 76, 0.18);
+        }
+        .stoic-single-likert__next {
+          justify-self: center;
+          min-width: min(100%, 260px);
+          margin-top: 4px;
+        }
+        .stoic-single-likert__next:disabled {
+          cursor: not-allowed;
+          transform: none;
+          opacity: 0.48;
+          box-shadow: none;
         }
         .result {
           display: grid;
@@ -511,7 +756,6 @@ export default function StoicControlTestClient(): ReactElement {
           font-size: 14px;
         }
         @media (max-width: 780px) {
-          .answers,
           .result-grid {
             grid-template-columns: 1fr;
           }
@@ -528,6 +772,20 @@ export default function StoicControlTestClient(): ReactElement {
             min-height: auto;
             padding-top: 18px;
           }
+          .stoic-single-likert {
+            gap: 20px;
+            padding-top: 30px;
+          }
+          .stoic-single-likert h2 {
+            font-size: clamp(24px, 7vw, 31px);
+            line-height: 1.38;
+          }
+          .stoic-single-likert__labels {
+            font-size: 12px;
+          }
+          .stoic-single-likert__scale {
+            gap: 6px;
+          }
           .primary,
           .secondary {
             width: 100%;
@@ -535,6 +793,59 @@ export default function StoicControlTestClient(): ReactElement {
         }
       `}</style>
     </main>
+  );
+}
+
+function SingleStatementLikert({
+  locale,
+  onSelect,
+  onSubmit,
+  selectedValue,
+  statement,
+}: {
+  locale: SimpleLocale;
+  onSelect: (value: number) => void;
+  onSubmit: () => void;
+  selectedValue: number | null;
+  statement: StoicStatement;
+}): ReactElement {
+  return (
+    <section className="stoic-single-likert" aria-label={t(locale, "7점 척도 응답", "7-point scale")}>
+      <div className="stoic-single-likert__intro">
+        <p className="stoic-single-likert__kicker">{t(locale, "지금의 내 반응", "Inner response")}</p>
+        <h2>{text(locale, statement.text)}</h2>
+        <p className="stoic-single-likert__help">
+          {t(locale, "이 문장이 나와 얼마나 가까운지 선택하세요.", "Choose how closely this statement feels like you.")}
+        </p>
+      </div>
+      <div className="stoic-single-likert__labels" aria-hidden="true">
+        <span>{t(locale, "1 전혀 아니다", "1 Strongly disagree")}</span>
+        <span>{t(locale, "4 보통이다", "4 Neutral")}</span>
+        <span>{t(locale, "7 매우 그렇다", "7 Strongly agree")}</span>
+      </div>
+      <div className="stoic-single-likert__scale" role="radiogroup" aria-label={text(locale, statement.text)}>
+        {SCALE_VALUES.map((value) => (
+          <button
+            aria-checked={selectedValue === value}
+            className={selectedValue === value ? "is-selected" : ""}
+            key={value}
+            onClick={() => onSelect(value)}
+            role="radio"
+            type="button"
+          >
+            {value}
+          </button>
+        ))}
+      </div>
+      <button
+        className="primary stoic-single-likert__next"
+        disabled={selectedValue === null}
+        onClick={onSubmit}
+        type="button"
+      >
+        {t(locale, "다음 문장", "Next statement")}
+      </button>
+    </section>
   );
 }
 
@@ -557,7 +868,7 @@ function ResultView({
     <section className="result">
       {shared ? <span className="shared-label">{t(locale, "공유된 결과", "Shared Result")}</span> : null}
       <div className="result-title">
-        <p className="eyebrow">{t(locale, "놓지 못하는 통제", "Control You Hold Onto")}</p>
+        <p className="eyebrow">{t(locale, "붙잡고 있는 통제", "Control You Hold Onto")}</p>
         <h2>{text(locale, result.title)}</h2>
         <p className="one-liner">{text(locale, result.oneLiner)}</p>
       </div>
@@ -567,7 +878,7 @@ function ResultView({
         <p>
           {t(
             locale,
-            "이 테스트는 심리학/철학 개념을 일상 상황으로 쉽게 풀어낸 자기이해 콘텐츠입니다. 결과는 참고용이며 전문적인 진단이나 상담을 대체하지 않습니다.",
+            "이 테스트는 심리와 철학 개념을 일상 상황으로 쉽게 풀어낸 자기이해 콘텐츠입니다. 결과는 참고용이며 전문적인 진단이나 상담을 대체하지 않습니다.",
             "This test translates psychology/philosophy concepts into everyday situations. Results are for self-reflection only and do not replace professional diagnosis or counseling.",
           )}
         </p>
@@ -582,7 +893,7 @@ function ResultView({
           <p>{text(locale, result.canChoose)}</p>
         </div>
         <div className="result-box">
-          <span>{t(locale, "오늘의 한 문장", "Today's Reflection")}</span>
+          <span>{t(locale, "오늘의 문장", "Today's Reflection")}</span>
           <p>{text(locale, result.reflection)}</p>
         </div>
         <div className="result-box">
