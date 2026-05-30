@@ -75,10 +75,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "You have helped someone several times over a few days, and they ask again as if it is expected. What feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "이번까지만 돕고 다음엔 어렵다고 말하려 한다", en: "I help this time, but plan to say no next time." }, scores: { violatedBoundary: 3 } },
-      { id: "b", text: { ko: "바로 거절하기보다 지금 내 상황을 설명해본다", en: "Rather than refusing right away, I explain my situation." }, scores: { misunderstoodSincerity: 1, violatedBoundary: 1 } },
-      { id: "c", text: { ko: "겉으론 괜찮다 하고 먼저 챙기던 걸 멈춘다", en: "I say it is fine, then stop being the first to take care of it." }, scores: { repeatedDisrespect: 2, abandonedFeeling: 1 } },
-      { id: "d", text: { ko: "상대도 급했을 수 있다고 보고 상황을 조금 더 본다", en: "I assume they may have been pressed too, and watch a little longer." }, scores: { overloadedResponsibility: 1 } },
+      { id: "a", text: { ko: "이번엔 어렵다고 말해야겠다고 선을 딱 정한다", en: "I decide this is where I need to clearly say it is too much." }, scores: { violatedBoundary: 3 } },
+      { id: "b", text: { ko: "거절처럼 들릴까 봐 내 일정과 사정을 길게 설명한다", en: "I explain my schedule and situation carefully so it does not sound like simple refusal." }, scores: { misunderstoodSincerity: 1, violatedBoundary: 1 } },
+      { id: "c", text: { ko: "겉으론 알겠다고 하지만 다음부터 먼저 챙기지는 않는다", en: "I say okay on the outside, but stop being the first to take care of it." }, scores: { repeatedDisrespect: 2, abandonedFeeling: 1 } },
+      { id: "d", text: { ko: "다들 급한가 보다 하고 또 내가 메우는 쪽으로 생각한다", en: "I assume everyone is pressed and start thinking I should fill the gap again." }, scores: { overloadedResponsibility: 1 } },
     ],
   },
   {
@@ -88,10 +88,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "You finish something you prepared for a long time, but people move on to the next task with little reaction. What comes closest?",
     },
     choices: [
-      { id: "a", text: { ko: "수고했다는 한마디가 없어 힘이 빠진다", en: "I lose steam because no one says I worked hard." }, scores: { delayedRecognition: 3 } },
-      { id: "b", text: { ko: "결과보다 다음 할 일을 정리하려고 한다", en: "I try to organize the next task rather than dwell on the result." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 1 } },
-      { id: "c", text: { ko: "티는 안 내지만 다음엔 덜 보여주고 싶어진다", en: "I do not show it, but next time I want to reveal less." }, scores: { abandonedFeeling: 2, delayedRecognition: 1 } },
-      { id: "d", text: { ko: "내가 너무 기대했나 싶어 넘기려 한다", en: "I wonder if I expected too much and try to let it pass." }, scores: { repeatedDisrespect: 1 } },
+      { id: "a", text: { ko: "아무도 알아주지 않은 게 서운해서 힘이 확 빠진다", en: "I feel hurt that no one noticed, and my energy drops at once." }, scores: { delayedRecognition: 3 } },
+      { id: "b", text: { ko: "감정은 미루고 바로 다음 일정과 할 일을 정리한다", en: "I delay the feeling and immediately organize the next schedule and tasks." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 1 } },
+      { id: "c", text: { ko: "티는 안 내지만 다음엔 내 노력을 덜 보여주고 싶어진다", en: "I do not show it, but next time I want to reveal less of my effort." }, scores: { abandonedFeeling: 2, delayedRecognition: 1 } },
+      { id: "d", text: { ko: "내가 인정받길 너무 바랐나 싶어 스스로 넘기려 한다", en: "I wonder if I wanted recognition too much and try to let it pass." }, scores: { repeatedDisrespect: 1 } },
     ],
   },
   {
@@ -101,10 +101,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Someone close keeps brushing off what you say. What feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "처음에는 넘어가지만, 어느 순간 말하고 싶지 않아진다", en: "I let it pass at first, but eventually I stop wanting to talk." }, scores: { repeatedDisrespect: 3 } },
-      { id: "b", text: { ko: "그 말은 가볍게 넘기지 말아달라고 말한다", en: "I say I do not want that comment brushed off." }, scores: { violatedBoundary: 1, misunderstoodSincerity: 1 } },
-      { id: "c", text: { ko: "내가 너무 예민한 건지 이유를 찾아본다", en: "I wonder if I am being too sensitive and look for reasons." }, scores: { misunderstoodSincerity: 1 } },
-      { id: "d", text: { ko: "내 얘기는 접고 상대가 편한 주제로 돌린다", en: "I put my story away and shift to a topic they are comfortable with." }, scores: { abandonedFeeling: 1 } },
+      { id: "a", text: { ko: "처음엔 넘기지만 반복되면 ‘말해도 소용없네’ 싶어진다", en: "I let it pass at first, but after repeats I feel there is no point talking." }, scores: { repeatedDisrespect: 3 } },
+      { id: "b", text: { ko: "이번 말은 그냥 넘기지 말아달라고 차분히 말한다", en: "I calmly say I do not want this one brushed off." }, scores: { violatedBoundary: 1, misunderstoodSincerity: 1 } },
+      { id: "c", text: { ko: "내가 예민하게 받아들인 건지 맥락을 다시 따져본다", en: "I check the context again to see if I am taking it too sensitively." }, scores: { misunderstoodSincerity: 1 } },
+      { id: "d", text: { ko: "웃으며 넘기고 내 얘기는 접은 채 상대가 편한 주제로 돌린다", en: "I smile it off, put my story away, and move to a topic they prefer." }, scores: { abandonedFeeling: 1 } },
     ],
   },
   {
@@ -114,10 +114,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Your sincere actions have been misread several times. You could explain again, but you already feel tired.",
     },
     choices: [
-      { id: "a", text: { ko: "내 진심이 왜 다르게 읽혔는지 답답하다", en: "I feel frustrated that my sincerity was read differently." }, scores: { misunderstoodSincerity: 3 } },
-      { id: "b", text: { ko: "핵심만 짧게 설명하고, 더 이상 내 의도를 계속 증명하지는 않는다", en: "I explain only the core point and stop trying to keep proving my intent." }, scores: { violatedBoundary: 1 } },
-      { id: "c", text: { ko: "또 설명해야 한다는 사실 때문에 마음의 온도가 내려간다", en: "Having to explain again makes my warmth drop." }, scores: { repeatedDisrespect: 1, misunderstoodSincerity: 2 } },
-      { id: "d", text: { ko: "이번에도 내 마음만 혼자 남은 느낌이 든다", en: "Again, it feels like my feelings are left alone." }, scores: { abandonedFeeling: 1 } },
+      { id: "a", text: { ko: "좋은 마음이 또 다르게 읽힌 게 억울하고 답답하다", en: "It feels unfair and frustrating that my good intent was misread again." }, scores: { misunderstoodSincerity: 3 } },
+      { id: "b", text: { ko: "핵심만 설명하고 내 의도를 계속 증명하는 건 멈춘다", en: "I explain only the core point and stop repeatedly proving my intent." }, scores: { violatedBoundary: 1 } },
+      { id: "c", text: { ko: "또 설명해야 한다는 생각에 정이 조금 식는 걸 느낀다", en: "The thought of explaining again makes my warmth drop a little." }, scores: { repeatedDisrespect: 1, misunderstoodSincerity: 2 } },
+      { id: "d", text: { ko: "이번에도 내 마음을 나만 알고 있는 느낌이라 조용해진다", en: "It feels like I am the only one who knows my heart, so I go quiet." }, scores: { abandonedFeeling: 1 } },
     ],
   },
   {
@@ -127,10 +127,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Whenever there is a gap in the team, you end up filling it. Nobody forces you, but everyone seems to expect it naturally.",
     },
     choices: [
-      { id: "a", text: { ko: "이번에도 맡지만 속으로는 무게가 확 느껴진다", en: "I take it on again, but the weight hits me inside." }, scores: { overloadedResponsibility: 3 } },
-      { id: "b", text: { ko: "내가 할 수 있는 범위를 먼저 정리해 말한다", en: "I first state what I can realistically handle." }, scores: { violatedBoundary: 2 } },
-      { id: "c", text: { ko: "왜 항상 나부터 떠올리는지 계속 신경 쓰인다", en: "It keeps bothering me that I am always the first person they think of." }, scores: { repeatedDisrespect: 2, overloadedResponsibility: 1 } },
-      { id: "d", text: { ko: "상황이 급하니 우선 정리하고 나중에 이야기하려 한다", en: "Since things are urgent, I organize it first and talk later." }, scores: { uncontrollableChaos: 1, overloadedResponsibility: 1 } },
+      { id: "a", text: { ko: "또 맡는 순간 ‘결국 나구나’ 싶어서 속이 무거워진다", en: "The moment I take it on again, I feel, “of course it is me,” and get heavy inside." }, scores: { overloadedResponsibility: 3 } },
+      { id: "b", text: { ko: "이번에 내가 가능한 범위와 불가능한 범위를 먼저 말한다", en: "I state what I can and cannot take on this time." }, scores: { violatedBoundary: 2 } },
+      { id: "c", text: { ko: "왜 빈자리는 늘 나부터 떠올리는지 서운함이 쌓인다", en: "It hurts that I am always the first person they think of for gaps." }, scores: { repeatedDisrespect: 2, overloadedResponsibility: 1 } },
+      { id: "d", text: { ko: "일단 흐트러진 걸 수습하고, 감정은 나중으로 미룬다", en: "I first stabilize what is messy and push the feeling to later." }, scores: { uncontrollableChaos: 1, overloadedResponsibility: 1 } },
     ],
   },
   {
@@ -140,10 +140,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "A story you trusted someone with seems to have reached another person. They say it was not a big deal.",
     },
     choices: [
-      { id: "a", text: { ko: "그 순간부터 믿고 맡기는 범위가 줄어든다", en: "From that moment, the range of what I trust them with shrinks." }, scores: { betrayedTrust: 3 } },
-      { id: "b", text: { ko: "어디까지 전해졌는지 차분히 확인하려 한다", en: "I calmly check how far it went." }, scores: { uncontrollableChaos: 1, betrayedTrust: 1 } },
-      { id: "c", text: { ko: "내가 중요하게 여긴 걸 가볍게 보는 느낌이 든다", en: "It feels like they are treating something important to me lightly." }, scores: { repeatedDisrespect: 2, betrayedTrust: 1 } },
-      { id: "d", text: { ko: "앞으로 어떤 이야기는 선 밖에 두기로 정한다", en: "I decide some stories will stay outside the line from now on." }, scores: { violatedBoundary: 1, betrayedTrust: 2 } },
+      { id: "a", text: { ko: "믿었던 만큼 상처가 커서 그 사람에게 열 수 있는 범위가 줄어든다", en: "Because I trusted them, it hurts more, and the range I can open to them shrinks." }, scores: { betrayedTrust: 3 } },
+      { id: "b", text: { ko: "감정부터 터뜨리기 전에 어디까지 전해졌는지 확인한다", en: "Before reacting emotionally, I check how far the story spread." }, scores: { uncontrollableChaos: 1, betrayedTrust: 1 } },
+      { id: "c", text: { ko: "내가 중요하게 맡긴 걸 ‘별거 아닌 것’으로 본 게 서운하다", en: "It hurts that they treated something important to me as no big deal." }, scores: { repeatedDisrespect: 2, betrayedTrust: 1 } },
+      { id: "d", text: { ko: "이후에는 개인적인 이야기는 여기까지라고 마음속 선을 긋는다", en: "After this, I draw an inner line around what personal stories I will share." }, scores: { violatedBoundary: 1, betrayedTrust: 2 } },
     ],
   },
   {
@@ -153,10 +153,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "The situation keeps changing, and the standard shifts every time. You try to adapt, but it becomes unclear what you are adapting to.",
     },
     choices: [
-      { id: "a", text: { ko: "기준을 먼저 정하지 않으면 더는 움직이기 어렵다", en: "If the standard is not clarified first, it is hard for me to keep moving." }, scores: { uncontrollableChaos: 3 } },
-      { id: "b", text: { ko: "확정된 것과 가정인 것을 따로 적어본다", en: "I write down what is confirmed and what is only assumed." }, scores: { uncontrollableChaos: 2 } },
-      { id: "c", text: { ko: "계속 바뀌는 흐름 때문에 점점 여유가 없어진다", en: "The constant changes leave me with less and less room to breathe." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 2 } },
-      { id: "d", text: { ko: "다들 혼란스러울 수 있으니 조금 더 지켜본다", en: "Everyone may be confused, so I watch a bit longer." }, scores: { abandonedFeeling: 1 } },
+      { id: "a", text: { ko: "기준이 정리되지 않으면 더 움직이기 어렵다고 분명히 말하고 싶다", en: "I want to clearly say I cannot keep moving unless the standard is set." }, scores: { uncontrollableChaos: 3 } },
+      { id: "b", text: { ko: "확정된 것과 추측인 것을 나눠 적으며 머리를 정리한다", en: "I sort my head by writing what is confirmed and what is only a guess." }, scores: { uncontrollableChaos: 2 } },
+      { id: "c", text: { ko: "계속 바뀌는 흐름을 맞추다 보니 내가 다 떠안는 느낌이 든다", en: "Trying to match constant changes makes me feel like I am carrying it all." }, scores: { overloadedResponsibility: 1, uncontrollableChaos: 2 } },
+      { id: "d", text: { ko: "나만 혼란스러운 게 아닐 거라며 조금 더 지켜본다", en: "I tell myself I am probably not the only confused one and watch a little longer." }, scores: { abandonedFeeling: 1 } },
     ],
   },
   {
@@ -166,10 +166,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "You are among people, but nobody asks what is going on inside you. The conversation continues, yet you feel strangely alone.",
     },
     choices: [
-      { id: "a", text: { ko: "말을 줄이고 내 마음을 묻길 기대하지 않는다", en: "I speak less and stop expecting anyone to ask about my heart." }, scores: { abandonedFeeling: 3 } },
-      { id: "b", text: { ko: "한 사람에게라도 구체적으로 말해볼까 생각한다", en: "I consider telling at least one person more specifically." }, scores: { misunderstoodSincerity: 1, abandonedFeeling: 1 } },
-      { id: "c", text: { ko: "내 얘기는 접고 웃으며 리액션만 한다", en: "I put my story away and only keep smiling and reacting." }, scores: { abandonedFeeling: 2 } },
-      { id: "d", text: { ko: "내가 표현을 충분히 안 했을 수도 있다고 본다", en: "I consider that maybe I have not expressed enough." }, scores: { misunderstoodSincerity: 1 } },
+      { id: "a", text: { ko: "마음이 바로 쓸쓸해져서 말을 줄이고 기대도 접는다", en: "I immediately feel lonely, speak less, and drop the expectation." }, scores: { abandonedFeeling: 3 } },
+      { id: "b", text: { ko: "한 사람에게라도 ‘나 사실 좀 힘들어’라고 말해볼까 고민한다", en: "I consider telling at least one person, “I am actually having a hard time.”" }, scores: { misunderstoodSincerity: 1, abandonedFeeling: 1 } },
+      { id: "c", text: { ko: "웃고 맞장구치지만 내 이야기는 마음속으로 다시 넣는다", en: "I smile and react, but put my own story back inside." }, scores: { abandonedFeeling: 2 } },
+      { id: "d", text: { ko: "내가 충분히 티를 안 냈으니 아무도 몰랐을 수 있다고 생각한다", en: "I think maybe no one knew because I did not show it clearly enough." }, scores: { misunderstoodSincerity: 1 } },
     ],
   },
   {
@@ -179,10 +179,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Someone often changes plans. Their reasons always make sense, but your own schedule keeps getting pushed back.",
     },
     choices: [
-      { id: "a", text: { ko: "이해는 하지만 내 시간을 가볍게 보는 느낌이 든다", en: "I understand, but it feels like my time is being treated lightly." }, scores: { repeatedDisrespect: 2, violatedBoundary: 2 } },
-      { id: "b", text: { ko: "다음부터는 가능한 시간과 아닌 시간을 분명히 말한다", en: "Next time, I clearly state what time works and what does not." }, scores: { violatedBoundary: 3 } },
-      { id: "c", text: { ko: "그 사람과의 약속에는 기대를 덜 하게 된다", en: "I lower my expectations around plans with them." }, scores: { betrayedTrust: 1, abandonedFeeling: 1 } },
-      { id: "d", text: { ko: "요즘 사정이 많은가 보다 하고 한 번 더 넘긴다", en: "I assume they have a lot going on and let it pass once more." }, scores: { misunderstoodSincerity: 1 } },
+      { id: "a", text: { ko: "이해는 되지만 내 시간은 계속 뒤로 밀려도 되는 건가 싶다", en: "I understand, but I wonder if my time is always allowed to be pushed back." }, scores: { repeatedDisrespect: 2, violatedBoundary: 2 } },
+      { id: "b", text: { ko: "다음엔 가능한 시간과 안 되는 시간을 처음부터 분명히 말한다", en: "Next time, I state available and unavailable times clearly from the start." }, scores: { violatedBoundary: 3 } },
+      { id: "c", text: { ko: "겉으론 맞춰주지만 그 사람과의 약속에는 마음을 덜 둔다", en: "I adjust on the outside, but invest less in plans with them." }, scores: { betrayedTrust: 1, abandonedFeeling: 1 } },
+      { id: "d", text: { ko: "사정이 많겠지 하고 또 한 번 상대 입장을 설명해준다", en: "I explain it again from their side, thinking they must have a lot going on." }, scores: { misunderstoodSincerity: 1 } },
     ],
   },
   {
@@ -192,10 +192,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Something you have been carefully maintaining starts running well, and people talk as if it was easy all along.",
     },
     choices: [
-      { id: "a", text: { ko: "내가 들인 시간이 지워지는 느낌이 든다", en: "It feels like the time I put in is being erased." }, scores: { delayedRecognition: 3 } },
-      { id: "b", text: { ko: "과정을 알아주지 않아도 결과가 남았다고 생각한다", en: "Even if they do not see the process, I tell myself the result remains." }, scores: { delayedRecognition: 1 } },
-      { id: "c", text: { ko: "다음에는 내가 한 일을 조금 더 기록해두려 한다", en: "Next time, I want to keep a clearer record of what I did." }, scores: { uncontrollableChaos: 1, delayedRecognition: 1 } },
-      { id: "d", text: { ko: "앞으로는 조용히 더 해주고 싶지 않아진다", en: "I no longer want to quietly keep doing more." }, scores: { repeatedDisrespect: 2, violatedBoundary: 1 } },
+      { id: "a", text: { ko: "내가 들인 시간과 버틴 과정이 통째로 지워진 것 같아 서운하다", en: "It hurts because the time and effort I carried feel erased." }, scores: { delayedRecognition: 3 } },
+      { id: "b", text: { ko: "알아주지 않아도 결과는 남았다고 스스로 의미를 붙인다", en: "I give it meaning myself: even if no one sees it, the result remains." }, scores: { delayedRecognition: 1 } },
+      { id: "c", text: { ko: "다음엔 내가 한 일을 보이게 기록해둬야겠다고 생각한다", en: "I think I should make a clearer record of what I did next time." }, scores: { uncontrollableChaos: 1, delayedRecognition: 1 } },
+      { id: "d", text: { ko: "앞으로는 아무 말 없이 더 해주는 역할을 그만두고 싶어진다", en: "I no longer want to keep silently doing more." }, scores: { repeatedDisrespect: 2, violatedBoundary: 1 } },
     ],
   },
   {
@@ -205,10 +205,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Whenever you bring up something hard, they soon turn it into their own story. It does not seem intentional, but this time something in you stops.",
     },
     choices: [
-      { id: "a", text: { ko: "여기서는 내 얘기를 꺼내도 닿지 않겠다고 느낀다", en: "I feel that even if I bring up my story here, it will not land." }, scores: { abandonedFeeling: 3 } },
-      { id: "b", text: { ko: "이번에는 말해보지만, 예전처럼 길게 기대하지는 않는다", en: "This time I say something, but I do not expect as much as before." }, scores: { misunderstoodSincerity: 2 } },
-      { id: "c", text: { ko: "상대도 자기 힘든 게 컸을 수 있다고 한 번은 생각한다", en: "I still consider that their own difficulty may have felt big too." }, scores: { abandonedFeeling: 1 } },
-      { id: "d", text: { ko: "또 내 차례가 사라졌다고 느끼며 듣기만 한다", en: "I feel my turn disappeared again, so I only listen." }, scores: { repeatedDisrespect: 1, abandonedFeeling: 2 } },
+      { id: "a", text: { ko: "내 얘기는 여기서 닿지 않겠다고 느껴 말문이 닫힌다", en: "I feel my story will not land here, so my words shut down." }, scores: { abandonedFeeling: 3 } },
+      { id: "b", text: { ko: "이번엔 ‘내 얘기 조금만 더 들어줘’라고 짧게 말해본다", en: "This time I briefly try saying, “please hear my story a little longer.”" }, scores: { misunderstoodSincerity: 2 } },
+      { id: "c", text: { ko: "상대도 자기 일이 많이 벅찼을 수 있다고 이해하려 한다", en: "I try to understand that their own situation may have been overwhelming too." }, scores: { abandonedFeeling: 1 } },
+      { id: "d", text: { ko: "또 내 차례가 사라졌구나 싶어 웃고 듣기만 한다", en: "I feel my turn disappeared again, so I smile and only listen." }, scores: { repeatedDisrespect: 1, abandonedFeeling: 2 } },
     ],
   },
   {
@@ -218,10 +218,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "At an important moment, someone you expected to stand with you did not. You heard their reason, but your heart does not return easily.",
     },
     choices: [
-      { id: "a", text: { ko: "다음 중요한 일엔 그 사람을 계산에 넣지 않는다", en: "For the next important moment, I do not count on them." }, scores: { betrayedTrust: 3 } },
-      { id: "b", text: { ko: "그 순간 내가 무엇을 기대했는지 먼저 정리한다", en: "I first sort out what I had expected in that moment." }, scores: { betrayedTrust: 1, misunderstoodSincerity: 1 } },
-      { id: "c", text: { ko: "사정은 이해해도 그때 혼자였다는 느낌이 남는다", en: "I understand their reason, but the feeling of being alone then remains." }, scores: { betrayedTrust: 2, abandonedFeeling: 1 } },
-      { id: "d", text: { ko: "바로 판단하지 않고 다음 행동까지 보려 한다", en: "I try not to judge immediately and watch what they do next." }, scores: { betrayedTrust: 1 } },
+      { id: "a", text: { ko: "다음 중요한 순간엔 그 사람을 믿고 기대하지 않게 된다", en: "For the next important moment, I stop relying on them." }, scores: { betrayedTrust: 3 } },
+      { id: "b", text: { ko: "내가 그 순간 무엇을 기대했는지 먼저 말로 정리한다", en: "I first put into words exactly what I expected in that moment." }, scores: { betrayedTrust: 1, misunderstoodSincerity: 1 } },
+      { id: "c", text: { ko: "이유는 이해해도 그때 혼자 남겨진 느낌이 계속 아프다", en: "I understand the reason, but the feeling of being left alone still hurts." }, scores: { betrayedTrust: 2, abandonedFeeling: 1 } },
+      { id: "d", text: { ko: "한 번으로 결론 내리지 않으려고 다음 행동까지 지켜본다", en: "I watch their next actions so I do not conclude from one moment." }, scores: { betrayedTrust: 1 } },
     ],
   },
   {
@@ -231,10 +231,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "A decision you need to make together keeps getting delayed, and you are repeatedly the one left waiting.",
     },
     choices: [
-      { id: "a", text: { ko: "내 시간이 계속 대기 상태가 되는 느낌에 마음이 식는다", en: "My warmth drops when my time keeps being left on standby." }, scores: { violatedBoundary: 3 } },
-      { id: "b", text: { ko: "언제까지 정해야 하는지 기준을 먼저 잡아보려 한다", en: "I try to set a clear point for when the decision needs to be made." }, scores: { violatedBoundary: 1, uncontrollableChaos: 1 } },
-      { id: "c", text: { ko: "내가 기다리는 건 당연하게 여겨진다고 느낀다", en: "It feels like my waiting is being treated as expected." }, scores: { repeatedDisrespect: 2 } },
-      { id: "d", text: { ko: "이번에도 내가 정리해야 하나 싶어 지친다", en: "I get tired wondering if I have to organize it again this time." }, scores: { overloadedResponsibility: 1, violatedBoundary: 1 } },
+      { id: "a", text: { ko: "내 시간을 계속 붙잡아두는 느낌이라 마음이 차갑게 식는다", en: "My warmth cools because it feels like my time keeps being held hostage." }, scores: { violatedBoundary: 3 } },
+      { id: "b", text: { ko: "언제까지 결정할지 마감선을 먼저 정하자고 말한다", en: "I say we should first set a deadline for the decision." }, scores: { violatedBoundary: 1, uncontrollableChaos: 1 } },
+      { id: "c", text: { ko: "내가 기다리는 건 당연한 일처럼 여겨지는 게 서운하다", en: "It hurts that my waiting seems to be treated as something expected." }, scores: { repeatedDisrespect: 2 } },
+      { id: "d", text: { ko: "결국 이번에도 내가 정리해야 할 것 같아 지친다", en: "I get tired because it feels like I will have to organize it again." }, scores: { overloadedResponsibility: 1, violatedBoundary: 1 } },
     ],
   },
   {
@@ -244,10 +244,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Several people keep saying different things and delaying a decision. It looks like you will end up organizing it again.",
     },
     choices: [
-      { id: "a", text: { ko: "또 내가 맡게 될 것 같아 시작하기 전부터 지친다", en: "It feels like I will carry it again, so I get tired before it even starts." }, scores: { overloadedResponsibility: 3 } },
-      { id: "b", text: { ko: "결정 기준을 한 문장으로 정리해보자고 한다", en: "I suggest summarizing the decision standard in one sentence." }, scores: { uncontrollableChaos: 2 } },
-      { id: "c", text: { ko: "정리가 안 된 흐름이 오래 이어지는 게 가장 답답하다", en: "The most frustrating part is the disorder continuing too long." }, scores: { uncontrollableChaos: 3 } },
-      { id: "d", text: { ko: "내가 다 하지 않도록 역할을 먼저 나눈다", en: "I divide roles first so I do not do everything." }, scores: { violatedBoundary: 1, overloadedResponsibility: 2 } },
+      { id: "a", text: { ko: "또 내가 떠안을 것 같아 시작도 전에 피곤해진다", en: "I feel tired before it starts because I think I will carry it again." }, scores: { overloadedResponsibility: 3 } },
+      { id: "b", text: { ko: "우선 결정 기준을 한 문장으로 합의하자고 제안한다", en: "I suggest first agreeing on the decision standard in one sentence." }, scores: { uncontrollableChaos: 2 } },
+      { id: "c", text: { ko: "흐름이 정리되지 않고 늘어지는 게 제일 견디기 어렵다", en: "The hardest part is the messy flow dragging on without structure." }, scores: { uncontrollableChaos: 3 } },
+      { id: "d", text: { ko: "내가 전부 하지 않도록 역할부터 나누고 선을 잡는다", en: "I divide roles first and set a line so I do not do everything." }, scores: { violatedBoundary: 1, overloadedResponsibility: 2 } },
     ],
   },
   {
@@ -257,10 +257,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "Someone who has seen your growth for a long time still treats you like your old self. You could laugh it off, but it bothers you.",
     },
     choices: [
-      { id: "a", text: { ko: "내가 변한 만큼 봐주지 않는다는 느낌이 든다", en: "It feels like they are not seeing how much I have changed." }, scores: { delayedRecognition: 3 } },
-      { id: "b", text: { ko: "내가 달라진 부분을 담담하게 말해보고 싶다", en: "I want to calmly name what has changed in me." }, scores: { misunderstoodSincerity: 1, delayedRecognition: 1 } },
-      { id: "c", text: { ko: "그 사람 앞에서는 더 보여주고 싶지 않아진다", en: "I no longer want to show more of myself around them." }, scores: { repeatedDisrespect: 1, delayedRecognition: 2 } },
-      { id: "d", text: { ko: "그 사람이 익숙한 이미지로 보는 걸 수도 있다고 넘긴다", en: "I let it pass, thinking they may be seeing an old familiar image." }, scores: { delayedRecognition: 1 } },
+      { id: "a", text: { ko: "열심히 달라졌는데 아직도 예전 나로만 보는 게 상처다", en: "It hurts that they still see the old me after I have worked to change." }, scores: { delayedRecognition: 3 } },
+      { id: "b", text: { ko: "내가 달라진 부분을 감정적이지 않게 한번 말해보고 싶다", en: "I want to calmly name what has changed in me without sounding emotional." }, scores: { misunderstoodSincerity: 1, delayedRecognition: 1 } },
+      { id: "c", text: { ko: "그 사람 앞에서는 더 보여줘도 소용없을 것 같아 닫힌다", en: "I close off because it feels pointless to show more of myself around them." }, scores: { repeatedDisrespect: 1, delayedRecognition: 2 } },
+      { id: "d", text: { ko: "익숙한 이미지가 남아 있어서 그런 거라고 스스로 넘겨본다", en: "I try to let it pass by telling myself they are seeing an old familiar image." }, scores: { delayedRecognition: 1 } },
     ],
   },
   {
@@ -270,10 +270,10 @@ export const BREAKING_QUESTIONS: BreakingQuestion[] = [
       en: "You have said you were fine for a long time, but one day the same scene repeats and you no longer want to respond the old way. What feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "말없이 마음속 거리를 벌리고 허용 범위를 줄인다", en: "Without saying much, I widen the inner distance and shrink what I allow." }, scores: { repeatedDisrespect: 1, betrayedTrust: 1, abandonedFeeling: 1 } },
-      { id: "b", text: { ko: "내가 지킬 수 있는 선을 이번에는 분명히 말한다", en: "This time, I clearly say what line I need to protect." }, scores: { violatedBoundary: 2, misunderstoodSincerity: 1 } },
-      { id: "c", text: { ko: "내 어깨에 계속 올라온 책임을 더 이상 당연하게 두지 않는다", en: "I stop allowing responsibility that kept landing on me to be treated as normal." }, scores: { overloadedResponsibility: 2, delayedRecognition: 1 } },
-      { id: "d", text: { ko: "어떤 장면이 반복됐는지 적어보고 판단한다", en: "I write down which scenes repeated before deciding." }, scores: { uncontrollableChaos: 1, betrayedTrust: 1 } },
+      { id: "a", text: { ko: "아무 말 없이 마음속 거리를 벌리고 허용 범위를 줄인다", en: "Without saying much, I widen the inner distance and shrink what I allow." }, scores: { repeatedDisrespect: 1, betrayedTrust: 1, abandonedFeeling: 1 } },
+      { id: "b", text: { ko: "이번에는 내가 지킬 선을 구체적으로 말하고 멈춰 세운다", en: "This time, I clearly name the line I need to protect and stop it there." }, scores: { violatedBoundary: 2, misunderstoodSincerity: 1 } },
+      { id: "c", text: { ko: "계속 내 어깨에 올라온 책임을 더는 당연하게 받지 않는다", en: "I stop accepting the responsibility that kept landing on my shoulders as normal." }, scores: { overloadedResponsibility: 2, delayedRecognition: 1 } },
+      { id: "d", text: { ko: "어떤 장면이 몇 번 반복됐는지 적어보고 감정을 정리한다", en: "I write down which scenes repeated and how often, then sort my feelings." }, scores: { uncontrollableChaos: 1, betrayedTrust: 1 } },
     ],
   },
 ];

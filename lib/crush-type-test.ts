@@ -161,10 +161,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "You get a message from your crush. You have not replied yet.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "지금 바로 답하기보다 잠깐 숨 고르고 자연스럽게 보낸다", en: "I pause for a moment and reply naturally instead of instantly." }, weights: { "waiting-moment": 2 } },
-      { id: "b", text: { ko: "나도 모르게 답장이 빨라지고 말투가 밝아진다", en: "Without noticing, I reply quickly and my tone gets brighter." }, weights: { "obvious-crush": 2 } },
-      { id: "c", text: { ko: "문장 하나하나를 다시 보며 어떤 톤이 좋을지 생각한다", en: "I reread each line and think about the right tone." }, weights: { "reply-overthinker": 2 } },
-      { id: "d", text: { ko: "너무 티 날까 봐 일부러 짧고 담백하게 보낸다", en: "I keep it short and plain so it does not show too much." }, weights: { "acting-cold": 2 } },
+      { id: "a", text: { ko: "바로 달려가지 않고 내 템포를 지킨 뒤 자연스럽게 답한다", en: "I do not rush in; I keep my pace and reply naturally." }, weights: { "waiting-moment": 2 } },
+      { id: "b", text: { ko: "좋아서 티가 나도 상관없다는 듯 빠르고 밝게 답한다", en: "I reply quickly and warmly, even if my excitement shows." }, weights: { "obvious-crush": 2 } },
+      { id: "c", text: { ko: "답장 길이, 이모지, 말투까지 계산하느라 한참 고른다", en: "I spend time calculating length, emojis, and tone." }, weights: { "reply-overthinker": 2 } },
+      { id: "d", text: { ko: "마음이 들킬까 봐 일부러 짧고 무심한 톤을 고른다", en: "I choose a short, casual tone so my feelings do not show." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
@@ -176,10 +176,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "Your crush's name suddenly comes up in conversation.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "별일 아닌 척하지만 귀가 먼저 그쪽으로 열린다", en: "I act casual, but my ears immediately tune in." }, weights: { "quiet-observer": 2 } },
-      { id: "b", text: { ko: "괜히 장난스럽게 반응하며 분위기를 가볍게 만든다", en: "I react playfully to keep the mood light." }, weights: { "friend-disguise": 2 } },
-      { id: "c", text: { ko: "나도 모르게 표정이 바뀌어서 친구가 눈치챈다", en: "My face changes before I notice, and a friend catches it." }, weights: { "obvious-crush": 2 } },
-      { id: "d", text: { ko: "일부러 관심 없는 척 다른 이야기로 넘긴다", en: "I pretend not to care and move to another topic." }, weights: { "acting-cold": 2 } },
+      { id: "a", text: { ko: "아무렇지 않은 척 듣지만 그 사람 얘기는 하나도 놓치지 않는다", en: "I act casual, but I do not miss a single detail about them." }, weights: { "quiet-observer": 2 } },
+      { id: "b", text: { ko: "친구처럼 놀리거나 농담하며 티 안 나게 끼어든다", en: "I jump in with teasing or jokes so it feels friendly, not romantic." }, weights: { "friend-disguise": 2 } },
+      { id: "c", text: { ko: "표정이 먼저 반응해서 주변 사람이 바로 눈치챈다", en: "My face reacts first, and people around me notice right away." }, weights: { "obvious-crush": 2 } },
+      { id: "d", text: { ko: "관심 없는 사람처럼 시선을 돌리고 다른 주제로 넘긴다", en: "I look away like I do not care and move to another topic." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
@@ -191,10 +191,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "They ask for a small favor. It is something anyone could help with.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "자연스럽게 도와주지만 속으로 오래 기억한다", en: "I help naturally, but remember it for a long time." }, weights: { "quiet-observer": 2 } },
-      { id: "b", text: { ko: "필요 이상으로 빨리 움직였다가 스스로 민망해진다", en: "I move a little too quickly and feel embarrassed afterward." }, weights: { "obvious-crush": 2 } },
-      { id: "c", text: { ko: "친구처럼 장난치며 도와준다", en: "I help while joking like a friend." }, weights: { "friend-disguise": 2 } },
-      { id: "d", text: { ko: "너무 티 날까 봐 일부러 한 박자 늦게 반응한다", en: "I respond a beat late so it does not look too obvious." }, weights: { "acting-cold": 2 } },
+      { id: "a", text: { ko: "조용히 도와주고 그 사람이 고마워한 순간을 오래 간직한다", en: "I help quietly and keep the moment they thanked me for a long time." }, weights: { "quiet-observer": 2 } },
+      { id: "b", text: { ko: "필요한 것보다 더 빨리 나서서 내 마음이 티 난다", en: "I jump in faster than necessary, and my feelings show." }, weights: { "obvious-crush": 2 } },
+      { id: "c", text: { ko: "“이 정도는 해준다” 하며 장난스럽게 친구처럼 돕는다", en: "I help with a playful “I can do this much” friend vibe." }, weights: { "friend-disguise": 2 } },
+      { id: "d", text: { ko: "너무 eager해 보일까 봐 일부러 한 박자 늦게 움직인다", en: "I move a beat late so I do not look too eager." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
@@ -206,10 +206,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "A friend suddenly asks, “You like them, don't you?”\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "웃으면서 넘기지만 속으로는 당황한다", en: "I laugh it off, but inside I panic a little." }, weights: { "quiet-observer": 2 } },
-      { id: "b", text: { ko: "너무 강하게 부정해서 오히려 더 수상해진다", en: "I deny it so strongly that it becomes more suspicious." }, weights: { "obvious-crush": 2 } },
-      { id: "c", text: { ko: "“아니 그냥 친한 거지” 하고 친구 모드로 포장한다", en: "I say, “No, we're just close,” and frame it as friendship." }, weights: { "friend-disguise": 2 } },
-      { id: "d", text: { ko: "대답을 피하고 다른 이야기로 넘긴다", en: "I avoid answering and change the subject." }, weights: { "acting-cold": 2 } },
+      { id: "a", text: { ko: "웃으며 넘기지만 속으로는 들킨 포인트를 곱씹는다", en: "I laugh it off, but inside I replay exactly what gave me away." }, weights: { "quiet-observer": 2 } },
+      { id: "b", text: { ko: "아니라고 크게 부정하는데 그 반응이 더 티 난다", en: "I deny it loudly, and the denial makes it more obvious." }, weights: { "obvious-crush": 2 } },
+      { id: "c", text: { ko: "“그냥 친한 거야”라며 장난 섞어 친구 포지션으로 숨긴다", en: "I joke that we are just close and hide behind the friend position." }, weights: { "friend-disguise": 2 } },
+      { id: "d", text: { ko: "눈을 피하고 “무슨 소리야” 하며 바로 화제를 바꾼다", en: "I look away, say “what are you talking about,” and change the subject." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
@@ -221,10 +221,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "They unexpectedly compliment you.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "고맙다고만 말하지만 그 문장을 하루 종일 떠올린다", en: "I only say thanks, but replay the sentence all day." }, weights: { "reply-overthinker": 2, "quiet-observer": 1 } },
-      { id: "b", text: { ko: "바로 표정이 밝아져서 숨기기 어렵다", en: "My face lights up immediately, and it is hard to hide." }, weights: { "obvious-crush": 2 } },
-      { id: "c", text: { ko: "괜히 장난스럽게 받아치며 티를 줄인다", en: "I answer playfully to make it feel less obvious." }, weights: { "friend-disguise": 2 } },
-      { id: "d", text: { ko: "의미를 너무 크게 두지 않으려고 일부러 넘긴다", en: "I intentionally let it pass so I do not over-interpret it." }, weights: { "waiting-moment": 2, "acting-cold": 1 } },
+      { id: "a", text: { ko: "짧게 고맙다고 하고 나중에 그 말투와 표정을 계속 복기한다", en: "I say a short thanks, then keep replaying their tone and expression later." }, weights: { "reply-overthinker": 2, "quiet-observer": 1 } },
+      { id: "b", text: { ko: "기분 좋아진 게 얼굴에 바로 떠서 숨기기 어렵다", en: "My happiness goes straight to my face, and it is hard to hide." }, weights: { "obvious-crush": 2 } },
+      { id: "c", text: { ko: "“뭐야 갑자기?”처럼 장난으로 받아서 분위기를 가볍게 만든다", en: "I answer with a playful “what was that?” to keep it light." }, weights: { "friend-disguise": 2 } },
+      { id: "d", text: { ko: "너무 설레기 싫어서 의미를 크게 두지 않으려 애쓴다", en: "I try not to give it too much meaning because I do not want to get swept up." }, weights: { "waiting-moment": 2, "acting-cold": 1 } },
     ],
   },
   {
@@ -236,10 +236,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "In a group chat, they briefly react only to your message.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "좋은 반응으로 받아들이고 더 크게 만들지는 않는다", en: "I take it as a nice response and do not make it bigger." }, weights: { "waiting-moment": 2 } },
-      { id: "b", text: { ko: "바로 농담을 이어가며 분위기를 가볍게 만든다", en: "I keep the joke going and make the mood lighter." }, weights: { "friend-disguise": 2 } },
-      { id: "c", text: { ko: "그 반응이 어떤 의미인지 계속 곱씹는다", en: "I keep thinking about what that reaction meant." }, weights: { "reply-overthinker": 2 } },
-      { id: "d", text: { ko: "대화 흐름을 다시 보며 혼자 작은 장면을 만든다", en: "I reread the flow and build a small scene in my head." }, weights: { "secret-drama": 2 } },
+      { id: "a", text: { ko: "괜찮은 신호로만 받아들이고 오늘은 더 밀어붙이지 않는다", en: "I take it as a nice signal and do not push further today." }, weights: { "waiting-moment": 2 } },
+      { id: "b", text: { ko: "농담을 이어 받아 둘만 아는 장난처럼 분위기를 만든다", en: "I keep the joke going so it feels like a little shared bit." }, weights: { "friend-disguise": 2 } },
+      { id: "c", text: { ko: "왜 내 말에만 반응했는지 캡처하듯 머릿속에 저장한다", en: "I mentally screenshot why they reacted only to my message." }, weights: { "reply-overthinker": 2 } },
+      { id: "d", text: { ko: "그 짧은 반응 하나로 혼자 썸 시작 장면을 상상한다", en: "I turn that tiny reaction into the opening scene of a crush story." }, weights: { "secret-drama": 2 } },
     ],
   },
   {
@@ -251,10 +251,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "You run into them at a moment when you are not prepared.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "짧게 인사하고 지나가지만 표정과 분위기는 오래 기억한다", en: "I greet them briefly and pass by, but remember their expression and mood." }, weights: { "quiet-observer": 2 } },
-      { id: "b", text: { ko: "당황해서 말투나 목소리가 평소와 달라진다", en: "I get flustered, and my voice or tone changes." }, weights: { "obvious-crush": 2 } },
-      { id: "c", text: { ko: "일부러 편한 친구처럼 인사하고 장난친다", en: "I intentionally greet them like a casual friend and joke around." }, weights: { "friend-disguise": 2 } },
-      { id: "d", text: { ko: "긴장한 티가 날까 봐 눈을 피하고 지나간다", en: "I avoid eye contact and pass by so my nerves do not show." }, weights: { "acting-cold": 2 } },
+      { id: "a", text: { ko: "짧게 지나가도 옷차림, 표정, 말투를 조용히 기억한다", en: "Even if I pass by briefly, I quietly remember their look, expression, and tone." }, weights: { "quiet-observer": 2 } },
+      { id: "b", text: { ko: "놀라서 목소리가 높아지고 인사가 괜히 길어진다", en: "I get surprised, my voice lifts, and the greeting gets longer." }, weights: { "obvious-crush": 2 } },
+      { id: "c", text: { ko: "“어 여기서 뭐 해?” 하며 일부러 친한 친구처럼 군다", en: "I act like a casual friend with a playful “what are you doing here?”" }, weights: { "friend-disguise": 2 } },
+      { id: "d", text: { ko: "심장이 뛴 걸 들킬까 봐 눈을 피하고 빠르게 지나간다", en: "I avoid eye contact and pass quickly so my nerves do not show." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
@@ -266,10 +266,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "Their reply comes later than usual.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "바빴을 수 있다고 보고 내 일로 돌아간다", en: "I assume they may have been busy and return to my own things." }, weights: { "waiting-moment": 2 } },
-      { id: "b", text: { ko: "늦어진 이유와 말투를 계속 연결해본다", en: "I keep connecting the delay with their tone." }, weights: { "reply-overthinker": 2 } },
-      { id: "c", text: { ko: "정리하려던 중인데 답장 하나에 다시 기대하게 된다", en: "I was trying to move on, but one reply makes me hope again." }, weights: { "cant-let-go": 2 } },
-      { id: "d", text: { ko: "나도 바로 답하지 않고 거리를 맞추려 한다", en: "I do not reply right away either and try to match the distance." }, weights: { "acting-cold": 2 } },
+      { id: "a", text: { ko: "바쁜가 보다 하고 내 하루를 계속 살려 한다", en: "I assume they are busy and try to keep living my own day." }, weights: { "waiting-moment": 2 } },
+      { id: "b", text: { ko: "늦은 시간, 문장 길이, 말투까지 연결해서 의미를 찾는다", en: "I connect the delay, message length, and tone to find meaning." }, weights: { "reply-overthinker": 2 } },
+      { id: "c", text: { ko: "포기하려던 마음이 답장 하나에 다시 확 살아난다", en: "One reply brings back the feelings I was trying to give up." }, weights: { "cant-let-go": 2 } },
+      { id: "d", text: { ko: "상처받은 티 내기 싫어 나도 일부러 천천히 답한다", en: "I reply slowly too because I do not want to look hurt." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
@@ -281,10 +281,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "You see them laughing comfortably with someone else.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "티 내지 않지만 그 장면이 오래 남는다", en: "I do not show it, but the scene stays with me." }, weights: { "quiet-observer": 2, "cant-let-go": 1 } },
-      { id: "b", text: { ko: "둘 사이가 어떤 분위기인지 자꾸 해석하게 된다", en: "I keep interpreting the mood between them." }, weights: { "reply-overthinker": 2 } },
-      { id: "c", text: { ko: "괜히 더 밝게 굴며 아무렇지 않은 척한다", en: "I act brighter than usual and pretend it is nothing." }, weights: { "friend-disguise": 2 } },
-      { id: "d", text: { ko: "그럴 수 있다고 보고 섣불리 의미를 붙이지 않는다", en: "I accept that it can happen and avoid adding meaning too quickly." }, weights: { "waiting-moment": 2 } },
+      { id: "a", text: { ko: "겉으론 조용한데 그 웃는 장면이 오래 마음에 남는다", en: "I stay quiet outside, but that laughing scene stays with me." }, weights: { "quiet-observer": 2, "cant-let-go": 1 } },
+      { id: "b", text: { ko: "둘 사이의 거리감과 표정을 보며 혼자 추리한다", en: "I privately investigate their distance and expressions." }, weights: { "reply-overthinker": 2 } },
+      { id: "c", text: { ko: "괜히 더 웃기고 밝게 굴며 질투 아닌 척한다", en: "I act funnier and brighter, pretending it is not jealousy." }, weights: { "friend-disguise": 2 } },
+      { id: "d", text: { ko: "친한 사람일 수도 있다고 보고 섣불리 결론 내리지 않는다", en: "I remind myself they may just be close and avoid jumping to conclusions." }, weights: { "waiting-moment": 2 } },
     ],
   },
   {
@@ -296,10 +296,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "You were trying to move on, but they speak to you first.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "정리한 줄 알았는데 다시 설렌다", en: "I thought I had moved on, but I feel excited again." }, weights: { "cant-let-go": 2 } },
-      { id: "b", text: { ko: "반갑지만 상황을 천천히 보려고 한다", en: "I am glad, but try to read the situation slowly." }, weights: { "waiting-moment": 2 } },
-      { id: "c", text: { ko: "이 타이밍에 말을 건 이유를 혼자 오래 상상한다", en: "I keep imagining why they chose this timing." }, weights: { "secret-drama": 2 } },
-      { id: "d", text: { ko: "흔들리는 게 싫어서 일부러 담담하게 군다", en: "I act calm on purpose because I do not want to be shaken." }, weights: { "acting-cold": 2 } },
+      { id: "a", text: { ko: "정리했다고 믿었는데 한마디에 다시 마음이 돌아간다", en: "I thought I was done, but one word pulls my heart back." }, weights: { "cant-let-go": 2 } },
+      { id: "b", text: { ko: "반갑지만 또 앞서가지 않으려고 속도를 늦춘다", en: "I am glad, but slow myself down so I do not get ahead of things again." }, weights: { "waiting-moment": 2 } },
+      { id: "c", text: { ko: "왜 하필 지금 말 걸었는지 혼자 여러 버전을 상상한다", en: "I imagine multiple versions of why they spoke to me right now." }, weights: { "secret-drama": 2 } },
+      { id: "d", text: { ko: "흔들린 걸 들키기 싫어 일부러 더 담담하게 대한다", en: "I act extra calm because I do not want them to see I am shaken." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
@@ -311,10 +311,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "You briefly end up alone together. It is not awkward, but quieter than usual.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "무슨 말을 할지 고르느라 조용해진다", en: "I get quiet while choosing what to say." }, weights: { "quiet-observer": 2 } },
-      { id: "b", text: { ko: "어색함을 줄이려고 가벼운 농담을 꺼낸다", en: "I bring up a light joke to reduce the awkwardness." }, weights: { "friend-disguise": 2 } },
-      { id: "c", text: { ko: "평소보다 리액션이 커져서 스스로도 느낀다", en: "My reactions get bigger than usual, and I notice it too." }, weights: { "obvious-crush": 2 } },
-      { id: "d", text: { ko: "침묵의 의미까지 신경 쓰이기 시작한다", en: "I start paying attention even to the meaning of the silence." }, weights: { "reply-overthinker": 2 } },
+      { id: "a", text: { ko: "말을 많이 하기보다 그 사람의 표정과 분위기를 조용히 본다", en: "Instead of talking much, I quietly watch their expression and mood." }, weights: { "quiet-observer": 2 } },
+      { id: "b", text: { ko: "어색해질까 봐 가벼운 농담으로 친구 같은 공기를 만든다", en: "I use a light joke to make the air feel friendly instead of awkward." }, weights: { "friend-disguise": 2 } },
+      { id: "c", text: { ko: "좋아서 리액션이 커지고 목소리까지 밝아진다", en: "Because I like them, my reactions get bigger and my voice brightens." }, weights: { "obvious-crush": 2 } },
+      { id: "d", text: { ko: "말 없는 몇 초까지 ‘어색한가, 편한가’ 분석한다", en: "I analyze even a few quiet seconds: is it awkward or comfortable?" }, weights: { "reply-overthinker": 2 } },
     ],
   },
   {
@@ -326,10 +326,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "You see an ordinary post they uploaded.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "조용히 보고 작은 취향을 기억해둔다", en: "I quietly notice it and remember a small preference." }, weights: { "quiet-observer": 2 } },
-      { id: "b", text: { ko: "누구를 향한 말인지 괜히 생각하게 된다", en: "I start wondering who the post might be for." }, weights: { "reply-overthinker": 2 } },
-      { id: "c", text: { ko: "사진 한 장으로 혼자 장면을 이어 붙인다", en: "I build a whole scene from one photo." }, weights: { "secret-drama": 2 } },
-      { id: "d", text: { ko: "그냥 지나가되 다음 대화 소재로만 가볍게 남겨둔다", en: "I let it pass, but keep it lightly as a possible conversation topic." }, weights: { "waiting-moment": 2 } },
+      { id: "a", text: { ko: "조용히 보고 좋아하는 색, 장소, 취향 같은 걸 기억한다", en: "I quietly notice and remember their colors, places, or preferences." }, weights: { "quiet-observer": 2 } },
+      { id: "b", text: { ko: "그 글이 누구에게 보여주려는 건지 혼자 해석한다", en: "I privately interpret who they might have wanted to show that post to." }, weights: { "reply-overthinker": 2 } },
+      { id: "c", text: { ko: "사진 한 장으로 오늘 하루와 마음 상태까지 상상한다", en: "From one photo, I imagine their whole day and mood." }, weights: { "secret-drama": 2 } },
+      { id: "d", text: { ko: "좋아하는 건 저장만 하고 당장 의미를 키우진 않는다", en: "I save what I like about it but do not make the meaning bigger right away." }, weights: { "waiting-moment": 2 } },
     ],
   },
   {
@@ -341,10 +341,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "You see them looking stuck. You do not necessarily need to step in.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "필요 이상으로 도와주고 나서야 내가 티 냈다는 걸 깨닫는다", en: "I help more than necessary and only later realize I made it obvious." }, weights: { "obvious-crush": 2 } },
-      { id: "b", text: { ko: "먼저 상황을 살피고 정말 필요할 때만 돕는다", en: "I watch first and help only if it is really needed." }, weights: { "quiet-observer": 2 } },
-      { id: "c", text: { ko: "친구처럼 툭 도와주고 장난으로 넘긴다", en: "I help casually like a friend and turn it into a joke." }, weights: { "friend-disguise": 2 } },
-      { id: "d", text: { ko: "주변 흐름을 보며 자연스럽게 도울 타이밍을 기다린다", en: "I read the room and wait for a natural timing to help." }, weights: { "waiting-moment": 2 } },
+      { id: "a", text: { ko: "바로 나서서 도와주다 보니 관심이 너무 선명하게 드러난다", en: "I step in right away, and my interest becomes very obvious." }, weights: { "obvious-crush": 2 } },
+      { id: "b", text: { ko: "필요한지 먼저 살피고 티 안 나게 조용히 도울 방법을 찾는다", en: "I observe first and find a quiet way to help without making it obvious." }, weights: { "quiet-observer": 2 } },
+      { id: "c", text: { ko: "친구처럼 툭 도와주고 “밥 사라” 같은 장난으로 덮는다", en: "I help like a friend and cover it with a joke like “you owe me food.”" }, weights: { "friend-disguise": 2 } },
+      { id: "d", text: { ko: "도와주고 싶지만 너무 앞서 보일까 봐 자연스러운 타이밍을 기다린다", en: "I want to help, but wait for a natural opening so I do not seem too eager." }, weights: { "waiting-moment": 2 } },
     ],
   },
   {
@@ -356,10 +356,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "While messaging them, the mood seems to get a little warmer.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "말투가 바뀐 지점을 계속 확인한다", en: "I keep checking where their tone changed." }, weights: { "reply-overthinker": 2 } },
-      { id: "b", text: { ko: "이 대화가 시작점일지도 모른다는 상상을 한다", en: "I imagine this conversation might be a beginning." }, weights: { "secret-drama": 2 } },
-      { id: "c", text: { ko: "신나서 답장이 점점 빨라지고 길어진다", en: "I get excited, so my replies become faster and longer." }, weights: { "obvious-crush": 2 } },
-      { id: "d", text: { ko: "좋게 느끼지만 오늘은 이 정도로 자연스럽게 둔다", en: "It feels nice, but I leave it naturally at this point today." }, weights: { "waiting-moment": 2 } },
+      { id: "a", text: { ko: "어느 문장부터 따뜻해졌는지 계속 되짚어본다", en: "I keep tracing which sentence made the conversation feel warmer." }, weights: { "reply-overthinker": 2 } },
+      { id: "b", text: { ko: "이 대화가 우리 사이의 첫 장면일지도 모른다고 상상한다", en: "I imagine this conversation might be the first scene between us." }, weights: { "secret-drama": 2 } },
+      { id: "c", text: { ko: "신난 게 답장 속도와 길이에 그대로 묻어난다", en: "My excitement shows directly in reply speed and length." }, weights: { "obvious-crush": 2 } },
+      { id: "d", text: { ko: "좋지만 오늘은 여기까지 두고 다음 흐름을 기다린다", en: "It feels good, but I leave it here today and wait for the next flow." }, weights: { "waiting-moment": 2 } },
     ],
   },
   {
@@ -371,10 +371,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "The mood feels good enough that you could say a little of how you feel.\nWhat reaction feels closest?",
     },
     choices: [
-      { id: "a", text: { ko: "오늘 바로 말하기보다 다음 흐름을 더 본다", en: "I watch the next flow rather than saying it today." }, weights: { "waiting-moment": 2 } },
-      { id: "b", text: { ko: "진심처럼 들릴까 봐 농담 섞어 돌려 말한다", en: "I wrap it in a joke so it does not sound too sincere." }, weights: { "friend-disguise": 2 } },
-      { id: "c", text: { ko: "갑자기 부담스러워져서 한 발 물러선다", en: "I suddenly feel pressured and take a step back." }, weights: { "acting-cold": 2 } },
-      { id: "d", text: { ko: "조심하려 해도 말투에서 좋아하는 티가 조금 난다", en: "Even while being careful, my tone gives away a little that I like them." }, weights: { "obvious-crush": 2 } },
+      { id: "a", text: { ko: "말하고 싶지만 오늘은 신호만 남기고 다음 타이밍을 본다", en: "I want to say it, but leave only a signal today and watch the next timing." }, weights: { "waiting-moment": 2 } },
+      { id: "b", text: { ko: "진심 반 농담 반으로 던져서 상대 반응을 살핀다", en: "I throw it half-sincere, half-joking and watch their reaction." }, weights: { "friend-disguise": 2 } },
+      { id: "c", text: { ko: "갑자기 너무 가까워지는 느낌이 들어 한 발 물러선다", en: "It suddenly feels too close, so I take a step back." }, weights: { "acting-cold": 2 } },
+      { id: "d", text: { ko: "조심해도 목소리와 눈빛에서 좋아하는 티가 난다", en: "Even when I try to be careful, my voice and eyes show I like them." }, weights: { "obvious-crush": 2 } },
     ],
   },
   {
@@ -386,10 +386,10 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       en: "As a crush lasts longer, what happens to you most often?",
     },
     choices: [
-      { id: "a", text: { ko: "그 사람에 대해 아는 것이 조용히 많아진다", en: "I quietly end up knowing more and more about them." }, weights: { "quiet-observer": 2 } },
-      { id: "b", text: { ko: "친한 척하다 보니 진심을 꺼낼 타이밍이 더 어려워진다", en: "Acting close makes it harder to find the timing to be honest." }, weights: { "friend-disguise": 2 } },
-      { id: "c", text: { ko: "포기하려다가 작은 신호에 계속 다시 흔들린다", en: "I try to give up, then keep getting pulled back by small signals." }, weights: { "cant-let-go": 2 } },
-      { id: "d", text: { ko: "아무 일 없는 날에도 혼자 상상을 이어간다", en: "Even on uneventful days, I keep imagining scenes on my own." }, weights: { "secret-drama": 2 } },
+      { id: "a", text: { ko: "티는 안 내지만 그 사람의 취향과 패턴을 조용히 많이 알게 된다", en: "I do not show it, but quietly learn a lot about their tastes and patterns." }, weights: { "quiet-observer": 2 } },
+      { id: "b", text: { ko: "친구처럼 가까워질수록 고백하기 더 애매해진다", en: "The closer I get as a friend, the harder it becomes to confess." }, weights: { "friend-disguise": 2 } },
+      { id: "c", text: { ko: "정리하려 해도 작은 친절 하나에 다시 마음이 붙잡힌다", en: "Even when I try to move on, one small kindness pulls me back." }, weights: { "cant-let-go": 2 } },
+      { id: "d", text: { ko: "현실은 조용한데 머릿속에서는 이미 여러 장면이 이어진다", en: "Reality stays quiet, but in my head several scenes keep unfolding." }, weights: { "secret-drama": 2 } },
     ],
   },
 ];

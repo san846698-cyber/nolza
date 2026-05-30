@@ -785,16 +785,20 @@ const styles = `
     align-items: center;
   }
   .quiz {
-    padding: clamp(44px, 7vh, 76px) 0 68px;
+    padding: clamp(58px, 8vh, 96px) 0 68px;
   }
   .progress {
-    margin: 12px 0 14px;
+    margin: 0 0 18px;
+    padding-top: 4px;
   }
   .progress div {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    min-height: 28px;
     color: rgba(248, 239, 226, 0.78);
     font-weight: 900;
+    line-height: 1.35;
   }
   .progress span {
     letter-spacing: 0.08em;
@@ -1271,7 +1275,7 @@ const styles = `
     }
     .quiz {
       width: min(100% - 28px, 860px);
-      padding: 30px 0 56px;
+      padding: 34px 0 56px;
     }
     .question-card {
       padding: 18px;
