@@ -477,6 +477,25 @@ export default function KbtiPage(): ReactElement {
         .kbti-stage[data-phase="result"] {
           justify-content: flex-start;
         }
+        body:has(.kbti-stage[data-phase="quiz"]) .game-shell-floating-brand,
+        body:has(.kbti-stage[data-phase="quiz"]) .game-shell-floating-toggle {
+          opacity: 0;
+          pointer-events: none;
+        }
+        body:has(.kbti-stage[data-phase="quiz"]) .game-shell-floating-back {
+          width: 40px !important;
+          min-width: 40px !important;
+          padding: 0 !important;
+          font-size: 0 !important;
+          color: ${INK} !important;
+          background: rgba(24, 24, 27, 0.72) !important;
+        }
+        body:has(.kbti-stage[data-phase="quiz"]) .game-shell-floating-back::before {
+          content: "←";
+          font-size: 19px;
+          font-weight: 950;
+          line-height: 1;
+        }
         .kbti-reveal {
           opacity: 0;
           animation: kbtiReveal 0.45s ease-out forwards;

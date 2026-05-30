@@ -146,10 +146,12 @@ export default function BreakingPointTestClient() {
   }, [locale, result]);
 
   return (
-    <main className="breaking-page" lang={locale}>
-      <header className="breaking-topbar">
-        <Link href="/" className="home-link">{homeBackLabel(locale)}</Link>
-      </header>
+    <main className={`breaking-page breaking-page--${phase}`} lang={locale}>
+      {phase !== "quiz" && (
+        <header className="breaking-topbar">
+          <Link href="/" className="home-link">{homeBackLabel(locale)}</Link>
+        </header>
+      )}
 
       <section className="breaking-shell">
         {phase === "intro" ? (
@@ -170,12 +172,18 @@ export default function BreakingPointTestClient() {
           </section>
         ) : (
           <section className="test-card" style={{ "--accent": result.accent } as CSSProperties}>
-            <div className="progress-head">
-              <span>{phase === "result" ? BREAKING_COPY.resultLabel[locale] : BREAKING_COPY.questionCount[locale]}</span>
+            <div className={`progress-head ${phase === "quiz" ? "progress-head--active" : ""}`}>
+              {phase === "quiz" ? (
+                <Link href="/" className="test-exit-link" aria-label={homeBackLabel(locale)}>
+                  ←
+                </Link>
+              ) : (
+                <span>{BREAKING_COPY.resultLabel[locale]}</span>
+              )}
               <strong>
                 {phase === "result"
-                  ? `${BREAKING_QUESTIONS.length}/${BREAKING_QUESTIONS.length}`
-                  : `${questionIndex + 1}/${BREAKING_QUESTIONS.length}`}
+                  ? `${BREAKING_QUESTIONS.length} / ${BREAKING_QUESTIONS.length}`
+                  : `${questionIndex + 1} / ${BREAKING_QUESTIONS.length}`}
               </strong>
             </div>
             <div className="progress-bar" aria-hidden>
@@ -477,6 +485,23 @@ const styles = `
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+  }
+  .progress-head--active {
+    min-height: 38px;
+  }
+  .test-exit-link {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    color: rgba(244, 234, 220, 0.74);
+    background: rgba(244, 234, 220, 0.08);
+    border: 1px solid rgba(244, 234, 220, 0.14);
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: 950;
+    line-height: 1;
   }
   .progress-head strong {
     color: rgba(244, 234, 220, 0.74);

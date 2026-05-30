@@ -361,11 +361,13 @@ export default function StoicControlTestClient(): ReactElement {
   }, [locale, result]);
 
   return (
-    <main className="stoic-test">
+    <main className={`stoic-test stoic-test--${phase}`}>
       <section className="stoic-shell">
-        <nav className="stoic-back">
-          <Link href="/">{homeBackLabel(locale)}</Link>
-        </nav>
+        {phase !== "quiz" && (
+          <nav className="stoic-back">
+            <Link href="/">{homeBackLabel(locale)}</Link>
+          </nav>
+        )}
 
         {phase === "intro" ? (
           <section className="stoic-hero">
@@ -405,12 +407,18 @@ export default function StoicControlTestClient(): ReactElement {
           </section>
         ) : (
           <section className="stoic-card">
-            <div className="progress-head">
-              <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "문장", "Statement")}</span>
+            <div className={`progress-head ${phase === "quiz" ? "progress-head--active" : ""}`}>
+              {phase === "quiz" ? (
+                <Link href="/" className="test-exit-link" aria-label={homeBackLabel(locale)}>
+                  ←
+                </Link>
+              ) : (
+                <span>{t(locale, "결과", "Result")}</span>
+              )}
               <strong>
                 {phase === "result"
-                  ? `${STOIC_STATEMENTS.length}/${STOIC_STATEMENTS.length}`
-                  : `${questionIndex + 1}/${STOIC_STATEMENTS.length}`}
+                  ? `${STOIC_STATEMENTS.length} / ${STOIC_STATEMENTS.length}`
+                  : `${questionIndex + 1} / ${STOIC_STATEMENTS.length}`}
               </strong>
             </div>
             <div className="progress-bar" aria-hidden>
@@ -574,6 +582,23 @@ export default function StoicControlTestClient(): ReactElement {
           align-items: center;
           justify-content: space-between;
           gap: 16px;
+        }
+        .progress-head--active {
+          min-height: 38px;
+        }
+        .test-exit-link {
+          display: inline-grid;
+          place-items: center;
+          width: 38px;
+          height: 38px;
+          border-radius: 999px;
+          color: rgba(36, 35, 31, 0.68);
+          background: rgba(255, 255, 255, 0.42);
+          border: 1px solid rgba(71, 56, 35, 0.12);
+          text-decoration: none;
+          font-size: 19px;
+          font-weight: 900;
+          line-height: 1;
         }
         .progress-head span {
           margin: 0;
@@ -756,6 +781,10 @@ export default function StoicControlTestClient(): ReactElement {
           font-size: 14px;
         }
         @media (max-width: 780px) {
+          body:has(.stoic-test--quiz) .locale-floating-toggle {
+            opacity: 0.28;
+            transform: scale(0.84);
+          }
           .result-grid {
             grid-template-columns: 1fr;
           }

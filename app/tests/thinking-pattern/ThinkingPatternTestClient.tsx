@@ -153,11 +153,13 @@ export default function ThinkingPatternTestClient(): ReactElement {
   }, [locale, result]);
 
   return (
-    <main className="thinking-test">
+    <main className={`thinking-test thinking-test--${phase}`}>
       <section className="thinking-shell">
-        <nav className="thinking-back">
-          <Link href="/">{homeBackLabel(locale)}</Link>
-        </nav>
+        {phase !== "quiz" && (
+          <nav className="thinking-back">
+            <Link href="/">{homeBackLabel(locale)}</Link>
+          </nav>
+        )}
 
         {phase === "intro" ? (
           <section className="thinking-hero">
@@ -197,12 +199,18 @@ export default function ThinkingPatternTestClient(): ReactElement {
           </section>
         ) : (
           <section className="thinking-card">
-            <div className="progress-head">
-              <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "질문", "Question")}</span>
+            <div className={`progress-head ${phase === "quiz" ? "progress-head--active" : ""}`}>
+              {phase === "quiz" ? (
+                <Link href="/" className="test-exit-link" aria-label={homeBackLabel(locale)}>
+                  ←
+                </Link>
+              ) : (
+                <span>{t(locale, "결과", "Result")}</span>
+              )}
               <strong>
                 {phase === "result"
-                  ? `${THINKING_QUESTIONS.length}/${THINKING_QUESTIONS.length}`
-                  : `${questionIndex + 1}/${THINKING_QUESTIONS.length}`}
+                  ? `${THINKING_QUESTIONS.length} / ${THINKING_QUESTIONS.length}`
+                  : `${questionIndex + 1} / ${THINKING_QUESTIONS.length}`}
               </strong>
             </div>
             <div className="progress-bar" aria-hidden>
@@ -373,6 +381,23 @@ export default function ThinkingPatternTestClient(): ReactElement {
           justify-content: space-between;
           gap: 16px;
         }
+        .progress-head--active {
+          min-height: 38px;
+        }
+        .test-exit-link {
+          display: inline-grid;
+          place-items: center;
+          width: 38px;
+          height: 38px;
+          border-radius: 999px;
+          color: rgba(36, 35, 42, 0.68);
+          background: rgba(255, 255, 255, 0.42);
+          border: 1px solid rgba(68, 53, 35, 0.12);
+          text-decoration: none;
+          font-size: 19px;
+          font-weight: 900;
+          line-height: 1;
+        }
         .progress-head span {
           margin: 0;
         }
@@ -503,6 +528,10 @@ export default function ThinkingPatternTestClient(): ReactElement {
           font-size: 14px;
         }
         @media (max-width: 780px) {
+          body:has(.thinking-test--quiz) .locale-floating-toggle {
+            opacity: 0.28;
+            transform: scale(0.84);
+          }
           .answers,
           .result-grid {
             grid-template-columns: 1fr;

@@ -83,9 +83,11 @@ export default function MbtiDepthGame() {
   );
 
   const current = QUESTIONS[qIdx];
+  const isActiveFlow = phase === "transition" || phase === "quiz";
 
   return (
     <main className="mbti-depth-page min-h-screen bg-bg pb-32">
+      {!isActiveFlow ? (
       <div className="border-b border-border">
         <div className="mx-auto grid max-w-4xl grid-cols-[auto_1fr_auto] items-center gap-4 px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
@@ -104,6 +106,20 @@ export default function MbtiDepthGame() {
           </button>
         </div>
       </div>
+      ) : (
+        <div className="mx-auto flex max-w-3xl items-center justify-between px-5 pt-4 md:px-8 md:pt-6">
+          <Link
+            href="/"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-card/70 text-lg font-black leading-none text-gray-400 hover:border-accent hover:text-accent"
+            aria-label={homeBackLabel(locale)}
+          >
+            ←
+          </Link>
+          <span className="tabular-nums text-xs font-bold tracking-[0.14em] text-gray-500">
+            {Math.min(qIdx + 1, QUESTIONS.length)} / {QUESTIONS.length}
+          </span>
+        </div>
+      )}
 
       <div className="mx-auto max-w-3xl px-5 md:px-8">
         {phase === "intro" && <IntroView onStart={start} t={t} />}
@@ -276,9 +292,6 @@ function QuizView({
       <div className="mb-6 flex items-center justify-between text-xs">
         <span className="uppercase tracking-[0.22em] text-gray-500">
           {dimLabel}
-        </span>
-        <span className="text-gray-500">
-          Q{questionIdx + 1} / {total}
         </span>
       </div>
 
