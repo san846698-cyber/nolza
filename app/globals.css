@@ -7092,6 +7092,73 @@ body {
   opacity: 1 !important;
 }
 
+/* Unconscious Scene results should stay cinematic, but with stronger hierarchy. */
+.scene-page .scene-card:has(.result-view) {
+  background:
+    radial-gradient(circle at 80% 4%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 24rem),
+    radial-gradient(circle at 8% 8%, rgba(255, 210, 143, 0.11), transparent 18rem),
+    linear-gradient(145deg, rgba(31, 24, 42, 0.98), rgba(13, 13, 20, 0.98)) !important;
+  border-color: rgba(255, 226, 184, 0.26) !important;
+  color: #fff5e4 !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title {
+  border-color: rgba(255, 226, 184, 0.22) !important;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 18rem),
+    linear-gradient(145deg, rgba(255, 246, 225, 0.12), rgba(9, 10, 18, 0.34)) !important;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title h2 {
+  color: #fff7e5 !important;
+  text-shadow: 0 3px 22px rgba(0, 0, 0, 0.52) !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title span,
+.scene-page .scene-card:has(.result-view) .result-sections span,
+.scene-page .scene-card:has(.result-view) .friend-question span,
+.scene-page .scene-card:has(.result-view) .progress-head span,
+.scene-page .scene-card:has(.result-view) .progress-head strong {
+  color: #f2bf78 !important;
+  opacity: 1 !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title p {
+  color: #ffe5b5 !important;
+  font-weight: 900 !important;
+  opacity: 1 !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-description {
+  color: rgba(255, 247, 231, 0.94) !important;
+  font-weight: 720 !important;
+  opacity: 1 !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-sections section,
+.scene-page .scene-card:has(.result-view) .friend-question {
+  border-color: rgba(255, 226, 184, 0.2) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 246, 225, 0.105), rgba(6, 8, 16, 0.34)),
+    rgba(0, 0, 0, 0.24) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-sections p,
+.scene-page .scene-card:has(.result-view) .friend-question p {
+  color: rgba(255, 248, 235, 0.94) !important;
+  line-height: 1.76 !important;
+  opacity: 1 !important;
+}
+
+.scene-page .scene-card:has(.result-view) .friend-question p {
+  color: #fff7e5 !important;
+  font-size: clamp(1.05rem, 2.4vw, 1.28rem) !important;
+  font-weight: 900 !important;
+}
+
 @media (max-width: 780px) {
   .publisher-content {
     padding: 34px 16px 54px !important;
