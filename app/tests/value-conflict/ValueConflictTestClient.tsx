@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState, type ReactElement } from "re
 import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import RecommendedGames from "@/app/components/game/RecommendedGames";
-import LikertScaleQuestion, { type LikertRating } from "@/app/components/game/LikertScaleQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
@@ -16,7 +15,6 @@ import {
 } from "@/lib/analytics";
 import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 import {
-  VALUE_QUESTIONS,
   calculateValueResult,
   getValueResultById,
   type ValueAnswer,
@@ -31,6 +29,212 @@ type ValueSharePayload = {
   locale?: SimpleLocale;
 };
 
+type ValueStatement = {
+  id: string;
+  text: {
+    ko: string;
+    en: string;
+  };
+  weights: Partial<Record<ValueConflictId, number>>;
+};
+
+const SCALE_VALUES = [1, 2, 3, 4, 5, 6, 7] as const;
+
+const VALUE_STATEMENTS: ValueStatement[] = [
+  {
+    id: "vc_l01",
+    text: {
+      ko: "새로운 선택지가 생기면, 설렘보다 지금의 생활이 얼마나 흔들릴지를 먼저 계산한다.",
+      en: "When a new option appears, I first calculate how much it might shake my current life before I feel excited.",
+    },
+    weights: { "freedom-stability": 2 },
+  },
+  {
+    id: "vc_l02",
+    text: {
+      ko: "떠나고 싶은 마음이 있어도, 내가 이미 쌓아온 안정이 무너질까 봐 쉽게 움직이지 못한다.",
+      en: "Even when I want to move on, I hesitate because I may lose the stability I have built.",
+    },
+    weights: { "freedom-stability": 2 },
+  },
+  {
+    id: "vc_l03",
+    text: {
+      ko: "변화를 선택하고 싶지만, 내 일상과 관계를 지킬 최소한의 안전장치가 필요하다.",
+      en: "I want to choose change, but I need at least one fallback that protects my routine and relationships.",
+    },
+    weights: { "freedom-stability": 2 },
+  },
+  {
+    id: "vc_l04",
+    text: {
+      ko: "내 선택이 틀렸다고 보일까 봐, 주변 사람들의 시선이 오래 마음에 남는다.",
+      en: "I keep thinking about how others may see my choice, especially if it might look wrong.",
+    },
+    weights: { "recognition-independence": 2 },
+  },
+  {
+    id: "vc_l05",
+    text: {
+      ko: "인정받고 싶은 마음은 있지만, 그 기대에 맞추다 보면 내가 사라질 것 같아 불편하다.",
+      en: "I want recognition, but I feel uneasy when meeting expectations starts to erase me.",
+    },
+    weights: { "recognition-independence": 2 },
+  },
+  {
+    id: "vc_l06",
+    text: {
+      ko: "칭찬은 좋지만, 그 칭찬이 다음 선택의 기준이 되는 순간 답답해진다.",
+      en: "Praise feels good, but it becomes suffocating when it turns into the standard for my next choice.",
+    },
+    weights: { "recognition-independence": 2 },
+  },
+  {
+    id: "vc_l07",
+    text: {
+      ko: "사실을 말해야 한다는 걸 알면서도, 그 말 때문에 분위기가 깨질까 봐 오래 망설인다.",
+      en: "Even when I know I should tell the truth, I hesitate because it may break the mood.",
+    },
+    weights: { "truth-peace": 2 },
+  },
+  {
+    id: "vc_l08",
+    text: {
+      ko: "관계를 지키려고 넘긴 말들이 시간이 지나면 내 안에서 더 크게 남는다.",
+      en: "The things I let pass to protect a relationship often become louder inside me later.",
+    },
+    weights: { "truth-peace": 2 },
+  },
+  {
+    id: "vc_l09",
+    text: {
+      ko: "솔직하고 싶지만, 상대가 받을 수 있는 말의 온도까지 함께 고민한다.",
+      en: "I want to be honest, but I also think about how gently the other person can receive it.",
+    },
+    weights: { "truth-peace": 2 },
+  },
+  {
+    id: "vc_l10",
+    text: {
+      ko: "쉬고 싶다는 생각이 들어도, 멈추는 순간 뒤처지는 사람처럼 느껴진다.",
+      en: "Even when I want to rest, stopping makes me feel like I am falling behind.",
+    },
+    weights: { "growth-rest": 2 },
+  },
+  {
+    id: "vc_l11",
+    text: {
+      ko: "더 나아지고 싶은 마음이 커질수록, 몸과 마음이 보내는 피로 신호를 무시하게 된다.",
+      en: "The more I want to improve, the more I ignore the fatigue signals from my body and mind.",
+    },
+    weights: { "growth-rest": 2 },
+  },
+  {
+    id: "vc_l12",
+    text: {
+      ko: "나를 성장시키는 일이어도, 계속 버티기만 하면 결국 무너질 수 있다는 걸 안다.",
+      en: "Even when something helps me grow, I know I may break down if all I do is endure.",
+    },
+    weights: { "growth-rest": 2 },
+  },
+  {
+    id: "vc_l13",
+    text: {
+      ko: "먼저 다가가고 싶어도, 내가 더 매달리는 사람처럼 보일까 봐 마음을 숨긴다.",
+      en: "Even when I want to reach out first, I hide it because I may look like the one who cares more.",
+    },
+    weights: { "love-pride": 2 },
+  },
+  {
+    id: "vc_l14",
+    text: {
+      ko: "관계를 지키고 싶지만, 그 과정에서 내 자존심과 경계까지 내려놓고 싶지는 않다.",
+      en: "I want to protect the relationship, but I do not want to drop my pride and boundaries to do it.",
+    },
+    weights: { "love-pride": 2 },
+  },
+  {
+    id: "vc_l15",
+    text: {
+      ko: "준비가 완벽하지 않으면 시작해도 괜찮다는 말을 믿기 어렵다.",
+      en: "If I am not fully ready, it is hard to believe that starting is still okay.",
+    },
+    weights: { "perfect-start": 2 },
+  },
+  {
+    id: "vc_l16",
+    text: {
+      ko: "처음부터 잘하고 싶어서, 막상 첫 번째 버전을 세상에 꺼내는 일이 오래 걸린다.",
+      en: "Because I want to do it well from the beginning, it takes me a long time to show the first version.",
+    },
+    weights: { "perfect-start": 2 },
+  },
+  {
+    id: "vc_l17",
+    text: {
+      ko: "내가 빠지면 일이 무너질 것 같아서, 쉬고 싶어도 책임을 먼저 붙잡는다.",
+      en: "When I think things may fall apart without me, I hold onto responsibility even when I want to rest.",
+    },
+    weights: { "responsibility-freedom": 2 },
+  },
+  {
+    id: "vc_l18",
+    text: {
+      ko: "자유롭게 살고 싶지만, 누군가에게 남겨질 부담을 생각하면 마음이 쉽게 가벼워지지 않는다.",
+      en: "I want to live freely, but thinking about the burden left to others keeps my heart from feeling light.",
+    },
+    weights: { "responsibility-freedom": 2 },
+  },
+  {
+    id: "vc_l19",
+    text: {
+      ko: "내 몫이 아닌 일까지 떠안고 있다는 걸 알면서도, 손을 놓는 순간 죄책감이 올라온다.",
+      en: "Even when I know I am carrying more than my share, guilt rises the moment I let go.",
+    },
+    weights: { "responsibility-freedom": 2 },
+  },
+  {
+    id: "vc_l20",
+    text: {
+      ko: "지금이 나쁘지 않아도, 계속 이대로만 살면 내가 작아질 것 같다는 불안이 있다.",
+      en: "Even when things are not bad now, I worry that staying the same may make me smaller.",
+    },
+    weights: { "stability-change": 2 },
+  },
+  {
+    id: "vc_l21",
+    text: {
+      ko: "안정적인 삶은 소중하지만, 너무 익숙한 리듬 안에서는 숨이 막힐 때가 있다.",
+      en: "A stable life matters to me, but sometimes the familiar rhythm starts to feel tight.",
+    },
+    weights: { "stability-change": 2 },
+  },
+  {
+    id: "vc_l22",
+    text: {
+      ko: "큰 변화는 두렵지만, 아주 작은 실험이라도 하지 않으면 마음이 답답해진다.",
+      en: "Big change scares me, but if I do not try even a small experiment, my heart feels stuck.",
+    },
+    weights: { "stability-change": 2 },
+  },
+  {
+    id: "vc_l23",
+    text: {
+      ko: "두 가치가 충돌할 때, 바로 정답을 고르기보다 둘 사이의 작은 타협점을 먼저 찾는다.",
+      en: "When two values collide, I look for a small bridge between them before choosing one answer.",
+    },
+    weights: { "balanced-negotiator": 2 },
+  },
+  {
+    id: "vc_l24",
+    text: {
+      ko: "불안하더라도, 지금과 다른 가능성을 아주 작게라도 열어두고 싶다.",
+      en: "Even with anxiety, I want to leave at least a small opening for a possibility different from now.",
+    },
+    weights: { "balanced-negotiator": 2 },
+  },
+];
+
 function t(locale: SimpleLocale, ko: string, en: string): string {
   return locale === "ko" ? ko : en;
 }
@@ -39,13 +243,11 @@ function text(locale: SimpleLocale, copy: { ko: string; en: string }): string {
   return locale === "ko" ? copy.ko : copy.en;
 }
 
-function remapLikertWeights(ratings: LikertRating<ValueConflictId>[]): Partial<Record<ValueConflictId, number>> {
+function remapLikertWeights(statement: ValueStatement, value: number): Partial<Record<ValueConflictId, number>> {
   const weights: Partial<Record<ValueConflictId, number>> = {};
-  for (const rating of ratings) {
-    const agreement = (rating.value - 1) / 6;
-    for (const [id, value] of Object.entries(rating.weights) as Array<[ValueConflictId, number]>) {
-      weights[id] = (weights[id] ?? 0) + value * agreement;
-    }
+  const agreement = (value - 1) / 6;
+  for (const [id, weight] of Object.entries(statement.weights) as Array<[ValueConflictId, number]>) {
+    weights[id] = (weights[id] ?? 0) + weight * agreement;
   }
   return weights;
 }
@@ -57,6 +259,7 @@ export default function ValueConflictTestClient(): ReactElement {
   const [answers, setAnswers] = useState<ValueAnswer[]>([]);
   const [sharedResult, setSharedResult] = useState<ValueResult | null>(null);
   const [shareStatus, setShareStatus] = useState("");
+  const [selectedValue, setSelectedValue] = useState<number | null>(null);
 
   useEffect(() => {
     const payload = decodeSharePayload<ValueSharePayload>(new URLSearchParams(window.location.search).get("s"));
@@ -65,19 +268,19 @@ export default function ValueConflictTestClient(): ReactElement {
       const restoreId = window.setTimeout(() => {
         setSharedResult(result);
         setPhase("result");
-        setQuestionIndex(VALUE_QUESTIONS.length - 1);
+        setQuestionIndex(VALUE_STATEMENTS.length - 1);
         setAnswers([]);
       }, 0);
       return () => window.clearTimeout(restoreId);
     }
   }, []);
 
-  const currentQuestion = VALUE_QUESTIONS[questionIndex];
+  const currentStatement = VALUE_STATEMENTS[questionIndex];
   const result = useMemo(() => sharedResult ?? calculateValueResult(answers), [answers, sharedResult]);
-  const progress = phase === "result" ? 100 : ((questionIndex + 1) / VALUE_QUESTIONS.length) * 100;
+  const progress = phase === "result" ? 100 : ((questionIndex + 1) / VALUE_STATEMENTS.length) * 100;
 
   useEffect(() => {
-    if (phase !== "quiz") return;
+    if (phase === "intro") return;
     const frame = window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       document.scrollingElement?.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -98,20 +301,24 @@ export default function ValueConflictTestClient(): ReactElement {
     setAnswers([]);
     setSharedResult(null);
     setShareStatus("");
+    setSelectedValue(null);
     window.history.replaceState(null, "", "/tests/value-conflict");
   }, []);
 
-  const choose = useCallback((ratings: LikertRating<ValueConflictId>[]) => {
+  const choose = useCallback(() => {
+    if (selectedValue === null) return;
     trackQuestionAnswered("value-conflict", questionIndex + 1);
     const nextAnswer: ValueAnswer = {
-      questionId: currentQuestion.id,
-      choiceId: `likert:${ratings.map((rating) => `${rating.choiceId}${rating.value}`).join(",")}`,
-      weights: remapLikertWeights(ratings),
+      questionId: currentStatement.id,
+      choiceId: `likert:${currentStatement.id}:${selectedValue}`,
+      weights: remapLikertWeights(currentStatement, selectedValue),
     };
     const nextAnswers = [...answers, nextAnswer];
     setAnswers(nextAnswers);
     setShareStatus("");
-    if (questionIndex >= VALUE_QUESTIONS.length - 1) {
+    setSelectedValue(null);
+
+    if (questionIndex >= VALUE_STATEMENTS.length - 1) {
       const nextResult = calculateValueResult(nextAnswers);
       const url = buildShareUrl("/tests/value-conflict", {
         v: 1,
@@ -122,8 +329,9 @@ export default function ValueConflictTestClient(): ReactElement {
       setPhase("result");
       return;
     }
+
     setQuestionIndex((value) => value + 1);
-  }, [answers, currentQuestion.id, locale, questionIndex]);
+  }, [answers, currentStatement, locale, questionIndex, selectedValue]);
 
   const share = useCallback(async () => {
     trackShareClick("value-conflict", "test", result.id);
@@ -133,7 +341,7 @@ export default function ValueConflictTestClient(): ReactElement {
       locale,
     } satisfies ValueSharePayload);
     const title = t(locale, "가치관 갈등 테스트 결과", "Value Conflict Test Result");
-    const body = t(locale, result.shareLine.ko, result.shareLine.en);
+    const body = text(locale, result.shareLine);
     try {
       if (navigator.share) {
         await navigator.share({ title, text: body, url });
@@ -147,7 +355,7 @@ export default function ValueConflictTestClient(): ReactElement {
         await navigator.clipboard.writeText(`${body}\n${url}`);
         setShareStatus(t(locale, "결과 링크를 복사했어요.", "Result link copied."));
       } catch {
-        setShareStatus(t(locale, "링크 복사에 실패했어요. 주소창의 링크를 복사해주세요.", "Copy failed. Please copy the URL from the address bar."));
+        setShareStatus(t(locale, "복사에 실패했어요. 주소창의 링크를 직접 복사해주세요.", "Copy failed. Please copy the URL from the address bar."));
       }
     }
   }, [locale, result]);
@@ -165,21 +373,17 @@ export default function ValueConflictTestClient(): ReactElement {
               <p className="eyebrow">{t(locale, "심리 테스트", "Psychology Test")}</p>
               <h1>{t(locale, "가치관 갈등 테스트", "Value Conflict Test")}</h1>
               <p className="subtitle">
-                {t(
-                  locale,
-                  "당신 안에서 충돌하는 두 가지 가치는?",
-                  "What two values are fighting inside you?",
-                )}
+                {t(locale, "내 안에서 자주 부딪히는 두 가치는 무엇일까요?", "What two values are fighting inside you?")}
               </p>
               <p className="description">
                 {t(
                   locale,
-                  "자유를 원하지만 안정도 포기하기 어렵고, 솔직하고 싶지만 평화를 깨고 싶지 않을 때가 있습니다. 당신 안에서 가장 자주 부딪히는 두 가지 가치를 확인해보세요.",
-                  "Sometimes you are not confused because you want nothing. You are conflicted because two important values matter at the same time.",
+                  "자유와 안정, 책임과 욕망, 시선과 확신 사이에서 흔들리는 마음을 24개의 짧은 문장으로 살펴보세요.",
+                  "Explore the values that pull against each other inside you through 24 short statements.",
                 )}
               </p>
               <div className="intro-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
-                <span>{t(locale, "16문항", "16 questions")}</span>
+                <span>{t(locale, "24문장", "24 statements")}</span>
                 <span>{t(locale, "약 4분", "About 4 min")}</span>
                 <span>{t(locale, "가치 충돌", "Value conflict")}</span>
               </div>
@@ -189,7 +393,7 @@ export default function ValueConflictTestClient(): ReactElement {
               <p className="notice">
                 {t(
                   locale,
-                  "이 테스트는 전문적인 진단이 아닌, 심리학/철학 개념을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
+                  "이 테스트는 전문적인 진단이 아닌, 심리학과 철학 개념을 바탕으로 만든 재미용 자기이해 콘텐츠입니다.",
                   "This is not a professional diagnosis. It is an entertainment and self-reflection experience based on psychology/philosophy concepts.",
                 )}
               </p>
@@ -198,11 +402,11 @@ export default function ValueConflictTestClient(): ReactElement {
         ) : (
           <section className="value-card">
             <div className="progress-head">
-              <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "질문", "Question")}</span>
+              <span>{phase === "result" ? t(locale, "결과", "Result") : t(locale, "문장", "Statement")}</span>
               <strong>
                 {phase === "result"
-                  ? `${VALUE_QUESTIONS.length}/${VALUE_QUESTIONS.length}`
-                  : `${questionIndex + 1}/${VALUE_QUESTIONS.length}`}
+                  ? `${VALUE_STATEMENTS.length}/${VALUE_STATEMENTS.length}`
+                  : `${questionIndex + 1}/${VALUE_STATEMENTS.length}`}
               </strong>
             </div>
             <div className="progress-bar" aria-hidden>
@@ -210,14 +414,13 @@ export default function ValueConflictTestClient(): ReactElement {
             </div>
 
             {phase === "quiz" ? (
-              <>
-                <LikertScaleQuestion
-                  choices={currentQuestion.choices}
-                  locale={locale}
-                  onSubmit={choose}
-                  prompt={text(locale, currentQuestion.prompt)}
-                />
-              </>
+              <SingleStatementLikert
+                locale={locale}
+                onSelect={setSelectedValue}
+                onSubmit={choose}
+                selectedValue={selectedValue}
+                statement={currentStatement}
+              />
             ) : (
               <ResultView locale={locale} result={result} shared={Boolean(sharedResult)} onRetry={start} onShare={share} shareStatus={shareStatus} />
             )}
@@ -284,7 +487,8 @@ export default function ValueConflictTestClient(): ReactElement {
           width: min(100%, 720px);
         }
         .eyebrow,
-        .progress-head span {
+        .progress-head span,
+        .value-single-likert__kicker {
           margin: 0 0 12px;
           color: #9b6a23;
           font-size: 13px;
@@ -302,19 +506,15 @@ export default function ValueConflictTestClient(): ReactElement {
         h1 {
           max-width: 720px;
           font-size: clamp(38px, 6.5vw, 72px);
-        }
-        h2 {
-          margin: 28px 0 22px;
-          font-size: clamp(25px, 4vw, 40px);
-          color: #211d18;
+          word-break: keep-all;
         }
         .subtitle,
         .description,
-        .meta-line,
         .notice {
           max-width: 650px;
           color: rgba(33, 29, 24, 0.74);
           line-height: 1.72;
+          word-break: keep-all;
         }
         .subtitle {
           margin: 18px 0 0;
@@ -324,13 +524,6 @@ export default function ValueConflictTestClient(): ReactElement {
         .description {
           margin: 14px 0 30px;
           font-size: 16.5px;
-        }
-        .meta-line {
-          margin: 13px 0 0;
-          color: #8f5d1e;
-          font-size: 14px;
-          font-weight: 900;
-          letter-spacing: 0.04em;
         }
         .notice {
           margin: 10px 0 0;
@@ -359,8 +552,7 @@ export default function ValueConflictTestClient(): ReactElement {
           border: 1px solid rgba(68, 53, 35, 0.18);
         }
         .primary:hover,
-        .secondary:hover,
-        .answer:hover {
+        .secondary:hover {
           transform: translateY(-2px);
         }
         .value-card {
@@ -393,44 +585,95 @@ export default function ValueConflictTestClient(): ReactElement {
           background: linear-gradient(90deg, #9f6a25, #6d83a8);
           transition: width 220ms ease;
         }
-        .answers {
+        .value-single-likert {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 24px;
+          padding-top: clamp(30px, 6vw, 58px);
+        }
+        .value-single-likert__intro {
+          display: grid;
           gap: 14px;
+          max-width: 780px;
+          margin-inline: auto;
+          text-align: center;
         }
-        .answer {
-          display: grid;
-          grid-template-columns: auto 1fr;
-          gap: 12px;
-          align-items: start;
-          border: 1px solid rgba(68, 53, 35, 0.16);
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.62);
+        .value-single-likert__kicker {
+          margin: 0;
+        }
+        .value-single-likert h2 {
+          margin: 0;
           color: #211d18;
-          cursor: pointer;
-          padding: 18px;
-          text-align: left;
-          box-shadow: 0 12px 28px rgba(40, 32, 24, 0.08);
-          transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+          font-size: clamp(26px, 4.8vw, 46px);
+          line-height: 1.32;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
         }
-        .answer span {
-          display: grid;
-          place-items: center;
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          background: #24211c;
-          color: #fff4e3;
-          font-size: 13px;
-          font-weight: 900;
-        }
-        .answer strong {
-          font-size: 16px;
+        .value-single-likert__help {
+          margin: 0;
+          color: rgba(33, 29, 24, 0.62);
+          font-size: 15px;
+          font-weight: 700;
           line-height: 1.55;
         }
-        .answer:hover {
-          border-color: rgba(159, 106, 37, 0.42);
-          box-shadow: 0 18px 34px rgba(89, 66, 39, 0.13);
+        .value-single-likert__labels {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+          max-width: 720px;
+          width: 100%;
+          margin: 8px auto 0;
+          color: rgba(33, 29, 24, 0.64);
+          font-size: 13px;
+          font-weight: 850;
+          line-height: 1.4;
+        }
+        .value-single-likert__labels span:nth-child(1) {
+          text-align: left;
+        }
+        .value-single-likert__labels span:nth-child(2) {
+          text-align: center;
+        }
+        .value-single-likert__labels span:nth-child(3) {
+          text-align: right;
+        }
+        .value-single-likert__scale {
+          display: grid;
+          grid-template-columns: repeat(7, minmax(0, 1fr));
+          gap: 10px;
+          max-width: 720px;
+          width: 100%;
+          margin: 0 auto;
+        }
+        .value-single-likert__scale button {
+          aspect-ratio: 1;
+          min-width: 0;
+          border: 1px solid rgba(68, 53, 35, 0.18);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.7);
+          color: #4b3420;
+          cursor: pointer;
+          font-size: clamp(15px, 3.6vw, 18px);
+          font-weight: 950;
+          transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+        }
+        .value-single-likert__scale button:hover,
+        .value-single-likert__scale button.is-selected {
+          transform: translateY(-2px);
+          border-color: rgba(109, 131, 168, 0.52);
+          background: linear-gradient(135deg, #a66d25, #6d83a8);
+          color: #fff9ee;
+          box-shadow: 0 14px 28px rgba(112, 73, 32, 0.18);
+        }
+        .value-single-likert__next {
+          justify-self: center;
+          min-width: min(100%, 260px);
+          margin-top: 4px;
+        }
+        .value-single-likert__next:disabled {
+          cursor: not-allowed;
+          transform: none;
+          opacity: 0.48;
+          box-shadow: none;
         }
         .result {
           display: grid;
@@ -555,7 +798,6 @@ export default function ValueConflictTestClient(): ReactElement {
           font-size: 14px;
         }
         @media (max-width: 780px) {
-          .answers,
           .result-grid,
           .result-quote-grid {
             grid-template-columns: 1fr;
@@ -573,6 +815,20 @@ export default function ValueConflictTestClient(): ReactElement {
             min-height: auto;
             padding-top: 18px;
           }
+          .value-single-likert {
+            gap: 20px;
+            padding-top: 30px;
+          }
+          .value-single-likert h2 {
+            font-size: clamp(24px, 7vw, 31px);
+            line-height: 1.38;
+          }
+          .value-single-likert__labels {
+            font-size: 12px;
+          }
+          .value-single-likert__scale {
+            gap: 6px;
+          }
           .primary,
           .secondary {
             width: 100%;
@@ -580,6 +836,59 @@ export default function ValueConflictTestClient(): ReactElement {
         }
       `}</style>
     </main>
+  );
+}
+
+function SingleStatementLikert({
+  locale,
+  onSelect,
+  onSubmit,
+  selectedValue,
+  statement,
+}: {
+  locale: SimpleLocale;
+  onSelect: (value: number) => void;
+  onSubmit: () => void;
+  selectedValue: number | null;
+  statement: ValueStatement;
+}): ReactElement {
+  return (
+    <section className="value-single-likert" aria-label={t(locale, "7점 척도 응답", "7-point scale")}>
+      <div className="value-single-likert__intro">
+        <p className="value-single-likert__kicker">{t(locale, "지금의 내 갈등", "Inner conflict")}</p>
+        <h2>{text(locale, statement.text)}</h2>
+        <p className="value-single-likert__help">
+          {t(locale, "이 문장이 나와 얼마나 가까운지 선택하세요.", "Choose how closely this statement feels like you.")}
+        </p>
+      </div>
+      <div className="value-single-likert__labels" aria-hidden="true">
+        <span>{t(locale, "1 전혀 아니다", "1 Strongly disagree")}</span>
+        <span>{t(locale, "4 보통이다", "4 Neutral")}</span>
+        <span>{t(locale, "7 매우 그렇다", "7 Strongly agree")}</span>
+      </div>
+      <div className="value-single-likert__scale" role="radiogroup" aria-label={text(locale, statement.text)}>
+        {SCALE_VALUES.map((value) => (
+          <button
+            aria-checked={selectedValue === value}
+            className={selectedValue === value ? "is-selected" : ""}
+            key={value}
+            onClick={() => onSelect(value)}
+            role="radio"
+            type="button"
+          >
+            {value}
+          </button>
+        ))}
+      </div>
+      <button
+        className="primary value-single-likert__next"
+        disabled={selectedValue === null}
+        onClick={onSubmit}
+        type="button"
+      >
+        {t(locale, "다음 문장", "Next statement")}
+      </button>
+    </section>
   );
 }
 
@@ -612,24 +921,24 @@ function ResultView({
         <p>
           {t(
             locale,
-            "이 테스트는 심리학/철학 개념을 일상 상황으로 쉽게 풀어낸 자기이해 콘텐츠입니다. 결과는 참고용이며 전문적인 진단이나 상담을 대체하지 않습니다.",
+            "이 테스트는 심리와 철학 개념을 일상 상황으로 쉽게 풀어낸 자기이해 콘텐츠입니다. 결과는 참고용이며 전문적인 진단이나 상담을 대체하지 않습니다.",
             "This test translates psychology/philosophy concepts into everyday situations. Results are for self-reflection only and do not replace professional diagnosis or counseling.",
           )}
         </p>
       </div>
       <div className="result-depth">
         <div className="result-feature">
-          <span>{t(locale, "당신 안의 갈등 구조", "Your Inner Conflict Pattern")}</span>
+          <span>{t(locale, "내 안의 갈등 구조", "Your Inner Conflict Pattern")}</span>
           <p>{text(locale, result.conflictStructure)}</p>
         </div>
         <div className="result-quote-grid">
           <div className="result-quote">
             <span>{t(locale, "자주 하는 생각", "A Thought You Often Have")}</span>
-            <p>“{text(locale, result.commonThought)}”</p>
+            <p>{text(locale, result.commonThought)}</p>
           </div>
           <div className="result-quote result-quote--friend">
             <span>{t(locale, "친구가 보면 할 말", "What a Friend Might Say")}</span>
-            <p>“{text(locale, result.friendComment)}”</p>
+            <p>{text(locale, result.friendComment)}</p>
           </div>
         </div>
       </div>
