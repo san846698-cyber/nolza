@@ -7311,6 +7311,155 @@ body {
     overflow: hidden !important;
   }
 
+  main.value-test--quiz .value-shell,
+  main.stoic-test--quiz .stoic-shell,
+  main.thinking-test--quiz .thinking-shell,
+  main.value-test--quiz section.value-card,
+  main.stoic-test--quiz section.stoic-card,
+  main.thinking-test--quiz section.thinking-card {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  main.value-test.value-test--quiz section.value-card:not(:has(.result)),
+  main.stoic-test.stoic-test--quiz section.stoic-card:not(:has(.result)),
+  main.thinking-test.thinking-test--quiz section.thinking-card:not(:has(.result)) {
+    padding: 18px 10px 22px !important;
+    border-color: rgba(97, 70, 39, 0.2) !important;
+    background:
+      linear-gradient(180deg, rgba(255, 252, 245, 0.96), rgba(238, 224, 202, 0.82)),
+      #f4e8d6 !important;
+  }
+
+  main.value-test--quiz .progress-bar,
+  main.stoic-test--quiz .progress-bar,
+  main.thinking-test--quiz .progress-bar {
+    margin-bottom: 18px !important;
+  }
+
+  .value-test .value-single-likert,
+  .stoic-test .stoic-single-likert,
+  .thinking-test .likert-question {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: none !important;
+    border-radius: 22px !important;
+    border-color: rgba(94, 66, 35, 0.2) !important;
+    background:
+      linear-gradient(180deg, rgba(255, 254, 249, 0.96), rgba(247, 238, 222, 0.9)),
+      #fff8ed !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86), 0 18px 38px rgba(69, 46, 24, 0.12) !important;
+    padding: 22px 14px 18px !important;
+  }
+
+  .value-test .value-single-likert,
+  .stoic-test .stoic-single-likert,
+  .thinking-test .likert-question {
+    gap: 16px !important;
+  }
+
+  .value-test .value-single-likert__intro,
+  .stoic-test .stoic-single-likert__intro {
+    max-width: 100% !important;
+    gap: 9px !important;
+  }
+
+  .value-test .value-single-likert h2,
+  .stoic-test .stoic-single-likert h2 {
+    max-width: min(100%, 26ch) !important;
+    font-size: clamp(20px, 5.15vw, 22px) !important;
+    line-height: 1.5 !important;
+    font-weight: 800 !important;
+  }
+
+  .thinking-test .likert-item p {
+    font-size: clamp(20px, 5.15vw, 22px) !important;
+    line-height: 1.5 !important;
+    font-weight: 800 !important;
+  }
+
+  .value-test .value-single-likert__help,
+  .stoic-test .stoic-single-likert__help,
+  .thinking-test .likert-question__help {
+    max-width: 28ch !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    color: rgba(45, 35, 24, 0.66) !important;
+  }
+
+  .value-test .value-single-likert__labels,
+  .stoic-test .stoic-single-likert__labels,
+  .thinking-test .likert-question__labels {
+    box-sizing: border-box !important;
+    width: min(100%, 330px) !important;
+    max-width: 330px !important;
+    margin-top: 2px !important;
+    gap: 4px !important;
+  }
+
+  .value-test .value-single-likert__labels span,
+  .stoic-test .stoic-single-likert__labels span,
+  .thinking-test .likert-question__labels span {
+    color: rgba(59, 42, 24, 0.68) !important;
+    font-size: 11px !important;
+    font-weight: 850 !important;
+  }
+
+  .value-test .value-single-likert__scale,
+  .stoic-test .stoic-single-likert__scale,
+  .thinking-test .likert-scale {
+    box-sizing: border-box !important;
+    width: min(100%, 330px) !important;
+    max-width: 330px !important;
+    gap: 3px !important;
+    padding: 4px !important;
+    border: 1px solid rgba(96, 68, 36, 0.12) !important;
+    border-radius: 999px !important;
+    background: rgba(239, 224, 202, 0.54) !important;
+  }
+
+  .value-test .value-single-likert__scale button,
+  .stoic-test .stoic-single-likert__scale button,
+  .thinking-test .likert-scale button {
+    inline-size: clamp(39px, 10vw, 43px) !important;
+    block-size: clamp(39px, 10vw, 43px) !important;
+    border-color: rgba(102, 72, 39, 0.22) !important;
+    background: rgba(255, 251, 244, 0.94) !important;
+    box-shadow: 0 3px 8px rgba(75, 50, 25, 0.08) !important;
+    font-size: 14px !important;
+  }
+
+  .value-test .value-single-likert__scale button.is-selected,
+  .stoic-test .stoic-single-likert__scale button.is-selected,
+  .thinking-test .likert-scale button.is-selected {
+    transform: translateY(-1px) scale(1.04) !important;
+    border-color: rgba(99, 63, 26, 0.76) !important;
+    background:
+      linear-gradient(180deg, #8b5d33, #684224),
+      #774d2b !important;
+    box-shadow: 0 9px 18px rgba(85, 53, 24, 0.24) !important;
+  }
+
+  .value-test .value-single-likert__next.primary,
+  .stoic-test .stoic-single-likert__next.primary,
+  .thinking-test .likert-submit {
+    width: min(100%, 330px) !important;
+    min-width: 0 !important;
+    min-height: 50px !important;
+    margin-top: 0 !important;
+  }
+
+  .value-test .value-single-likert__next.primary:disabled,
+  .stoic-test .stoic-single-likert__next.primary:disabled,
+  .thinking-test .likert-submit:disabled {
+    opacity: 1 !important;
+    background:
+      linear-gradient(180deg, rgba(188, 159, 123, 0.5), rgba(154, 122, 82, 0.38)),
+      #eadcc7 !important;
+    color: rgba(72, 51, 29, 0.64) !important;
+    border-color: rgba(102, 72, 39, 0.18) !important;
+  }
+
   main.value-test .primary,
   main.stoic-test .primary,
   main.thinking-test .primary {
