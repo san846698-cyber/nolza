@@ -6548,6 +6548,45 @@ body {
     linear-gradient(135deg, #fbf7ff 0%, #fff3f8 43%, #eef8ff 100%) !important;
 }
 
+.reaction-game-stage[data-phase="waiting"] {
+  background:
+    radial-gradient(circle at 50% 34%, rgba(255, 138, 96, 0.3), transparent 34rem),
+    linear-gradient(135deg, #b91c1c 0%, #7f1d1d 58%, #450a0a 100%) !important;
+  color: #fff7ed !important;
+}
+
+.reaction-game-stage[data-phase="waiting"] .reaction-game-stage__center > .tabular-nums {
+  color: #fff7ed !important;
+  text-shadow: 0 3px 18px rgba(69, 10, 10, 0.54);
+}
+
+.reaction-game-stage[data-phase="waiting"] .reaction-game-stage__center p {
+  color: rgba(255, 247, 237, 0.94) !important;
+  opacity: 1 !important;
+  font-weight: 760 !important;
+  text-shadow: 0 2px 12px rgba(69, 10, 10, 0.4);
+}
+
+.reaction-game-stage[data-phase="go"] {
+  background:
+    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.52), transparent 25rem),
+    linear-gradient(135deg, #00ff88 0%, #34d399 54%, #16a34a 100%) !important;
+  color: #052e16 !important;
+}
+
+.reaction-game-stage[data-phase="tooEarly"] {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 59, 48, 0.24), transparent 25rem),
+    #1a0000 !important;
+}
+
+.reaction-game-stage[data-phase="showResult"],
+.reaction-game-stage[data-phase="done"] {
+  background:
+    radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.09), transparent 28rem),
+    #0a0a0a !important;
+}
+
 .reaction-game-stage .result-screen__card,
 .circle-game-stage__canvas,
 .circle-game-stage .result-screen__card,

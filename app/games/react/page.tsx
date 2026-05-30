@@ -206,6 +206,7 @@ export default function ReactGame() {
   return (
     <main
       onPointerDown={press}
+      data-phase={phase}
       className="reaction-game-stage page-in relative min-h-screen select-none"
       style={{
         backgroundColor: bg,
