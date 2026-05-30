@@ -6985,6 +6985,129 @@ body {
   }
 }
 
+.value-test .value-single-likert,
+.stoic-test .stoic-single-likert,
+.thinking-test .likert-question {
+  width: min(100%, 720px) !important;
+  margin-inline: auto !important;
+  border: 1px solid rgba(99, 72, 43, 0.12) !important;
+  border-radius: 26px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 247, 0.78), rgba(243, 232, 214, 0.62)),
+    rgba(255, 248, 237, 0.68) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 18px 42px rgba(65, 46, 27, 0.08) !important;
+  padding: clamp(24px, 3.4vw, 38px) clamp(18px, 3.4vw, 34px) !important;
+}
+
+.value-test .value-single-likert,
+.stoic-test .stoic-single-likert {
+  gap: clamp(18px, 2.5vw, 22px) !important;
+}
+
+.thinking-test .likert-question {
+  gap: clamp(16px, 2vw, 20px) !important;
+}
+
+.value-test .value-single-likert__intro,
+.stoic-test .stoic-single-likert__intro {
+  max-width: 620px !important;
+  gap: 10px !important;
+}
+
+.value-test .value-single-likert h2,
+.stoic-test .stoic-single-likert h2 {
+  max-width: 20ch !important;
+  margin-inline: auto !important;
+  font-size: clamp(24px, 2.7vw, 34px) !important;
+  line-height: 1.42 !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+}
+
+.value-test .value-single-likert__help,
+.stoic-test .stoic-single-likert__help,
+.thinking-test .likert-question__help {
+  max-width: 520px !important;
+  margin-inline: auto !important;
+  color: rgba(45, 35, 24, 0.58) !important;
+  font-size: 14px !important;
+  font-weight: 750 !important;
+}
+
+.value-test .value-single-likert__labels,
+.stoic-test .stoic-single-likert__labels,
+.thinking-test .likert-question__labels {
+  max-width: 390px !important;
+  margin-top: 2px !important;
+  gap: 6px !important;
+  color: rgba(64, 47, 31, 0.62) !important;
+  font-size: 12px !important;
+  font-weight: 820 !important;
+}
+
+.value-test .value-single-likert__scale,
+.stoic-test .stoic-single-likert__scale,
+.thinking-test .likert-scale {
+  display: flex !important;
+  justify-content: center !important;
+  gap: clamp(4px, 0.75vw, 7px) !important;
+  width: 100% !important;
+  max-width: 390px !important;
+  margin-inline: auto !important;
+}
+
+.value-test .value-single-likert__scale button,
+.stoic-test .stoic-single-likert__scale button,
+.thinking-test .likert-scale button {
+  flex: 0 0 auto !important;
+  inline-size: clamp(40px, 8.2vw, 48px) !important;
+  block-size: clamp(40px, 8.2vw, 48px) !important;
+  min-width: 0 !important;
+  border-color: rgba(97, 70, 39, 0.18) !important;
+  background: rgba(255, 252, 246, 0.82) !important;
+  color: #5b4127 !important;
+  font-size: clamp(14px, 3.3vw, 16px) !important;
+  font-weight: 880 !important;
+  box-shadow: 0 8px 18px rgba(68, 49, 29, 0.06) !important;
+}
+
+.value-test .value-single-likert__scale button:hover,
+.value-test .value-single-likert__scale button.is-selected,
+.stoic-test .stoic-single-likert__scale button:hover,
+.stoic-test .stoic-single-likert__scale button.is-selected,
+.thinking-test .likert-scale button:hover,
+.thinking-test .likert-scale button.is-selected {
+  transform: translateY(-1px) !important;
+  border-color: rgba(120, 80, 38, 0.54) !important;
+  background:
+    linear-gradient(180deg, #8a5d35, #664324),
+    #7a5130 !important;
+  color: #fff7e9 !important;
+  box-shadow: 0 10px 22px rgba(96, 63, 31, 0.2) !important;
+}
+
+.value-test .value-single-likert__next.primary,
+.stoic-test .stoic-single-likert__next.primary,
+.thinking-test .likert-submit {
+  min-width: min(100%, 220px) !important;
+  min-height: 48px !important;
+  border: 1px solid rgba(103, 68, 32, 0.22) !important;
+  background:
+    linear-gradient(180deg, #8b5f37, #6f4828),
+    #7a5130 !important;
+  color: #fff8ec !important;
+  box-shadow: 0 14px 28px rgba(89, 58, 29, 0.2) !important;
+}
+
+.value-test .value-single-likert__next.primary:disabled,
+.stoic-test .stoic-single-likert__next.primary:disabled,
+.thinking-test .likert-submit:disabled {
+  background: rgba(117, 89, 57, 0.18) !important;
+  color: rgba(75, 54, 31, 0.56) !important;
+  border-color: rgba(103, 68, 32, 0.12) !important;
+  box-shadow: none !important;
+}
+
 @media (max-width: 640px) {
   .locale-floating-toggle {
     position: absolute;
