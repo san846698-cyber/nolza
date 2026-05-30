@@ -2297,6 +2297,12 @@ function QuadrantChart({
 
   const userX = xAt(scores.avoidance);
   const userY = yAt(scores.anxiety);
+  const chartLabels: Record<AttachmentTypeId, { ko: string; en: string }> = {
+    secure: { ko: "안정형", en: "Secure" },
+    anxious: { ko: "불안형", en: "Anxious" },
+    avoidant: { ko: "회피형", en: "Avoidant" },
+    disorganized: { ko: "혼란형", en: "Disorganized" },
+  };
 
   const corners: {
     id: AttachmentTypeId;
@@ -2412,11 +2418,10 @@ function QuadrantChart({
 
         {/* corner labels (HTML overlays for proper text rendering) */}
         {corners.map((c) => {
-          const ct = TYPES[c.id];
-          const name = locale === "ko" ? ct.ko.name : ct.en.name;
+          const name = locale === "ko" ? chartLabels[c.id].ko : chartLabels[c.id].en;
           const isMe = c.id === typeId;
-          const offsetX = c.align === "start" ? 6 : -6;
-          const offsetY = c.vAlign === "top" ? 8 : -8;
+          const offsetX = c.align === "start" ? 10 : -10;
+          const offsetY = c.vAlign === "top" ? 10 : -10;
           return (
             <div
               key={`label-${c.id}`}
@@ -2427,11 +2432,19 @@ function QuadrantChart({
                 transform: `translate(${
                   c.align === "end" ? "-100%" : "0%"
                 }, ${c.vAlign === "bottom" ? "-100%" : "0%"})`,
+                maxWidth: 92,
+                padding: "4px 8px",
+                borderRadius: 999,
+                border: `1px solid ${isMe ? TYPE_THEME[c.id].ringBorder : "rgba(42,42,42,0.1)"}`,
+                background: isMe ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.74)",
+                boxShadow: isMe ? "0 8px 18px rgba(42,42,42,0.08)" : "none",
                 fontFamily: SERIF,
-                fontSize: 13,
-                fontWeight: isMe ? 700 : 500,
-                color: isMe ? TYPE_THEME[c.id].name : "rgba(42,42,42,0.55)",
-                whiteSpace: "nowrap",
+                fontSize: 12,
+                lineHeight: 1.2,
+                fontWeight: isMe ? 800 : 650,
+                color: isMe ? TYPE_THEME[c.id].name : "rgba(42,42,42,0.58)",
+                whiteSpace: "normal",
+                textAlign: c.align === "end" ? "right" : "left",
                 pointerEvents: "none",
               }}
             >

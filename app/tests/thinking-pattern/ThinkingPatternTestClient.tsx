@@ -42,8 +42,28 @@ function text(locale: SimpleLocale, copy: { ko: string; en: string }): string {
 type ThinkingStatement = {
   id: string;
   sourceQuestionId: string;
+  context: {
+    ko: string;
+    en: string;
+  };
   choice: ThinkingChoice;
 };
+
+function promptContext(prompt: { ko: string; en: string }): { ko: string; en: string } {
+  const clean = (value: string): string => {
+    const firstLine = value.split("\n")[0]?.trim() ?? value.trim();
+    return firstLine
+      .replace(/\s*당신에게 가장 가까운 반응은\?$/, "")
+      .replace(/\s*당신은 어떤 생각이 먼저 드나요\?$/, "")
+      .replace(/\s*What reaction feels closest\?$/, "")
+      .replace(/\s*What comes closest\?$/, "")
+      .trim();
+  };
+  return {
+    ko: clean(prompt.ko),
+    en: clean(prompt.en),
+  };
+}
 
 const THINKING_STATEMENT_KEYS = [
   "tp_01:a",
@@ -82,6 +102,7 @@ const THINKING_STATEMENTS: ThinkingStatement[] = THINKING_STATEMENT_KEYS.map((ke
   return {
     id: key,
     sourceQuestionId: question.id,
+    context: promptContext(question.prompt),
     choice,
   };
 });
@@ -517,6 +538,22 @@ export default function ThinkingPatternTestClient(): ReactElement {
           letter-spacing: 0.08em;
           text-transform: uppercase;
         }
+        .thinking-flow-context {
+          max-width: 720px;
+          margin: 0 0 18px;
+          padding: 12px 18px;
+          border: 1px solid rgba(111, 90, 166, 0.16);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.56);
+          color: rgba(42, 42, 42, 0.72);
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: clamp(14px, 1.8vw, 16px);
+          font-weight: 750;
+          line-height: 1.5;
+          text-align: center;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
         .thinking-flow-question {
           max-width: 800px;
           margin: 0;
@@ -867,6 +904,12 @@ export default function ThinkingPatternTestClient(): ReactElement {
             font-size: 22px;
             line-height: 1.45;
           }
+          .thinking-flow-context {
+            max-width: 360px;
+            border-radius: 18px;
+            padding: 10px 13px;
+            font-size: 13.5px;
+          }
           .thinking-flow-subtext {
             margin-top: 10px;
             padding: 0 18px;
@@ -939,6 +982,7 @@ function ThinkingAttachmentQuizView({
       <div className="thinking-flow-body">
         <div className="thinking-flow-question-area">
           <p className="thinking-flow-kicker">{t(locale, "지금 떠오르는 생각", "Current thought")}</p>
+          <p className="thinking-flow-context">{text(locale, statement.context)}</p>
           <h2 key={`thinking-statement-${statement.id}`} className="thinking-flow-question">
             {text(locale, statement.choice.text)}
           </h2>

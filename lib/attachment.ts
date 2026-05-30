@@ -400,7 +400,7 @@ export const TYPES: Record<AttachmentTypeId, AttachmentType> = {
     color: "#16a34a",
     bg: "rgba(22,163,74,0.08)",
     ko: {
-      name: "안정감을 느끼면 깊이 연결되는 타입",
+      name: "안정형 애착",
       serious: `당신은 관계가 흔들려도 한 장면만으로 전체를 판단하지 않으려는 편입니다. 가까운 사람이 잠시 서툴거나 바빠도, 기본적인 신뢰가 유지되면 마음이 크게 흔들리지 않습니다.
 
 가까워지는 것도, 혼자 있는 것도 비교적 자연스럽게 받아들입니다. 갈등이 생겨도 관계가 끝났다고 느끼기보다 다시 연결할 방법을 찾으려 합니다.
@@ -418,12 +418,12 @@ export const TYPES: Record<AttachmentTypeId, AttachmentType> = {
 관계가 잠깐 삐끗해도 바로 끝장이라고 보진 않음.
 혼자 있을 때도 괜찮고, 같이 있을 때도 괜찮음.
 가까움이 안정감으로 느껴지는 쪽.`,
-      shareText: `나의 애착 유형: 안정감을 느끼면 깊이 연결되는 타입 🟢
+      shareText: `나의 애착 유형: 안정형 애착 🟢
 '가까움이 편하고, 갈등 후에도 다시 연결하려는 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Deeply Connected When Secure",
+      name: "Secure Attachment",
       serious: `You tend not to judge an entire relationship by one imperfect moment. If basic trust remains, a quiet day or awkward moment does not immediately shake your sense of connection.
 
 Closeness and alone time can both feel natural. When conflict happens, you are more likely to look for a way back into connection than assume the relationship is broken.
@@ -441,7 +441,7 @@ This does not mean you are perfect. You can still feel anxious or need space. It
 Doesn't treat one awkward moment as the end.
 Fine alone, fine together.
 Closeness feels like safety.`,
-      shareText: `My attachment style: Deeply Connected When Secure 🟢
+      shareText: `My attachment style: Secure Attachment 🟢
 'Closeness feels safe, and conflict can reconnect.'
 What's yours? → nolza.fun/games/attachment`,
     },
@@ -452,7 +452,7 @@ What's yours? → nolza.fun/games/attachment`,
     color: "#dc2626",
     bg: "rgba(220,38,38,0.08)",
     ko: {
-      name: "가까워지고 싶지만 확인이 필요한 타입",
+      name: "불안형 애착",
       serious: `당신은 가까운 관계에서 상대의 온도 변화에 민감한 편입니다. 다정한 순간이 있어도 그 마음이 계속 이어질지 확인하고 싶어질 수 있어요.
 
 상대가 잠시 조용해지거나 관계의 리듬이 달라지면, 마음속 안정감이 흔들릴 수 있습니다. 그래서 직접적인 말, 반복되는 다정함, 관계가 괜찮다는 신호가 중요하게 느껴집니다.
@@ -470,12 +470,12 @@ What's yours? → nolza.fun/games/attachment`,
 괜찮다는 말 한마디에 마음이 확 놓임.
 다정함이 좋고, 지속되는 다정함은 더 좋음.
 연결되어 있다는 감각이 중요한 타입.`,
-      shareText: `나의 애착 유형: 가까워지고 싶지만 확인이 필요한 타입 🔴
+      shareText: `나의 애착 유형: 불안형 애착 🔴
 '연결되어 있다는 신호가 있어야 마음이 놓이는 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Close, But Needs Reassurance",
+      name: "Anxious Attachment",
       serious: `You are sensitive to changes in warmth and rhythm. Even after kind moments, you may want to know whether that care will continue.
 
 When someone close becomes quiet or the relationship rhythm shifts, your sense of safety can shake. Direct words, consistent kindness, and signals that the relationship is okay matter a lot.
@@ -493,7 +493,7 @@ This does not mean you cannot trust love. It means you feel steadier when connec
 A simple 'we're okay' can settle everything.
 Kindness is good.
 Consistent kindness is better.`,
-      shareText: `My attachment style: Close, But Needs Reassurance 🔴
+      shareText: `My attachment style: Anxious Attachment 🔴
 'I feel safe when connection is clear.'
 What's yours? → nolza.fun/games/attachment`,
     },
@@ -504,7 +504,7 @@ What's yours? → nolza.fun/games/attachment`,
     color: "#2563eb",
     bg: "rgba(37,99,235,0.08)",
     ko: {
-      name: "혼자만의 거리가 있어야 편한 타입",
+      name: "회피형 애착",
       serious: `당신은 가까운 관계에서도 자기만의 공간과 속도가 필요합니다. 상대를 싫어해서가 아니라, 너무 빠른 친밀감이 오면 마음이 먼저 긴장할 수 있어요.
 
 감정을 바로 꺼내기보다 혼자 정리한 뒤 말하는 편일 수 있습니다. 상대가 자주 기대오면 잘 받아주고 싶으면서도 내 리듬이 사라지는 느낌이 들 수 있습니다.
@@ -522,12 +522,12 @@ What's yours? → nolza.fun/games/attachment`,
 좋아해도 내 공간은 필요함.
 깊은 얘기는 천천히 해야 편함.
 속도 조절이 있어야 오래 가까워지는 타입.`,
-      shareText: `나의 애착 유형: 혼자만의 거리가 있어야 편한 타입 🔵
+      shareText: `나의 애착 유형: 회피형 애착 🔵
 '내 속도가 지켜질 때 더 오래 가까워지는 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Needs Space To Feel Close",
+      name: "Avoidant Attachment",
       serious: `You need your own pace and space even in close relationships. It is not that you dislike connection; fast intimacy can simply make your system tense.
 
 You may prefer to process feelings alone before speaking. When someone leans on you often, you may want to be there but also feel your own rhythm disappearing.
@@ -545,7 +545,7 @@ This does not mean you are cold. It means closeness feels safer when you can con
 Likes closeness, but slowly.
 Needs space to stay present.
 Pace matters more than intensity.`,
-      shareText: `My attachment style: Needs Space To Feel Close 🔵
+      shareText: `My attachment style: Avoidant Attachment 🔵
 'I stay closer when my pace is respected.'
 What's yours? → nolza.fun/games/attachment`,
     },
@@ -556,7 +556,7 @@ What's yours? → nolza.fun/games/attachment`,
     color: "#9333ea",
     bg: "rgba(147,51,234,0.08)",
     ko: {
-      name: "가까움과 독립 사이를 오가는 타입",
+      name: "혼란형 애착 / 불안-회피형 애착",
       serious: `당신은 가까워지고 싶은 마음과 내 공간을 지키고 싶은 마음이 함께 움직일 수 있습니다. 어느 날은 더 연결되고 싶고, 어느 날은 같은 가까움이 부담스럽게 느껴질 수 있어요.
 
 상대의 반응이 따뜻하면 안심되지만, 친밀감이 너무 빠르게 깊어지면 다시 속도를 늦추고 싶어질 수 있습니다. 그래서 관계 안에서 확인과 거리 조절이 번갈아 필요할 때가 있습니다.
@@ -575,12 +575,12 @@ What's yours? → nolza.fun/games/attachment`,
 근데 내 공간도 필요함.
 확인받고 싶다가도 갑자기 숨 쉴 틈이 필요해짐.
 속도 조절이 핵심.`,
-      shareText: `나의 애착 유형: 가까움과 독립 사이를 오가는 타입 🟣
+      shareText: `나의 애착 유형: 혼란형 애착 / 불안-회피형 애착 🟣
 '연결되고 싶지만, 내 속도도 지키고 싶은 편.'
 너는? → nolza.fun/games/attachment`,
     },
     en: {
-      name: "Between Closeness And Independence",
+      name: "Disorganized / Anxious-Avoidant Attachment",
       serious: `Your desire for closeness and your need for space can move at the same time. Some days you want more connection; other days the same closeness can feel like too much.
 
 Warm responses can soothe you, but if intimacy deepens too quickly, you may want to slow the pace again. Reassurance and space can both feel necessary.
@@ -599,7 +599,7 @@ Wants closeness.
 Also needs air.
 Reassurance and space both matter.
 The pace is everything.`,
-      shareText: `My attachment style: Between Closeness And Independence 🟣
+      shareText: `My attachment style: Disorganized / Anxious-Avoidant Attachment 🟣
 'I want connection, but I need my pace too.'
 What's yours? → nolza.fun/games/attachment`,
     },

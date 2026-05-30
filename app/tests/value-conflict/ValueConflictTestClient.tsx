@@ -39,6 +39,18 @@ type ValueStatement = {
 };
 
 const SCALE_VALUES = [1, 2, 3, 4, 5, 6, 7] as const;
+const LIKERT_COLORS = ["#b4573c", "#c8803f", "#d4aa54", "#9fa45b", "#6b966b", "#598b94", "#5c6fa8"] as const;
+const VALUE_DIM_COLORS: Record<ValueConflictId, string> = {
+  "freedom-stability": "#c8803f",
+  "recognition-independence": "#5c6fa8",
+  "truth-peace": "#b4573c",
+  "growth-rest": "#6b966b",
+  "love-pride": "#d4aa54",
+  "perfect-start": "#8c6a57",
+  "responsibility-freedom": "#598b94",
+  "stability-change": "#9fa45b",
+  "balanced-negotiator": "#8b6aae",
+};
 
 const VALUE_STATEMENTS: ValueStatement[] = [
   {
@@ -252,6 +264,11 @@ function remapLikertWeights(statement: ValueStatement, value: number): Partial<R
   return weights;
 }
 
+function primaryValueDimension(weights: Partial<Record<ValueConflictId, number>>): ValueConflictId {
+  const entries = Object.entries(weights) as Array<[ValueConflictId, number]>;
+  return entries.reduce<ValueConflictId>((best, [id, value]) => (value > (weights[best] ?? -Infinity) ? id : best), entries[0]?.[0] ?? "balanced-negotiator");
+}
+
 export default function ValueConflictTestClient(): ReactElement {
   const { locale } = useLocale();
   const [phase, setPhase] = useState<Phase>("intro");
@@ -259,7 +276,6 @@ export default function ValueConflictTestClient(): ReactElement {
   const [answers, setAnswers] = useState<ValueAnswer[]>([]);
   const [sharedResult, setSharedResult] = useState<ValueResult | null>(null);
   const [shareStatus, setShareStatus] = useState("");
-  const [selectedValue, setSelectedValue] = useState<number | null>(null);
 
   useEffect(() => {
     const payload = decodeSharePayload<ValueSharePayload>(new URLSearchParams(window.location.search).get("s"));
@@ -301,22 +317,19 @@ export default function ValueConflictTestClient(): ReactElement {
     setAnswers([]);
     setSharedResult(null);
     setShareStatus("");
-    setSelectedValue(null);
     window.history.replaceState(null, "", "/tests/value-conflict");
   }, []);
 
-  const choose = useCallback(() => {
-    if (selectedValue === null) return;
+  const choose = useCallback((value: number) => {
     trackQuestionAnswered("value-conflict", questionIndex + 1);
     const nextAnswer: ValueAnswer = {
       questionId: currentStatement.id,
-      choiceId: `likert:${currentStatement.id}:${selectedValue}`,
-      weights: remapLikertWeights(currentStatement, selectedValue),
+      choiceId: `likert:${currentStatement.id}:${value}`,
+      weights: remapLikertWeights(currentStatement, value),
     };
     const nextAnswers = [...answers, nextAnswer];
     setAnswers(nextAnswers);
     setShareStatus("");
-    setSelectedValue(null);
 
     if (questionIndex >= VALUE_STATEMENTS.length - 1) {
       const nextResult = calculateValueResult(nextAnswers);
@@ -331,7 +344,7 @@ export default function ValueConflictTestClient(): ReactElement {
     }
 
     setQuestionIndex((value) => value + 1);
-  }, [answers, currentStatement, locale, questionIndex, selectedValue]);
+  }, [answers, currentStatement, locale, questionIndex]);
 
   const share = useCallback(async () => {
     trackShareClick("value-conflict", "test", result.id);
@@ -401,37 +414,34 @@ export default function ValueConflictTestClient(): ReactElement {
               </p>
             </div>
           </section>
+        ) : phase === "quiz" ? (
+          <ValueFlowQuizView
+            key={currentStatement.id}
+            locale={locale}
+            onAnswer={choose}
+            onBack={() => {
+              setPhase("intro");
+              setQuestionIndex(0);
+              setAnswers([]);
+              setShareStatus("");
+            }}
+            questionIdx={questionIndex}
+            statement={currentStatement}
+            total={VALUE_STATEMENTS.length}
+          />
         ) : (
           <section className="value-card">
-            <div className={`progress-head ${phase === "quiz" ? "progress-head--active" : ""}`}>
-              {phase === "quiz" ? (
-                <Link href="/" className="test-exit-link" aria-label={homeBackLabel(locale)}>
-                  ←
-                </Link>
-              ) : (
-                <span>{t(locale, "결과", "Result")}</span>
-              )}
+            <div className="progress-head">
+              <span>{t(locale, "결과", "Result")}</span>
               <strong>
-                {phase === "result"
-                  ? `${VALUE_STATEMENTS.length} / ${VALUE_STATEMENTS.length}`
-                  : `${questionIndex + 1} / ${VALUE_STATEMENTS.length}`}
+                {VALUE_STATEMENTS.length} / {VALUE_STATEMENTS.length}
               </strong>
             </div>
             <div className="progress-bar" aria-hidden>
               <span style={{ width: `${progress}%` }} />
             </div>
 
-            {phase === "quiz" ? (
-              <SingleStatementLikert
-                locale={locale}
-                onSelect={setSelectedValue}
-                onSubmit={choose}
-                selectedValue={selectedValue}
-                statement={currentStatement}
-              />
-            ) : (
-              <ResultView locale={locale} result={result} shared={Boolean(sharedResult)} onRetry={start} onShare={share} shareStatus={shareStatus} />
-            )}
+            <ResultView locale={locale} result={result} shared={Boolean(sharedResult)} onRetry={start} onShare={share} shareStatus={shareStatus} />
           </section>
         )}
       </section>
@@ -566,6 +576,220 @@ export default function ValueConflictTestClient(): ReactElement {
         .value-card {
           margin-top: clamp(12px, 3vh, 28px);
           padding: clamp(24px, 4vw, 46px);
+        }
+        .value-test--quiz {
+          padding: 0;
+          background: linear-gradient(180deg, #fbf6ee 0%, #f1e5d5 58%, #f8efe2 100%);
+        }
+        .value-test--quiz .value-shell {
+          width: 100%;
+          margin: 0;
+          padding: 0;
+        }
+        .value-flow-shell {
+          min-height: 100svh;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+        .value-flow-topbar {
+          position: relative;
+          z-index: 25;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 24px 40px;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 16px;
+          font-weight: 700;
+        }
+        .value-flow-back {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border: 0;
+          background: transparent;
+          color: rgba(33, 29, 24, 0.7);
+          cursor: pointer;
+          font: inherit;
+          padding: 6px 0;
+          transition: color 0.18s ease, transform 0.18s ease;
+        }
+        .value-flow-back:hover {
+          color: #211d18;
+          transform: translateX(-2px);
+        }
+        .value-flow-counter {
+          color: rgba(33, 29, 24, 0.66);
+          font-weight: 750;
+        }
+        .value-flow-body {
+          position: relative;
+          z-index: 1;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: clamp(28px, 6vh, 56px);
+          padding: 24px;
+        }
+        .value-flow-question-area {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+        }
+        .value-flow-kicker {
+          margin: 0 0 12px;
+          color: rgba(155, 106, 35, 0.8);
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 13px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .value-flow-question {
+          max-width: 840px;
+          margin: 0;
+          padding: 0 28px;
+          color: #211d18;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: clamp(24px, 3.2vw, 34px);
+          font-weight: 820;
+          line-height: 1.42;
+          text-align: center;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+        .value-flow-subtext {
+          max-width: 680px;
+          margin: 12px 0 0;
+          padding: 0 28px;
+          color: rgba(33, 29, 24, 0.62);
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: clamp(15px, 1.8vw, 17px);
+          line-height: 1.62;
+          text-align: center;
+          word-break: keep-all;
+        }
+        .value-flow-likert-area {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+        }
+        .value-flow-scale-wrap {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 18px;
+          width: 100%;
+          padding: 0 16px;
+        }
+        .value-flow-likert-row {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          width: 100%;
+          max-width: 600px;
+        }
+        .value-flow-likert-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 72px;
+          height: 72px;
+          min-width: 0;
+          border-width: 2.5px;
+          border-style: solid;
+          border-radius: 50%;
+          background: transparent;
+          cursor: pointer;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 22px;
+          font-weight: 760;
+          padding: 0;
+          transition: background 0.2s ease, opacity 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .value-flow-likert-btn:hover {
+          transform: scale(1.08);
+        }
+        .value-flow-scale-labels {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          width: min(100%, 600px);
+          gap: 8px;
+          color: rgba(33, 29, 24, 0.58);
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 13px;
+          font-weight: 760;
+          line-height: 1.35;
+        }
+        .value-flow-scale-labels span:nth-child(2) {
+          text-align: center;
+        }
+        .value-flow-scale-labels span:nth-child(3) {
+          text-align: right;
+        }
+        .value-side-rail {
+          position: fixed;
+          right: 40px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 25;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .value-side-rail-track {
+          position: relative;
+          width: 2px;
+          background: #e5e7eb;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .value-side-rail-fill {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          transition: height 0.4s cubic-bezier(0.22, 0.9, 0.35, 1), background 0.3s ease;
+        }
+        .value-side-rail-dot {
+          position: relative;
+          border-radius: 50%;
+          transition: all 0.25s ease;
+        }
+        .value-side-rail-label {
+          position: absolute;
+          right: 22px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #8b8f99;
+          font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          white-space: nowrap;
+        }
+        .value-mobile-progress {
+          display: none;
+        }
+        .value-flow-bg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          color: #211d18;
+          opacity: 0.04;
+          pointer-events: none;
+          z-index: 0;
         }
         .progress-head {
           display: flex;
@@ -827,6 +1051,56 @@ export default function ValueConflictTestClient(): ReactElement {
             opacity: 0.28;
             transform: scale(0.84);
           }
+          .value-side-rail {
+            display: none;
+          }
+          .value-mobile-progress {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 40;
+            width: 100%;
+            height: 4px;
+            background: rgba(229, 231, 235, 0.9);
+          }
+          .value-mobile-progress-fill {
+            height: 100%;
+            transition: width 0.35s ease, background 0.25s ease;
+          }
+          .value-flow-topbar {
+            padding: 16px 20px 10px;
+            font-size: 14px;
+          }
+          .value-flow-body {
+            justify-content: center;
+            gap: 34px;
+            padding: 16px 12px 34px;
+          }
+          .value-flow-question {
+            max-width: 400px;
+            padding: 0 12px;
+            font-size: clamp(22px, 6vw, 28px);
+            line-height: 1.48;
+          }
+          .value-flow-subtext {
+            padding: 0 16px;
+            font-size: 14px;
+          }
+          .value-flow-likert-row {
+            gap: 7px;
+            max-width: 384px;
+          }
+          .value-flow-likert-btn {
+            width: 48px;
+            height: 48px;
+            border-width: 2px;
+            font-size: 16px;
+          }
+          .value-flow-scale-labels {
+            width: min(100%, 384px);
+            font-size: 11.5px;
+          }
           .result-grid,
           .result-quote-grid {
             grid-template-columns: 1fr;
@@ -844,20 +1118,6 @@ export default function ValueConflictTestClient(): ReactElement {
             min-height: auto;
             padding-top: 18px;
           }
-          .value-single-likert {
-            gap: 20px;
-            padding-top: 30px;
-          }
-          .value-single-likert h2 {
-            font-size: clamp(24px, 7vw, 31px);
-            line-height: 1.38;
-          }
-          .value-single-likert__labels {
-            font-size: 12px;
-          }
-          .value-single-likert__scale {
-            gap: 6px;
-          }
           .primary,
           .secondary {
             width: 100%;
@@ -868,56 +1128,184 @@ export default function ValueConflictTestClient(): ReactElement {
   );
 }
 
-function SingleStatementLikert({
+function ValueFlowQuizView({
   locale,
-  onSelect,
-  onSubmit,
-  selectedValue,
+  onAnswer,
+  onBack,
+  questionIdx,
   statement,
+  total,
 }: {
   locale: SimpleLocale;
-  onSelect: (value: number) => void;
-  onSubmit: () => void;
-  selectedValue: number | null;
+  onAnswer: (value: number) => void;
+  onBack: () => void;
+  questionIdx: number;
   statement: ValueStatement;
+  total: number;
 }): ReactElement {
+  const dim = primaryValueDimension(statement.weights);
+  const progress = (questionIdx + 1) / total;
+
   return (
-    <section className="value-single-likert" aria-label={t(locale, "7점 척도 응답", "7-point scale")}>
-      <div className="value-single-likert__intro">
-        <p className="value-single-likert__kicker">{t(locale, "지금의 내 갈등", "Inner conflict")}</p>
-        <h2>{text(locale, statement.text)}</h2>
-        <p className="value-single-likert__help">
-          {t(locale, "이 문장이 나와 얼마나 가까운지 선택하세요.", "Choose how closely this statement feels like you.")}
-        </p>
+    <section className="value-flow-shell">
+      <ValueMobileProgress value={progress} dim={dim} />
+      <ValueSideRail currentIdx={questionIdx} total={total} currentDim={dim} />
+      <ValueQuestionBackground idx={questionIdx} />
+
+      <div className="value-flow-topbar">
+        <button type="button" onClick={onBack} className="value-flow-back" aria-label={t(locale, "나가기", "Exit test")}>
+          <span aria-hidden>←</span>
+          <span>{t(locale, "나가기", "Exit")}</span>
+        </button>
+        <span className="value-flow-counter tabular-nums">
+          {questionIdx + 1} / {total}
+        </span>
       </div>
-      <div className="value-single-likert__labels" aria-hidden="true">
-        <span>{t(locale, "1 전혀 아니다", "1 Strongly disagree")}</span>
-        <span>{t(locale, "4 보통이다", "4 Neutral")}</span>
-        <span>{t(locale, "7 매우 그렇다", "7 Strongly agree")}</span>
+
+      <div className="value-flow-body">
+        <div className="value-flow-question-area">
+          <p className="value-flow-kicker">{t(locale, "지금의 내 갈등", "Inner conflict")}</p>
+          <h2 key={`value-statement-${statement.id}`} className="value-flow-question">
+            {text(locale, statement.text)}
+          </h2>
+          <p className="value-flow-subtext">
+            {t(locale, "이 문장이 내 반응과 얼마나 가까운지 골라주세요.", "Choose how closely this statement matches your reaction.")}
+          </p>
+        </div>
+
+        <div className="value-flow-likert-area">
+          <ValueLikertScale key={`value-scale-${statement.id}`} locale={locale} onAnswer={onAnswer} />
+        </div>
       </div>
-      <div className="value-single-likert__scale" role="radiogroup" aria-label={text(locale, statement.text)}>
-        {SCALE_VALUES.map((value) => (
-          <button
-            aria-checked={selectedValue === value}
-            className={selectedValue === value ? "is-selected" : ""}
-            key={value}
-            onClick={() => onSelect(value)}
-            role="radio"
-            type="button"
-          >
-            {value}
-          </button>
-        ))}
-      </div>
-      <button
-        className="primary value-single-likert__next"
-        disabled={selectedValue === null}
-        onClick={onSubmit}
-        type="button"
-      >
-        {t(locale, "다음 문장", "Next statement")}
-      </button>
     </section>
+  );
+}
+
+function ValueSideRail({
+  currentIdx,
+  currentDim,
+  total,
+}: {
+  currentIdx: number;
+  currentDim: ValueConflictId;
+  total: number;
+}): ReactElement {
+  const color = VALUE_DIM_COLORS[currentDim] ?? "#8b6aae";
+  const dotSpacing = 20;
+  const trackHeight = (total - 1) * dotSpacing;
+  const fillHeight = total > 1 ? (currentIdx / (total - 1)) * trackHeight : 0;
+
+  return (
+    <div className="value-side-rail" aria-hidden>
+      <div className="value-side-rail-track" style={{ height: trackHeight }}>
+        <div className="value-side-rail-fill" style={{ height: fillHeight, background: color }} />
+        {Array.from({ length: total }, (_, i) => {
+          const isCurrent = i === currentIdx;
+          const isDone = i < currentIdx;
+          const size = isCurrent ? 14 : 10;
+          const dotColor = isCurrent ? color : isDone ? "#6b7280" : "#d1d5db";
+          return (
+            <div
+              key={i}
+              className="value-side-rail-dot"
+              style={{
+                width: size,
+                height: size,
+                background: dotColor,
+                marginTop: i === 0 ? 0 : dotSpacing - size,
+                boxShadow: isCurrent ? `0 0 0 4px ${color}22` : undefined,
+              }}
+            >
+              {isCurrent && (
+                <span className="value-side-rail-label tabular-nums">
+                  {currentIdx + 1} / {total}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ValueMobileProgress({ dim, value }: { dim: ValueConflictId; value: number }): ReactElement {
+  const color = VALUE_DIM_COLORS[dim] ?? "#8b6aae";
+  return (
+    <div className="value-mobile-progress" aria-hidden>
+      <div className="value-mobile-progress-fill" style={{ width: `${Math.max(0, Math.min(1, value)) * 100}%`, background: color }} />
+    </div>
+  );
+}
+
+function ValueLikertScale({
+  locale,
+  onAnswer,
+}: {
+  locale: SimpleLocale;
+  onAnswer: (value: number) => void;
+}): ReactElement {
+  const [pendingValue, setPendingValue] = useState<number | null>(null);
+  const endpoints = locale === "ko" ? ["전혀 아니다", "보통이다", "매우 그렇다"] : ["Strongly disagree", "Neutral", "Strongly agree"];
+
+  const handleClick = useCallback(
+    (value: number) => {
+      if (pendingValue !== null) return;
+      setPendingValue(value);
+      window.setTimeout(() => onAnswer(value), 300);
+    },
+    [onAnswer, pendingValue],
+  );
+
+  return (
+    <div className="value-flow-scale-wrap">
+      <div className="value-flow-likert-row" role="radiogroup" aria-label={t(locale, "7점 척도", "7-point scale")}>
+        {SCALE_VALUES.map((value, i) => {
+          const color = LIKERT_COLORS[i];
+          const isSelected = pendingValue === value;
+          const dimmed = pendingValue !== null && !isSelected;
+          return (
+            <button
+              key={value}
+              type="button"
+              onClick={() => handleClick(value)}
+              aria-checked={isSelected}
+              aria-label={`${value}`}
+              className={`value-flow-likert-btn${isSelected ? " is-selected" : ""}`}
+              role="radio"
+              style={{
+                borderColor: color,
+                background: isSelected ? color : "transparent",
+                color: isSelected ? "#fff" : color,
+                opacity: dimmed ? 0.3 : 1,
+                transform: isSelected ? "scale(1.15)" : "scale(1)",
+                boxShadow: isSelected ? `0 4px 16px ${color}66` : "0 2px 6px rgba(0,0,0,0.04)",
+              }}
+            >
+              {value}
+            </button>
+          );
+        })}
+      </div>
+      <div className="value-flow-scale-labels" aria-hidden>
+        <span>1 {endpoints[0]}</span>
+        <span>4 {endpoints[1]}</span>
+        <span>7 {endpoints[2]}</span>
+      </div>
+    </div>
+  );
+}
+
+function ValueQuestionBackground({ idx }: { idx: number }): ReactElement {
+  const rotate = (idx % 5) * 18;
+  return (
+    <svg className="value-flow-bg" viewBox="0 0 800 800" aria-hidden>
+      <g fill="none" stroke="currentColor" strokeWidth="2" transform={`rotate(${rotate} 400 400)`}>
+        <circle cx="400" cy="400" r="245" />
+        <circle cx="400" cy="400" r="154" />
+        <path d="M160 400h480M400 160v480M230 230l340 340M570 230 230 570" />
+      </g>
+    </svg>
   );
 }
 
