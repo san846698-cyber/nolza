@@ -6980,6 +6980,118 @@ body {
   min-height: 48px !important;
 }
 
+/* Result readability: keep soft cards, but never pale text on pale panels. */
+.value-test .result-title,
+.stoic-test .result-title,
+.thinking-test .result-title,
+.breaking-page .result-title,
+.scene-page .result-title {
+  border-color: rgba(74, 52, 30, 0.18) !important;
+  background:
+    radial-gradient(circle at 14% 0%, rgba(196, 117, 80, 0.12), transparent 18rem),
+    linear-gradient(145deg, rgba(255, 254, 249, 0.96), rgba(247, 235, 218, 0.88)) !important;
+}
+
+.value-test .result-title h2,
+.stoic-test .result-title h2,
+.thinking-test .result-title h2,
+.breaking-page .result-title h2,
+.scene-page .result-title h2 {
+  color: #22170f !important;
+  text-shadow: none !important;
+}
+
+.value-test .result-title span,
+.stoic-test .result-title span,
+.thinking-test .result-title span,
+.breaking-page .result-title span,
+.scene-page .result-title span,
+.value-test .one-liner,
+.stoic-test .one-liner,
+.thinking-test .one-liner,
+.breaking-page .result-title p,
+.scene-page .result-title p,
+.value-test .shared-label,
+.stoic-test .shared-label,
+.thinking-test .shared-label,
+.breaking-page .shared-label,
+.scene-page .shared-label {
+  color: #694016 !important;
+  opacity: 1 !important;
+}
+
+.value-test .result-description,
+.stoic-test .result-description,
+.thinking-test .result-description,
+.breaking-page .result-description,
+.scene-page .result-description {
+  color: #302217 !important;
+  opacity: 1 !important;
+}
+
+.value-test .value-card:has(.result) .progress-head span,
+.value-test .value-card:has(.result) .progress-head strong,
+.stoic-test .stoic-card:has(.result) .progress-head span,
+.stoic-test .stoic-card:has(.result) .progress-head strong,
+.thinking-test .thinking-card:has(.result) .progress-head span,
+.thinking-test .thinking-card:has(.result) .progress-head strong,
+.breaking-page .test-card:has(.result-view) .progress-head span,
+.breaking-page .test-card:has(.result-view) .progress-head strong,
+.scene-page .scene-card:has(.result-view) .progress-head span,
+.scene-page .scene-card:has(.result-view) .progress-head strong {
+  color: #5d3a16 !important;
+  opacity: 1 !important;
+}
+
+.value-test .result-feature,
+.value-test .result-quote,
+.value-test .result-box,
+.stoic-test .result-box,
+.thinking-test .result-box,
+.breaking-page .result-grid section,
+.scene-page .result-sections section,
+.scene-page .friend-question {
+  border-color: rgba(74, 52, 30, 0.16) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(250, 241, 228, 0.78)) !important;
+  box-shadow: 0 12px 30px rgba(48, 35, 24, 0.075) !important;
+}
+
+.value-test .result-feature span,
+.value-test .result-quote span,
+.value-test .result-box span,
+.stoic-test .result-box span,
+.thinking-test .result-box span,
+.breaking-page .result-grid section span,
+.scene-page .result-sections span,
+.scene-page .friend-question span {
+  color: #714719 !important;
+  opacity: 1 !important;
+}
+
+.value-test .result-feature p,
+.value-test .result-quote p,
+.value-test .result-box p,
+.stoic-test .result-box p,
+.thinking-test .result-box p,
+.breaking-page .result-grid section p,
+.breaking-page .signal-card p,
+.scene-page .result-sections p,
+.scene-page .friend-question p {
+  color: #2b2017 !important;
+  opacity: 1 !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title h2 {
+  color: #22170f !important;
+}
+
+.scene-page .scene-card:has(.result-view) .result-title span,
+.scene-page .scene-card:has(.result-view) .result-title p {
+  color: #694016 !important;
+  opacity: 1 !important;
+}
+
 @media (max-width: 780px) {
   .publisher-content {
     padding: 34px 16px 54px !important;
