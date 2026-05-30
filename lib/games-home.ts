@@ -737,6 +737,7 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
   "highnote",
   "ijy",
   "spendpresident",
+  "ahmolla",
 ]);
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
@@ -767,7 +768,6 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   "mini-games": [
     "aqua-fishing",
     "traffic",
-    "ahmolla",
     "silence",
     "password",
     "circle",

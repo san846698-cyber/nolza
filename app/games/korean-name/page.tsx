@@ -1170,8 +1170,8 @@ export default function KoreanNamePage(): ReactElement {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: phase === "name" ? "center" : "flex-start",
-          padding: "80px 20px 20px",
+          justifyContent: phase === "name" || phase === "gender" ? "center" : "flex-start",
+          padding: phase === "name" || phase === "gender" ? "96px 20px 54px" : "80px 20px 20px",
           boxSizing: "border-box",
         }}
       >
@@ -1238,13 +1238,19 @@ function NameStep({
   t: (ko: string, en: string) => string;
 }): ReactElement {
   return (
-    <div style={{ maxWidth: 480, width: "100%", textAlign: "center" }}>
+    <div style={{ maxWidth: 520, width: "100%", textAlign: "center" }}>
       <StepEyebrow>{t("다른 나라에서 태어났다면 · 1 / 4 단계", "BORN ELSEWHERE  ·  STEP 1 / 4")}</StepEyebrow>
       <h1 style={titleStyle}>
         {t("당신의 이름은?", "What's your name?")}
       </h1>
+      <p style={{ ...subtitleStyle, maxWidth: 380, margin: "12px auto 0", lineHeight: 1.64 }}>
+        {t(
+          "입력한 이름을 바탕으로 다른 나라에서 불렸을 법한 이름을 찾아볼게요.",
+          "Enter your name and we will imagine what you might be called elsewhere.",
+        )}
+      </p>
 
-      <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 28 }}>
+      <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 34 }}>
         <input
           ref={inputRef}
           type="text"
@@ -1260,12 +1266,14 @@ function NameStep({
             border: `1px solid ${RULE}`,
             borderRadius: 14,
             padding: "16px 18px",
+            minHeight: 58,
             fontSize: 17,
             outline: "none",
             fontFamily: "'Inter', sans-serif",
             width: "100%",
             boxSizing: "border-box",
             textAlign: "center",
+            boxShadow: "0 12px 28px rgba(31,27,22,0.06)",
           }}
         />
         <button type="submit" style={primaryButtonStyle}>
@@ -1282,11 +1290,17 @@ function NameStep({
 
 function GenderStep({ onPick, t }: { onPick: (g: Gender) => void; t: (ko: string, en: string) => string }): ReactElement {
   return (
-    <div style={{ maxWidth: 480, width: "100%", textAlign: "center" }}>
+    <div style={{ maxWidth: 520, width: "100%", textAlign: "center" }}>
       <StepEyebrow>{t("2 / 4 단계", "STEP 2 / 4")}</StepEyebrow>
       <h1 style={titleStyle}>{t("성별을 선택해주세요", "Choose your gender")}</h1>
+      <p style={{ ...subtitleStyle, maxWidth: 360, margin: "12px auto 0", lineHeight: 1.64 }}>
+        {t(
+          "나라별 이름 후보를 고르는 데만 사용돼요.",
+          "This is only used to pick matching name candidates.",
+        )}
+      </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 32 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 14, marginTop: 34 }}>
         <ChoiceTile emoji="👨" en="Male" ko="남성" onClick={() => onPick("male")} />
         <ChoiceTile emoji="👩" en="Female" ko="여성" onClick={() => onPick("female")} />
       </div>
@@ -1734,7 +1748,7 @@ const titleStyle: React.CSSProperties = {
   fontSize: 32,
   fontWeight: 700,
   lineHeight: 1.2,
-  letterSpacing: "-0.02em",
+  letterSpacing: 0,
   marginBottom: 8,
   marginTop: 12,
   fontFamily: "var(--font-noto-serif-kr), serif",
@@ -1744,6 +1758,7 @@ const subtitleStyle: React.CSSProperties = {
   fontSize: 17,
   color: "rgba(31,27,22,0.62)",
   fontFamily: "var(--font-noto-sans-kr), sans-serif",
+  lineHeight: 1.6,
 };
 
 const primaryButtonStyle: React.CSSProperties = {
