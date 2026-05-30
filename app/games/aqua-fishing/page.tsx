@@ -716,6 +716,7 @@ export default function AquaFishingGame() {
     let pointerSteerTargetX: number | null = null;
 
     const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+    const isTouchGameplayPointer = (e: PointerEvent) => e.pointerType === 'touch';
 
     const updatePointerSteerTarget = (clientX: number) => {
       const rect = canvas.getBoundingClientRect();
@@ -733,6 +734,7 @@ export default function AquaFishingGame() {
     };
 
     const handleCanvasPointerDown = (e: PointerEvent) => {
+      if (!isTouchGameplayPointer(e)) return;
       if (!e.isPrimary || e.button > 0) return;
       e.preventDefault();
       activePointerId = e.pointerId;
@@ -747,12 +749,14 @@ export default function AquaFishingGame() {
     };
 
     const handleCanvasPointerMove = (e: PointerEvent) => {
+      if (!isTouchGameplayPointer(e)) return;
       if (activePointerId !== e.pointerId) return;
       e.preventDefault();
       updatePointerSteerTarget(e.clientX);
     };
 
     const handleCanvasPointerUp = (e: PointerEvent) => {
+      if (!isTouchGameplayPointer(e)) return;
       if (activePointerId !== e.pointerId) return;
       e.preventDefault();
       releaseCanvasPointer(e.pointerId);
@@ -764,6 +768,7 @@ export default function AquaFishingGame() {
     };
 
     const handleCanvasPointerCancel = (e: PointerEvent) => {
+      if (!isTouchGameplayPointer(e)) return;
       if (activePointerId !== e.pointerId) return;
       e.preventDefault();
       releaseCanvasPointer(e.pointerId);
@@ -2163,22 +2168,6 @@ export default function AquaFishingGame() {
         .aqua-desktop-only-notice {
           display: none;
         }
-
-        @media (max-width: 900px), (max-height: 560px) {
-          .aqua-game-root {
-            touch-action: auto !important;
-            overflow-y: auto !important;
-            align-items: stretch !important;
-          }
-
-          .aqua-playable-layer {
-            display: none !important;
-          }
-
-          .aqua-desktop-only-notice {
-            display: flex;
-          }
-        }
       `}</style>
 
       <div className="aqua-playable-layer absolute inset-0">
@@ -2413,8 +2402,8 @@ function DesktopOnlyNotice({
           </h1>
           <p className="mx-auto mt-4 max-w-[32ch] whitespace-pre-line text-[16px] font-semibold leading-relaxed text-slate-200/82">
             {t(
-              "심해낚시는 현재 마우스 조작에 최적화된 게임입니다.\n더 좋은 플레이 경험을 위해 PC 또는 노트북에서 이용해주세요.",
-              "Deep Sea Fishing is currently optimized for mouse controls.\nFor the best experience, please play on a desktop or laptop.",
+              "심해낚시는 데스크톱에서 키보드로 조작하세요.\n마우스 이동과 클릭은 게임 조작에 사용되지 않습니다.",
+              "Use keyboard controls for Deep Sea Fishing on desktop.\nMouse movement and clicks do not control gameplay.",
             )}
           </p>
           <div className="mt-6 flex flex-col gap-3">
@@ -2498,7 +2487,7 @@ function AquaHelpPanel({
           touchAction: "manipulation",
         }}
       >
-        {t("PC 조작 안내", "Desktop controls")}
+        {isTouch ? t("터치 조작 안내", "Touch controls") : t("키보드로 조작하세요", "Use keyboard controls")}
       </button>
     );
   }
@@ -2554,13 +2543,14 @@ function AquaHelpPanel({
 
       <div style={{ display: "grid", gap: 12 }}>
         <ControlGroup
-          title={t("데스크톱", "Desktop")}
+          title={t("데스크톱 · 키보드로 조작하세요", "Desktop · Use keyboard controls")}
           items={[
-            t("A / D - 배 이동", "A / D - Move boat"),
+            t("A / D 또는 ← / → - 배 이동", "A / D or ← / → - Move boat"),
             t("Space 길게 - 줄 내리기", "Hold Space - Drop line"),
             t("Space 짧게 - 낚아채기", "Tap Space - Catch fish"),
             t("B - 상점 열기", "B - Open shop"),
             t("E - 도감", "E - Encyclopedia"),
+            t("마우스 이동/클릭은 조작에 사용되지 않아요.", "Mouse movement and clicks do not control gameplay."),
           ]}
         />
         <ControlGroup
