@@ -4630,6 +4630,57 @@ body {
   color: inherit !important;
 }
 
+@media (min-width: 641px) {
+  .breaking-page--quiz .breaking-shell,
+  .scene-page .scene-shell:has(.scene-card:not(:has(.result-view))) {
+    padding-top: clamp(78px, 9vh, 112px) !important;
+  }
+
+  .defense-page .quiz {
+    padding-top: clamp(72px, 8vh, 104px) !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)),
+  .scene-page .scene-card:not(:has(.result-view)),
+  .defense-page .question-card {
+    padding-top: clamp(54px, 5vw, 72px) !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head,
+  .defense-page .question-card .progress-head,
+  .defense-page .quiz > .progress > div {
+    min-height: 52px !important;
+    align-items: center !important;
+    padding-block: 8px !important;
+    line-height: 1.5 !important;
+    overflow: visible !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head span,
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head strong,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head span,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head strong,
+  .defense-page .question-card .progress-head span,
+  .defense-page .question-card .progress-head strong,
+  .defense-page .quiz > .progress span,
+  .defense-page .quiz > .progress strong {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 1.6em !important;
+    padding-block: 4px !important;
+    line-height: 1.45 !important;
+    overflow: visible !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)) .progress-bar,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-bar,
+  .defense-page .question-card .progress-bar,
+  .defense-page .quiz > .progress > i {
+    margin-top: 16px !important;
+  }
+}
+
 @media (max-width: 640px) {
   .joseon-life {
     padding-top: max(72px, calc(env(safe-area-inset-top, 0px) + 64px)) !important;
