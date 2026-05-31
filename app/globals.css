@@ -7159,16 +7159,16 @@ body {
   font-weight: 900 !important;
 }
 
-/* Desktop active four-choice QA: keep the question and two-row choices in view. */
+/* Desktop active four-choice QA: keep header, context, prompt, and choices as one composition. */
 @media (min-width: 900px) {
   .breaking-page--quiz .breaking-shell,
   .scene-page .scene-shell:has(.scene-card:not(:has(.result-view))) {
-    padding-top: clamp(18px, 2.4vh, 28px) !important;
+    padding-top: clamp(20px, 2.8vh, 34px) !important;
     padding-bottom: 38px !important;
   }
 
   .defense-page .quiz {
-    padding-top: clamp(18px, 2.4vh, 30px) !important;
+    padding-top: clamp(20px, 2.8vh, 34px) !important;
     padding-bottom: 42px !important;
   }
 
@@ -7180,8 +7180,12 @@ body {
   .scene-page .scene-card:not(:has(.result-view)),
   .defense-page .question-card,
   .crush-test .quiz-card:not(:has(.result)) {
-    padding: clamp(18px, 2.2vw, 30px) clamp(22px, 3.2vw, 40px) !important;
+    padding: clamp(18px, 2vw, 28px) clamp(22px, 3.2vw, 40px) !important;
     margin-top: 0 !important;
+  }
+
+  .defense-page .quiz > .progress {
+    margin-bottom: 8px !important;
   }
 
   .breaking-page .test-card:not(:has(.result-view)) .progress-head,
@@ -7216,7 +7220,7 @@ body {
 
   .breaking-page .question-view,
   .scene-page .question-view {
-    padding-top: 14px !important;
+    padding-top: 0 !important;
   }
 
   .defense-page .question-card .readable-question,
@@ -7224,7 +7228,7 @@ body {
   .scene-page .scene-card:not(:has(.result-view)) .readable-question,
   .crush-test .quiz-card:not(:has(.result)) .readable-question {
     gap: 12px !important;
-    margin: 10px 0 16px !important;
+    margin: 0 0 16px !important;
   }
 
   .defense-page .question-card .readable-question__situation,
@@ -7233,7 +7237,7 @@ body {
   .crush-test .quiz-card:not(:has(.result)) .readable-question__situation {
     gap: 6px !important;
     margin-bottom: 0 !important;
-    padding-bottom: 10px !important;
+    padding-bottom: 9px !important;
   }
 
   .defense-page .question-card .readable-question__situation span,
