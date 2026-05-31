@@ -7293,6 +7293,38 @@ body {
     font-size: clamp(0.95rem, 1.25vw, 1.02rem) !important;
     line-height: 1.38 !important;
   }
+
+  .breaking-page--quiz .test-card:not(:has(.result-view)),
+  .scene-page .scene-card:not(:has(.result-view)),
+  .defense-page .question-card,
+  .crush-test .quiz-card:not(:has(.result)) {
+    width: min(100%, 980px) !important;
+    max-width: 980px !important;
+    padding-inline: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+    filter: none !important;
+    backdrop-filter: blur(0) !important;
+    -webkit-backdrop-filter: blur(0) !important;
+    overflow: visible !important;
+  }
+
+  .breaking-page--quiz .test-card:not(:has(.result-view))::before,
+  .breaking-page--quiz .test-card:not(:has(.result-view))::after,
+  .scene-page .scene-card:not(:has(.result-view))::before,
+  .scene-page .scene-card:not(:has(.result-view))::after,
+  .defense-page .question-card::before,
+  .defense-page .question-card::after,
+  .crush-test .quiz-card:not(:has(.result))::before,
+  .crush-test .quiz-card:not(:has(.result))::after {
+    content: none !important;
+    display: none !important;
+  }
 }
 
 @media (max-width: 780px) {
