@@ -7159,6 +7159,138 @@ body {
   font-weight: 900 !important;
 }
 
+/* Desktop active four-choice QA: keep the question and two-row choices in view. */
+@media (min-width: 900px) {
+  .breaking-page--quiz .breaking-shell,
+  .scene-page .scene-shell:has(.scene-card:not(:has(.result-view))) {
+    padding-top: clamp(18px, 2.4vh, 28px) !important;
+    padding-bottom: 38px !important;
+  }
+
+  .defense-page .quiz {
+    padding-top: clamp(18px, 2.4vh, 30px) !important;
+    padding-bottom: 42px !important;
+  }
+
+  .crush-test .shell:has(.quiz-card:not(:has(.result))) {
+    padding-top: 10px !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)),
+  .scene-page .scene-card:not(:has(.result-view)),
+  .defense-page .question-card,
+  .crush-test .quiz-card:not(:has(.result)) {
+    padding: clamp(18px, 2.2vw, 30px) clamp(22px, 3.2vw, 40px) !important;
+    margin-top: 0 !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head,
+  .defense-page .question-card .progress-head,
+  .defense-page .quiz > .progress > div,
+  .crush-test .quiz-card:not(:has(.result)) .progress-head {
+    min-height: 34px !important;
+    margin-bottom: 10px !important;
+    padding-block: 2px !important;
+    line-height: 1.35 !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head span,
+  .breaking-page .test-card:not(:has(.result-view)) .progress-head strong,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head span,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-head strong,
+  .defense-page .quiz > .progress span,
+  .defense-page .quiz > .progress strong,
+  .crush-test .quiz-card:not(:has(.result)) .progress-head span,
+  .crush-test .quiz-card:not(:has(.result)) .progress-head strong {
+    min-height: 1.4em !important;
+    padding-block: 2px !important;
+    line-height: 1.35 !important;
+  }
+
+  .breaking-page .test-card:not(:has(.result-view)) .progress-bar,
+  .scene-page .scene-card:not(:has(.result-view)) .progress-bar,
+  .defense-page .quiz > .progress > i {
+    margin-top: 8px !important;
+  }
+
+  .breaking-page .question-view,
+  .scene-page .question-view {
+    padding-top: 14px !important;
+  }
+
+  .defense-page .question-card .readable-question,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question {
+    gap: 12px !important;
+    margin: 10px 0 16px !important;
+  }
+
+  .defense-page .question-card .readable-question__situation,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__situation,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__situation,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__situation {
+    gap: 6px !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 10px !important;
+  }
+
+  .defense-page .question-card .readable-question__situation span,
+  .defense-page .question-card .readable-question__prompt span,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__situation span,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt span,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__situation span,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt span,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__situation span,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__prompt span {
+    min-height: 1.35em !important;
+    margin-bottom: 0 !important;
+    padding-block: 1px !important;
+    line-height: 1.32 !important;
+  }
+
+  .defense-page .question-card .readable-question__situation p,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__situation p,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__situation p,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__situation p {
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem) !important;
+    line-height: 1.5 !important;
+  }
+
+  .defense-page .question-card .readable-question__prompt h2,
+  .breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt h2,
+  .scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt h2,
+  .crush-test .quiz-card:not(:has(.result)) .readable-question__prompt h2 {
+    font-size: clamp(1.35rem, 2.35vw, 1.85rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  .defense-page .question-card .answers,
+  .breaking-page .test-card:not(:has(.result-view)) .choices,
+  .scene-page .scene-card:not(:has(.result-view)) .choices,
+  .crush-test .quiz-card:not(:has(.result)) .answers {
+    gap: 10px !important;
+    margin-top: 12px !important;
+  }
+
+  .defense-page .question-card .answers button,
+  .breaking-page .test-card:not(:has(.result-view)) .choices button,
+  .scene-page .scene-card:not(:has(.result-view)) .choices button,
+  .crush-test .quiz-card:not(:has(.result)) .answer {
+    min-height: 58px !important;
+    padding: 12px 14px !important;
+  }
+
+  .defense-page .question-card .answers strong,
+  .breaking-page .test-card:not(:has(.result-view)) .choices strong,
+  .scene-page .scene-card:not(:has(.result-view)) .choices strong,
+  .crush-test .quiz-card:not(:has(.result)) .answer strong {
+    font-size: clamp(0.95rem, 1.25vw, 1.02rem) !important;
+    line-height: 1.38 !important;
+  }
+}
+
 @media (max-width: 780px) {
   .publisher-content {
     padding: 34px 16px 54px !important;
