@@ -495,6 +495,14 @@ export const GAMES: Game[] = [
     skin: "hand", tone: 3, labels: ["share"],
   },
   {
+    id: "deep-fear", href: "/tests/deep-fear", cat: "self", no: "18A",
+    ko: { title: "당신 안의 가장 깊은 공포는?", sub: "일상 속 선택으로 드러나는 숨은 공포 패턴", kicker: "심리 호러 테스트" },
+    en: { title: "What Is Your Deepest Fear?", sub: "A quiet test about the fear pattern hidden inside you", kicker: "Psychological Horror" },
+    type: "test", category: "tests",
+    palette: P.ink, font: "serif",
+    skin: "mono", tone: 5, labels: ["new", "recommended", "share"], duration: { ko: "16문항 · 약 4분", en: "16 questions · about 4 min" },
+  },
+  {
     id: "crush-type", href: "/tests/crush-type", cat: "self", no: "18B",
     ko: { title: "짝사랑 유형 테스트", sub: "좋아하는 사람 앞에서 내가 왜 이상해지는지 알아보기", kicker: "대표 테스트" },
     en: { title: "Crush Type Test", sub: "Find out why you get weird around someone you like", kicker: "Featured Test" },
@@ -742,11 +750,13 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   featured: [
+    "deep-fear",
     "mbti-depth",
     "defense-mechanism",
     "crush-type",
   ],
   tests: [
+    "deep-fear",
     "breaking-point",
     "scene-choice",
     "stoic-control",
