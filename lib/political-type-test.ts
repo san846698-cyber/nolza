@@ -375,7 +375,7 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     englishLabel: "Strong Progressive",
     spectrumPosition: { ko: "스펙트럼 위치: 강한 진보", en: "Spectrum position: far-left / progressive" },
     min: -100,
-    max: -65,
+    max: -70,
     summary: {
       ko: "변화와 평등, 권리 보호를 강하게 우선하는 성향입니다.",
       en: "You strongly prioritize change, equality, and rights protection.",
@@ -421,8 +421,8 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     title: { ko: "온건 진보형", en: "Moderate Progressive" },
     englishLabel: "Moderate Progressive",
     spectrumPosition: { ko: "스펙트럼 위치: 중도 진보", en: "Spectrum position: center-left" },
-    min: -64,
-    max: -35,
+    min: -69,
+    max: -38,
     summary: {
       ko: "사회 변화와 보호의 필요성을 인정하면서 현실적 균형도 함께 보는 성향입니다.",
       en: "You value social change and protection while keeping practical balance in view.",
@@ -468,8 +468,8 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     title: { ko: "실용 진보형", en: "Practical Progressive" },
     englishLabel: "Practical Progressive",
     spectrumPosition: { ko: "스펙트럼 위치: 진보 성향 실용", en: "Spectrum position: left-leaning pragmatic" },
-    min: -34,
-    max: -15,
+    min: -37,
+    max: -11,
     summary: {
       ko: "사회적 책임과 개선을 중시하지만 실제 효과를 먼저 확인하는 성향입니다.",
       en: "You care about social responsibility and improvement while checking practical effects first.",
@@ -515,8 +515,8 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     title: { ko: "중도 실용형", en: "Centrist Pragmatist" },
     englishLabel: "Centrist Pragmatist",
     spectrumPosition: { ko: "스펙트럼 위치: 중도", en: "Spectrum position: center" },
-    min: -14,
-    max: 14,
+    min: -10,
+    max: 10,
     summary: {
       ko: "한쪽 이념보다 맥락, 효과, 균형을 우선하는 성향입니다.",
       en: "You prioritize context, effect, and balance over a single ideological side.",
@@ -562,8 +562,8 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     title: { ko: "실용 보수형", en: "Practical Conservative" },
     englishLabel: "Practical Conservative",
     spectrumPosition: { ko: "스펙트럼 위치: 보수 성향 실용", en: "Spectrum position: right-leaning pragmatic" },
-    min: 15,
-    max: 34,
+    min: 11,
+    max: 37,
     summary: {
       ko: "안정과 책임을 중시하되 필요한 변화는 실용적으로 받아들이는 성향입니다.",
       en: "You value stability and responsibility while accepting necessary change pragmatically.",
@@ -609,8 +609,8 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     title: { ko: "온건 보수형", en: "Moderate Conservative" },
     englishLabel: "Moderate Conservative",
     spectrumPosition: { ko: "스펙트럼 위치: 중도 보수", en: "Spectrum position: center-right" },
-    min: 35,
-    max: 64,
+    min: 38,
+    max: 69,
     summary: {
       ko: "사회 안정, 책임, 질서를 중시하지만 대화와 조정의 여지를 남기는 성향입니다.",
       en: "You value stability, responsibility, and order while leaving room for dialogue and adjustment.",
@@ -656,7 +656,7 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     title: { ko: "강한 보수형", en: "Strong Conservative" },
     englishLabel: "Strong Conservative",
     spectrumPosition: { ko: "스펙트럼 위치: 강한 보수", en: "Spectrum position: far-right / conservative" },
-    min: 65,
+    min: 70,
     max: 100,
     summary: {
       ko: "사회 안정, 책임, 질서, 전통적 가치를 강하게 우선하는 성향입니다.",
@@ -700,6 +700,7 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
   },
 ];
 
+const AGREEMENT_NEUTRAL_VALUE = 4;
 const MAX_STATEMENT_SCORE = 3;
 const MAX_LEFT_RIGHT_RAW_SCORE = POLITICAL_QUESTIONS.reduce(
   (sum, question) => sum + (question.weight ?? 1) * MAX_STATEMENT_SCORE,
@@ -748,7 +749,7 @@ export function calculatePoliticalAnswer(
   question: PoliticalQuestion,
   agreement: PoliticalAgreementValue,
 ): PoliticalAnswer {
-  const agreementOffset = 4 - agreement;
+  const agreementOffset = AGREEMENT_NEUTRAL_VALUE - agreement;
   const directionMultiplier =
     question.direction === "progressive" ? -1 : question.direction === "conservative" ? 1 : 0;
   const score = agreementOffset * directionMultiplier * (question.weight ?? 1);
