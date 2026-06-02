@@ -801,4 +801,275 @@ const styles = `
       padding: 14px;
     }
   }
+
+  .deep-fear-page {
+    color: #f6eadb;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(151, 67, 76, 0.2), transparent 28rem),
+      radial-gradient(circle at 88% 8%, rgba(195, 154, 97, 0.12), transparent 24rem),
+      linear-gradient(180deg, rgba(255, 244, 230, 0.035), transparent 38%),
+      linear-gradient(145deg, #050506 0%, #0c0c0f 42%, #171113 100%);
+  }
+  .deep-fear-page::before {
+    background:
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(255,255,255,0.012) 1px, transparent 1px),
+      radial-gradient(circle at 50% 22%, transparent 0 18rem, rgba(0,0,0,0.28) 44rem);
+    background-size: 64px 64px, 64px 64px, auto;
+  }
+  .deep-fear-page .shell {
+    width: min(1120px, calc(100% - 32px));
+  }
+  .deep-fear-page--intro .intro {
+    width: min(100%, 980px);
+    min-height: min(680px, calc(100svh - 126px));
+    border-radius: 34px;
+    border-color: rgba(246, 234, 219, 0.18);
+    padding: clamp(30px, 6vw, 72px);
+    background:
+      linear-gradient(90deg, rgba(5, 5, 6, 0.92), rgba(8, 8, 10, 0.68) 56%, rgba(5, 5, 6, 0.92)),
+      radial-gradient(circle at 78% 32%, rgba(196, 154, 97, 0.16), transparent 18rem),
+      url("/thumbnails-generated/deep-fear-banner.png") center / cover,
+      #08080a;
+    box-shadow:
+      0 38px 110px rgba(0, 0, 0, 0.48),
+      inset 0 1px 0 rgba(246, 234, 219, 0.09);
+  }
+  .deep-fear-page--intro .intro::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(255, 244, 230, 0.05), transparent 34%),
+      radial-gradient(circle at 50% 108%, transparent 0 22rem, rgba(0, 0, 0, 0.2) 38rem);
+  }
+  .deep-fear-page--intro .intro > * {
+    position: relative;
+    z-index: 1;
+  }
+  .deep-fear-page--intro .intro-mark {
+    right: clamp(26px, 6vw, 74px);
+    top: clamp(24px, 6vw, 62px);
+    width: clamp(88px, 14vw, 168px);
+    border-color: rgba(246, 234, 219, 0.13);
+    opacity: 0.42;
+  }
+  .deep-fear-page h1 {
+    max-width: 760px;
+    font-size: clamp(2.45rem, 6vw, 5rem);
+    line-height: 1.08;
+    color: #fff3e4;
+    text-shadow: 0 18px 46px rgba(0, 0, 0, 0.44);
+  }
+  .deep-fear-page .subtitle {
+    max-width: 720px;
+    color: #d6b482;
+  }
+  .deep-fear-page .description {
+    max-width: 720px;
+    color: rgba(246, 234, 219, 0.82);
+  }
+  .deep-fear-page .intro-chips span {
+    border-color: rgba(246, 234, 219, 0.17);
+    background: rgba(7, 7, 8, 0.42);
+    backdrop-filter: blur(12px);
+  }
+  .deep-fear-page .primary {
+    min-height: 56px;
+    border: 1px solid rgba(255, 244, 230, 0.14);
+    background:
+      linear-gradient(135deg, #ead3a7, #9b4d55 58%, #4b2028);
+    box-shadow:
+      0 18px 42px rgba(155, 77, 85, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+  .deep-fear-page .disclaimer {
+    max-width: 680px;
+    padding: 11px 13px;
+    border: 1px solid rgba(246, 234, 219, 0.12);
+    border-radius: 16px;
+    background: rgba(7, 7, 8, 0.34);
+    color: rgba(246, 234, 219, 0.58);
+  }
+  .deep-fear-page--quiz .shell {
+    min-height: calc(100svh - 20px);
+    display: grid;
+    align-items: center;
+    padding-block: clamp(16px, 4vh, 38px);
+  }
+  .deep-fear-page--quiz .test-surface {
+    width: min(100%, 980px);
+    margin-inline: auto;
+    padding: clamp(18px, 4vw, 38px);
+    border: 1px solid rgba(246, 234, 219, 0.14);
+    border-radius: 32px;
+    background:
+      radial-gradient(circle at 12% 12%, rgba(196, 154, 97, 0.09), transparent 20rem),
+      linear-gradient(145deg, rgba(246, 234, 219, 0.09), rgba(246, 234, 219, 0.025)),
+      rgba(7, 7, 8, 0.78);
+    box-shadow:
+      0 38px 110px rgba(0, 0, 0, 0.46),
+      inset 0 1px 0 rgba(246, 234, 219, 0.08);
+    backdrop-filter: blur(16px);
+  }
+  .deep-fear-page--quiz .progress-head {
+    min-height: 38px;
+  }
+  .deep-fear-page--quiz .progress-bar {
+    height: 4px;
+    margin-top: 10px;
+    background: rgba(246, 234, 219, 0.1);
+  }
+  .deep-fear-page--quiz .progress-bar i {
+    background: linear-gradient(90deg, #d6b482, #7e3d46);
+  }
+  .deep-fear-page--quiz .question-view {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.74fr);
+    align-items: start;
+    gap: clamp(20px, 4vw, 44px);
+    padding-top: clamp(24px, 5vw, 46px);
+  }
+  .deep-fear-page--quiz .question-copy {
+    gap: clamp(18px, 3vw, 26px);
+  }
+  .deep-fear-page--quiz .question-situation {
+    max-width: none;
+    border-left: 0;
+    border-radius: 24px;
+    padding: clamp(18px, 3vw, 26px);
+    background:
+      linear-gradient(135deg, rgba(246, 234, 219, 0.08), rgba(246, 234, 219, 0.025)),
+      rgba(0, 0, 0, 0.22);
+    box-shadow: inset 0 0 0 1px rgba(246, 234, 219, 0.1);
+  }
+  .deep-fear-page--quiz .question-situation p {
+    color: rgba(255, 244, 230, 0.9);
+    font-size: clamp(1.02rem, 1.9vw, 1.24rem);
+    line-height: 1.78;
+    font-weight: 720;
+  }
+  .deep-fear-page--quiz .question-prompt h2 {
+    max-width: 760px;
+    color: #fff3e4;
+    font-size: clamp(1.46rem, 3.5vw, 2.54rem);
+    line-height: 1.35;
+    text-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
+  }
+  .deep-fear-page--quiz .choices {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 0;
+  }
+  .deep-fear-page--quiz .choices button {
+    min-height: 74px;
+    grid-template-columns: 32px 1fr;
+    border-radius: 18px;
+    border-color: rgba(246, 234, 219, 0.13);
+    padding: 14px 16px;
+    background:
+      linear-gradient(90deg, rgba(246, 234, 219, 0.07), rgba(246, 234, 219, 0.025)),
+      rgba(0, 0, 0, 0.24);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+  }
+  .deep-fear-page--quiz .choices button:hover {
+    border-color: rgba(214, 180, 130, 0.48);
+    background:
+      linear-gradient(90deg, rgba(214, 180, 130, 0.15), rgba(126, 61, 70, 0.08)),
+      rgba(0, 0, 0, 0.26);
+  }
+  .deep-fear-page--quiz .choices span {
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(214, 180, 130, 0.28);
+    background: rgba(214, 180, 130, 0.1);
+    color: #e8cf9e;
+  }
+  .deep-fear-page--quiz .choices strong {
+    color: rgba(255, 244, 230, 0.9);
+    font-size: clamp(0.96rem, 1.55vw, 1.08rem);
+    line-height: 1.55;
+  }
+  .deep-fear-page--result .shell {
+    width: min(1120px, calc(100% - 32px));
+  }
+  .deep-fear-page--result .test-surface--result {
+    border-radius: 34px;
+    border-color: rgba(246, 234, 219, 0.16);
+    padding: clamp(22px, 5vw, 56px);
+    background:
+      radial-gradient(circle at 86% 9%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 28rem),
+      linear-gradient(145deg, rgba(246, 234, 219, 0.1), rgba(246, 234, 219, 0.028)),
+      rgba(7, 7, 8, 0.82);
+  }
+  .deep-fear-page--result .result-view {
+    gap: clamp(20px, 3vw, 30px);
+  }
+  .deep-fear-page--result .result-hero {
+    border-bottom: 1px solid rgba(246, 234, 219, 0.12);
+    padding-bottom: clamp(18px, 3vw, 28px);
+  }
+  .deep-fear-page--result .result-hero h2 {
+    max-width: 860px;
+    font-size: clamp(2.15rem, 5.6vw, 5rem);
+  }
+  .deep-fear-page--result .result-hero p {
+    max-width: 840px;
+    color: #d6b482;
+  }
+  .deep-fear-page--result .result-description {
+    max-width: 920px;
+    color: rgba(246, 234, 219, 0.86);
+    font-size: clamp(1rem, 1.6vw, 1.12rem);
+  }
+  .deep-fear-page--result .result-grid {
+    gap: 14px;
+  }
+  .deep-fear-page--result .result-grid section {
+    border-radius: 24px;
+    border-color: rgba(246, 234, 219, 0.14);
+    background:
+      linear-gradient(135deg, rgba(246, 234, 219, 0.085), rgba(246, 234, 219, 0.025)),
+      rgba(0, 0, 0, 0.2);
+  }
+  .deep-fear-page--result .result-grid section p {
+    color: rgba(246, 234, 219, 0.86);
+  }
+  .deep-fear-page--result .final-card {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--accent) 24%, transparent), rgba(214, 180, 130, 0.08)),
+      rgba(0, 0, 0, 0.22) !important;
+  }
+  @media (max-width: 820px) {
+    .deep-fear-page--quiz .question-view {
+      grid-template-columns: 1fr;
+    }
+    .deep-fear-page--quiz .choices {
+      margin-top: 2px;
+    }
+  }
+  @media (max-width: 520px) {
+    .deep-fear-page .topbar,
+    .deep-fear-page .shell {
+      width: min(100% - 22px, 1120px);
+    }
+    .deep-fear-page--intro .intro,
+    .deep-fear-page--quiz .test-surface,
+    .deep-fear-page--result .test-surface--result {
+      border-radius: 24px;
+      padding: 22px 16px;
+    }
+    .deep-fear-page--quiz .question-view {
+      padding-top: 22px;
+      gap: 16px;
+    }
+    .deep-fear-page--quiz .choices button {
+      min-height: 68px;
+      padding: 13px;
+    }
+    .deep-fear-page--result .result-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 `;
