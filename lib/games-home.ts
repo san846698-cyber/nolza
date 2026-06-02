@@ -503,6 +503,14 @@ export const GAMES: Game[] = [
     skin: "mono", tone: 5, labels: ["new", "recommended", "share"], duration: { ko: "16문항 · 약 4분", en: "16 questions · about 4 min" },
   },
   {
+    id: "political-type", href: "/tests/political-type", cat: "self", no: "18AA",
+    ko: { title: "정치성향 테스트", sub: "사회 이슈를 보는 나의 기준은 진보, 중도, 보수 어디에 가까울까?", kicker: "사회 가치관 테스트" },
+    en: { title: "Political Orientation Test", sub: "Where do your social values sit on the progressive to conservative spectrum?", kicker: "Social Values Test" },
+    type: "test", category: "featured",
+    palette: P.paperBlue, font: "sans",
+    skin: "block", tone: 3, art: "political-type", labels: ["new", "recommended", "share"], duration: { ko: "16문항 · 약 4분", en: "16 questions · about 4 min" },
+  },
+  {
     id: "crush-type", href: "/tests/crush-type", cat: "self", no: "18B",
     ko: { title: "짝사랑 유형 테스트", sub: "좋아하는 사람 앞에서 내가 왜 이상해지는지 알아보기", kicker: "대표 테스트" },
     en: { title: "Crush Type Test", sub: "Find out why you get weird around someone you like", kicker: "Featured Test" },
@@ -750,12 +758,14 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   featured: [
+    "political-type",
     "deep-fear",
     "mbti-depth",
     "defense-mechanism",
     "crush-type",
   ],
   tests: [
+    "political-type",
     "deep-fear",
     "breaking-point",
     "scene-choice",

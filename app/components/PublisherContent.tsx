@@ -96,6 +96,44 @@ function qa(koQ: string, enQ: string, koA: string, enA: string): ContentOverride
 }
 
 const OVERRIDES: Record<string, ContentOverride> = {
+  "political-type": {
+    intro: {
+      ko: "정치성향 테스트는 정당 지지나 투표 성향을 묻지 않고, 사회 이슈를 바라볼 때 어떤 가치 기준을 먼저 떠올리는지 읽어보는 테스트입니다. 자유와 질서, 평등과 경쟁, 복지와 시장, 변화와 안정, 개인 책임과 사회 책임 사이에서 당신의 판단 습관을 가볍게 확인할 수 있습니다.",
+      en: "Political Orientation Test does not ask about party support or voting intent. It reads the value standards you tend to use when thinking about social issues, from freedom and order to welfare, markets, change, stability, and responsibility.",
+    },
+    method: {
+      ko: "16개의 상황형 질문에서 가장 그럴듯한 답이 아니라, 실제로 당신이 먼저 떠올릴 기준에 가까운 선택지를 고르세요. 각 선택지는 -3부터 +3까지의 점수로 계산되어 진보, 중도, 보수 스펙트럼 위의 위치를 만듭니다.",
+      en: "For each of the 16 scenario questions, choose the option closest to the standard you would actually use first. Each answer contributes a score from -3 to +3 and places you on a progressive, centrist, or conservative spectrum.",
+    },
+    result: {
+      ko: "결과는 정치적 조언이나 투표 추천이 아닙니다. 강한 진보형부터 강한 보수형까지 7가지 유형으로 사회를 판단하는 기준, 강점, 주의할 점, 잘 맞는 대화 방식을 설명하는 자기이해 콘텐츠입니다.",
+      en: "The result is not political advice or voting guidance. It is a self-reflection result across seven types, explaining your standards, strengths, cautions, and conversation style.",
+    },
+    share: {
+      ko: "친구와 비교할 때는 누가 맞고 틀린지보다 서로가 어떤 가치를 먼저 보는지 이야기해보세요. 이 테스트는 낙인보다 대화를 시작하기 위한 콘텐츠로 쓰는 것이 좋습니다.",
+      en: "When comparing with friends, focus on which values each person notices first rather than who is right or wrong. Use the result to start conversation, not to label people.",
+    },
+    faq: [
+      qa(
+        "정당 지지나 투표 성향을 알려주나요?",
+        "Does it reveal party support or voting intent?",
+        "아닙니다. 실제 정당, 정치인, 선거 선택을 묻지 않으며 사회 이슈를 보는 가치 기준만 가볍게 읽어봅니다.",
+        "No. It does not ask about real parties, politicians, or election choices. It only reads value tendencies around social issues.",
+      ),
+      qa(
+        "진보나 보수 결과가 좋고 나쁨을 뜻하나요?",
+        "Does a progressive or conservative result mean good or bad?",
+        "아닙니다. 결과는 가치 기준의 차이를 설명할 뿐이며 특정 성향을 조롱하거나 평가하지 않습니다.",
+        "No. Results explain different value standards and do not mock or rank any orientation.",
+      ),
+      qa(
+        "결과를 어떻게 활용하면 좋나요?",
+        "How should I use the result?",
+        "사회 이슈를 볼 때 내가 무엇을 먼저 걱정하고 무엇을 먼저 지키려 하는지 확인하는 참고로 활용하세요.",
+        "Use it as a reference for noticing what you worry about first and what you try to protect first in social debates.",
+      ),
+    ],
+  },
   "breaking-point": {
     intro: {
       ko: "나를 차갑게 만드는 순간은 관계 속에서 마음이 닫히는 지점을 살펴보는 심리 테스트입니다. 상처를 바로 표현하는지, 조용히 물러나는지, 이유를 설명하려 하는지 같은 반응 차이를 결과로 읽어봅니다.",

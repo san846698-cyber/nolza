@@ -7,6 +7,7 @@ import ReactMotif from "./motifs/React";
 import KbtiMotif from "./motifs/Kbti";
 import IjyMotif from "./motifs/Ijy";
 import SceneChoiceMotif from "./motifs/SceneChoice";
+import PoliticalTypeMotif from "./motifs/PoliticalType";
 
 const REGISTRY: Record<string, React.FC<{ skin: Skin }>> = {
   scale: ScaleMotif,
@@ -16,6 +17,7 @@ const REGISTRY: Record<string, React.FC<{ skin: Skin }>> = {
   kbti: KbtiMotif,
   ijy: IjyMotif,
   "scene-choice": SceneChoiceMotif,
+  "political-type": PoliticalTypeMotif,
 };
 
 export default function Thumb({ game, skin }: { game: Game; skin: Skin }) {
