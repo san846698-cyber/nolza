@@ -1082,7 +1082,7 @@ const styles = `
     border-radius: 28px;
     padding: clamp(18px, 3vw, 26px);
     background:
-      linear-gradient(90deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.86) 50%, rgba(147, 51, 234, 0.08)),
+      linear-gradient(90deg, rgba(30, 64, 175, 0.035), rgba(255, 255, 255, 0.92) 50%, rgba(127, 29, 29, 0.035)),
       #fff;
     box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
   }
@@ -1095,10 +1095,10 @@ const styles = `
     white-space: nowrap;
   }
   .political-scale-end--agree {
-    color: #1d4ed8;
+    color: #1e3a8a;
   }
   .political-scale-end--disagree {
-    color: #7e22ce;
+    color: #7f1d1d;
     text-align: right;
   }
   .political-agreement-scale {
@@ -1111,7 +1111,9 @@ const styles = `
   }
   .political-scale-dot {
     --dot-size: 38px;
-    --dot-color: #94a3b8;
+    --dot-color: #64748b;
+    --dot-border: #cbd5e1;
+    --dot-fill: #f8fafc;
     display: grid;
     justify-items: center;
     gap: 10px;
@@ -1133,12 +1135,12 @@ const styles = `
     display: block;
     width: var(--dot-size);
     height: var(--dot-size);
-    border: 3px solid var(--dot-color);
+    border: 2px solid var(--dot-border);
     border-radius: 999px;
-    background: #fff;
+    background: var(--dot-fill);
     box-shadow:
       inset 0 0 0 7px #fff,
-      0 12px 28px rgba(15, 23, 42, 0.09);
+      0 10px 24px rgba(15, 23, 42, 0.065);
     transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   }
   .political-scale-dot strong {
@@ -1152,40 +1154,55 @@ const styles = `
   }
   .political-scale-dot--1 {
     --dot-size: clamp(42px, 5.4vw, 62px);
-    --dot-color: #2563eb;
+    --dot-color: #1e3a8a;
+    --dot-border: #93a7d8;
+    --dot-fill: #f8fafc;
   }
   .political-scale-dot--2 {
     --dot-size: clamp(38px, 4.8vw, 54px);
-    --dot-color: #0ea5e9;
+    --dot-color: #1d4f91;
+    --dot-border: #a9bce0;
+    --dot-fill: #f8fafc;
   }
   .political-scale-dot--3 {
     --dot-size: clamp(34px, 4.2vw, 46px);
-    --dot-color: #14b8a6;
+    --dot-color: #315f95;
+    --dot-border: #bcc9df;
+    --dot-fill: #f8fafc;
   }
   .political-scale-dot--4 {
     --dot-size: clamp(30px, 3.8vw, 38px);
-    --dot-color: #94a3b8;
+    --dot-color: #64748b;
+    --dot-border: #cbd5e1;
+    --dot-fill: #f8fafc;
   }
   .political-scale-dot--5 {
     --dot-size: clamp(34px, 4.2vw, 46px);
-    --dot-color: #a855f7;
+    --dot-color: #884747;
+    --dot-border: #d7b6b6;
+    --dot-fill: #f8fafc;
   }
   .political-scale-dot--6 {
     --dot-size: clamp(38px, 4.8vw, 54px);
-    --dot-color: #d946ef;
+    --dot-color: #8b3333;
+    --dot-border: #d0a0a0;
+    --dot-fill: #f8fafc;
   }
   .political-scale-dot--7 {
     --dot-size: clamp(42px, 5.4vw, 62px);
-    --dot-color: #dc2626;
+    --dot-color: #7f1d1d;
+    --dot-border: #c98e8e;
+    --dot-fill: #f8fafc;
   }
   .political-scale-dot:hover span,
   .political-scale-dot:focus-visible span,
   .political-scale-dot.selected span {
     background: var(--dot-color);
+    border-color: var(--dot-color);
     box-shadow:
       inset 0 0 0 7px #fff,
-      0 16px 34px color-mix(in srgb, var(--dot-color) 28%, transparent),
-      0 0 0 7px color-mix(in srgb, var(--dot-color) 14%, transparent);
+      0 14px 30px color-mix(in srgb, var(--dot-color) 18%, transparent),
+      0 0 0 6px color-mix(in srgb, var(--dot-color) 9%, transparent);
     transform: scale(1.04);
   }
   .political-scale-dot:focus-visible {
