@@ -13,6 +13,7 @@ import "./globals.css";
 import { AdSenseScript, AdSideRails } from "./components/Ads";
 import Analytics from "./components/Analytics";
 import LocaleToggle from "./components/LocaleToggle";
+import ServiceWorkerCleanup from "./components/ServiceWorkerCleanup";
 import SiteFooter from "./components/SiteFooter";
 
 const notoSans = Noto_Sans_KR({
@@ -85,7 +86,6 @@ export const metadata: Metadata = {
     template: "%s | nolza.fun",
   },
   description: siteDescription,
-  manifest: "/site.webmanifest",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -97,11 +97,6 @@ export const metadata: Metadata = {
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
-  },
-  appleWebApp: {
-    capable: true,
-    title: "nolza.fun",
-    statusBarStyle: "black-translucent",
   },
   openGraph: {
     title: "nolza.fun",
@@ -124,9 +119,6 @@ export const metadata: Metadata = {
     title: "nolza.fun",
     description: siteDescription,
     images: ["/og-image.png"],
-  },
-  other: {
-    "msapplication-TileColor": "#7C3AED",
   },
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
@@ -153,6 +145,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased">
         <Analytics />
+        <ServiceWorkerCleanup />
         <AdSenseScript />
         <LocaleToggle />
         {children}
