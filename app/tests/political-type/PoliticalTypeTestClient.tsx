@@ -19,6 +19,7 @@ import {
   POLITICAL_TEST_COPY,
   calculatePoliticalAnswer,
   calculatePoliticalResult,
+  getPoliticalAxisInterpretation,
   getPoliticalResultById,
   isPoliticalResultId,
   localized,
@@ -476,12 +477,15 @@ function ResultView({
   onShare: () => void;
   shareCopied: boolean;
 }): ReactElement {
+  const axisInterpretation = getPoliticalAxisInterpretation(score, orderFreedomScore);
+
   return (
     <article className="political-result">
       {isShared ? <p className="political-shared">{t(locale, "공유된 결과", "Shared result")}</p> : null}
       <div className="political-result-title">
         <span>{result.englishLabel}</span>
         <h2>{localized(locale, result.title)}</h2>
+        <strong className="political-axis-summary">{localized(locale, axisInterpretation.label)}</strong>
         <p>{localized(locale, result.summary)}</p>
       </div>
 
@@ -515,6 +519,10 @@ function ResultView({
       </div>
 
       <div className="political-result-grid">
+        <section>
+          <span>{t(locale, "두 번째 축 해석", "Second-axis reading")}</span>
+          <p>{localized(locale, axisInterpretation.detail)}</p>
+        </section>
         <section>
           <span>{t(locale, "당신이 사회를 판단하는 기준", "Your standard for judging society")}</span>
           <p>{localized(locale, result.basis)}</p>
@@ -562,8 +570,8 @@ const styles = `
     overflow-x: hidden;
     color: #111827;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.86), rgba(247,250,252,0.94)),
-      linear-gradient(135deg, #eff6ff 0%, #fff7ed 100%);
+      linear-gradient(180deg, rgba(255,255,255,0.88), rgba(247,250,252,0.96)),
+      linear-gradient(135deg, #f0fdfa 0%, #f8fafc 48%, #fafaf9 100%);
     font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
   }
   .political-page * {
@@ -636,7 +644,7 @@ const styles = `
     border-radius: 22px;
     opacity: 0.22;
     background:
-      linear-gradient(90deg, #2563eb 0%, #f8fafc 50%, #dc2626 100%);
+      linear-gradient(90deg, #0f766e 0%, #f8fafc 50%, #a16207 100%);
   }
   .political-spectrum-art span {
     position: absolute;
@@ -694,7 +702,7 @@ const styles = `
   .political-subtitle {
     max-width: 720px;
     margin: 18px 0 0;
-    color: #1d4ed8;
+    color: #0f766e;
     font-size: clamp(1.18rem, 2.5vw, 1.55rem);
     line-height: 1.52;
     font-weight: 900;
@@ -717,7 +725,7 @@ const styles = `
   .political-intro-note {
     max-width: 640px;
     margin: 0 0 22px;
-    border-left: 3px solid #2563eb;
+    border-left: 3px solid #0f766e;
     padding: 12px 0 12px 14px;
     color: #0f172a;
     font-size: 1.02rem;
@@ -737,9 +745,9 @@ const styles = `
     border: 1px solid rgba(15, 23, 42, 0.1);
     border-radius: 26px;
     background:
-      radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.13), transparent 32%),
-      radial-gradient(circle at 86% 24%, rgba(220, 38, 38, 0.12), transparent 34%),
-      linear-gradient(145deg, rgba(248, 250, 252, 0.96), rgba(255, 255, 255, 0.78)),
+      radial-gradient(circle at 16% 14%, rgba(15, 118, 110, 0.12), transparent 34%),
+      radial-gradient(circle at 86% 24%, rgba(161, 98, 7, 0.1), transparent 35%),
+      linear-gradient(145deg, rgba(248, 250, 252, 0.98), rgba(255, 255, 255, 0.84)),
       rgba(255, 255, 255, 0.86);
     box-shadow: 0 22px 54px rgba(15, 23, 42, 0.11);
   }
@@ -755,7 +763,7 @@ const styles = `
     min-width: 0;
   }
   .political-value-map-copy span {
-    color: #2563eb;
+    color: #0f766e;
     font-size: 0.74rem;
     font-weight: 950;
     letter-spacing: 0.08em;
@@ -793,10 +801,10 @@ const styles = `
     border: 1px solid rgba(15, 23, 42, 0.14);
     border-radius: 22px;
     background:
-      linear-gradient(90deg, rgba(37, 99, 235, 0.2), rgba(248, 250, 252, 0.58) 50%, rgba(220, 38, 38, 0.2)),
-      linear-gradient(180deg, rgba(15, 23, 42, 0.1), rgba(255, 255, 255, 0.06) 48%, rgba(14, 165, 233, 0.12)),
-      repeating-linear-gradient(0deg, transparent 0 31px, rgba(15, 23, 42, 0.045) 32px 33px),
-      repeating-linear-gradient(90deg, transparent 0 31px, rgba(15, 23, 42, 0.045) 32px 33px);
+      linear-gradient(90deg, rgba(15, 118, 110, 0.14), rgba(248, 250, 252, 0.72) 50%, rgba(161, 98, 7, 0.13)),
+      linear-gradient(180deg, rgba(71, 85, 105, 0.12), rgba(255, 255, 255, 0.08) 48%, rgba(20, 184, 166, 0.1)),
+      repeating-linear-gradient(0deg, transparent 0 30px, rgba(15, 23, 42, 0.05) 31px 32px),
+      repeating-linear-gradient(90deg, transparent 0 30px, rgba(15, 23, 42, 0.05) 31px 32px);
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.78),
       inset 0 18px 60px rgba(255, 255, 255, 0.28);
@@ -806,7 +814,7 @@ const styles = `
     content: "";
     position: absolute;
     z-index: 1;
-    background: rgba(15, 23, 42, 0.26);
+    background: rgba(15, 23, 42, 0.34);
   }
   .political-map-grid::before {
     left: 50%;
@@ -826,7 +834,7 @@ const styles = `
     display: grid;
     place-items: center;
     padding: 10px;
-    color: rgba(15, 23, 42, 0.62);
+    color: rgba(15, 23, 42, 0.68);
     font-size: 0.73rem;
     font-weight: 900;
     line-height: 1.25;
@@ -869,16 +877,17 @@ const styles = `
     z-index: 4;
     left: 50%;
     top: 50%;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border: 4px solid #fff;
     border-radius: 999px;
     background:
       radial-gradient(circle at 32% 28%, #fff 0 10%, transparent 12%),
-      #111827;
+      #0f172a;
     box-shadow:
-      0 14px 34px rgba(15, 23, 42, 0.34),
-      0 0 0 10px rgba(17, 24, 39, 0.1);
+      0 18px 42px rgba(15, 23, 42, 0.38),
+      0 0 0 10px rgba(15, 118, 110, 0.13),
+      0 0 0 18px rgba(255, 255, 255, 0.55);
     transform: translate(-50%, -50%);
   }
   .political-map-center {
@@ -901,9 +910,9 @@ const styles = `
     width: fit-content;
     margin: 14px 0 0;
     padding: 12px 14px;
-    border: 1px solid rgba(37, 99, 235, 0.14);
+    border: 1px solid rgba(15, 118, 110, 0.16);
     border-radius: 16px;
-    background: rgba(239, 246, 255, 0.8);
+    background: rgba(240, 253, 250, 0.82);
     color: #475569;
     font-size: 0.92rem;
     font-weight: 750;
@@ -936,8 +945,8 @@ const styles = `
   .political-primary {
     border: 0;
     color: #fff;
-    background: linear-gradient(135deg, #2563eb, #dc2626);
-    box-shadow: 0 16px 36px rgba(37, 99, 235, 0.18);
+    background: linear-gradient(135deg, #0f766e, #111827);
+    box-shadow: 0 16px 36px rgba(15, 118, 110, 0.2);
   }
   .political-secondary {
     color: #111827;
@@ -966,7 +975,7 @@ const styles = `
     background: #f8fafc;
   }
   .political-guide span {
-    color: #2563eb;
+    color: #0f766e;
     font-size: 0.73rem;
     font-weight: 950;
     letter-spacing: 0.08em;
@@ -1047,7 +1056,7 @@ const styles = `
     display: block;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(90deg, #2563eb, #f8fafc, #dc2626);
+    background: linear-gradient(90deg, #0f766e, #e2e8f0, #a16207);
     transition: width 220ms ease;
   }
   .political-question-view {
@@ -1082,7 +1091,7 @@ const styles = `
     border-radius: 28px;
     padding: clamp(18px, 3vw, 26px);
     background:
-      linear-gradient(90deg, rgba(30, 64, 175, 0.035), rgba(255, 255, 255, 0.92) 50%, rgba(127, 29, 29, 0.035)),
+      linear-gradient(90deg, rgba(15, 118, 110, 0.05), rgba(255, 255, 255, 0.94) 50%, rgba(71, 85, 105, 0.05)),
       #fff;
     box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
   }
@@ -1095,10 +1104,10 @@ const styles = `
     white-space: nowrap;
   }
   .political-scale-end--agree {
-    color: #1e3a8a;
+    color: #334155;
   }
   .political-scale-end--disagree {
-    color: #7f1d1d;
+    color: #334155;
     text-align: right;
   }
   .political-agreement-scale {
@@ -1154,20 +1163,20 @@ const styles = `
   }
   .political-scale-dot--1 {
     --dot-size: clamp(42px, 5.4vw, 62px);
-    --dot-color: #1e3a8a;
-    --dot-border: #93a7d8;
+    --dot-color: #0f766e;
+    --dot-border: #8cc7bd;
     --dot-fill: #f8fafc;
   }
   .political-scale-dot--2 {
     --dot-size: clamp(38px, 4.8vw, 54px);
-    --dot-color: #1d4f91;
-    --dot-border: #a9bce0;
+    --dot-color: #2f7d73;
+    --dot-border: #a7cfc8;
     --dot-fill: #f8fafc;
   }
   .political-scale-dot--3 {
     --dot-size: clamp(34px, 4.2vw, 46px);
-    --dot-color: #315f95;
-    --dot-border: #bcc9df;
+    --dot-color: #64748b;
+    --dot-border: #cbd5e1;
     --dot-fill: #f8fafc;
   }
   .political-scale-dot--4 {
@@ -1178,20 +1187,20 @@ const styles = `
   }
   .political-scale-dot--5 {
     --dot-size: clamp(34px, 4.2vw, 46px);
-    --dot-color: #884747;
-    --dot-border: #d7b6b6;
+    --dot-color: #64748b;
+    --dot-border: #cbd5e1;
     --dot-fill: #f8fafc;
   }
   .political-scale-dot--6 {
     --dot-size: clamp(38px, 4.8vw, 54px);
-    --dot-color: #8b3333;
-    --dot-border: #d0a0a0;
+    --dot-color: #475569;
+    --dot-border: #b8c1cd;
     --dot-fill: #f8fafc;
   }
   .political-scale-dot--7 {
     --dot-size: clamp(42px, 5.4vw, 62px);
-    --dot-color: #7f1d1d;
-    --dot-border: #c98e8e;
+    --dot-color: #334155;
+    --dot-border: #aeb8c5;
     --dot-fill: #f8fafc;
   }
   .political-scale-dot:hover span,
@@ -1221,10 +1230,10 @@ const styles = `
   .political-shared {
     width: fit-content;
     margin: 0;
-    border: 1px solid rgba(37, 99, 235, 0.18);
+    border: 1px solid rgba(15, 118, 110, 0.18);
     border-radius: 999px;
     padding: 8px 12px;
-    background: rgba(37, 99, 235, 0.07);
+    background: rgba(15, 118, 110, 0.07);
   }
   .political-result-title h2 {
     margin-top: 8px;
@@ -1240,6 +1249,20 @@ const styles = `
     font-size: clamp(1.08rem, 2.4vw, 1.36rem);
     font-weight: 900;
     line-height: 1.52;
+    word-break: keep-all;
+  }
+  .political-axis-summary {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 12px;
+    border: 1px solid color-mix(in srgb, var(--result-accent) 22%, transparent);
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: color-mix(in srgb, var(--result-accent) 8%, white);
+    color: #0f172a;
+    font-size: clamp(0.92rem, 1.8vw, 1.08rem);
+    font-weight: 950;
+    line-height: 1.32;
     word-break: keep-all;
   }
   .political-spectrum {
@@ -1269,7 +1292,7 @@ const styles = `
     position: relative;
     height: 18px;
     border-radius: 999px;
-    background: linear-gradient(90deg, #2563eb 0%, #e2e8f0 50%, #dc2626 100%);
+    background: linear-gradient(90deg, #0f766e 0%, #e2e8f0 50%, #a16207 100%);
     box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
   }
   .political-spectrum-track i {
@@ -1342,7 +1365,7 @@ const styles = `
   }
   .political-final-line {
     background:
-      linear-gradient(135deg, rgba(37, 99, 235, 0.07), rgba(220, 38, 38, 0.07)),
+      linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(161, 98, 7, 0.07)),
       #fff !important;
   }
   .political-final-line p {

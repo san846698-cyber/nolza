@@ -63,6 +63,11 @@ export type PoliticalResult = {
   accent: string;
 };
 
+export type PoliticalAxisInterpretation = {
+  label: LocalizedText;
+  detail: LocalizedText;
+};
+
 export const POLITICAL_TEST_COPY = {
   title: { ko: "정치성향 테스트", en: "Political Orientation Test" },
   subtitle: {
@@ -375,7 +380,7 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
     englishLabel: "Strong Progressive",
     spectrumPosition: { ko: "스펙트럼 위치: 강한 진보", en: "Spectrum position: far-left / progressive" },
     min: -100,
-    max: -70,
+    max: -63,
     summary: {
       ko: "변화와 평등, 권리 보호를 강하게 우선하는 성향입니다.",
       en: "You strongly prioritize change, equality, and rights protection.",
@@ -414,15 +419,15 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
       ko: "당신에게 정치란 멈춘 사회를 조금 더 공정하게 움직이게 하는 일입니다.",
       en: "For you, politics is about moving a stalled society toward fairness.",
     },
-    accent: "#2563eb",
+    accent: "#0f766e",
   },
   {
     id: "moderate-progressive",
     title: { ko: "온건 진보형", en: "Moderate Progressive" },
     englishLabel: "Moderate Progressive",
     spectrumPosition: { ko: "스펙트럼 위치: 중도 진보", en: "Spectrum position: center-left" },
-    min: -69,
-    max: -38,
+    min: -62,
+    max: -33,
     summary: {
       ko: "사회 변화와 보호의 필요성을 인정하면서 현실적 균형도 함께 보는 성향입니다.",
       en: "You value social change and protection while keeping practical balance in view.",
@@ -461,15 +466,15 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
       ko: "당신에게 정치란 나은 방향으로 천천히, 그러나 분명하게 가는 과정입니다.",
       en: "For you, politics is a steady movement toward a better direction.",
     },
-    accent: "#3b82f6",
+    accent: "#168a7d",
   },
   {
     id: "practical-progressive",
     title: { ko: "실용 진보형", en: "Practical Progressive" },
     englishLabel: "Practical Progressive",
     spectrumPosition: { ko: "스펙트럼 위치: 진보 성향 실용", en: "Spectrum position: left-leaning pragmatic" },
-    min: -37,
-    max: -11,
+    min: -32,
+    max: -7,
     summary: {
       ko: "사회적 책임과 개선을 중시하지만 실제 효과를 먼저 확인하는 성향입니다.",
       en: "You care about social responsibility and improvement while checking practical effects first.",
@@ -508,15 +513,15 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
       ko: "당신에게 정치란 더 나은 사회를 실제로 굴러가게 만드는 일입니다.",
       en: "For you, politics is making a better society actually work.",
     },
-    accent: "#0ea5e9",
+    accent: "#2f7d73",
   },
   {
     id: "centrist-pragmatist",
     title: { ko: "중도 실용형", en: "Centrist Pragmatist" },
     englishLabel: "Centrist Pragmatist",
     spectrumPosition: { ko: "스펙트럼 위치: 중도", en: "Spectrum position: center" },
-    min: -10,
-    max: 10,
+    min: -6,
+    max: 6,
     summary: {
       ko: "한쪽 이념보다 맥락, 효과, 균형을 우선하는 성향입니다.",
       en: "You prioritize context, effect, and balance over a single ideological side.",
@@ -555,15 +560,15 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
       ko: "당신에게 정치란 편을 고르는 일보다 기준을 세우는 일에 가깝습니다.",
       en: "For you, politics is closer to setting standards than picking a side.",
     },
-    accent: "#64748b",
+    accent: "#475569",
   },
   {
     id: "practical-conservative",
     title: { ko: "실용 보수형", en: "Practical Conservative" },
     englishLabel: "Practical Conservative",
     spectrumPosition: { ko: "스펙트럼 위치: 보수 성향 실용", en: "Spectrum position: right-leaning pragmatic" },
-    min: 11,
-    max: 37,
+    min: 7,
+    max: 32,
     summary: {
       ko: "안정과 책임을 중시하되 필요한 변화는 실용적으로 받아들이는 성향입니다.",
       en: "You value stability and responsibility while accepting necessary change pragmatically.",
@@ -602,15 +607,15 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
       ko: "당신에게 정치란 고쳐야 할 것과 지켜야 할 것을 함께 가르는 일입니다.",
       en: "For you, politics is separating what must be fixed from what must be protected.",
     },
-    accent: "#f97316",
+    accent: "#7c6a46",
   },
   {
     id: "moderate-conservative",
     title: { ko: "온건 보수형", en: "Moderate Conservative" },
     englishLabel: "Moderate Conservative",
     spectrumPosition: { ko: "스펙트럼 위치: 중도 보수", en: "Spectrum position: center-right" },
-    min: 38,
-    max: 69,
+    min: 33,
+    max: 62,
     summary: {
       ko: "사회 안정, 책임, 질서를 중시하지만 대화와 조정의 여지를 남기는 성향입니다.",
       en: "You value stability, responsibility, and order while leaving room for dialogue and adjustment.",
@@ -649,14 +654,14 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
       ko: "당신에게 정치란 사회가 무너지지 않게 고치는 기술입니다.",
       en: "For you, politics is the craft of repair without collapse.",
     },
-    accent: "#ef4444",
+    accent: "#8a6f3f",
   },
   {
     id: "strong-conservative",
     title: { ko: "강한 보수형", en: "Strong Conservative" },
     englishLabel: "Strong Conservative",
     spectrumPosition: { ko: "스펙트럼 위치: 강한 보수", en: "Spectrum position: far-right / conservative" },
-    min: 70,
+    min: 63,
     max: 100,
     summary: {
       ko: "사회 안정, 책임, 질서, 전통적 가치를 강하게 우선하는 성향입니다.",
@@ -696,7 +701,7 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
       ko: "당신에게 정치란 바꾸기 전에 무엇을 지켜야 하는지 묻는 일입니다.",
       en: "For you, politics asks what must be protected before anything is changed.",
     },
-    accent: "#dc2626",
+    accent: "#795f36",
   },
 ];
 
@@ -743,6 +748,61 @@ export function getPoliticalResultByScore(score: number): PoliticalResult {
     POLITICAL_RESULTS.find((result) => result.id === "centrist-pragmatist") ??
     POLITICAL_RESULTS[3]
   );
+}
+
+export function getPoliticalAxisInterpretation(
+  leftRightScore: number,
+  orderFreedomScore: number,
+): PoliticalAxisInterpretation {
+  const ideology =
+    leftRightScore <= -63
+      ? { ko: "강한 진보형", en: "Strong progressive" }
+      : leftRightScore <= -33
+        ? { ko: "온건 진보형", en: "Moderate progressive" }
+        : leftRightScore <= -7
+          ? { ko: "실용 진보형", en: "Practical progressive" }
+          : leftRightScore >= 63
+            ? { ko: "강한 보수형", en: "Strong conservative" }
+            : leftRightScore >= 33
+              ? { ko: "온건 보수형", en: "Moderate conservative" }
+              : leftRightScore >= 7
+                ? { ko: "실용 보수형", en: "Practical conservative" }
+                : { ko: "중도 실용형", en: "Centrist pragmatist" };
+
+  const axis =
+    orderFreedomScore >= 36
+      ? { ko: "질서·안정 우선", en: "order and stability first" }
+      : orderFreedomScore >= 14
+        ? { ko: "안정 지향", en: "stability-leaning" }
+        : orderFreedomScore <= -36
+          ? { ko: "자유·자율 우선", en: "freedom and autonomy first" }
+          : orderFreedomScore <= -14
+            ? { ko: "자유 성향", en: "freedom-leaning" }
+            : { ko: "균형 감각", en: "balanced on freedom and order" };
+
+  const detail =
+    orderFreedomScore >= 14
+      ? {
+          ko: "좌우 성향과 별개로, 사회 변화가 있을 때 예측 가능성·제도 안정·공동체 신뢰를 함께 확인하려는 경향이 있습니다.",
+          en: "Beyond left-right orientation, you tend to check predictability, institutional stability, and social trust when society changes.",
+        }
+      : orderFreedomScore <= -14
+        ? {
+            ko: "좌우 성향과 별개로, 사회 이슈를 볼 때 개인의 선택권·표현의 자유·자율성을 먼저 확인하려는 경향이 있습니다.",
+            en: "Beyond left-right orientation, you tend to check personal choice, expression, and autonomy first when reading social issues.",
+          }
+        : {
+            ko: "좌우 성향과 별개로, 자유와 질서 중 하나만 고정적으로 앞세우기보다 이슈별 조건을 나누어 보려는 경향이 있습니다.",
+            en: "Beyond left-right orientation, you tend to separate issue conditions instead of always prioritizing either freedom or order.",
+          };
+
+  return {
+    label: {
+      ko: `${ideology.ko} · ${axis.ko}`,
+      en: `${ideology.en} · ${axis.en}`,
+    },
+    detail,
+  };
 }
 
 export function calculatePoliticalAnswer(
