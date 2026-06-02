@@ -6,61 +6,61 @@ import { GUIDES } from "@/lib/guides";
 
 const CATEGORY_GUIDES = [
   {
-    href: "#tests",
-    koTitle: "심리 테스트",
+    href: "/tests",
+    koTitle: "심리테스트 모아보기",
     enTitle: "Psychology tests",
     koBody:
-      "짧은 상황 질문을 통해 생각 습관, 감정 반응, 관계에서 자주 보이는 패턴을 가볍게 읽어봅니다.",
+      "방어기제, 인지왜곡, 깊은 공포, 마음이 차가워지는 순간처럼 일상 속 감정과 생각 패턴을 읽어봅니다.",
     enBody:
-      "Short scenario questions turn thinking habits, emotional reactions, and everyday patterns into readable results.",
+      "Browse tests about defense mechanisms, thinking patterns, deep fear, and emotional turning points.",
   },
   {
-    href: "#compatibility",
-    koTitle: "커플/관계 테스트",
-    enTitle: "Couple and relationship tests",
+    href: "/tests#relationship",
+    koTitle: "관계와 궁합 콘텐츠",
+    enTitle: "Relationship tests",
     koBody:
-      "두 사람의 이름, 선택, 분위기를 바탕으로 친구나 연인과 함께 읽기 좋은 케미 결과를 만듭니다.",
+      "친구, 연인, 가까운 사람과 함께 읽기 좋은 관계형 결과와 공유용 테스트를 모았습니다.",
     enBody:
-      "Name-based and choice-based tests create chemistry results that are fun to read with friends or partners.",
+      "Relationship and compatibility results made to read and compare with friends or partners.",
   },
   {
-    href: "#featured",
-    koTitle: "운세/랜덤 결과",
-    enTitle: "Fortune and random reads",
+    href: "/games",
+    koTitle: "브라우저 게임",
+    enTitle: "Browser games",
     koBody:
-      "사주, 이름, 랜덤 키워드처럼 가볍게 즐기는 운세형 콘텐츠를 카드와 이야기 형식으로 정리합니다.",
+      "설치 없이 바로 시작할 수 있는 미니게임, 이름 기반 결과, 세계관형 콘텐츠를 둘러보세요.",
     enBody:
-      "Fortune-style pages use names, dates, or random keywords to create light card-like readings and short stories.",
+      "Play short browser games and name-based story experiences without installation.",
   },
   {
-    href: "#mini-games",
-    koTitle: "미니게임",
-    enTitle: "Mini games",
+    href: "/guides",
+    koTitle: "가이드와 해설",
+    enTitle: "Guides",
     koBody:
-      "반응속도, 퍼즐, 감각 테스트처럼 브라우저에서 바로 플레이하고 기록을 비교할 수 있는 짧은 게임입니다.",
+      "테스트 결과를 과하게 믿지 않으면서도 더 재미있고 안전하게 해석하는 방법을 안내합니다.",
     enBody:
-      "Short browser games cover reaction, puzzles, and timing challenges that are easy to play and compare.",
+      "Read guides that explain how to enjoy results safely without treating them as diagnosis.",
   },
 ];
 
 const STEPS = [
   {
-    koTitle: "1. 짧게 고르기",
-    enTitle: "1. Pick a short test",
-    koBody: "심리 테스트, 관계 테스트, 운세형 콘텐츠, 미니게임 중 지금 기분에 맞는 페이지를 선택합니다.",
-    enBody: "Choose a personality test, relationship result, fortune-style page, or mini game that fits your mood.",
+    koTitle: "1. 지금 끌리는 주제 고르기",
+    enTitle: "1. Pick a topic",
+    koBody: "심리, 관계, 공포, 성향, 조선 세계관, 미니게임 중 지금의 기분에 맞는 콘텐츠를 선택합니다.",
+    enBody: "Choose a test or game by mood: psychology, relationships, fear, personality, Joseon stories, or mini games.",
   },
   {
-    koTitle: "2. 결과 읽기",
-    enTitle: "2. Read the result",
-    koBody: "결과는 정답이나 진단이 아니라, 선택과 입력을 읽기 쉬운 키워드와 이야기로 풀어낸 엔터테인먼트입니다.",
-    enBody: "Results are entertainment, not a diagnosis. They turn choices and inputs into readable keywords and short stories.",
+    koTitle: "2. 결과를 참고용으로 읽기",
+    enTitle: "2. Read results lightly",
+    koBody: "결과는 진단이 아니라 재미와 자기성찰을 위한 설명입니다. 맞는 문장만 편하게 가져가세요.",
+    enBody: "Results are for entertainment and reflection, not diagnosis. Keep only what feels useful.",
   },
   {
-    koTitle: "3. 친구와 비교하기",
+    koTitle: "3. 친구와 대화로 이어가기",
     enTitle: "3. Compare with friends",
-    koBody: "공유 링크나 결과 카드를 보내고 서로의 반응, 점수, 문장을 비교해보면 대화가 더 쉽게 시작됩니다.",
-    enBody: "Send a result link or card, then compare reactions, scores, and result lines with friends.",
+    koBody: "결과를 공유할 때는 상대를 단정하지 말고 서로 다른 반응과 기준을 이야기해보세요.",
+    enBody: "When sharing, avoid labeling others and use results to talk about different reactions.",
   },
 ];
 
@@ -71,42 +71,42 @@ export default function HomePublisherContent() {
     <section className="home-publisher" aria-labelledby="home-publisher-title">
       <div className="home-publisher__inner">
         <div className="home-publisher__intro">
-          <p className="home-publisher__eyebrow">{t("놀자.fun 소개", "About nolza.fun")}</p>
+          <p className="home-publisher__eyebrow">{t("Nolza 안내", "About Nolza")}</p>
           <h2 id="home-publisher-title">
-            {t("놀자.fun은 어떤 사이트인가요?", "What is nolza.fun?")}
+            {t("테스트, 게임, 가이드를 함께 읽는 인터랙티브 놀이터", "An interactive site for tests, games, and guides")}
           </h2>
           <p>
             {t(
-              "놀자.fun은 친구에게 보내기 좋은 바이럴 테스트와 짧은 브라우저 게임을 모아둔 플레이그라운드입니다. 심리, 관계, 운세형 읽을거리, 미니게임을 빠르게 즐기되 결과 화면에는 해석과 공유 맥락을 함께 담아 단순 링크 모음처럼 보이지 않도록 구성했습니다.",
-              "nolza.fun is a playground for viral tests and short browser games that are easy to send to friends. It covers psychology, relationships, fortune-style reading, and mini games with result context designed for sharing.",
+              "Nolza는 심리테스트, 관계 테스트, 이름 기반 결과, 짧은 브라우저 게임을 제공하는 한국어 중심 콘텐츠 사이트입니다. 각 콘텐츠는 결과만 보여주는 데서 끝나지 않고, 이용 방법과 결과 해석, 관련 가이드로 이어지도록 구성되어 있습니다.",
+              "Nolza is a Korean-first content site for psychology-style tests, relationship tests, name-based results, and short browser games. Each experience connects results with explanations, related guides, and internal links.",
             )}
           </p>
         </div>
 
         <div className="home-publisher__panels">
           <article className="home-publisher__panel">
-            <h3>{t("왜 공유하기 좋은가요?", "Why is it good for sharing?")}</h3>
+            <h3>{t("결과는 어떻게 봐야 하나요?", "How should I read results?")}</h3>
             <p>
               {t(
-                "각 테스트는 결과 제목, 한 줄 설명, 추천 콘텐츠, 공유 버튼을 중심으로 설계되어 혼자 보고 끝나는 페이지가 아니라 대화의 소재가 되도록 만들어졌습니다.",
-                "Each test is built around a result title, short explanation, related picks, and sharing actions so the page can become a conversation starter.",
+                "Nolza의 테스트 결과는 재미와 자기성찰을 위한 엔터테인먼트입니다. 의학적, 심리학적, 법률적, 재정적 또는 전문적인 진단과 조언을 대신하지 않습니다.",
+                "Nolza results are entertainment for fun and self-reflection. They do not replace medical, psychological, legal, financial, or professional advice.",
               )}
             </p>
           </article>
           <article className="home-publisher__panel">
-            <h3>{t("결과는 어떻게 봐야 하나요?", "How should I read results?")}</h3>
+            <h3>{t("왜 가이드가 있나요?", "Why are there guides?")}</h3>
             <p>
               {t(
-                "결과는 재미와 자기 성찰을 위한 콘텐츠입니다. 전문 상담, 의료, 재정, 관계 판단을 대신하지 않으며 친구와 가볍게 비교하며 즐기는 용도입니다.",
-                "Results are for fun and reflection. They do not replace professional advice, medical guidance, financial decisions, or relationship judgment.",
+                "방어기제, 애착유형, 인지왜곡 같은 주제는 결과만 보면 너무 단순해질 수 있습니다. 가이드는 테스트를 낙인으로 쓰지 않고 대화와 이해의 힌트로 읽도록 돕습니다.",
+                "Topics like defense mechanisms, attachment, and cognitive distortions can feel too thin without context. Guides help users read results as conversation starters, not labels.",
               )}
             </p>
           </article>
         </div>
 
         <div className="home-publisher__section-title">
-          <p>{t("카테고리 안내", "Category guide")}</p>
-          <h3>{t("기분에 맞춰 고르는 테스트와 게임", "Choose by mood, topic, or play style")}</h3>
+          <p>{t("둘러보기", "Explore")}</p>
+          <h3>{t("콘텐츠 색인", "Content indexes")}</h3>
         </div>
         <div className="home-publisher__categories">
           {CATEGORY_GUIDES.map((category) => (
@@ -117,7 +117,7 @@ export default function HomePublisherContent() {
           ))}
         </div>
 
-        <div className="home-publisher__steps" aria-label={t("사용 방법", "How to use")}>
+        <div className="home-publisher__steps" aria-label={t("이용 방법", "How to use")}>
           {STEPS.map((step) => (
             <article key={step.enTitle} className="home-publisher__step">
               <h3>{t(step.koTitle, step.enTitle)}</h3>
@@ -128,9 +128,9 @@ export default function HomePublisherContent() {
 
         <section className="home-publisher__guides" aria-labelledby="home-guides-title">
           <div className="home-publisher__section-title">
-            <p>{t("테스트 더 알아보기", "Learn more")}</p>
+            <p>{t("읽을거리", "Guides")}</p>
             <h3 id="home-guides-title">
-              {t("짧게 읽고 바로 시작하는 게임 가이드", "Short guides before you play")}
+              {t("테스트 결과를 더 잘 이해하는 가이드", "Guides for reading test results")}
             </h3>
           </div>
           <div className="home-publisher__guide-list">
@@ -144,11 +144,11 @@ export default function HomePublisherContent() {
         </section>
 
         <section className="home-publisher__safe">
-          <h3>{t("가볍고 안전하게 즐기는 엔터테인먼트", "Light, safe entertainment")}</h3>
+          <h3>{t("가볍고 안전하게 즐기기", "Light, safe entertainment")}</h3>
           <p>
             {t(
-              "놀자.fun의 테스트와 게임은 회원가입 없이 즐길 수 있는 엔터테인먼트 콘텐츠입니다. 이름이나 간단한 선택값을 사용하는 페이지도 결과를 만들기 위한 최소 정보만 다루며, 결과는 전문 조언이나 실제 판단을 대신하지 않습니다.",
-              "nolza.fun is entertainment you can use without creating an account. Pages that ask for a name or simple choices use them only to create the result, and results do not replace professional advice or real-life decisions.",
+              "이름이나 선택값을 사용하는 페이지는 결과를 만들기 위한 최소한의 정보만 요청합니다. 중요한 결정은 테스트 결과가 아니라 실제 상황, 신뢰할 수 있는 정보, 필요한 경우 전문가의 도움을 바탕으로 판단하세요.",
+              "Pages that request names or choices use them to generate the result. Important decisions should be based on real context, reliable information, and professional help where needed.",
             )}
           </p>
         </section>

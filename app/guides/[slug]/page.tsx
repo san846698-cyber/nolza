@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!guide) {
     return {
-      title: "가이드",
+      title: "가이드 | Nolza",
       alternates: {
         canonical: "/guides",
       },
@@ -65,13 +65,13 @@ export default async function GuidePage({ params }: PageProps) {
     <main className="guide-page">
       <article className="guide-page__inner">
         <nav className="guide-page__breadcrumb" aria-label="Breadcrumb">
-          <Link href="/">놀자.fun</Link>
+          <Link href="/">Nolza</Link>
           <span>/</span>
-          <span>가이드</span>
+          <Link href="/guides">가이드</Link>
         </nav>
 
         <header className="guide-hero">
-          <p className="guide-hero__eyebrow">Game Guide</p>
+          <p className="guide-hero__eyebrow">Nolza Guide</p>
           <h1>{guide.title}</h1>
           <div className="guide-hero__intro">
             {guide.intro.map((paragraph) => (
@@ -86,12 +86,12 @@ export default async function GuidePage({ params }: PageProps) {
         <section className="guide-section guide-section--cards" aria-label="가이드 핵심 설명">
           <article>
             <span>01</span>
-            <h2>이 테스트/게임이 무엇인가요?</h2>
+            <h2>이 콘텐츠는 무엇을 다루나요?</h2>
             <p>{guide.what}</p>
           </article>
           <article>
             <span>02</span>
-            <h2>어떻게 플레이하나요?</h2>
+            <h2>어떻게 이용하면 좋을까요?</h2>
             <p>{guide.how}</p>
           </article>
           <article>
@@ -101,7 +101,7 @@ export default async function GuidePage({ params }: PageProps) {
           </article>
           <article>
             <span>04</span>
-            <h2>친구와 공유하면 왜 재미있나요?</h2>
+            <h2>친구와 공유할 때는?</h2>
             <p>{guide.sharing}</p>
           </article>
         </section>
@@ -109,7 +109,7 @@ export default async function GuidePage({ params }: PageProps) {
         <section className="guide-section" aria-labelledby="related-guides-title">
           <div className="guide-section__head">
             <p>Related Tests</p>
-            <h2 id="related-guides-title">함께 해보기 좋은 콘텐츠</h2>
+            <h2 id="related-guides-title">함께 보면 좋은 콘텐츠</h2>
           </div>
           <div className="guide-related">
             {guide.related.map((item) => (
@@ -136,12 +136,12 @@ export default async function GuidePage({ params }: PageProps) {
           </div>
         </section>
 
-        <section className="guide-cta" aria-label="게임 시작">
+        <section className="guide-cta" aria-label="관련 콘텐츠 시작">
           <div>
-            <p>바로 해보고 싶다면</p>
+            <p>바로 확인해보고 싶다면</p>
             <h2>{guide.ctaLabel}</h2>
           </div>
-          <Link href={guide.ctaHref}>게임 시작하기</Link>
+          <Link href={guide.ctaHref}>콘텐츠 시작하기</Link>
         </section>
       </article>
     </main>

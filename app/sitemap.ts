@@ -4,7 +4,17 @@ import { GUIDES } from "@/lib/guides";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nolza.fun";
 
-const STATIC_ROUTES = ["/", "/about", "/contact", "/privacy", "/terms"];
+const STATIC_ROUTES = [
+  "/",
+  "/tests",
+  "/games",
+  "/guides",
+  "/about",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/disclaimer",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
