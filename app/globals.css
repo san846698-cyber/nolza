@@ -3696,6 +3696,478 @@ body {
   text-transform: uppercase !important;
 }
 
+/* Nolza Test Mode: polished active question surfaces */
+.political-page--quiz,
+.value-test--quiz,
+.stoic-test--quiz,
+.thinking-test--quiz,
+.breaking-page--quiz,
+.scene-page,
+.crush-test,
+.defense-page {
+  --test-mode-ink: #151922;
+  --test-mode-muted: #667085;
+  --test-mode-line: rgba(21, 25, 34, 0.1);
+  --test-mode-card: rgba(255, 255, 255, 0.9);
+  --test-mode-card-strong: rgba(255, 255, 255, 0.96);
+  --test-mode-accent: #0f766e;
+  --test-mode-accent-soft: rgba(15, 118, 110, 0.12);
+  --test-mode-warm: #f7f2ea;
+  --test-mode-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+}
+
+.political-page--quiz .political-shell,
+.breaking-page--quiz .shell,
+.scene-page .shell,
+.crush-test .shell,
+.defense-page .quiz {
+  width: min(100% - 32px, 980px) !important;
+  min-height: calc(100svh - 44px) !important;
+  display: grid !important;
+  align-items: center !important;
+  margin-inline: auto !important;
+  padding-block: clamp(18px, 4vh, 44px) !important;
+}
+
+.political-page--quiz .political-card,
+.breaking-page--quiz .quiz-card,
+.scene-page .quiz-card,
+.crush-test .quiz-card,
+.defense-page .question-card {
+  width: 100% !important;
+  border: 1px solid var(--test-mode-line) !important;
+  border-radius: clamp(22px, 3vw, 34px) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.86)),
+    var(--test-mode-warm) !important;
+  box-shadow: var(--test-mode-shadow) !important;
+  padding: clamp(20px, 4vw, 42px) !important;
+}
+
+.value-test--quiz .value-flow-shell,
+.stoic-test--quiz .stoic-flow-shell,
+.thinking-test--quiz .thinking-flow-shell {
+  min-height: 100svh !important;
+  display: grid !important;
+  grid-template-rows: auto 1fr !important;
+  align-items: center !important;
+  padding: clamp(16px, 3vw, 34px) max(16px, env(safe-area-inset-right)) clamp(24px, 4vw, 42px) max(16px, env(safe-area-inset-left)) !important;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(15, 118, 110, 0.11), transparent 28rem),
+    radial-gradient(circle at 82% 8%, rgba(161, 98, 7, 0.08), transparent 24rem),
+    linear-gradient(135deg, #fbfaf7 0%, #f8fafc 46%, #f3f4f6 100%) !important;
+  color: var(--test-mode-ink) !important;
+}
+
+.value-test--quiz .value-flow-bg,
+.value-test--quiz .value-side-rail,
+.stoic-test--quiz .stoic-flow-bg,
+.stoic-test--quiz .stoic-side-rail,
+.thinking-test--quiz .thinking-flow-bg,
+.thinking-test--quiz .thinking-side-rail {
+  display: none !important;
+}
+
+.value-test--quiz .value-mobile-progress,
+.stoic-test--quiz .stoic-mobile-progress,
+.thinking-test--quiz .thinking-mobile-progress {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 3px !important;
+  border-radius: 0 !important;
+  background: rgba(15, 23, 42, 0.08) !important;
+  z-index: 10 !important;
+}
+
+.value-test--quiz .value-mobile-progress-fill,
+.stoic-test--quiz .stoic-mobile-progress-fill,
+.thinking-test--quiz .thinking-mobile-progress-fill {
+  background: linear-gradient(90deg, #0f766e, #334155) !important;
+}
+
+.value-test--quiz .value-flow-topbar,
+.stoic-test--quiz .stoic-flow-topbar,
+.thinking-test--quiz .thinking-flow-topbar,
+.political-page--quiz .political-progress-head,
+.breaking-page--quiz .progress-head,
+.scene-page .progress-head,
+.crush-test .progress-head,
+.defense-page .progress div {
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  margin-bottom: 12px !important;
+  color: var(--test-mode-muted) !important;
+  font-size: 0.82rem !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.value-test--quiz .value-flow-back,
+.stoic-test--quiz .stoic-flow-back,
+.thinking-test--quiz .thinking-flow-back,
+.political-page--quiz .political-exit {
+  min-width: 42px !important;
+  height: 42px !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  color: #334155 !important;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08) !important;
+}
+
+.value-test--quiz .value-flow-counter,
+.stoic-test--quiz .stoic-flow-counter,
+.thinking-test--quiz .thinking-flow-counter,
+.political-page--quiz .political-progress-head strong,
+.breaking-page--quiz .progress-head strong,
+.scene-page .progress-head strong,
+.crush-test .progress-head strong,
+.defense-page .progress strong {
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  color: #1f2937 !important;
+  padding: 7px 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+}
+
+.political-page--quiz .political-progress,
+.breaking-page--quiz .progress-bar,
+.scene-page .progress-bar,
+.crush-test .progress-bar,
+.defense-page .progress {
+  height: 5px !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, 0.08) !important;
+  box-shadow: none !important;
+}
+
+.political-page--quiz .political-progress i,
+.breaking-page--quiz .progress-bar i,
+.scene-page .progress-bar i,
+.crush-test .progress-bar span,
+.defense-page .progress > i {
+  height: 100% !important;
+  border-radius: inherit !important;
+  background: linear-gradient(90deg, #0f766e, #334155) !important;
+}
+
+.value-test--quiz .value-flow-body,
+.stoic-test--quiz .stoic-flow-body,
+.thinking-test--quiz .thinking-flow-body {
+  width: min(100%, 900px) !important;
+  min-height: auto !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  gap: clamp(22px, 4vw, 34px) !important;
+  align-content: center !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: clamp(24px, 3vw, 34px) !important;
+  padding: clamp(22px, 5vw, 50px) !important;
+  background: var(--test-mode-card) !important;
+  box-shadow: var(--test-mode-shadow) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+.value-test--quiz .value-flow-question-area,
+.stoic-test--quiz .stoic-flow-question-area,
+.thinking-test--quiz .thinking-flow-question-area {
+  max-width: 760px !important;
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+.political-page--quiz .political-question-view,
+.breaking-page--quiz .question-view,
+.scene-page .question-view,
+.crush-test .quiz-card > :not(.progress-head):not(.progress-bar),
+.defense-page .question-card {
+  text-align: center !important;
+}
+
+.political-page--quiz .political-question-view h2,
+.value-test--quiz .value-flow-question,
+.stoic-test--quiz .stoic-flow-question,
+.thinking-test--quiz .thinking-flow-question,
+.breaking-page--quiz .question-view h2,
+.scene-page .question-view h2,
+.crush-test .readable-question h2,
+.crush-test .quiz-card h2,
+.defense-page .question-card h2 {
+  max-width: 820px !important;
+  margin-inline: auto !important;
+  color: var(--test-mode-ink) !important;
+  font-size: clamp(1.42rem, 3.3vw, 2.45rem) !important;
+  line-height: 1.28 !important;
+  letter-spacing: 0 !important;
+  font-weight: 860 !important;
+  word-break: keep-all !important;
+  overflow-wrap: anywhere !important;
+}
+
+.value-test--quiz .value-flow-kicker,
+.stoic-test--quiz .stoic-flow-kicker,
+.thinking-test--quiz .thinking-flow-kicker,
+.political-page--quiz .political-eyebrow {
+  width: fit-content !important;
+  margin-inline: auto !important;
+  border: 1px solid rgba(15, 118, 110, 0.13) !important;
+  border-radius: 999px !important;
+  padding: 7px 10px !important;
+  background: rgba(15, 118, 110, 0.07) !important;
+  color: #0f766e !important;
+  font-size: 0.72rem !important;
+}
+
+.value-test--quiz .value-flow-subtext,
+.stoic-test--quiz .stoic-flow-subtext,
+.thinking-test--quiz .thinking-flow-subtext,
+.political-page--quiz .political-agreement-hint {
+  max-width: 620px !important;
+  margin: 14px auto 0 !important;
+  color: var(--test-mode-muted) !important;
+  font-size: 0.98rem !important;
+  line-height: 1.55 !important;
+  font-weight: 650 !important;
+}
+
+.political-page--quiz .political-scale-wrap,
+.value-test--quiz .value-flow-scale-wrap,
+.stoic-test--quiz .stoic-flow-scale-wrap,
+.thinking-test--quiz .thinking-flow-scale-wrap {
+  max-width: 760px !important;
+  margin: clamp(24px, 4vw, 36px) auto 0 !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 26px !important;
+  padding: clamp(16px, 3vw, 24px) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.9)),
+    #fff !important;
+  box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08) !important;
+}
+
+.political-page--quiz .political-agreement-scale,
+.value-test--quiz .value-flow-likert-row,
+.stoic-test--quiz .stoic-flow-likert-row,
+.thinking-test--quiz .thinking-flow-likert-row {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: clamp(6px, 1.3vw, 12px) !important;
+}
+
+.political-page--quiz .political-agreement-scale::before,
+.value-test--quiz .value-flow-likert-row::before,
+.stoic-test--quiz .stoic-flow-likert-row::before,
+.thinking-test--quiz .thinking-flow-likert-row::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 7% !important;
+  right: 7% !important;
+  top: 24px !important;
+  height: 2px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, rgba(15, 118, 110, 0.28), rgba(100, 116, 139, 0.18), rgba(51, 65, 85, 0.28)) !important;
+}
+
+.political-page--quiz .political-scale-dot,
+.value-test--quiz .value-flow-likert-btn,
+.stoic-test--quiz .stoic-flow-likert-btn,
+.thinking-test--quiz .thinking-flow-likert-btn {
+  position: relative !important;
+  z-index: 1 !important;
+  min-height: 54px !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: transparent !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.political-page--quiz .political-scale-dot span,
+.value-test--quiz .value-flow-likert-btn,
+.stoic-test--quiz .stoic-flow-likert-btn,
+.thinking-test--quiz .thinking-flow-likert-btn {
+  width: clamp(34px, 6vw, 48px) !important;
+  height: clamp(34px, 6vw, 48px) !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  margin-inline: auto !important;
+  border: 1px solid rgba(15, 23, 42, 0.14) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: #475569 !important;
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.08),
+    inset 0 0 0 5px rgba(248, 250, 252, 0.9) !important;
+}
+
+.political-page--quiz .political-scale-dot:hover span,
+.political-page--quiz .political-scale-dot.selected span,
+.value-test--quiz .value-flow-likert-btn:hover,
+.value-test--quiz .value-flow-likert-btn.is-selected,
+.stoic-test--quiz .stoic-flow-likert-btn:hover,
+.stoic-test--quiz .stoic-flow-likert-btn.is-selected,
+.thinking-test--quiz .thinking-flow-likert-btn:hover,
+.thinking-test--quiz .thinking-flow-likert-btn.is-selected {
+  border-color: rgba(15, 118, 110, 0.34) !important;
+  background: #0f766e !important;
+  color: #fff !important;
+  box-shadow:
+    0 14px 32px rgba(15, 118, 110, 0.22),
+    0 0 0 7px rgba(15, 118, 110, 0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+.political-page--quiz .political-scale-dot strong,
+.value-test--quiz .value-flow-scale-labels,
+.stoic-test--quiz .stoic-flow-scale-labels,
+.thinking-test--quiz .thinking-flow-scale-labels {
+  color: #667085 !important;
+  font-size: clamp(0.62rem, 1.35vw, 0.78rem) !important;
+  line-height: 1.2 !important;
+  font-weight: 760 !important;
+}
+
+.breaking-page--quiz .choices,
+.scene-page .choices,
+.crush-test .answers,
+.defense-page .answers {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: clamp(10px, 1.6vw, 16px) !important;
+  margin-top: clamp(22px, 4vw, 34px) !important;
+}
+
+.breaking-page--quiz .choices button,
+.scene-page .choices button,
+.crush-test .answer,
+.defense-page .answers button {
+  min-height: 84px !important;
+  display: grid !important;
+  grid-template-columns: auto 1fr !important;
+  align-items: center !important;
+  gap: 14px !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  border-radius: 20px !important;
+  padding: 16px !important;
+  background: var(--test-mode-card-strong) !important;
+  color: var(--test-mode-ink) !important;
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.07) !important;
+  text-align: left !important;
+}
+
+.breaking-page--quiz .choices button:hover,
+.scene-page .choices button:hover,
+.crush-test .answer:hover,
+.defense-page .answers button:not(:disabled):hover,
+.defense-page .answers button.selected {
+  border-color: rgba(15, 118, 110, 0.28) !important;
+  background:
+    linear-gradient(180deg, rgba(240, 253, 250, 0.96), rgba(255, 255, 255, 0.94)) !important;
+  box-shadow: 0 18px 44px rgba(15, 118, 110, 0.14) !important;
+  transform: translateY(-2px) !important;
+}
+
+.breaking-page--quiz .choices span,
+.scene-page .choices span,
+.crush-test .answer span,
+.defense-page .answers span {
+  width: 34px !important;
+  height: 34px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border: 1px solid rgba(15, 118, 110, 0.18) !important;
+  border-radius: 999px !important;
+  background: rgba(15, 118, 110, 0.08) !important;
+  color: #0f766e !important;
+  font-size: 0.82rem !important;
+  font-weight: 900 !important;
+}
+
+.breaking-page--quiz .choices strong,
+.scene-page .choices strong,
+.crush-test .answer strong,
+.defense-page .answers strong {
+  color: var(--test-mode-ink) !important;
+  font-size: clamp(0.98rem, 1.8vw, 1.12rem) !important;
+  line-height: 1.48 !important;
+  font-weight: 760 !important;
+  word-break: keep-all !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 640px) {
+  .political-page--quiz .political-shell,
+  .breaking-page--quiz .shell,
+  .scene-page .shell,
+  .crush-test .shell,
+  .defense-page .quiz {
+    width: min(100% - 20px, 980px) !important;
+    min-height: calc(100svh - 16px) !important;
+    padding-block: 10px 18px !important;
+  }
+
+  .political-page--quiz .political-card,
+  .breaking-page--quiz .quiz-card,
+  .scene-page .quiz-card,
+  .crush-test .quiz-card,
+  .defense-page .question-card,
+  .value-test--quiz .value-flow-body,
+  .stoic-test--quiz .stoic-flow-body,
+  .thinking-test--quiz .thinking-flow-body {
+    border-radius: 22px !important;
+    padding: 18px 14px !important;
+  }
+
+  .political-page--quiz .political-question-view h2,
+  .value-test--quiz .value-flow-question,
+  .stoic-test--quiz .stoic-flow-question,
+  .thinking-test--quiz .thinking-flow-question,
+  .breaking-page--quiz .question-view h2,
+  .scene-page .question-view h2,
+  .crush-test .readable-question h2,
+  .crush-test .quiz-card h2,
+  .defense-page .question-card h2 {
+    font-size: clamp(1.22rem, 6vw, 1.7rem) !important;
+    line-height: 1.34 !important;
+  }
+
+  .political-page--quiz .political-scale-wrap {
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas:
+      "agree disagree"
+      "scale scale" !important;
+  }
+
+  .breaking-page--quiz .choices,
+  .scene-page .choices,
+  .crush-test .answers,
+  .defense-page .answers {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  .breaking-page--quiz .choices button,
+  .scene-page .choices button,
+  .crush-test .answer,
+  .defense-page .answers button {
+    min-height: 66px !important;
+    padding: 13px !important;
+    border-radius: 17px !important;
+  }
+}
+
 @media (max-width: 640px) {
   .progress-head,
   .progress > div {
