@@ -259,20 +259,31 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
           <span />
           <i />
         </div>
-        <p className="political-eyebrow">{t(locale, "사회 가치관 테스트", "Social Values Test")}</p>
-        <h1>{POLITICAL_TEST_COPY.title[locale]}</h1>
-        <p className="political-subtitle">{POLITICAL_TEST_COPY.subtitle[locale]}</p>
-        <p className="political-description">{POLITICAL_TEST_COPY.description[locale]}</p>
-        <PoliticalValueMap locale={locale} variant="intro" />
-        <div className="political-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
-          <span>{POLITICAL_TEST_COPY.questionCount[locale]}</span>
-          <span>{POLITICAL_TEST_COPY.time[locale]}</span>
-          <span>{POLITICAL_TEST_COPY.valueBased[locale]}</span>
+        <div className="political-intro-layout">
+          <div className="political-intro-copy">
+            <p className="political-eyebrow">{t(locale, "사회 가치관 테스트", "Social Values Test")}</p>
+            <h1>{POLITICAL_TEST_COPY.title[locale]}</h1>
+            <p className="political-subtitle">{POLITICAL_TEST_COPY.subtitle[locale]}</p>
+            <p className="political-description">{POLITICAL_TEST_COPY.description[locale]}</p>
+            <p className="political-intro-note">
+              {t(
+                locale,
+                "이 테스트는 좌우 성향뿐 아니라, 자유와 질서를 바라보는 감각까지 함께 살펴봅니다.",
+                "This test looks not only at left-right orientation, but also at how you balance freedom and order.",
+              )}
+            </p>
+            <div className="political-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
+              <span>{POLITICAL_TEST_COPY.questionCount[locale]}</span>
+              <span>{POLITICAL_TEST_COPY.time[locale]}</span>
+              <span>{POLITICAL_TEST_COPY.valueBased[locale]}</span>
+            </div>
+            <button type="button" className="political-primary" onClick={onStart}>
+              {POLITICAL_TEST_COPY.start[locale]}
+            </button>
+            <p className="political-disclaimer">{POLITICAL_TEST_COPY.disclaimer[locale]}</p>
+          </div>
+          <PoliticalValueMap locale={locale} variant="intro" />
         </div>
-        <button type="button" className="political-primary" onClick={onStart}>
-          {POLITICAL_TEST_COPY.start[locale]}
-        </button>
-        <p className="political-disclaimer">{POLITICAL_TEST_COPY.disclaimer[locale]}</p>
       </section>
 
       <section className="political-guide" aria-label={t(locale, "테스트 안내", "Test guide")}>
@@ -579,13 +590,13 @@ const styles = `
   .political-intro {
     position: relative;
     overflow: hidden;
-    min-height: min(680px, calc(100vh - 140px));
     display: grid;
     align-content: center;
-    width: min(100%, 860px);
+    width: min(100%, 1040px);
     margin: 0 auto;
-    padding: clamp(32px, 6vw, 70px);
+    padding: clamp(26px, 5vw, 58px);
     border-radius: 28px;
+    isolation: isolate;
   }
   .political-spectrum-art {
     position: absolute;
@@ -612,6 +623,17 @@ const styles = `
     height: 76%;
     border-radius: 999px;
     background: #111827;
+  }
+  .political-intro-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(360px, 1.12fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 46px);
+  }
+  .political-intro-copy {
+    min-width: 0;
   }
   .political-eyebrow,
   .political-progress-head span,
@@ -658,29 +680,44 @@ const styles = `
     word-break: keep-all;
   }
   .political-description {
-    margin: 14px 0 26px;
+    margin: 14px 0 14px;
     color: rgba(15, 23, 42, 0.76);
     font-size: 1.03rem;
     font-weight: 650;
+  }
+  .political-intro-note {
+    max-width: 640px;
+    margin: 0 0 22px;
+    border-left: 3px solid #2563eb;
+    padding: 12px 0 12px 14px;
+    color: #0f172a;
+    font-size: 1.02rem;
+    font-weight: 900;
+    line-height: 1.64;
+    word-break: keep-all;
   }
   .political-value-map {
     width: 100%;
     min-width: 0;
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(260px, 1fr);
+    grid-template-columns: minmax(0, 0.84fr) minmax(260px, 1fr);
     align-items: center;
-    gap: 18px;
+    gap: clamp(16px, 2.5vw, 24px);
     margin: 22px 0;
-    padding: 18px;
-    border: 1px solid rgba(15, 23, 42, 0.09);
-    border-radius: 22px;
+    padding: clamp(16px, 2.5vw, 24px);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 26px;
     background:
-      linear-gradient(135deg, rgba(239, 246, 255, 0.82), rgba(255, 241, 242, 0.62)),
+      radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.13), transparent 32%),
+      radial-gradient(circle at 86% 24%, rgba(220, 38, 38, 0.12), transparent 34%),
+      linear-gradient(145deg, rgba(248, 250, 252, 0.96), rgba(255, 255, 255, 0.78)),
       rgba(255, 255, 255, 0.86);
-    box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 22px 54px rgba(15, 23, 42, 0.11);
   }
   .political-value-map--intro {
-    max-width: 780px;
+    margin: 0;
+    grid-template-columns: 1fr;
+    align-self: stretch;
   }
   .political-value-map--result {
     margin: 0;
@@ -714,7 +751,7 @@ const styles = `
   .political-map-frame {
     position: relative;
     min-width: 0;
-    padding: 32px 42px;
+    padding: 36px 44px;
   }
   .political-map-grid {
     position: relative;
@@ -724,19 +761,23 @@ const styles = `
     aspect-ratio: 1;
     min-width: 0;
     overflow: hidden;
-    border: 1px solid rgba(15, 23, 42, 0.12);
-    border-radius: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    border-radius: 22px;
     background:
-      linear-gradient(90deg, rgba(37, 99, 235, 0.14), rgba(220, 38, 38, 0.14)),
-      linear-gradient(180deg, rgba(15, 23, 42, 0.08), rgba(255, 255, 255, 0.28));
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+      linear-gradient(90deg, rgba(37, 99, 235, 0.2), rgba(248, 250, 252, 0.58) 50%, rgba(220, 38, 38, 0.2)),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.1), rgba(255, 255, 255, 0.06) 48%, rgba(14, 165, 233, 0.12)),
+      repeating-linear-gradient(0deg, transparent 0 31px, rgba(15, 23, 42, 0.045) 32px 33px),
+      repeating-linear-gradient(90deg, transparent 0 31px, rgba(15, 23, 42, 0.045) 32px 33px);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.78),
+      inset 0 18px 60px rgba(255, 255, 255, 0.28);
   }
   .political-map-grid::before,
   .political-map-grid::after {
     content: "";
     position: absolute;
     z-index: 1;
-    background: rgba(15, 23, 42, 0.2);
+    background: rgba(15, 23, 42, 0.26);
   }
   .political-map-grid::before {
     left: 50%;
@@ -757,7 +798,7 @@ const styles = `
     place-items: center;
     padding: 10px;
     color: rgba(15, 23, 42, 0.62);
-    font-size: 0.76rem;
+    font-size: 0.73rem;
     font-weight: 900;
     line-height: 1.25;
     text-align: center;
@@ -766,7 +807,7 @@ const styles = `
   .political-map-axis {
     position: absolute;
     z-index: 3;
-    color: #334155;
+    color: #0f172a;
     font-size: 0.78rem;
     font-weight: 950;
     white-space: nowrap;
@@ -803,8 +844,12 @@ const styles = `
     height: 24px;
     border: 4px solid #fff;
     border-radius: 999px;
-    background: #111827;
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.34);
+    background:
+      radial-gradient(circle at 32% 28%, #fff 0 10%, transparent 12%),
+      #111827;
+    box-shadow:
+      0 14px 34px rgba(15, 23, 42, 0.34),
+      0 0 0 10px rgba(17, 24, 39, 0.1);
     transform: translate(-50%, -50%);
   }
   .political-map-center {
@@ -1187,6 +1232,7 @@ const styles = `
     gap: 10px;
   }
   @media (max-width: 780px) {
+    .political-intro-layout,
     .political-guide,
     .political-agreement-scale,
     .political-value-map,
@@ -1204,6 +1250,9 @@ const styles = `
     }
     .political-value-map {
       padding: 16px;
+    }
+    .political-value-map--intro {
+      margin-top: 8px;
     }
     .political-map-frame {
       padding: 32px 38px;

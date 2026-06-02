@@ -504,11 +504,11 @@ export const GAMES: Game[] = [
   },
   {
     id: "political-type", href: "/tests/political-type", cat: "self", no: "18AA",
-    ko: { title: "정치성향 테스트", sub: "사회 이슈를 보는 나의 기준은 진보, 중도, 보수 어디에 가까울까?", kicker: "사회 가치관 테스트" },
-    en: { title: "Political Orientation Test", sub: "Where do your social values sit on the progressive to conservative spectrum?", kicker: "Social Values Test" },
+    ko: { title: "정치성향 테스트", sub: "좌우 성향과 자유-질서 감각을 2축 가치 지도에서 확인해보기", kicker: "사회 가치관 테스트" },
+    en: { title: "Political Orientation Test", sub: "Map your values across left-right and freedom-order axes.", kicker: "Social Values Test" },
     type: "test", category: "featured",
     palette: P.paperBlue, font: "sans",
-    skin: "block", tone: 3, art: "political-type", labels: ["new", "recommended", "share"], duration: { ko: "16문항 · 약 4분", en: "16 questions · about 4 min" },
+    skin: "block", tone: 3, art: "political-type", labels: ["new", "recommended", "share"], duration: { ko: "24문항 · 약 5분", en: "24 statements · about 5 min" },
   },
   {
     id: "crush-type", href: "/tests/crush-type", cat: "self", no: "18B",
