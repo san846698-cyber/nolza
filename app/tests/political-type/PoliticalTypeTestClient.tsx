@@ -24,6 +24,7 @@ import {
   localized,
   resultMidpoint,
   spectrumPercent,
+  valueMapYPercent,
   type PoliticalAnswer,
   type PoliticalAgreementValue,
   type PoliticalResult,
@@ -36,6 +37,7 @@ type PoliticalSharePayload = {
   v: 1;
   resultId: PoliticalResultId;
   score: number;
+  orderFreedomScore?: number;
   locale?: SimpleLocale;
 };
 
@@ -60,7 +62,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
   const [phase, setPhase] = useState<Phase>("intro");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<PoliticalAnswer[]>([]);
-  const [sharedResult, setSharedResult] = useState<{ result: PoliticalResult; score: number } | null>(null);
+  const [sharedResult, setSharedResult] = useState<{ result: PoliticalResult; score: number; orderFreedomScore: number } | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
 
   useEffect(() => {
@@ -74,6 +76,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
       setSharedResult({
         result,
         score: safeScore(payload.score, resultMidpoint(result)),
+        orderFreedomScore: safeScore(payload.orderFreedomScore, 0),
       });
       setPhase("result");
       setQuestionIndex(POLITICAL_QUESTIONS.length - 1);
@@ -88,6 +91,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
   const calculated = useMemo(() => calculatePoliticalResult(answers), [answers]);
   const result = sharedResult?.result ?? calculated.result;
   const score = sharedResult?.score ?? calculated.normalizedScore;
+  const orderFreedomScore = sharedResult?.orderFreedomScore ?? calculated.orderFreedomScore;
   const progress = phase === "result" ? 100 : ((questionIndex + 1) / POLITICAL_QUESTIONS.length) * 100;
 
   useEffect(() => {
@@ -135,6 +139,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
         v: 1,
         resultId: next.result.id,
         score: next.normalizedScore,
+        orderFreedomScore: next.orderFreedomScore,
         locale,
       } satisfies PoliticalSharePayload);
       window.history.replaceState(null, "", url);
@@ -151,6 +156,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
       v: 1,
       resultId: result.id,
       score,
+      orderFreedomScore,
       locale,
     } satisfies PoliticalSharePayload);
     const shareText = locale === "ko"
@@ -175,7 +181,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
         setShareCopied(false);
       }
     }
-  }, [locale, result, score]);
+  }, [locale, orderFreedomScore, result, score]);
 
   return (
     <main className={`political-page political-page--${phase}`} lang={locale}>
@@ -229,6 +235,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
                 locale={locale}
                 result={result}
                 score={score}
+                orderFreedomScore={orderFreedomScore}
                 isShared={Boolean(sharedResult)}
                 onRetry={retry}
                 onShare={share}
@@ -256,6 +263,7 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
         <h1>{POLITICAL_TEST_COPY.title[locale]}</h1>
         <p className="political-subtitle">{POLITICAL_TEST_COPY.subtitle[locale]}</p>
         <p className="political-description">{POLITICAL_TEST_COPY.description[locale]}</p>
+        <PoliticalValueMap locale={locale} variant="intro" />
         <div className="political-chips" aria-label={t(locale, "테스트 정보", "Test info")}>
           <span>{POLITICAL_TEST_COPY.questionCount[locale]}</span>
           <span>{POLITICAL_TEST_COPY.time[locale]}</span>
@@ -274,7 +282,7 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
           <p>
             {t(
               locale,
-              "?? ??? ? ? ??? ??, ??? ??, ??? ??, ??? ??, ?? ??? ?? ?? ? ??? ? ????? ?????.",
+              "좌우 성향뿐 아니라 자유와 질서, 평등과 경쟁, 복지와 시장, 변화와 안정, 개인 책임과 사회 책임을 함께 살펴봅니다.",
               "It looks at what you agree with when facing social issues: freedom or order, equality or competition, welfare or market, change or stability, individual or social responsibility.",
             )}
           </p>
@@ -285,8 +293,8 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
           <p>
             {t(
               locale,
-              "? ??? ?? ??? ?? -2?? +2?? ?????. ?? ?? ??? ???? ??, ?? ?? ??? ???? ??? ????, ?? ??? -100?? +100?? ??????.",
-              "Each statement contributes from -2 to +2 by agreement level. Agreeing with progressive-direction statements moves negative, agreeing with conservative-direction statements moves positive, and the final score is normalized from -100 to +100.",
+              "각 문항은 동의 정도에 따라 좌우 축과 자유-질서 축에 반영됩니다. 좌우 점수는 기존 7가지 결과 유형을 정하고, 두 번째 축은 가치 지도의 위치를 보여줍니다.",
+              "Each statement contributes by agreement level. The left-right score determines the existing seven result types, while the second axis places you on the value map.",
             )}
           </p>
         </div>
@@ -350,10 +358,70 @@ function QuestionView({
   );
 }
 
+function PoliticalValueMap({
+  locale,
+  variant,
+  leftRightScore = 0,
+  orderFreedomScore = 0,
+}: {
+  locale: SimpleLocale;
+  variant: "intro" | "result";
+  leftRightScore?: number;
+  orderFreedomScore?: number;
+}): ReactElement {
+  const showMarker = variant === "result";
+  const markerStyle = {
+    left: `${spectrumPercent(leftRightScore)}%`,
+    top: `${valueMapYPercent(orderFreedomScore)}%`,
+  } as CSSProperties;
+
+  return (
+    <section className={`political-value-map political-value-map--${variant}`}>
+      <div className="political-value-map-copy">
+        <span>{t(locale, "2축 가치 지도", "Two-axis value map")}</span>
+        <h2>{t(locale, "좌우 성향과 자유-질서 감각", "Left-right values and freedom-order sense")}</h2>
+        <p>
+          {variant === "intro"
+            ? t(
+                locale,
+                "이 테스트는 좌우 성향뿐 아니라, 자유와 질서를 바라보는 감각까지 함께 살펴봅니다.",
+                "This test looks not only at left-right orientation, but also at how you balance freedom and order.",
+              )
+            : t(
+                locale,
+                "점은 당신의 응답이 만든 대략적인 위치입니다. 위로 갈수록 질서와 제도 안정, 아래로 갈수록 자유와 자율을 더 중시합니다.",
+                "The marker shows the approximate position created by your answers. Higher means stronger order and institutional-stability emphasis; lower means stronger freedom and autonomy emphasis.",
+              )}
+        </p>
+      </div>
+      <div className="political-map-frame" aria-label={t(locale, "정치 가치 지도", "Political value map")}>
+        <span className="political-map-axis political-map-axis--top">{t(locale, "권위/질서", "Order")}</span>
+        <span className="political-map-axis political-map-axis--bottom">{t(locale, "자유/자율", "Freedom")}</span>
+        <span className="political-map-axis political-map-axis--left">{t(locale, "진보", "Progressive")}</span>
+        <span className="political-map-axis political-map-axis--right">{t(locale, "보수", "Conservative")}</span>
+        <div className="political-map-grid">
+          <span>{t(locale, "변화 + 질서", "Change + order")}</span>
+          <span>{t(locale, "안정 + 질서", "Stability + order")}</span>
+          <span>{t(locale, "변화 + 자유", "Change + freedom")}</span>
+          <span>{t(locale, "안정 + 자유", "Stability + freedom")}</span>
+          {showMarker ? (
+            <i className="political-map-marker" style={markerStyle}>
+              <b>{t(locale, "나", "You")}</b>
+            </i>
+          ) : (
+            <i className="political-map-center" aria-hidden />
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ResultView({
   locale,
   result,
   score,
+  orderFreedomScore,
   isShared,
   onRetry,
   onShare,
@@ -362,6 +430,7 @@ function ResultView({
   locale: SimpleLocale;
   result: PoliticalResult;
   score: number;
+  orderFreedomScore: number;
   isShared: boolean;
   onRetry: () => void;
   onShare: () => void;
@@ -390,6 +459,13 @@ function ResultView({
           ))}
         </div>
       </section>
+
+      <PoliticalValueMap
+        locale={locale}
+        variant="result"
+        leftRightScore={score}
+        orderFreedomScore={orderFreedomScore}
+      />
 
       <p className="political-result-core">{localized(locale, result.summary)}</p>
       <div className="political-result-copy">
@@ -586,6 +662,166 @@ const styles = `
     color: rgba(15, 23, 42, 0.76);
     font-size: 1.03rem;
     font-weight: 650;
+  }
+  .political-value-map {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(260px, 1fr);
+    align-items: center;
+    gap: 18px;
+    margin: 22px 0;
+    padding: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    border-radius: 22px;
+    background:
+      linear-gradient(135deg, rgba(239, 246, 255, 0.82), rgba(255, 241, 242, 0.62)),
+      rgba(255, 255, 255, 0.86);
+    box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+  }
+  .political-value-map--intro {
+    max-width: 780px;
+  }
+  .political-value-map--result {
+    margin: 0;
+  }
+  .political-value-map-copy {
+    min-width: 0;
+  }
+  .political-value-map-copy span {
+    color: #2563eb;
+    font-size: 0.74rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .political-value-map-copy h2 {
+    margin: 8px 0 8px;
+    color: #0f172a;
+    font-size: clamp(1.1rem, 2.2vw, 1.42rem);
+    line-height: 1.34;
+    font-weight: 950;
+    word-break: keep-all;
+  }
+  .political-value-map-copy p {
+    margin: 0;
+    color: rgba(15, 23, 42, 0.72);
+    font-size: 0.95rem;
+    line-height: 1.68;
+    font-weight: 720;
+    word-break: keep-all;
+  }
+  .political-map-frame {
+    position: relative;
+    min-width: 0;
+    padding: 32px 42px;
+  }
+  .political-map-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    aspect-ratio: 1;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 18px;
+    background:
+      linear-gradient(90deg, rgba(37, 99, 235, 0.14), rgba(220, 38, 38, 0.14)),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.08), rgba(255, 255, 255, 0.28));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  }
+  .political-map-grid::before,
+  .political-map-grid::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    background: rgba(15, 23, 42, 0.2);
+  }
+  .political-map-grid::before {
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+  }
+  .political-map-grid::after {
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+  .political-map-grid > span {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    padding: 10px;
+    color: rgba(15, 23, 42, 0.62);
+    font-size: 0.76rem;
+    font-weight: 900;
+    line-height: 1.25;
+    text-align: center;
+    word-break: keep-all;
+  }
+  .political-map-axis {
+    position: absolute;
+    z-index: 3;
+    color: #334155;
+    font-size: 0.78rem;
+    font-weight: 950;
+    white-space: nowrap;
+  }
+  .political-map-axis--top,
+  .political-map-axis--bottom {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .political-map-axis--top {
+    top: 8px;
+  }
+  .political-map-axis--bottom {
+    bottom: 8px;
+  }
+  .political-map-axis--left,
+  .political-map-axis--right {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .political-map-axis--left {
+    left: 0;
+  }
+  .political-map-axis--right {
+    right: 0;
+  }
+  .political-map-marker,
+  .political-map-center {
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    border: 4px solid #fff;
+    border-radius: 999px;
+    background: #111827;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.34);
+    transform: translate(-50%, -50%);
+  }
+  .political-map-center {
+    opacity: 0.32;
+  }
+  .political-map-marker b {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 7px);
+    transform: translateX(-50%);
+    border-radius: 999px;
+    padding: 4px 8px;
+    background: #111827;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 950;
+    white-space: nowrap;
   }
   .political-disclaimer {
     width: fit-content;
@@ -953,6 +1189,7 @@ const styles = `
   @media (max-width: 780px) {
     .political-guide,
     .political-agreement-scale,
+    .political-value-map,
     .political-result-grid {
       grid-template-columns: 1fr;
     }
@@ -964,6 +1201,12 @@ const styles = `
     }
     .political-spectrum-art {
       opacity: 0.12;
+    }
+    .political-value-map {
+      padding: 16px;
+    }
+    .political-map-frame {
+      padding: 32px 38px;
     }
   }
   @media (max-width: 520px) {
@@ -995,6 +1238,30 @@ const styles = `
       padding: 14px;
       text-align: left;
       border-radius: 18px;
+    }
+    .political-value-map {
+      gap: 14px;
+      margin: 18px 0;
+      padding: 14px;
+      border-radius: 18px;
+    }
+    .political-map-frame {
+      padding: 30px 32px;
+    }
+    .political-map-grid {
+      border-radius: 14px;
+    }
+    .political-map-grid > span {
+      padding: 8px;
+      font-size: 0.66rem;
+    }
+    .political-map-axis {
+      font-size: 0.68rem;
+    }
+    .political-map-marker,
+    .political-map-center {
+      width: 22px;
+      height: 22px;
     }
     .political-primary,
     .political-secondary {

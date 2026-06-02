@@ -34,12 +34,14 @@ export type PoliticalQuestion = {
   direction: PoliticalStatementDirection;
   dimension: PoliticalDimension;
   weight?: number;
+  orderFreedomWeight?: number;
 };
 
 export type PoliticalAnswer = {
   questionId: string;
   agreement: PoliticalAgreementValue;
   score: number;
+  orderFreedomScore: number;
   dimensions: Partial<Record<PoliticalDimension, number>>;
 };
 
@@ -62,43 +64,43 @@ export type PoliticalResult = {
 };
 
 export const POLITICAL_TEST_COPY = {
-  title: { ko: "???? ???", en: "Political Orientation Test" },
+  title: { ko: "정치성향 테스트", en: "Political Orientation Test" },
   subtitle: {
-    ko: "?? ??? ?? ???? ?????",
+    ko: "나는 사회를 어떤 기준으로 판단할까?",
     en: "What standards do you use to judge society?",
   },
   description: {
-    ko: "?? ??? ?? ??? ???, ??, ??, ??, ??, ??, ?? ?? ??? ??? ??? ????? ???? ??????.",
+    ko: "정당 지지나 투표 성향이 아니라, 자유, 질서, 공정, 복지, 책임, 변화 같은 사회적 가치에 얼마나 동의하는지 읽어보는 테스트입니다.",
     en: "This test does not measure party support or voting intent. It reads how strongly you agree with social values like freedom, order, fairness, welfare, responsibility, and change.",
   },
   disclaimer: {
-    ko: "? ???? ?? ??? ?? ??? ???? ???, ?? ??? ???? ???? ??? ???? ?? ??????.",
+    ko: "이 테스트는 정당 지지나 투표 성향을 측정하지 않으며, 사회 이슈를 바라보는 가치관을 가볍게 읽어보기 위한 콘텐츠입니다.",
     en: "This test does not measure party support or voting intent. It is a light self-reflection tool about how you view social issues.",
   },
-  start: { ko: "??? ????", en: "Start the test" },
-  resultLabel: { ko: "?? ????", en: "Your orientation" },
-  share: { ko: "?? ????", en: "Share result" },
-  copied: { ko: "?? ???", en: "Link copied" },
-  retry: { ko: "?? ???", en: "Retake" },
-  questionCount: { ko: "24??", en: "24 statements" },
-  time: { ko: "? 5?", en: "About 5 min" },
-  valueBased: { ko: "?? ??", en: "Agreement scale" },
+  start: { ko: "테스트 시작하기", en: "Start the test" },
+  resultLabel: { ko: "나의 정치성향", en: "Your orientation" },
+  share: { ko: "결과 공유하기", en: "Share result" },
+  copied: { ko: "링크 복사됨", en: "Link copied" },
+  retry: { ko: "다시 해보기", en: "Retake" },
+  questionCount: { ko: "24문항", en: "24 statements" },
+  time: { ko: "약 5분", en: "About 5 min" },
+  valueBased: { ko: "동의 척도", en: "Agreement scale" },
 } satisfies Record<string, LocalizedText>;
 
 export const POLITICAL_AGREEMENT_OPTIONS: PoliticalAgreementOption[] = [
-  { value: 1, label: { ko: "?? ???", en: "Strongly disagree" } },
-  { value: 2, label: { ko: "???", en: "Disagree" } },
-  { value: 3, label: { ko: "????", en: "Neutral" } },
-  { value: 4, label: { ko: "???", en: "Agree" } },
-  { value: 5, label: { ko: "?? ???", en: "Strongly agree" } },
+  { value: 1, label: { ko: "전혀 아니다", en: "Strongly disagree" } },
+  { value: 2, label: { ko: "아니다", en: "Disagree" } },
+  { value: 3, label: { ko: "보통이다", en: "Neutral" } },
+  { value: 4, label: { ko: "그렇다", en: "Agree" } },
+  { value: 5, label: { ko: "매우 그렇다", en: "Strongly agree" } },
 ] satisfies PoliticalAgreementOption[];
 
 export const POLITICAL_SPECTRUM_LABELS = [
-  { ko: "??", en: "Far left" },
-  { ko: "??", en: "Progressive" },
-  { ko: "??", en: "Center" },
-  { ko: "??", en: "Conservative" },
-  { ko: "??", en: "Far right" },
+  { ko: "극좌", en: "Far left" },
+  { ko: "진보", en: "Progressive" },
+  { ko: "중도", en: "Center" },
+  { ko: "보수", en: "Conservative" },
+  { ko: "극우", en: "Far right" },
 ] satisfies LocalizedText[];
 
 export const POLITICAL_QUESTIONS: PoliticalQuestion[] = [
@@ -106,7 +108,7 @@ export const POLITICAL_QUESTIONS: PoliticalQuestion[] = [
     id: "pt_01",
     theme: "tax/welfare tradeoff",
     statement: {
-      ko: "??? ?? ?????? ??? ??? ???? ??? ????? ??.",
+      ko: "세금이 조금 늘어나더라도 사회적 약자를 보호하는 제도는 강화되어야 한다.",
       en: "Even if taxes rise a little, systems that protect vulnerable people should be strengthened.",
     },
     direction: "progressive",
@@ -116,37 +118,40 @@ export const POLITICAL_QUESTIONS: PoliticalQuestion[] = [
     id: "pt_02",
     theme: "freedom vs order",
     statement: {
-      ko: "??? ??? ???? ?? ??? ??? ? ?????.",
+      ko: "사회가 빠르게 변할수록 기본 질서와 규칙은 더 중요해진다.",
       en: "The faster society changes, the more important basic order and rules become.",
     },
     direction: "conservative",
     dimension: "freedomOrder",
+    orderFreedomWeight: 1,
   },
   {
     id: "pt_03",
     theme: "tradition vs diversity",
     statement: {
-      ko: "??? ??? ?????, ??? ?? ??? ????? ???? ??.",
+      ko: "전통적 가치도 중요하지만, 다양한 삶의 방식을 제도적으로 인정해야 한다.",
       en: "Traditional values matter, but diverse ways of living should be institutionally recognized.",
     },
     direction: "progressive",
     dimension: "changeStability",
+    orderFreedomWeight: -1,
   },
   {
     id: "pt_04",
     theme: "welfare vs market",
     statement: {
-      ko: "??? ??? ?? ?? ?????? ??? ??? ??? ???? ??.",
+      ko: "국가는 시장에 너무 많이 개입하기보다 개인과 기업의 선택을 존중해야 한다.",
       en: "The state should respect the choices of individuals and businesses rather than intervening too much in markets.",
     },
     direction: "conservative",
     dimension: "welfareMarket",
+    orderFreedomWeight: -1,
   },
   {
     id: "pt_05",
     theme: "equality vs competition",
     statement: {
-      ko: "??? ??? ?? ?? ??? ???, ???? ??? ???? ??.",
+      ko: "경쟁의 결과가 모두 같을 필요는 없지만, 출발선은 최대한 공정해야 한다.",
       en: "Competitive outcomes do not all need to be equal, but the starting line should be as fair as possible.",
     },
     direction: "progressive",
@@ -156,97 +161,106 @@ export const POLITICAL_QUESTIONS: PoliticalQuestion[] = [
     id: "pt_06",
     theme: "change vs stability",
     statement: {
-      ko: "??? ??? ?? ?? ???? ??? ?? ??? ?? ??.",
+      ko: "사회적 갈등이 커질 때는 변화보다 안정이 먼저 필요할 때가 있다.",
       en: "When social conflict grows, stability sometimes needs to come before change.",
     },
     direction: "conservative",
     dimension: "changeStability",
+    orderFreedomWeight: 1,
   },
   {
     id: "pt_07",
     theme: "education/opportunity",
     statement: {
-      ko: "??? ??? ?? ???? ??? ?? ?? ???? ??? ??? ? ???? ??.",
+      ko: "교육과 기회는 가정 형편이나 지역에 따라 크게 달라지지 않도록 공공이 더 책임져야 한다.",
       en: "Public systems should take more responsibility so education and opportunity do not vary greatly by family income or region.",
     },
     direction: "progressive",
     dimension: "individualSocial",
+    orderFreedomWeight: 0.5,
   },
   {
     id: "pt_08",
     theme: "security vs civil liberties",
     statement: {
-      ko: "?? ??? ????? ?? ??? ???? ?? ???? ? ??.",
+      ko: "범죄 예방을 위해서라면 일부 자유가 제한되는 것도 받아들일 수 있다.",
       en: "For crime prevention, some limits on freedom can be acceptable.",
     },
     direction: "conservative",
     dimension: "freedomOrder",
+    orderFreedomWeight: 1,
   },
   {
     id: "pt_09",
     theme: "government intervention vs personal choice",
     statement: {
-      ko: "??, ??, ???? ?? ?? ??? ??? ?? ??? ???? ??.",
+      ko: "주거, 의료, 교육처럼 삶의 기본 조건은 정부가 최소 기준을 보장해야 한다.",
       en: "For basics like housing, healthcare, and education, government should guarantee minimum standards.",
     },
     direction: "progressive",
     dimension: "welfareMarket",
+    orderFreedomWeight: 0.5,
   },
   {
     id: "pt_10",
     theme: "individual responsibility vs social responsibility",
     statement: {
-      ko: "??? ? ??? ??? ???? ??? ? ?? ???? ??.",
+      ko: "개인이 한 선택의 결과는 사회보다 본인이 더 크게 책임져야 한다.",
       en: "People should be more responsible than society for the results of their own choices.",
     },
     direction: "conservative",
     dimension: "individualSocial",
+    orderFreedomWeight: -0.5,
   },
   {
     id: "pt_11",
     theme: "labor/business balance",
     statement: {
-      ko: "??? ???? ????? ???? ???? ?? ??? ??? ??? ????.",
+      ko: "기업의 자율성도 중요하지만 노동자가 협상력을 잃지 않도록 제도적 보호가 필요하다.",
       en: "Business autonomy matters, but institutional protection is needed so workers do not lose bargaining power.",
     },
     direction: "progressive",
     dimension: "welfareMarket",
+    orderFreedomWeight: 0.5,
   },
   {
     id: "pt_12",
     theme: "culture/social norms",
     statement: {
-      ko: "?? ??? ?? ??? ??? ????? ?? ? ??? ??? ???? ??.",
+      ko: "오래 유지된 사회 규범은 함부로 바꾸기보다 먼저 그 이유와 역할을 존중해야 한다.",
       en: "Long-standing social norms should be respected for their reasons and roles before being changed.",
     },
     direction: "conservative",
     dimension: "changeStability",
+    orderFreedomWeight: 1,
   },
   {
     id: "pt_13",
     theme: "security vs civil liberties",
     statement: {
-      ko: "??? ??? ??? ???? ??? ? ??? ??.",
+      ko: "표현의 자유는 불편한 의견까지 포함할 때 의미가 있다.",
       en: "Freedom of expression matters most when it includes uncomfortable opinions.",
     },
     direction: "progressive",
     dimension: "freedomOrder",
+    orderFreedomWeight: -1,
   },
   {
     id: "pt_14",
     theme: "welfare vs market",
     statement: {
-      ko: "??? ????? ?? ???? ??? ??? ??? ??? ?? ???? ??.",
+      ko: "복지는 필요하지만 오래 의존하게 만들지 않도록 자립과 책임을 함께 요구해야 한다.",
       en: "Welfare is necessary, but it should require self-reliance and responsibility so it does not create long-term dependence.",
     },
     direction: "conservative",
     dimension: "individualSocial",
+    orderFreedomWeight: 0.5,
   },
   {
     id: "pt_15",
     theme: "fairness of outcome",
     statement: {
-      ko: "??? ??? ??? ??? ??? ????? ?? ??? ?? ???? ??.",
+      ko: "기회가 공정해 보여도 결과의 격차가 반복된다면 제도 자체를 다시 점검해야 한다.",
       en: "Even if opportunities look fair, repeated outcome gaps mean the system itself should be re-examined.",
     },
     direction: "progressive",
@@ -256,37 +270,40 @@ export const POLITICAL_QUESTIONS: PoliticalQuestion[] = [
     id: "pt_16",
     theme: "fairness of opportunity",
     statement: {
-      ko: "???? ?? ??? ???? ???? ?? ???, ?? ?? ??? ??? ?? ??? ? ??.",
+      ko: "공정함은 같은 규칙을 모두에게 적용하는 데서 나오며, 결과 차이 때문에 기준을 자주 바꾸면 안 된다.",
       en: "Fairness comes from applying the same rules to everyone, and standards should not change often because outcomes differ.",
     },
     direction: "conservative",
     dimension: "individualSocial",
+    orderFreedomWeight: 0.5,
   },
   {
     id: "pt_17",
     theme: "public safety vs personal freedom",
     statement: {
-      ko: "?? ?? ??? ???? ??? ?? ??? ???? ??? ??.",
+      ko: "공공 안전 정책은 사생활과 시민권 침해 위험을 엄격하게 따져야 한다.",
       en: "Public safety policies should be judged strictly for risks to privacy and civil rights.",
     },
     direction: "progressive",
     dimension: "freedomOrder",
+    orderFreedomWeight: -1,
   },
   {
     id: "pt_18",
     theme: "competition vs equality",
     statement: {
-      ko: "??? ??? ????? ??? ???? ??? ?? ??? ????? ? ??.",
+      ko: "경쟁은 사회를 발전시키는 중요한 힘이므로 지나친 평등 요구로 약해져서는 안 된다.",
       en: "Competition is an important force for social progress and should not be weakened by excessive demands for equality.",
     },
     direction: "conservative",
     dimension: "welfareMarket",
+    orderFreedomWeight: -0.5,
   },
   {
     id: "pt_19",
     theme: "social responsibility",
     statement: {
-      ko: "??? ?? ???? ??? ??, ??, ?? ?? ?? ??? ??? ??? ??.",
+      ko: "실패를 개인 탓으로만 돌리면 교육, 고용, 지역 격차 같은 구조적 원인을 놓치기 쉽다.",
       en: "If failure is blamed only on individuals, structural causes like education, employment, and regional gaps are easily missed.",
     },
     direction: "progressive",
@@ -296,51 +313,56 @@ export const POLITICAL_QUESTIONS: PoliticalQuestion[] = [
     id: "pt_20",
     theme: "personal choice",
     statement: {
-      ko: "??? ?? ???? ?? ??? ???? ???? ??? ??? ????.",
+      ko: "국가가 생활 방식이나 소비 선택을 지나치게 관리하면 개인의 자유가 약해진다.",
       en: "When the state manages lifestyles or consumption choices too much, individual freedom weakens.",
     },
     direction: "conservative",
     dimension: "freedomOrder",
+    orderFreedomWeight: -1,
   },
   {
     id: "pt_21",
     theme: "change vs stability",
     statement: {
-      ko: "?? ??? ??? ???? ???? ???? ??? ??? ??? ? ??.",
+      ko: "낡은 제도는 갈등이 있더라도 과감하게 바꾸어야 사회가 앞으로 나아갈 수 있다.",
       en: "Outdated institutions sometimes need bold change, even with conflict, for society to move forward.",
     },
     direction: "progressive",
     dimension: "changeStability",
+    orderFreedomWeight: -0.5,
   },
   {
     id: "pt_22",
     theme: "tax/market tradeoff",
     statement: {
-      ko: "??? ??? ??? ??? ??? ?? ????? ? ??? ??? ???.",
+      ko: "세금을 낮추고 민간의 선택을 넓히는 편이 장기적으로 더 건강한 사회를 만든다.",
       en: "Lower taxes and broader private choice create a healthier society in the long run.",
     },
     direction: "conservative",
     dimension: "welfareMarket",
+    orderFreedomWeight: -1,
   },
   {
     id: "pt_23",
     theme: "diversity/social norms",
     statement: {
-      ko: "?? ??? ???? ?? ??? ???? ?? ??? ??? ? ??? ??.",
+      ko: "사회 제도는 평균적인 삶뿐 아니라 소수자의 삶도 실제로 보호할 수 있어야 한다.",
       en: "Social institutions should be able to protect minority lives in practice, not only the average way of living.",
     },
     direction: "progressive",
     dimension: "changeStability",
+    orderFreedomWeight: -0.5,
   },
   {
     id: "pt_24",
     theme: "pragmatism vs principle",
     statement: {
-      ko: "??? ?? ???? ??? ??, ?? ??, ??? ???? ? ????.",
+      ko: "정책은 좋은 의도보다 검증된 절차, 예산 책임, 장기적 안정성이 더 중요하다.",
       en: "In policy, tested procedure, budget responsibility, and long-term stability matter more than good intentions.",
     },
     direction: "conservative",
     dimension: "changeStability",
+    orderFreedomWeight: 1,
   },
 ];
 
@@ -677,8 +699,12 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
 ];
 
 const MAX_STATEMENT_SCORE = 2;
-const MAX_RAW_SCORE = POLITICAL_QUESTIONS.reduce(
+const MAX_LEFT_RIGHT_RAW_SCORE = POLITICAL_QUESTIONS.reduce(
   (sum, question) => sum + (question.weight ?? 1) * MAX_STATEMENT_SCORE,
+  0,
+);
+const MAX_ORDER_FREEDOM_RAW_SCORE = POLITICAL_QUESTIONS.reduce(
+  (sum, question) => sum + Math.abs(question.orderFreedomWeight ?? 0) * MAX_STATEMENT_SCORE,
   0,
 );
 const RESULT_ORDER = POLITICAL_RESULTS.map((result) => result.id);
@@ -688,11 +714,20 @@ export function localized(locale: "ko" | "en", copy: LocalizedText): string {
 }
 
 export function normalizePoliticalScore(rawScore: number): number {
-  return Math.max(-100, Math.min(100, Math.round((rawScore / MAX_RAW_SCORE) * 100)));
+  return Math.max(-100, Math.min(100, Math.round((rawScore / MAX_LEFT_RIGHT_RAW_SCORE) * 100)));
+}
+
+export function normalizeOrderFreedomScore(rawScore: number): number {
+  if (!MAX_ORDER_FREEDOM_RAW_SCORE) return 0;
+  return Math.max(-100, Math.min(100, Math.round((rawScore / MAX_ORDER_FREEDOM_RAW_SCORE) * 100)));
 }
 
 export function spectrumPercent(score: number): number {
   return Math.max(0, Math.min(100, (score + 100) / 2));
+}
+
+export function valueMapYPercent(score: number): number {
+  return Math.max(0, Math.min(100, (100 - score) / 2));
 }
 
 export function getPoliticalResultById(id: PoliticalResultId | string | undefined): PoliticalResult | undefined {
@@ -715,11 +750,13 @@ export function calculatePoliticalAnswer(
   const directionMultiplier =
     question.direction === "progressive" ? -1 : question.direction === "conservative" ? 1 : 0;
   const score = agreementOffset * directionMultiplier * (question.weight ?? 1);
+  const orderFreedomScore = agreementOffset * (question.orderFreedomWeight ?? 0);
 
   return {
     questionId: question.id,
     agreement,
     score,
+    orderFreedomScore,
     dimensions: {
       [question.dimension]: score,
     },
@@ -728,7 +765,9 @@ export function calculatePoliticalAnswer(
 
 export function calculatePoliticalResult(answers: PoliticalAnswer[]): {
   rawScore: number;
+  rawOrderFreedomScore: number;
   normalizedScore: number;
+  orderFreedomScore: number;
   result: PoliticalResult;
   dimensions: Record<PoliticalDimension, number>;
 } {
@@ -739,18 +778,24 @@ export function calculatePoliticalResult(answers: PoliticalAnswer[]): {
     individualSocial: 0,
   };
 
+  let rawOrderFreedomScore = 0;
+
   const rawScore = answers.reduce((sum, answer) => {
     for (const [dimension, value] of Object.entries(answer.dimensions) as Array<[PoliticalDimension, number]>) {
       dimensions[dimension] += value;
     }
+    rawOrderFreedomScore += answer.orderFreedomScore;
     return sum + answer.score;
   }, 0);
 
   const normalizedScore = normalizePoliticalScore(rawScore);
+  const orderFreedomScore = normalizeOrderFreedomScore(rawOrderFreedomScore);
 
   return {
     rawScore,
+    rawOrderFreedomScore,
     normalizedScore,
+    orderFreedomScore,
     result: getPoliticalResultByScore(normalizedScore),
     dimensions,
   };
