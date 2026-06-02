@@ -642,9 +642,11 @@ const styles = `
     width: min(36vw, 310px);
     aspect-ratio: 1.4;
     border-radius: 22px;
-    opacity: 0.22;
+    opacity: 0.3;
     background:
-      linear-gradient(90deg, #0f766e 0%, #f8fafc 50%, #a16207 100%);
+      linear-gradient(90deg, rgba(15, 23, 42, 0.08), rgba(255, 255, 255, 0.18)),
+      url("/thumbnails-generated/political-type-banner.png") center / cover;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16);
   }
   .political-spectrum-art span {
     position: absolute;

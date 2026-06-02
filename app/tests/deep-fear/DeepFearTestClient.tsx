@@ -405,7 +405,9 @@ const styles = `
     border: 1px solid rgba(243, 230, 214, 0.15);
     border-radius: 28px;
     background:
+      linear-gradient(90deg, rgba(5, 5, 6, 0.88), rgba(5, 5, 6, 0.54) 58%, rgba(5, 5, 6, 0.78)),
       radial-gradient(circle at 82% 20%, rgba(196, 154, 97, 0.12), transparent 18rem),
+      url("/thumbnails-generated/deep-fear-banner.png") center / cover,
       linear-gradient(180deg, rgba(243, 230, 214, 0.09), rgba(243, 230, 214, 0.035)),
       rgba(5, 5, 6, 0.68);
     box-shadow: 0 34px 100px rgba(0, 0, 0, 0.38);

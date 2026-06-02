@@ -499,7 +499,7 @@ export const GAMES: Game[] = [
     ko: { title: "당신 안의 가장 깊은 공포는?", sub: "일상 속 선택으로 드러나는 숨은 공포 패턴", kicker: "심리 호러 테스트" },
     en: { title: "What Is Your Deepest Fear?", sub: "A quiet test about the fear pattern hidden inside you", kicker: "Psychological Horror" },
     type: "test", category: "tests",
-    palette: P.ink, font: "serif",
+    palette: P.ink, font: "serif", thumb: "/thumbnails-generated/deep-fear-banner.png",
     skin: "mono", tone: 5, labels: ["new", "recommended", "share"], duration: { ko: "16문항 · 약 4분", en: "16 questions · about 4 min" },
   },
   {
@@ -507,7 +507,7 @@ export const GAMES: Game[] = [
     ko: { title: "정치성향 테스트", sub: "좌우 성향과 자유-질서 감각을 2축 가치 지도에서 확인해보기", kicker: "사회 가치관 테스트" },
     en: { title: "Political Orientation Test", sub: "Map your values across left-right and freedom-order axes.", kicker: "Social Values Test" },
     type: "test", category: "featured",
-    palette: P.paperBlue, font: "sans",
+    palette: P.paperBlue, font: "sans", thumb: "/thumbnails-generated/political-type-banner.png",
     skin: "block", tone: 3, art: "political-type", labels: ["new", "recommended", "share"], duration: { ko: "24문항 · 약 5분", en: "24 statements · about 5 min" },
   },
   {
