@@ -13,9 +13,11 @@ import {
 } from "@/lib/analytics";
 import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 import {
+  POLITICAL_AGREEMENT_OPTIONS,
   POLITICAL_QUESTIONS,
   POLITICAL_SPECTRUM_LABELS,
   POLITICAL_TEST_COPY,
+  calculatePoliticalAnswer,
   calculatePoliticalResult,
   getPoliticalResultById,
   isPoliticalResultId,
@@ -23,7 +25,7 @@ import {
   resultMidpoint,
   spectrumPercent,
   type PoliticalAnswer,
-  type PoliticalChoice,
+  type PoliticalAgreementValue,
   type PoliticalResult,
   type PoliticalResultId,
 } from "@/lib/political-type-test";
@@ -116,16 +118,11 @@ export default function PoliticalTypeTestClient(): ReactElement {
     start();
   }, [start]);
 
-  const choose = useCallback((choice: PoliticalChoice) => {
+  const choose = useCallback((agreement: PoliticalAgreementValue) => {
     trackQuestionAnswered(TEST_ID, questionIndex + 1);
     const nextAnswers = [
       ...answers,
-      {
-        questionId: currentQuestion.id,
-        choiceId: choice.id,
-        score: choice.score,
-        dimensions: choice.dimensions,
-      } satisfies PoliticalAnswer,
+      calculatePoliticalAnswer(currentQuestion, agreement),
     ];
 
     setAnswers(nextAnswers);
@@ -146,7 +143,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
     }
 
     setQuestionIndex((value) => value + 1);
-  }, [answers, currentQuestion.id, locale, questionIndex]);
+  }, [answers, currentQuestion, locale, questionIndex]);
 
   const share = useCallback(async () => {
     trackShareClick(TEST_ID, "test", result.id);
@@ -277,8 +274,8 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
           <p>
             {t(
               locale,
-              "사회 이슈를 볼 때 자유와 질서, 평등과 경쟁, 복지와 시장, 변화와 안정, 개인 책임과 사회 책임 중 무엇을 더 먼저 떠올리는지 살펴봅니다.",
-              "It looks at what you notice first when facing social issues: freedom or order, equality or competition, welfare or market, change or stability, individual or social responsibility.",
+              "?? ??? ? ? ??? ??, ??? ??, ??? ??, ??? ??, ?? ??? ?? ?? ? ??? ? ????? ?????.",
+              "It looks at what you agree with when facing social issues: freedom or order, equality or competition, welfare or market, change or stability, individual or social responsibility.",
             )}
           </p>
         </div>
@@ -288,8 +285,8 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
           <p>
             {t(
               locale,
-              "각 선택지는 -3부터 +3까지의 점수로 계산됩니다. 음수는 진보 성향, 양수는 보수 성향, 0에 가까울수록 중도 또는 실용 성향에 가깝습니다.",
-              "Each choice contributes a score from -3 to +3. Negative scores lean progressive, positive scores lean conservative, and scores near zero lean centrist or pragmatic.",
+              "? ??? ?? ??? ?? -2?? +2?? ?????. ?? ?? ??? ???? ??, ?? ?? ??? ???? ??? ????, ?? ??? -100?? +100?? ??????.",
+              "Each statement contributes from -2 to +2 by agreement level. Agreeing with progressive-direction statements moves negative, agreeing with conservative-direction statements moves positive, and the final score is normalized from -100 to +100.",
             )}
           </p>
         </div>
@@ -332,17 +329,20 @@ function QuestionView({
 }: {
   question: (typeof POLITICAL_QUESTIONS)[number];
   locale: SimpleLocale;
-  onChoose: (choice: PoliticalChoice) => void;
+  onChoose: (agreement: PoliticalAgreementValue) => void;
 }): ReactElement {
   return (
     <div className="political-question-view">
-      <p className="political-eyebrow">{t(locale, "가치 판단", "Value judgment")}</p>
-      <h2>{localized(locale, question.prompt)}</h2>
-      <div className="political-choices">
-        {question.choices.map((choice, index) => (
-          <button key={choice.id} type="button" onClick={() => onChoose(choice)}>
-            <span>{String.fromCharCode(65 + index)}</span>
-            <strong>{localized(locale, choice.text)}</strong>
+      <p className="political-eyebrow">{t(locale, "동의 정도", "Agreement scale")}</p>
+      <h2 className="political-statement">{localized(locale, question.statement)}</h2>
+      <p className="political-agreement-hint">
+        {t(locale, "이 문장에 얼마나 동의하나요?", "How much do you agree with this statement?")}
+      </p>
+      <div className="political-agreement-scale">
+        {POLITICAL_AGREEMENT_OPTIONS.map((option) => (
+          <button key={option.value} type="button" onClick={() => onChoose(option.value)}>
+            <span>{option.value}</span>
+            <strong>{localized(locale, option.label)}</strong>
           </button>
         ))}
       </div>
@@ -636,7 +636,7 @@ const styles = `
   }
   .political-primary:hover,
   .political-secondary:hover,
-  .political-choices button:hover {
+  .political-agreement-scale button:hover {
     transform: translateY(-2px);
   }
   .political-guide {
@@ -750,46 +750,58 @@ const styles = `
     line-height: 1.34;
     font-weight: 950;
   }
-  .political-choices {
+  .political-statement {
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+  }
+  .political-agreement-hint {
+    margin: 16px 0 0;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 850;
+    line-height: 1.5;
+    word-break: keep-all;
+  }
+  .political-agreement-scale {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
     margin-top: 24px;
   }
-  .political-choices button {
-    min-height: 112px;
+  .political-agreement-scale button {
+    min-height: 92px;
     display: grid;
-    grid-template-columns: 36px 1fr;
+    place-items: center;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     border: 1px solid rgba(15, 23, 42, 0.1);
-    border-radius: 18px;
+    border-radius: 999px;
     background: linear-gradient(145deg, #fff, #f8fafc);
     color: #111827;
     cursor: pointer;
-    padding: 16px;
-    text-align: left;
+    padding: 14px 10px;
+    text-align: center;
     box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
     transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
   }
-  .political-choices button:hover {
+  .political-agreement-scale button:hover {
     border-color: rgba(37, 99, 235, 0.34);
     box-shadow: 0 18px 38px rgba(15, 23, 42, 0.1);
   }
-  .political-choices span {
+  .political-agreement-scale span {
     display: inline-grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: #111827;
     color: #fff;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 950;
   }
-  .political-choices strong {
-    font-size: 1rem;
-    line-height: 1.56;
+  .political-agreement-scale strong {
+    font-size: 0.9rem;
+    line-height: 1.26;
     word-break: keep-all;
     overflow-wrap: anywhere;
   }
@@ -940,7 +952,7 @@ const styles = `
   }
   @media (max-width: 780px) {
     .political-guide,
-    .political-choices,
+    .political-agreement-scale,
     .political-result-grid {
       grid-template-columns: 1fr;
     }
@@ -973,9 +985,16 @@ const styles = `
     .political-locale button {
       padding: 7px 10px;
     }
-    .political-choices button {
-      min-height: 98px;
+    .political-agreement-scale {
+      gap: 8px;
+    }
+    .political-agreement-scale button {
+      min-height: 58px;
+      grid-template-columns: 30px 1fr;
+      justify-items: start;
       padding: 14px;
+      text-align: left;
+      border-radius: 18px;
     }
     .political-primary,
     .political-secondary {

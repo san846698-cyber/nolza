@@ -18,24 +18,28 @@ export type PoliticalDimension =
   | "changeStability"
   | "individualSocial";
 
-export type PoliticalChoice = {
-  id: string;
-  text: LocalizedText;
-  score: -3 | -2 | -1 | 0 | 1 | 2 | 3;
-  dimensions: Partial<Record<PoliticalDimension, number>>;
+export type PoliticalStatementDirection = "progressive" | "conservative" | "centrist";
+
+export type PoliticalAgreementValue = 1 | 2 | 3 | 4 | 5;
+
+export type PoliticalAgreementOption = {
+  value: PoliticalAgreementValue;
+  label: LocalizedText;
 };
 
 export type PoliticalQuestion = {
   id: string;
   theme: string;
-  prompt: LocalizedText;
-  choices: PoliticalChoice[];
+  statement: LocalizedText;
+  direction: PoliticalStatementDirection;
+  dimension: PoliticalDimension;
+  weight?: number;
 };
 
 export type PoliticalAnswer = {
   questionId: string;
-  choiceId: string;
-  score: PoliticalChoice["score"];
+  agreement: PoliticalAgreementValue;
+  score: number;
   dimensions: Partial<Record<PoliticalDimension, number>>;
 };
 
@@ -58,581 +62,285 @@ export type PoliticalResult = {
 };
 
 export const POLITICAL_TEST_COPY = {
-  title: { ko: "정치성향 테스트", en: "Political Orientation Test" },
+  title: { ko: "???? ???", en: "Political Orientation Test" },
   subtitle: {
-    ko: "나는 사회를 어떤 기준으로 판단할까?",
+    ko: "?? ??? ?? ???? ?????",
     en: "What standards do you use to judge society?",
   },
   description: {
-    ko: "정당 지지나 투표 성향이 아니라, 자유, 질서, 공정, 복지, 책임, 변화 같은 사회적 가치를 어떻게 바라보는지 알아보는 테스트입니다.",
-    en: "This test does not measure party support or voting intent. It looks at how you think about values like freedom, order, fairness, welfare, responsibility, and change.",
+    ko: "?? ??? ?? ??? ???, ??, ??, ??, ??, ??, ?? ?? ??? ??? ??? ????? ???? ??????.",
+    en: "This test does not measure party support or voting intent. It reads how strongly you agree with social values like freedom, order, fairness, welfare, responsibility, and change.",
   },
   disclaimer: {
-    ko: "이 테스트는 정당 지지나 투표 성향을 측정하지 않으며, 사회 이슈를 바라보는 가치관을 가볍게 읽어보기 위한 콘텐츠입니다.",
+    ko: "? ???? ?? ??? ?? ??? ???? ???, ?? ??? ???? ???? ??? ???? ?? ??????.",
     en: "This test does not measure party support or voting intent. It is a light self-reflection tool about how you view social issues.",
   },
-  start: { ko: "테스트 시작하기", en: "Start the test" },
-  resultLabel: { ko: "나의 정치성향", en: "Your orientation" },
-  share: { ko: "결과 공유하기", en: "Share result" },
-  copied: { ko: "링크 복사됨", en: "Link copied" },
-  retry: { ko: "다시 해보기", en: "Retake" },
-  questionCount: { ko: "16문항", en: "16 questions" },
-  time: { ko: "약 4분", en: "About 4 min" },
-  valueBased: { ko: "가치 기반", en: "Value-based" },
+  start: { ko: "??? ????", en: "Start the test" },
+  resultLabel: { ko: "?? ????", en: "Your orientation" },
+  share: { ko: "?? ????", en: "Share result" },
+  copied: { ko: "?? ???", en: "Link copied" },
+  retry: { ko: "?? ???", en: "Retake" },
+  questionCount: { ko: "24??", en: "24 statements" },
+  time: { ko: "? 5?", en: "About 5 min" },
+  valueBased: { ko: "?? ??", en: "Agreement scale" },
 } satisfies Record<string, LocalizedText>;
 
+export const POLITICAL_AGREEMENT_OPTIONS: PoliticalAgreementOption[] = [
+  { value: 1, label: { ko: "?? ???", en: "Strongly disagree" } },
+  { value: 2, label: { ko: "???", en: "Disagree" } },
+  { value: 3, label: { ko: "????", en: "Neutral" } },
+  { value: 4, label: { ko: "???", en: "Agree" } },
+  { value: 5, label: { ko: "?? ???", en: "Strongly agree" } },
+] satisfies PoliticalAgreementOption[];
+
 export const POLITICAL_SPECTRUM_LABELS = [
-  { ko: "극좌", en: "Far left" },
-  { ko: "진보", en: "Progressive" },
-  { ko: "중도", en: "Center" },
-  { ko: "보수", en: "Conservative" },
-  { ko: "극우", en: "Far right" },
+  { ko: "??", en: "Far left" },
+  { ko: "??", en: "Progressive" },
+  { ko: "??", en: "Center" },
+  { ko: "??", en: "Conservative" },
+  { ko: "??", en: "Far right" },
 ] satisfies LocalizedText[];
 
 export const POLITICAL_QUESTIONS: PoliticalQuestion[] = [
   {
     id: "pt_01",
-    theme: "freedom vs order",
-    prompt: {
-      ko: "동네에서 밤늦게까지 열리는 거리 축제를 두고 민원이 많습니다. 당신은 어떤 기준을 가장 중요하게 보나요?",
-      en: "A neighborhood street festival runs late into the night and draws many complaints. What standard matters most to you?",
+    theme: "tax/welfare tradeoff",
+    statement: {
+      ko: "??? ?? ?????? ??? ??? ???? ??? ????? ??.",
+      en: "Even if taxes rise a little, systems that protect vulnerable people should be strengthened.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "표현과 문화 활동의 자유가 우선이다. 불편은 대화와 보완으로 줄여야 한다.", en: "Freedom of expression and culture comes first; inconvenience should be reduced through dialogue and adjustments." },
-        score: -3,
-        dimensions: { freedomOrder: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "축제는 유지하되 시간, 소음, 동선 규칙을 더 섬세하게 정해야 한다.", en: "Keep the festival, but set clearer rules for hours, noise, and movement." },
-        score: -1,
-        dimensions: { freedomOrder: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "주민의 일상과 질서가 흔들리지 않도록 허가 기준을 더 엄격히 해야 한다.", en: "Make permits stricter so residents' daily lives and order are not disrupted." },
-        score: 1,
-        dimensions: { freedomOrder: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "공공장소에서는 공동체 규칙이 먼저다. 늦은 시간 행사는 강하게 제한해야 한다.", en: "Shared spaces need community rules first; late-night events should be strongly limited." },
-        score: 3,
-        dimensions: { freedomOrder: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "welfareMarket",
   },
   {
     id: "pt_02",
-    theme: "equality vs competition",
-    prompt: {
-      ko: "교육 기회가 부족한 지역 학생들을 지원하는 새 제도가 논의됩니다. 어떤 방향이 더 설득력 있나요?",
-      en: "A new policy is proposed to support students in under-resourced areas. Which direction feels most persuasive?",
+    theme: "freedom vs order",
+    statement: {
+      ko: "??? ??? ???? ?? ??? ??? ? ?????.",
+      en: "The faster society changes, the more important basic order and rules become.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "출발선 차이를 줄이기 위해 추가 지원과 우선 배정이 필요하다.", en: "Extra support and priority allocation are needed to reduce starting-line gaps." },
-        score: -3,
-        dimensions: { individualSocial: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "지원은 필요하지만 선발의 공정성과 투명성도 함께 지켜야 한다.", en: "Support is needed, but fairness and transparency in selection must also be protected." },
-        score: -1,
-        dimensions: { individualSocial: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "기본 지원은 하되, 최종 기회는 개인의 노력과 성취를 중심으로 줘야 한다.", en: "Offer basic support, but final opportunities should focus on effort and achievement." },
-        score: 1,
-        dimensions: { individualSocial: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "경쟁 기준을 흐리면 전체 신뢰가 흔들린다. 동일한 기준을 유지해야 한다.", en: "If competition standards become unclear, trust weakens. Keep the same standards for everyone." },
-        score: 3,
-        dimensions: { individualSocial: 3 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "freedomOrder",
   },
   {
     id: "pt_03",
-    theme: "welfare vs market",
-    prompt: {
-      ko: "경기 침체로 생계가 흔들리는 가구가 늘고 있습니다. 정부의 역할은 어디까지여야 할까요?",
-      en: "More households are becoming financially unstable during a downturn. How far should government support go?",
+    theme: "tradition vs diversity",
+    statement: {
+      ko: "??? ??? ?????, ??? ?? ??? ????? ???? ??.",
+      en: "Traditional values matter, but diverse ways of living should be institutionally recognized.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "삶의 기본선은 사회가 함께 보장해야 한다. 복지 지출을 늘릴 수 있다.", en: "Society should guarantee a basic floor of life, even if welfare spending rises." },
-        score: -3,
-        dimensions: { welfareMarket: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "취약한 사람에게 집중 지원하고, 회복 이후 자립으로 이어지게 해야 한다.", en: "Focus support on vulnerable people and connect it to independence after recovery." },
-        score: -1,
-        dimensions: { welfareMarket: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "긴급 지원은 하되, 시장과 일자리 회복을 막지 않는 선이 중요하다.", en: "Emergency support is fine, but it should not slow market and job recovery." },
-        score: 1,
-        dimensions: { welfareMarket: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "지속적인 지원 확대는 의존과 부담을 만든다. 민간 활력 회복이 우선이다.", en: "Expanded ongoing support can create dependence and burden; restoring private-sector vitality comes first." },
-        score: 3,
-        dimensions: { welfareMarket: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "changeStability",
   },
   {
     id: "pt_04",
-    theme: "change vs stability",
-    prompt: {
-      ko: "오래된 주거 지역을 빠르게 재개발하자는 제안이 나왔습니다. 당신의 판단에 가까운 것은?",
-      en: "A proposal calls for fast redevelopment of an old residential area. Which judgment is closest to yours?",
+    theme: "welfare vs market",
+    statement: {
+      ko: "??? ??? ?? ?? ?????? ??? ??? ??? ???? ??.",
+      en: "The state should respect the choices of individuals and businesses rather than intervening too much in markets.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "낡은 구조를 바꾸지 않으면 불평등과 안전 문제가 계속된다. 과감한 변화가 필요하다.", en: "Without changing outdated structures, inequality and safety issues continue. Bold change is needed." },
-        score: -3,
-        dimensions: { changeStability: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "변화는 필요하지만 원주민 보호와 공공성 기준을 먼저 세워야 한다.", en: "Change is needed, but resident protection and public-interest standards should come first." },
-        score: -1,
-        dimensions: { changeStability: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "개선은 하되 지역의 생활 질서와 재산권이 갑자기 흔들리면 안 된다.", en: "Improve the area, but do not suddenly disrupt local routines and property rights." },
-        score: 1,
-        dimensions: { changeStability: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "급한 변화는 부작용이 크다. 안정적인 절차와 기존 공동체 보존이 우선이다.", en: "Fast change brings major side effects; stable procedure and preserving the existing community come first." },
-        score: 3,
-        dimensions: { changeStability: 3 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "welfareMarket",
   },
   {
     id: "pt_05",
-    theme: "individual responsibility vs social responsibility",
-    prompt: {
-      ko: "한 청년이 계속 일자리를 구하지 못하고 있습니다. 사회는 이 문제를 어떻게 봐야 할까요?",
-      en: "A young person keeps failing to find work. How should society view this problem?",
+    theme: "equality vs competition",
+    statement: {
+      ko: "??? ??? ?? ?? ??? ???, ???? ??? ???? ??.",
+      en: "Competitive outcomes do not all need to be equal, but the starting line should be as fair as possible.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "개인의 문제로만 보면 구조가 보이지 않는다. 교육, 지역, 채용 관행을 함께 봐야 한다.", en: "If we see only the individual, we miss the structure. Education, region, and hiring practices matter too." },
-        score: -3,
-        dimensions: { individualSocial: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "구조적 지원과 개인의 준비가 같이 필요하다. 둘 중 하나만 말하면 부족하다.", en: "Structural support and individual preparation are both needed; either one alone is incomplete." },
-        score: -1,
-        dimensions: { individualSocial: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "환경의 영향은 있지만, 결국 선택과 꾸준함의 책임도 분명히 봐야 한다.", en: "Environment matters, but personal choices and consistency also need to be taken seriously." },
-        score: 1,
-        dimensions: { individualSocial: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "사회가 모든 실패를 대신 설명해줄 수 없다. 개인의 책임과 태도가 핵심이다.", en: "Society cannot explain every failure away. Personal responsibility and attitude are central." },
-        score: 3,
-        dimensions: { individualSocial: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "individualSocial",
   },
   {
     id: "pt_06",
-    theme: "security vs civil liberties",
-    prompt: {
-      ko: "범죄 예방을 위해 공공장소의 감시 장비와 데이터 활용을 늘리자는 제안이 있습니다.",
-      en: "A proposal suggests expanding surveillance equipment and data use in public spaces to prevent crime.",
+    theme: "change vs stability",
+    statement: {
+      ko: "??? ??? ?? ?? ???? ??? ?? ??? ?? ??.",
+      en: "When social conflict grows, stability sometimes needs to come before change.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "안전도 중요하지만 시민의 자유와 사생활 침해 위험을 더 엄격히 봐야 한다.", en: "Safety matters, but risks to civil liberties and privacy deserve stricter scrutiny." },
-        score: -3,
-        dimensions: { freedomOrder: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "필요한 경우만 제한적으로 쓰고, 감시 권한을 감시하는 장치가 있어야 한다.", en: "Use it only in limited cases, with oversight over surveillance power itself." },
-        score: -1,
-        dimensions: { freedomOrder: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "위험이 큰 곳에서는 안전을 위해 데이터 활용을 넓힐 수 있다.", en: "In higher-risk areas, data use can be expanded for public safety." },
-        score: 1,
-        dimensions: { freedomOrder: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "범죄를 막는 것이 먼저다. 규정만 명확하면 감시 인프라 확대가 필요하다.", en: "Preventing crime comes first; with clear rules, surveillance infrastructure should expand." },
-        score: 3,
-        dimensions: { freedomOrder: 3 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "changeStability",
   },
   {
     id: "pt_07",
-    theme: "tradition vs diversity",
-    prompt: {
-      ko: "학교 행사에서 전통적인 가족 형태만 전제로 한 프로그램이 논란이 됩니다.",
-      en: "A school event program assumes only a traditional family structure and becomes controversial.",
+    theme: "education/opportunity",
+    statement: {
+      ko: "??? ??? ?? ???? ??? ?? ?? ???? ??? ??? ? ???? ??.",
+      en: "Public systems should take more responsibility so education and opportunity do not vary greatly by family income or region.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "다양한 가족과 삶의 형태가 존중되도록 프로그램을 적극적으로 바꿔야 한다.", en: "The program should actively change to respect diverse families and ways of life." },
-        score: -3,
-        dimensions: { changeStability: -2, individualSocial: -1 },
-      },
-      {
-        id: "b",
-        text: { ko: "누구도 배제되지 않도록 표현을 넓히되, 갈등을 키우지 않는 방식이 좋다.", en: "Broaden the language so no one is excluded, while avoiding unnecessary conflict." },
-        score: -1,
-        dimensions: { changeStability: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "배려는 필요하지만 오래 이어진 문화와 표현을 쉽게 문제 삼으면 안 된다.", en: "Consideration is needed, but long-standing culture and language should not be treated as wrong too easily." },
-        score: 1,
-        dimensions: { changeStability: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "전통적인 기준은 공동체를 묶는 역할을 한다. 급하게 바꾸기보다 지켜야 한다.", en: "Traditional standards help hold a community together; protect them rather than changing quickly." },
-        score: 3,
-        dimensions: { changeStability: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "individualSocial",
   },
   {
     id: "pt_08",
-    theme: "pragmatism vs ideology",
-    prompt: {
-      ko: "어떤 정책이 당신의 평소 가치관과 조금 다르지만 실제 효과가 좋아 보입니다.",
-      en: "A policy differs somewhat from your usual values, but its practical effects look good.",
+    theme: "security vs civil liberties",
+    statement: {
+      ko: "?? ??? ????? ?? ??? ???? ?? ???? ? ??.",
+      en: "For crime prevention, some limits on freedom can be acceptable.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "효과가 좋아도 기본 가치와 권리 원칙을 흔들면 쉽게 받아들이기 어렵다.", en: "Even with good effects, it is hard to accept if it weakens core values and rights." },
-        score: -2,
-        dimensions: { freedomOrder: -2 },
-      },
-      {
-        id: "b",
-        text: { ko: "원칙을 보완하면서도 실제 효과가 있다면 검토할 수 있다.", en: "If principles can be protected and the effect is real, it is worth considering." },
-        score: -1,
-        dimensions: { changeStability: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "이념보다 결과가 중요하다. 현장에서 작동한다면 시도해볼 수 있다.", en: "Results matter more than ideology. If it works in practice, try it." },
-        score: 1,
-        dimensions: { changeStability: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "정책은 사회의 기본 방향을 만든다. 익숙한 질서와 원칙을 쉽게 바꾸면 안 된다.", en: "Policy shapes society's direction. Familiar order and principles should not change easily." },
-        score: 2,
-        dimensions: { changeStability: 2 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "freedomOrder",
   },
   {
     id: "pt_09",
     theme: "government intervention vs personal choice",
-    prompt: {
-      ko: "건강을 위해 특정 상품의 판매 방식이나 광고를 더 강하게 규제하자는 주장이 나옵니다.",
-      en: "Some argue for stricter rules on how certain products are sold or advertised for public health.",
+    statement: {
+      ko: "??, ??, ???? ?? ?? ??? ??? ?? ??? ???? ??.",
+      en: "For basics like housing, healthcare, and education, government should guarantee minimum standards.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "개인의 선택은 사회 환경의 영향을 받는다. 유해한 구조는 정부가 조정해야 한다.", en: "Personal choice is shaped by social conditions; harmful structures should be adjusted by government." },
-        score: -3,
-        dimensions: { welfareMarket: -2, freedomOrder: -1 },
-      },
-      {
-        id: "b",
-        text: { ko: "정보 표시와 취약층 보호처럼 명확한 부분부터 개입하는 것이 좋다.", en: "Start with clear interventions like information labels and protection for vulnerable groups." },
-        score: -1,
-        dimensions: { welfareMarket: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "정보는 제공하되 선택은 개인에게 남겨야 한다. 과한 규제는 피해야 한다.", en: "Provide information, but leave choices to individuals. Avoid excessive regulation." },
-        score: 1,
-        dimensions: { welfareMarket: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "국가가 생활 선택을 지나치게 관리하면 자유와 시장 모두 약해진다.", en: "If the state manages lifestyle choices too much, both freedom and markets weaken." },
-        score: 3,
-        dimensions: { welfareMarket: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "welfareMarket",
   },
   {
     id: "pt_10",
-    theme: "fairness of opportunity vs fairness of outcome",
-    prompt: {
-      ko: "공공 장학금을 설계해야 합니다. 무엇이 더 공정한 방식일까요?",
-      en: "You need to design a public scholarship. Which approach is fairer?",
+    theme: "individual responsibility vs social responsibility",
+    statement: {
+      ko: "??? ? ??? ??? ???? ??? ? ?? ???? ??.",
+      en: "People should be more responsible than society for the results of their own choices.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "결과가 계속 불평등하다면 지원 규모와 선발 기준을 바꿔야 한다.", en: "If outcomes remain unequal, change the scale of support and selection criteria." },
-        score: -3,
-        dimensions: { individualSocial: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "기회가 부족했던 학생에게 가산점을 주되, 기본 역량 기준은 유지한다.", en: "Give additional consideration to students with fewer opportunities while keeping basic ability standards." },
-        score: -1,
-        dimensions: { individualSocial: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "출발선은 돕더라도 최종 평가는 동일한 기준으로 하는 편이 공정하다.", en: "Help with the starting line, but final evaluation should use the same standard." },
-        score: 1,
-        dimensions: { individualSocial: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "공정은 같은 규칙에서 나온다. 결과 차이를 이유로 기준을 바꾸면 안 된다.", en: "Fairness comes from equal rules. Do not change standards because outcomes differ." },
-        score: 3,
-        dimensions: { individualSocial: 3 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "individualSocial",
   },
   {
     id: "pt_11",
-    theme: "public safety vs personal freedom",
-    prompt: {
-      ko: "밤 시간 공원 이용을 제한하면 안전은 좋아질 수 있지만 시민 자유는 줄어듭니다.",
-      en: "Restricting nighttime park use may improve safety but reduce personal freedom.",
+    theme: "labor/business balance",
+    statement: {
+      ko: "??? ???? ????? ???? ???? ?? ??? ??? ??? ????.",
+      en: "Business autonomy matters, but institutional protection is needed so workers do not lose bargaining power.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "공공공간은 시민의 자유로운 이용이 기본이다. 제한은 최후 수단이어야 한다.", en: "Free public use is the default for shared spaces. Restrictions should be a last resort." },
-        score: -3,
-        dimensions: { freedomOrder: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "위험 구역만 조명, 순찰, 안내를 보강하고 전면 제한은 피한다.", en: "Improve lighting, patrols, and guidance in risky areas, but avoid blanket restrictions." },
-        score: -1,
-        dimensions: { freedomOrder: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "반복 사고가 있다면 특정 시간대 제한은 현실적인 선택일 수 있다.", en: "If incidents repeat, limits during certain hours can be a realistic option." },
-        score: 1,
-        dimensions: { freedomOrder: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "안전이 확보되지 않은 자유는 오래 지속되기 어렵다. 질서 있는 제한이 필요하다.", en: "Freedom without safety is hard to sustain; orderly limits are needed." },
-        score: 3,
-        dimensions: { freedomOrder: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "welfareMarket",
   },
   {
     id: "pt_12",
-    theme: "tax/welfare tradeoff",
-    prompt: {
-      ko: "복지 확대를 위해 세금을 더 걷자는 제안이 나왔습니다. 당신의 반응은?",
-      en: "A proposal suggests raising taxes to expand welfare. What is your response?",
+    theme: "culture/social norms",
+    statement: {
+      ko: "?? ??? ?? ??? ??? ????? ?? ? ??? ??? ???? ??.",
+      en: "Long-standing social norms should be respected for their reasons and roles before being changed.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "사회 안전망이 약하면 모두가 불안해진다. 부담을 나눠 더 넓게 보장해야 한다.", en: "Weak safety nets make everyone insecure. Share the burden and broaden protection." },
-        score: -3,
-        dimensions: { welfareMarket: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "증세가 가능하려면 대상, 효과, 낭비 방지 기준을 분명히 해야 한다.", en: "Tax increases are possible if targets, effects, and waste controls are clear." },
-        score: -1,
-        dimensions: { welfareMarket: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "필요한 복지는 인정하지만 세금 부담이 경제 의욕을 꺾지 않아야 한다.", en: "Necessary welfare is valid, but tax burden should not weaken economic motivation." },
-        score: 1,
-        dimensions: { welfareMarket: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "세금 확대는 신중해야 한다. 복지보다 성장과 효율을 먼저 회복해야 한다.", en: "Tax expansion needs caution. Growth and efficiency should recover before welfare expansion." },
-        score: 3,
-        dimensions: { welfareMarket: 3 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "changeStability",
   },
   {
     id: "pt_13",
-    theme: "labor/business balance",
-    prompt: {
-      ko: "플랫폼 노동자의 보호를 강화하면 기업 비용은 늘고 서비스 가격도 오를 수 있습니다.",
-      en: "Stronger protection for platform workers may raise business costs and service prices.",
+    theme: "security vs civil liberties",
+    statement: {
+      ko: "??? ??? ??? ???? ??? ? ??? ??.",
+      en: "Freedom of expression matters most when it includes uncomfortable opinions.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "편리함이 노동자의 불안정 위에 서 있으면 안 된다. 보호 기준을 강화해야 한다.", en: "Convenience should not rest on worker insecurity. Protection standards should be strengthened." },
-        score: -3,
-        dimensions: { welfareMarket: -2, individualSocial: -1 },
-      },
-      {
-        id: "b",
-        text: { ko: "최소 보호를 보장하면서 업종별 부담을 단계적으로 조정해야 한다.", en: "Guarantee minimum protections and adjust burdens by industry in stages." },
-        score: -1,
-        dimensions: { welfareMarket: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "보호는 필요하지만 기업이 감당할 수 있어야 일자리도 유지된다.", en: "Protection is needed, but jobs remain only if businesses can handle the cost." },
-        score: 1,
-        dimensions: { welfareMarket: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "과한 규제는 일자리와 혁신을 줄인다. 시장의 자율 조정이 더 중요하다.", en: "Excessive regulation reduces jobs and innovation. Market adjustment matters more." },
-        score: 3,
-        dimensions: { welfareMarket: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "freedomOrder",
   },
   {
     id: "pt_14",
-    theme: "education/opportunity",
-    prompt: {
-      ko: "사교육 격차를 줄이기 위해 학교 수업과 방과후 프로그램에 더 많은 예산을 투입하려 합니다.",
-      en: "More budget may go into school classes and after-school programs to reduce private tutoring gaps.",
+    theme: "welfare vs market",
+    statement: {
+      ko: "??? ????? ?? ???? ??? ??? ??? ??? ?? ???? ??.",
+      en: "Welfare is necessary, but it should require self-reliance and responsibility so it does not create long-term dependence.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "교육 격차는 세대 간 불평등으로 이어진다. 공교육 투자를 크게 늘려야 한다.", en: "Education gaps become intergenerational inequality. Public education investment should rise significantly." },
-        score: -3,
-        dimensions: { individualSocial: -2, welfareMarket: -1 },
-      },
-      {
-        id: "b",
-        text: { ko: "지원은 늘리되 성과를 확인하고 지역별로 필요한 곳에 집중해야 한다.", en: "Increase support, but track outcomes and focus on areas that need it most." },
-        score: -1,
-        dimensions: { individualSocial: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "공교육 개선은 좋지만 가정의 선택과 학교 간 경쟁도 존중해야 한다.", en: "Improving public education is good, but family choice and school competition should be respected." },
-        score: 1,
-        dimensions: { individualSocial: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "예산 투입보다 책임 있는 학습 태도와 학교 운영 효율이 먼저다.", en: "Responsible learning attitudes and efficient school management come before more spending." },
-        score: 3,
-        dimensions: { individualSocial: 3 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "individualSocial",
   },
   {
     id: "pt_15",
-    theme: "social norms/culture",
-    prompt: {
-      ko: "새로운 문화적 표현이 빠르게 퍼지며 세대 간 불편함과 갈등이 생깁니다.",
-      en: "A new cultural expression spreads quickly and creates discomfort between generations.",
+    theme: "fairness of outcome",
+    statement: {
+      ko: "??? ??? ??? ??? ??? ????? ?? ??? ?? ???? ??.",
+      en: "Even if opportunities look fair, repeated outcome gaps mean the system itself should be re-examined.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "사회는 다양한 표현을 더 넓게 받아들이며 바뀌어야 한다.", en: "Society should change by accepting a wider range of expression." },
-        score: -3,
-        dimensions: { changeStability: -3 },
-      },
-      {
-        id: "b",
-        text: { ko: "새 표현을 인정하되 서로의 불편함을 설명할 수 있는 대화가 필요하다.", en: "Recognize new expression, but create dialogue where people can explain discomfort." },
-        score: -1,
-        dimensions: { changeStability: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "변화는 가능하지만 공동체가 오래 지켜온 예의와 기준도 존중해야 한다.", en: "Change is possible, but long-held manners and standards should also be respected." },
-        score: 1,
-        dimensions: { changeStability: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "사회 규범이 너무 빨리 흔들리면 혼란이 커진다. 검증된 기준을 지켜야 한다.", en: "If social norms shift too quickly, confusion grows. Proven standards should be protected." },
-        score: 3,
-        dimensions: { changeStability: 3 },
-      },
-    ],
+    direction: "progressive",
+    dimension: "individualSocial",
   },
   {
     id: "pt_16",
-    theme: "leadership and institutions",
-    prompt: {
-      ko: "위기 상황에서 리더와 제도는 어떤 모습이어야 한다고 생각하나요?",
-      en: "In a crisis, what should leadership and institutions look like?",
+    theme: "fairness of opportunity",
+    statement: {
+      ko: "???? ?? ??? ???? ???? ?? ???, ?? ?? ??? ??? ?? ??? ? ??.",
+      en: "Fairness comes from applying the same rules to everyone, and standards should not change often because outcomes differ.",
     },
-    choices: [
-      {
-        id: "a",
-        text: { ko: "권력은 시민의 감시 아래 있어야 한다. 절차와 권리 보호가 위기 때 더 중요하다.", en: "Power must remain under civic oversight. Procedure and rights matter even more in crisis." },
-        score: -3,
-        dimensions: { freedomOrder: -2, changeStability: -1 },
-      },
-      {
-        id: "b",
-        text: { ko: "빠른 대응과 견제 장치가 함께 있어야 한다. 어느 한쪽만으로는 위험하다.", en: "Fast response and checks on power must coexist; either one alone is risky." },
-        score: -1,
-        dimensions: { freedomOrder: -1 },
-      },
-      {
-        id: "c",
-        text: { ko: "위기에는 일관된 지휘와 제도 신뢰가 중요하다. 사후 검증으로 보완할 수 있다.", en: "In crisis, consistent command and trust in institutions matter; later review can correct issues." },
-        score: 1,
-        dimensions: { freedomOrder: 1, changeStability: 1 },
-      },
-      {
-        id: "d",
-        text: { ko: "혼란을 막으려면 강한 책임자와 명확한 질서가 필요하다.", en: "To prevent disorder, strong leadership and clear order are needed." },
-        score: 3,
-        dimensions: { freedomOrder: 3, changeStability: 1 },
-      },
-    ],
+    direction: "conservative",
+    dimension: "individualSocial",
+  },
+  {
+    id: "pt_17",
+    theme: "public safety vs personal freedom",
+    statement: {
+      ko: "?? ?? ??? ???? ??? ?? ??? ???? ??? ??.",
+      en: "Public safety policies should be judged strictly for risks to privacy and civil rights.",
+    },
+    direction: "progressive",
+    dimension: "freedomOrder",
+  },
+  {
+    id: "pt_18",
+    theme: "competition vs equality",
+    statement: {
+      ko: "??? ??? ????? ??? ???? ??? ?? ??? ????? ? ??.",
+      en: "Competition is an important force for social progress and should not be weakened by excessive demands for equality.",
+    },
+    direction: "conservative",
+    dimension: "welfareMarket",
+  },
+  {
+    id: "pt_19",
+    theme: "social responsibility",
+    statement: {
+      ko: "??? ?? ???? ??? ??, ??, ?? ?? ?? ??? ??? ??? ??.",
+      en: "If failure is blamed only on individuals, structural causes like education, employment, and regional gaps are easily missed.",
+    },
+    direction: "progressive",
+    dimension: "individualSocial",
+  },
+  {
+    id: "pt_20",
+    theme: "personal choice",
+    statement: {
+      ko: "??? ?? ???? ?? ??? ???? ???? ??? ??? ????.",
+      en: "When the state manages lifestyles or consumption choices too much, individual freedom weakens.",
+    },
+    direction: "conservative",
+    dimension: "freedomOrder",
+  },
+  {
+    id: "pt_21",
+    theme: "change vs stability",
+    statement: {
+      ko: "?? ??? ??? ???? ???? ???? ??? ??? ??? ? ??.",
+      en: "Outdated institutions sometimes need bold change, even with conflict, for society to move forward.",
+    },
+    direction: "progressive",
+    dimension: "changeStability",
+  },
+  {
+    id: "pt_22",
+    theme: "tax/market tradeoff",
+    statement: {
+      ko: "??? ??? ??? ??? ??? ?? ????? ? ??? ??? ???.",
+      en: "Lower taxes and broader private choice create a healthier society in the long run.",
+    },
+    direction: "conservative",
+    dimension: "welfareMarket",
+  },
+  {
+    id: "pt_23",
+    theme: "diversity/social norms",
+    statement: {
+      ko: "?? ??? ???? ?? ??? ???? ?? ??? ??? ? ??? ??.",
+      en: "Social institutions should be able to protect minority lives in practice, not only the average way of living.",
+    },
+    direction: "progressive",
+    dimension: "changeStability",
+  },
+  {
+    id: "pt_24",
+    theme: "pragmatism vs principle",
+    statement: {
+      ko: "??? ?? ???? ??? ??, ?? ??, ??? ???? ? ????.",
+      en: "In policy, tested procedure, budget responsibility, and long-term stability matter more than good intentions.",
+    },
+    direction: "conservative",
+    dimension: "changeStability",
   },
 ];
 
@@ -968,7 +676,11 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
   },
 ];
 
-const MAX_RAW_SCORE = POLITICAL_QUESTIONS.length * 3;
+const MAX_STATEMENT_SCORE = 2;
+const MAX_RAW_SCORE = POLITICAL_QUESTIONS.reduce(
+  (sum, question) => sum + (question.weight ?? 1) * MAX_STATEMENT_SCORE,
+  0,
+);
 const RESULT_ORDER = POLITICAL_RESULTS.map((result) => result.id);
 
 export function localized(locale: "ko" | "en", copy: LocalizedText): string {
@@ -993,6 +705,25 @@ export function getPoliticalResultByScore(score: number): PoliticalResult {
     POLITICAL_RESULTS.find((result) => result.id === "centrist-pragmatist") ??
     POLITICAL_RESULTS[3]
   );
+}
+
+export function calculatePoliticalAnswer(
+  question: PoliticalQuestion,
+  agreement: PoliticalAgreementValue,
+): PoliticalAnswer {
+  const agreementOffset = agreement - 3;
+  const directionMultiplier =
+    question.direction === "progressive" ? -1 : question.direction === "conservative" ? 1 : 0;
+  const score = agreementOffset * directionMultiplier * (question.weight ?? 1);
+
+  return {
+    questionId: question.id,
+    agreement,
+    score,
+    dimensions: {
+      [question.dimension]: score,
+    },
+  };
 }
 
 export function calculatePoliticalResult(answers: PoliticalAnswer[]): {

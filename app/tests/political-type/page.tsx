@@ -3,7 +3,7 @@ import PoliticalTypeTestClient from "./PoliticalTypeTestClient";
 
 const title = "정치성향 테스트 | Nolza";
 const description =
-  "사회 이슈에 대한 선택으로 알아보는 나의 정치성향 테스트. 진보, 중도, 보수 스펙트럼에서 내가 어디에 가까운지 확인해보세요.";
+  "사회 가치 문장에 대한 동의 정도로 알아보는 나의 정치성향 테스트. 진보, 중도, 보수 스펙트럼에서 내가 어디에 가까운지 확인해보세요.";
 
 export const metadata: Metadata = {
   title,
