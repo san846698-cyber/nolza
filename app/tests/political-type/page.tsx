@@ -26,14 +26,6 @@ export const metadata: Metadata = {
     description,
     url: "/tests/political-type",
     siteName: "nolza.fun",
-    images: [
-      {
-        url: "/tests/political-type/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "정치성향 테스트",
-      },
-    ],
     locale: "ko_KR",
     type: "website",
   },
@@ -41,7 +33,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description,
-    images: ["/tests/political-type/opengraph-image"],
   },
 };
 
