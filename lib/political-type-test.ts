@@ -20,7 +20,7 @@ export type PoliticalDimension =
 
 export type PoliticalStatementDirection = "progressive" | "conservative" | "centrist";
 
-export type PoliticalAgreementValue = 1 | 2 | 3 | 4 | 5;
+export type PoliticalAgreementValue = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export type PoliticalAgreementOption = {
   value: PoliticalAgreementValue;
@@ -88,11 +88,13 @@ export const POLITICAL_TEST_COPY = {
 } satisfies Record<string, LocalizedText>;
 
 export const POLITICAL_AGREEMENT_OPTIONS: PoliticalAgreementOption[] = [
-  { value: 1, label: { ko: "전혀 아니다", en: "Strongly disagree" } },
-  { value: 2, label: { ko: "아니다", en: "Disagree" } },
-  { value: 3, label: { ko: "보통이다", en: "Neutral" } },
-  { value: 4, label: { ko: "그렇다", en: "Agree" } },
-  { value: 5, label: { ko: "매우 그렇다", en: "Strongly agree" } },
+  { value: 1, label: { ko: "매우 그렇다", en: "Strongly agree" } },
+  { value: 2, label: { ko: "그렇다", en: "Agree" } },
+  { value: 3, label: { ko: "약간 그렇다", en: "Slightly agree" } },
+  { value: 4, label: { ko: "중립", en: "Neutral" } },
+  { value: 5, label: { ko: "약간 그렇지 않다", en: "Slightly disagree" } },
+  { value: 6, label: { ko: "그렇지 않다", en: "Disagree" } },
+  { value: 7, label: { ko: "매우 그렇지 않다", en: "Strongly disagree" } },
 ] satisfies PoliticalAgreementOption[];
 
 export const POLITICAL_SPECTRUM_LABELS = [
@@ -698,7 +700,7 @@ export const POLITICAL_RESULTS: PoliticalResult[] = [
   },
 ];
 
-const MAX_STATEMENT_SCORE = 2;
+const MAX_STATEMENT_SCORE = 3;
 const MAX_LEFT_RIGHT_RAW_SCORE = POLITICAL_QUESTIONS.reduce(
   (sum, question) => sum + (question.weight ?? 1) * MAX_STATEMENT_SCORE,
   0,
@@ -746,7 +748,7 @@ export function calculatePoliticalAnswer(
   question: PoliticalQuestion,
   agreement: PoliticalAgreementValue,
 ): PoliticalAnswer {
-  const agreementOffset = agreement - 3;
+  const agreementOffset = 4 - agreement;
   const directionMultiplier =
     question.direction === "progressive" ? -1 : question.direction === "conservative" ? 1 : 0;
   const score = agreementOffset * directionMultiplier * (question.weight ?? 1);

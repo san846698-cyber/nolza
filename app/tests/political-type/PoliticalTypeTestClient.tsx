@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState, type CSSProperties, type ReactElement } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactElement } from "react";
 import { homeBackLabel } from "@/app/components/BrandMark";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
@@ -229,7 +229,7 @@ export default function PoliticalTypeTestClient(): ReactElement {
             </div>
 
             {phase === "quiz" ? (
-              <QuestionView question={currentQuestion} locale={locale} onChoose={choose} />
+              <QuestionView key={currentQuestion.id} question={currentQuestion} locale={locale} onChoose={choose} />
             ) : (
               <ResultView
                 locale={locale}
@@ -350,6 +350,23 @@ function QuestionView({
   locale: SimpleLocale;
   onChoose: (agreement: PoliticalAgreementValue) => void;
 }): ReactElement {
+  const [selected, setSelected] = useState<PoliticalAgreementValue | null>(null);
+  const timeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current !== null) window.clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const handleChoose = useCallback((agreement: PoliticalAgreementValue) => {
+    if (selected !== null) return;
+    setSelected(agreement);
+    timeoutRef.current = window.setTimeout(() => {
+      onChoose(agreement);
+    }, 170);
+  }, [onChoose, selected]);
+
   return (
     <div className="political-question-view">
       <p className="political-eyebrow">{t(locale, "동의 정도", "Agreement scale")}</p>
@@ -357,13 +374,25 @@ function QuestionView({
       <p className="political-agreement-hint">
         {t(locale, "이 문장에 얼마나 동의하나요?", "How much do you agree with this statement?")}
       </p>
-      <div className="political-agreement-scale">
-        {POLITICAL_AGREEMENT_OPTIONS.map((option) => (
-          <button key={option.value} type="button" onClick={() => onChoose(option.value)}>
-            <span>{option.value}</span>
-            <strong>{localized(locale, option.label)}</strong>
-          </button>
-        ))}
+      <div className="political-scale-wrap" aria-label={t(locale, "동의 응답 선택", "Agreement response selection")}>
+        <span className="political-scale-end political-scale-end--agree">{t(locale, "그렇다", "Agree")}</span>
+        <div className="political-agreement-scale">
+          {POLITICAL_AGREEMENT_OPTIONS.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              className={`political-scale-dot political-scale-dot--${option.value} ${selected === option.value ? "selected" : ""}`}
+              onClick={() => handleChoose(option.value)}
+              aria-label={localized(locale, option.label)}
+              aria-pressed={selected === option.value}
+              disabled={selected !== null}
+            >
+              <span aria-hidden />
+              <strong>{localized(locale, option.label)}</strong>
+            </button>
+          ))}
+        </div>
+        <span className="political-scale-end political-scale-end--disagree">{t(locale, "그렇지 않다", "Disagree")}</span>
       </div>
     </div>
   );
@@ -917,7 +946,7 @@ const styles = `
   }
   .political-primary:hover,
   .political-secondary:hover,
-  .political-agreement-scale button:hover {
+  .political-scale-dot:hover {
     transform: translateY(-2px);
   }
   .political-guide {
@@ -1043,48 +1072,129 @@ const styles = `
     line-height: 1.5;
     word-break: keep-all;
   }
+  .political-scale-wrap {
+    display: grid;
+    grid-template-columns: minmax(58px, 0.18fr) minmax(0, 1fr) minmax(74px, 0.2fr);
+    align-items: start;
+    gap: clamp(10px, 2vw, 18px);
+    margin-top: clamp(30px, 5vw, 46px);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 28px;
+    padding: clamp(18px, 3vw, 26px);
+    background:
+      linear-gradient(90deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.86) 50%, rgba(147, 51, 234, 0.08)),
+      #fff;
+    box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
+  }
+  .political-scale-end {
+    padding-top: clamp(7px, 1.2vw, 12px);
+    color: #0f172a;
+    font-size: clamp(0.82rem, 1.5vw, 1rem);
+    font-weight: 950;
+    line-height: 1.24;
+    white-space: nowrap;
+  }
+  .political-scale-end--agree {
+    color: #1d4ed8;
+  }
+  .political-scale-end--disagree {
+    color: #7e22ce;
+    text-align: right;
+  }
   .political-agreement-scale {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 10px;
-    margin-top: 24px;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    align-items: start;
+    justify-items: center;
+    gap: clamp(5px, 1.25vw, 13px);
+    min-width: 0;
   }
-  .political-agreement-scale button {
-    min-height: 92px;
+  .political-scale-dot {
+    --dot-size: 38px;
+    --dot-color: #94a3b8;
     display: grid;
-    place-items: center;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid rgba(15, 23, 42, 0.1);
-    border-radius: 999px;
-    background: linear-gradient(145deg, #fff, #f8fafc);
-    color: #111827;
+    justify-items: center;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: #334155;
     cursor: pointer;
-    padding: 14px 10px;
+    padding: 0;
     text-align: center;
-    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
-    transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    transition: transform 160ms ease, opacity 160ms ease;
   }
-  .political-agreement-scale button:hover {
-    border-color: rgba(37, 99, 235, 0.34);
-    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.1);
+  .political-scale-dot:disabled {
+    cursor: default;
+    opacity: 0.78;
   }
-  .political-agreement-scale span {
-    display: inline-grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #111827;
-    color: #fff;
-    font-size: 0.78rem;
-    font-weight: 950;
+  .political-scale-dot span {
+    display: block;
+    width: var(--dot-size);
+    height: var(--dot-size);
+    border: 3px solid var(--dot-color);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 7px #fff,
+      0 12px 28px rgba(15, 23, 42, 0.09);
+    transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   }
-  .political-agreement-scale strong {
-    font-size: 0.9rem;
-    line-height: 1.26;
+  .political-scale-dot strong {
+    display: block;
+    max-width: 86px;
+    color: rgba(15, 23, 42, 0.72);
+    font-size: clamp(0.66rem, 1.2vw, 0.82rem);
+    line-height: 1.24;
+    font-weight: 900;
     word-break: keep-all;
-    overflow-wrap: anywhere;
+  }
+  .political-scale-dot--1 {
+    --dot-size: clamp(42px, 5.4vw, 62px);
+    --dot-color: #2563eb;
+  }
+  .political-scale-dot--2 {
+    --dot-size: clamp(38px, 4.8vw, 54px);
+    --dot-color: #0ea5e9;
+  }
+  .political-scale-dot--3 {
+    --dot-size: clamp(34px, 4.2vw, 46px);
+    --dot-color: #14b8a6;
+  }
+  .political-scale-dot--4 {
+    --dot-size: clamp(30px, 3.8vw, 38px);
+    --dot-color: #94a3b8;
+  }
+  .political-scale-dot--5 {
+    --dot-size: clamp(34px, 4.2vw, 46px);
+    --dot-color: #a855f7;
+  }
+  .political-scale-dot--6 {
+    --dot-size: clamp(38px, 4.8vw, 54px);
+    --dot-color: #d946ef;
+  }
+  .political-scale-dot--7 {
+    --dot-size: clamp(42px, 5.4vw, 62px);
+    --dot-color: #dc2626;
+  }
+  .political-scale-dot:hover span,
+  .political-scale-dot:focus-visible span,
+  .political-scale-dot.selected span {
+    background: var(--dot-color);
+    box-shadow:
+      inset 0 0 0 7px #fff,
+      0 16px 34px color-mix(in srgb, var(--dot-color) 28%, transparent),
+      0 0 0 7px color-mix(in srgb, var(--dot-color) 14%, transparent);
+    transform: scale(1.04);
+  }
+  .political-scale-dot:focus-visible {
+    outline: 3px solid rgba(15, 23, 42, 0.18);
+    outline-offset: 6px;
+    border-radius: 999px;
+  }
+  .political-scale-dot.selected strong {
+    color: #0f172a;
   }
   .political-result {
     display: grid;
@@ -1234,7 +1344,6 @@ const styles = `
   @media (max-width: 780px) {
     .political-intro-layout,
     .political-guide,
-    .political-agreement-scale,
     .political-value-map,
     .political-result-grid {
       grid-template-columns: 1fr;
@@ -1277,16 +1386,55 @@ const styles = `
     .political-locale button {
       padding: 7px 10px;
     }
-    .political-agreement-scale {
-      gap: 8px;
+    .political-scale-wrap {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "agree disagree"
+        "scale scale";
+      gap: 12px;
+      padding: 16px 12px;
+      border-radius: 22px;
     }
-    .political-agreement-scale button {
-      min-height: 58px;
-      grid-template-columns: 30px 1fr;
-      justify-items: start;
-      padding: 14px;
+    .political-scale-end--agree {
+      grid-area: agree;
       text-align: left;
-      border-radius: 18px;
+    }
+    .political-scale-end--disagree {
+      grid-area: disagree;
+      text-align: right;
+    }
+    .political-scale-end {
+      padding-top: 0;
+      font-size: 0.82rem;
+    }
+    .political-agreement-scale {
+      grid-area: scale;
+    }
+    .political-agreement-scale {
+      gap: 4px;
+    }
+    .political-scale-dot {
+      gap: 7px;
+    }
+    .political-scale-dot strong {
+      max-width: 48px;
+      font-size: 0.58rem;
+      line-height: 1.16;
+    }
+    .political-scale-dot--1,
+    .political-scale-dot--7 {
+      --dot-size: 36px;
+    }
+    .political-scale-dot--2,
+    .political-scale-dot--6 {
+      --dot-size: 32px;
+    }
+    .political-scale-dot--3,
+    .political-scale-dot--5 {
+      --dot-size: 28px;
+    }
+    .political-scale-dot--4 {
+      --dot-size: 24px;
     }
     .political-value-map {
       gap: 14px;
