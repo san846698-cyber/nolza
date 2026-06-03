@@ -218,9 +218,27 @@ export default function PoliticalTypeTestClient(): ReactElement {
       {phase !== "quiz" && (
         <header className="political-topbar">
           <Link href="/" className="political-home">{homeBackLabel(locale)}</Link>
-          <div className="political-locale" aria-label={t(locale, "언어 선택", "Language selection")}>
-            <button type="button" className={locale === "ko" ? "active" : ""} onClick={() => setLocale("ko")}>KO</button>
-            <button type="button" className={locale === "en" ? "active" : ""} onClick={() => setLocale("en")}>EN</button>
+          <div className="political-locale" aria-label={t(locale, "언어 선택", "Language selection")} onClick={(event) => event.stopPropagation()}>
+            <button
+              type="button"
+              className={locale === "ko" ? "active" : ""}
+              onClick={(event) => {
+                event.stopPropagation();
+                setLocale("ko");
+              }}
+            >
+              KO
+            </button>
+            <button
+              type="button"
+              className={locale === "en" ? "active" : ""}
+              onClick={(event) => {
+                event.stopPropagation();
+                setLocale("en");
+              }}
+            >
+              EN
+            </button>
           </div>
         </header>
       )}
@@ -625,6 +643,8 @@ const styles = `
     box-sizing: border-box;
   }
   .political-topbar {
+    position: relative;
+    z-index: 30;
     width: min(1080px, calc(100% - 32px));
     margin: 0 auto;
     padding: 18px 0 8px;
@@ -639,13 +659,19 @@ const styles = `
     font-weight: 950;
   }
   .political-locale {
+    position: relative;
+    z-index: 40;
     display: inline-flex;
     padding: 4px;
     border: 1px solid rgba(15, 23, 42, 0.1);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.76);
+    pointer-events: auto;
+    touch-action: manipulation;
   }
   .political-locale button {
+    min-width: 44px;
+    min-height: 44px;
     border: 0;
     border-radius: 999px;
     background: transparent;
@@ -653,6 +679,7 @@ const styles = `
     cursor: pointer;
     padding: 8px 12px;
     font-weight: 900;
+    touch-action: manipulation;
   }
   .political-locale button.active {
     background: #111827;
@@ -1466,6 +1493,23 @@ const styles = `
     .political-shell {
       width: min(100% - 24px, 1040px);
     }
+    .political-topbar {
+      padding-top: max(12px, calc(env(safe-area-inset-top, 0px) + 10px));
+      padding-bottom: 10px;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .political-home {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      max-width: calc(100% - 116px);
+    }
+    .political-locale {
+      flex: 0 0 auto;
+      min-height: 52px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+    }
     .political-shell {
       padding-top: 20px;
       padding-bottom: 54px;
@@ -1478,6 +1522,8 @@ const styles = `
       min-height: auto;
     }
     .political-locale button {
+      min-width: 46px;
+      min-height: 44px;
       padding: 7px 10px;
     }
     .political-scale-wrap {
