@@ -382,7 +382,7 @@ function QuestionView({
             <button
               key={option.value}
               type="button"
-              className={`political-scale-dot political-scale-dot--${option.value} ${selected === option.value ? "selected" : ""}`}
+              className={`political-scale-dot ${selected === option.value ? "selected" : ""}`}
               onClick={() => handleChoose(option.value)}
               aria-label={localized(locale, option.label)}
               aria-pressed={selected === option.value}
@@ -956,8 +956,7 @@ const styles = `
     border: 1px solid rgba(15, 23, 42, 0.13);
   }
   .political-primary:hover,
-  .political-secondary:hover,
-  .political-scale-dot:hover {
+  .political-secondary:hover {
     transform: translateY(-2px);
   }
   .political-guide {
@@ -1085,51 +1084,63 @@ const styles = `
   }
   .political-scale-wrap {
     display: grid;
-    grid-template-columns: minmax(58px, 0.18fr) minmax(0, 1fr) minmax(74px, 0.2fr);
+    grid-template-columns: minmax(62px, 0.16fr) minmax(0, 1fr) minmax(78px, 0.18fr);
     align-items: start;
-    gap: clamp(10px, 2vw, 18px);
+    gap: clamp(12px, 2vw, 20px);
     margin-top: clamp(30px, 5vw, 46px);
     border: 1px solid rgba(15, 23, 42, 0.08);
-    border-radius: 28px;
-    padding: clamp(18px, 3vw, 26px);
-    background:
-      linear-gradient(90deg, rgba(15, 118, 110, 0.05), rgba(255, 255, 255, 0.94) 50%, rgba(71, 85, 105, 0.05)),
-      #fff;
-    box-shadow: 0 18px 46px rgba(15, 23, 42, 0.06);
+    border-radius: 22px;
+    padding: clamp(20px, 3vw, 28px);
+    background: #fff;
+    box-shadow: 0 16px 42px rgba(15, 23, 42, 0.055);
   }
   .political-scale-end {
-    padding-top: clamp(7px, 1.2vw, 12px);
-    color: #0f172a;
-    font-size: clamp(0.82rem, 1.5vw, 1rem);
-    font-weight: 950;
-    line-height: 1.24;
+    padding-top: 11px;
+    color: #475569;
+    font-size: clamp(0.8rem, 1.2vw, 0.94rem);
+    font-weight: 850;
+    line-height: 1.25;
     white-space: nowrap;
   }
   .political-scale-end--agree {
-    color: #334155;
+    color: #475569;
   }
   .political-scale-end--disagree {
-    color: #334155;
+    color: #475569;
     text-align: right;
   }
   .political-agreement-scale {
+    --scale-dot-size: 44px;
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
     align-items: start;
     justify-items: center;
-    gap: clamp(5px, 1.25vw, 13px);
+    gap: clamp(6px, 1.2vw, 12px);
     min-width: 0;
+    position: relative;
+  }
+  .political-agreement-scale::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--scale-dot-size) / 2);
+    right: calc(var(--scale-dot-size) / 2);
+    top: calc(var(--scale-dot-size) / 2 - 1px);
+    height: 2px;
+    border-radius: 999px;
+    background: #d8dee7;
+    pointer-events: none;
   }
   .political-scale-dot {
-    --dot-size: 38px;
-    --dot-color: #64748b;
-    --dot-border: #cbd5e1;
-    --dot-fill: #f8fafc;
+    --dot-color: #0f766e;
+    --dot-border: #b8c2cf;
+    --dot-fill: #ffffff;
     display: grid;
     justify-items: center;
-    gap: 10px;
+    align-content: start;
+    gap: 11px;
     width: 100%;
     min-width: 0;
+    min-height: 96px;
     border: 0;
     background: transparent;
     color: #334155;
@@ -1142,68 +1153,32 @@ const styles = `
     cursor: default;
     opacity: 0.78;
   }
+  .political-scale-dot.selected:disabled {
+    opacity: 1;
+  }
   .political-scale-dot span {
     display: block;
-    width: var(--dot-size);
-    height: var(--dot-size);
+    position: relative;
+    z-index: 1;
+    width: var(--scale-dot-size);
+    height: var(--scale-dot-size);
     border: 2px solid var(--dot-border);
     border-radius: 999px;
     background: var(--dot-fill);
     box-shadow:
-      inset 0 0 0 7px #fff,
-      0 10px 24px rgba(15, 23, 42, 0.065);
+      inset 0 0 0 8px #f8fafc,
+      0 8px 18px rgba(15, 23, 42, 0.06);
     transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   }
   .political-scale-dot strong {
     display: block;
-    max-width: 86px;
-    color: rgba(15, 23, 42, 0.72);
-    font-size: clamp(0.66rem, 1.2vw, 0.82rem);
-    line-height: 1.24;
-    font-weight: 900;
+    min-height: 2.8em;
+    max-width: 78px;
+    color: rgba(15, 23, 42, 0.68);
+    font-size: clamp(0.68rem, 1.05vw, 0.8rem);
+    line-height: 1.28;
+    font-weight: 800;
     word-break: keep-all;
-  }
-  .political-scale-dot--1 {
-    --dot-size: clamp(42px, 5.4vw, 62px);
-    --dot-color: #0f766e;
-    --dot-border: #8cc7bd;
-    --dot-fill: #f8fafc;
-  }
-  .political-scale-dot--2 {
-    --dot-size: clamp(38px, 4.8vw, 54px);
-    --dot-color: #2f7d73;
-    --dot-border: #a7cfc8;
-    --dot-fill: #f8fafc;
-  }
-  .political-scale-dot--3 {
-    --dot-size: clamp(34px, 4.2vw, 46px);
-    --dot-color: #64748b;
-    --dot-border: #cbd5e1;
-    --dot-fill: #f8fafc;
-  }
-  .political-scale-dot--4 {
-    --dot-size: clamp(30px, 3.8vw, 38px);
-    --dot-color: #64748b;
-    --dot-border: #cbd5e1;
-    --dot-fill: #f8fafc;
-  }
-  .political-scale-dot--5 {
-    --dot-size: clamp(34px, 4.2vw, 46px);
-    --dot-color: #64748b;
-    --dot-border: #cbd5e1;
-    --dot-fill: #f8fafc;
-  }
-  .political-scale-dot--6 {
-    --dot-size: clamp(38px, 4.8vw, 54px);
-    --dot-color: #475569;
-    --dot-border: #b8c1cd;
-    --dot-fill: #f8fafc;
-  }
-  .political-scale-dot--7 {
-    --dot-size: clamp(42px, 5.4vw, 62px);
-    --dot-color: #334155;
-    --dot-border: #aeb8c5;
-    --dot-fill: #f8fafc;
   }
   .political-scale-dot:hover span,
   .political-scale-dot:focus-visible span,
@@ -1211,10 +1186,9 @@ const styles = `
     background: var(--dot-color);
     border-color: var(--dot-color);
     box-shadow:
-      inset 0 0 0 7px #fff,
-      0 14px 30px color-mix(in srgb, var(--dot-color) 18%, transparent),
-      0 0 0 6px color-mix(in srgb, var(--dot-color) 9%, transparent);
-    transform: scale(1.04);
+      inset 0 0 0 8px rgba(255, 255, 255, 0.92),
+      0 12px 26px color-mix(in srgb, var(--dot-color) 18%, transparent),
+      0 0 0 5px color-mix(in srgb, var(--dot-color) 10%, transparent);
   }
   .political-scale-dot:focus-visible {
     outline: 3px solid rgba(15, 23, 42, 0.18);
@@ -1434,8 +1408,8 @@ const styles = `
         "agree disagree"
         "scale scale";
       gap: 12px;
-      padding: 16px 12px;
-      border-radius: 22px;
+      padding: 16px 12px 14px;
+      border-radius: 18px;
     }
     .political-scale-end--agree {
       grid-area: agree;
@@ -1451,32 +1425,17 @@ const styles = `
     }
     .political-agreement-scale {
       grid-area: scale;
-    }
-    .political-agreement-scale {
+      --scale-dot-size: 34px;
       gap: 4px;
     }
     .political-scale-dot {
-      gap: 7px;
+      gap: 8px;
+      min-height: 82px;
     }
     .political-scale-dot strong {
       max-width: 48px;
-      font-size: 0.58rem;
-      line-height: 1.16;
-    }
-    .political-scale-dot--1,
-    .political-scale-dot--7 {
-      --dot-size: 36px;
-    }
-    .political-scale-dot--2,
-    .political-scale-dot--6 {
-      --dot-size: 32px;
-    }
-    .political-scale-dot--3,
-    .political-scale-dot--5 {
-      --dot-size: 28px;
-    }
-    .political-scale-dot--4 {
-      --dot-size: 24px;
+      font-size: 0.6rem;
+      line-height: 1.18;
     }
     .political-value-map {
       gap: 14px;
@@ -1689,28 +1648,26 @@ const styles = `
     display: grid !important;
     grid-template-columns: minmax(80px, 0.18fr) minmax(0, 1fr) minmax(80px, 0.18fr) !important;
     gap: clamp(10px, 2vw, 18px) !important;
-    border-radius: 30px !important;
+    border-radius: 24px !important;
     border-color: rgba(15, 23, 42, 0.1) !important;
     padding: clamp(18px, 3vw, 28px) !important;
-    background:
-      linear-gradient(90deg, rgba(19, 78, 74, 0.055), rgba(255, 255, 255, 0.96) 50%, rgba(71, 85, 105, 0.055)),
-      #fff !important;
-    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.09) !important;
+    background: #fff !important;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.07) !important;
   }
   .political-page--quiz .political-agreement-scale {
     position: relative !important;
-    min-height: 92px !important;
+    --scale-dot-size: 44px;
+    min-height: 96px !important;
     align-items: start !important;
   }
   .political-page--quiz .political-agreement-scale::before {
-    left: 7% !important;
-    right: 7% !important;
-    top: 25px !important;
-    height: 8px !important;
-    border: 1px solid rgba(15, 23, 42, 0.07) !important;
-    background:
-      linear-gradient(90deg, rgba(19, 78, 74, 0.28), rgba(100, 116, 139, 0.16), rgba(51, 65, 85, 0.28)) !important;
-    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08) !important;
+    left: calc(var(--scale-dot-size) / 2) !important;
+    right: calc(var(--scale-dot-size) / 2) !important;
+    top: calc(var(--scale-dot-size) / 2 - 1px) !important;
+    height: 2px !important;
+    border: 0 !important;
+    background: #d8dee7 !important;
+    box-shadow: none !important;
   }
   .political-page--quiz .political-scale-dot {
     min-height: 96px !important;
@@ -1718,13 +1675,13 @@ const styles = `
     padding-top: 0 !important;
   }
   .political-page--quiz .political-scale-dot span {
-    width: var(--dot-size) !important;
-    height: var(--dot-size) !important;
+    width: var(--scale-dot-size) !important;
+    height: var(--scale-dot-size) !important;
     border: 2px solid var(--dot-border) !important;
     background: #fff !important;
     box-shadow:
-      0 10px 24px rgba(15, 23, 42, 0.09),
-      inset 0 0 0 7px #f8fafc !important;
+      0 8px 18px rgba(15, 23, 42, 0.06),
+      inset 0 0 0 8px #f8fafc !important;
   }
   .political-page--quiz .political-scale-dot:hover span,
   .political-page--quiz .political-scale-dot:focus-visible span,
@@ -1732,9 +1689,9 @@ const styles = `
     background: var(--dot-color) !important;
     border-color: var(--dot-color) !important;
     box-shadow:
-      0 16px 34px color-mix(in srgb, var(--dot-color) 22%, transparent),
-      0 0 0 8px color-mix(in srgb, var(--dot-color) 11%, transparent),
-      inset 0 0 0 7px rgba(255, 255, 255, 0.92) !important;
+      0 12px 26px color-mix(in srgb, var(--dot-color) 18%, transparent),
+      0 0 0 5px color-mix(in srgb, var(--dot-color) 10%, transparent),
+      inset 0 0 0 8px rgba(255, 255, 255, 0.92) !important;
   }
   .political-result {
     gap: 24px;
@@ -1779,15 +1736,16 @@ const styles = `
       padding: 18px 14px !important;
     }
     .political-page--quiz .political-agreement-scale {
-      min-height: 84px !important;
+      --scale-dot-size: 34px;
+      min-height: 82px !important;
       gap: 4px !important;
     }
     .political-page--quiz .political-agreement-scale::before {
-      top: 18px !important;
-      height: 6px !important;
+      top: calc(var(--scale-dot-size) / 2 - 1px) !important;
+      height: 2px !important;
     }
     .political-page--quiz .political-scale-dot {
-      min-height: 84px !important;
+      min-height: 82px !important;
     }
     .political-map-frame {
       padding: 34px 34px;
