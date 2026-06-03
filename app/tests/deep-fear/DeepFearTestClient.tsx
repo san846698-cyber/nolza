@@ -908,13 +908,17 @@ const styles = `
   }
   .deep-fear-page .disclaimer {
     max-width: 680px;
-    padding: 12px 14px;
-    border: 1px solid rgba(255, 244, 230, 0.24);
-    border-radius: 16px;
-    background: rgba(0, 0, 0, 0.34);
-    color: rgba(255, 246, 235, 0.84);
-    box-shadow: inset 0 1px 0 rgba(255, 244, 230, 0.06);
-    backdrop-filter: blur(12px);
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 244, 230, 0.34);
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, rgba(16, 13, 15, 0.9), rgba(8, 7, 9, 0.82)),
+      rgba(0, 0, 0, 0.72);
+    color: #fff1df;
+    box-shadow:
+      0 12px 28px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 244, 230, 0.12);
+    backdrop-filter: blur(14px);
   }
   .deep-fear-page--quiz .shell {
     min-height: calc(100svh - 20px);
