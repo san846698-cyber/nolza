@@ -221,6 +221,7 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
         <h1>{DEEP_FEAR_COPY.title[locale]}</h1>
         <p className="subtitle">{DEEP_FEAR_COPY.subtitle[locale]}</p>
         <p className="description">{DEEP_FEAR_COPY.description[locale]}</p>
+        <p className="disclaimer">{DEEP_FEAR_COPY.disclaimer[locale]}</p>
         <div className="intro-chips" aria-label={locale === "ko" ? "테스트 정보" : "Test info"}>
           <span>{locale === "ko" ? "16문항" : "16 questions"}</span>
           <span>{locale === "ko" ? "약 4분" : "About 4 min"}</span>
@@ -229,7 +230,6 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
         <button type="button" className="primary" onClick={onStart}>
           {DEEP_FEAR_COPY.start[locale]}
         </button>
-        <p className="disclaimer">{DEEP_FEAR_COPY.disclaimer[locale]}</p>
       </div>
     </section>
   );
@@ -908,17 +908,16 @@ const styles = `
   }
   .deep-fear-page .disclaimer {
     max-width: 680px;
-    padding: 14px 16px;
-    border: 1px solid rgba(255, 244, 230, 0.34);
-    border-radius: 18px;
-    background:
-      linear-gradient(135deg, rgba(16, 13, 15, 0.9), rgba(8, 7, 9, 0.82)),
-      rgba(0, 0, 0, 0.72);
-    color: #fff1df;
-    box-shadow:
-      0 12px 28px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 244, 230, 0.12);
-    backdrop-filter: blur(14px);
+    margin: 12px 0 22px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #f8e7d0;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.62;
+    text-shadow: 0 8px 22px rgba(0, 0, 0, 0.68);
   }
   .deep-fear-page--quiz .shell {
     min-height: calc(100svh - 20px);
