@@ -524,7 +524,7 @@ function ResultView({
           <p>{localized(locale, axisInterpretation.detail)}</p>
         </section>
         <section>
-          <span>{t(locale, "당신이 사회를 판단하는 기준", "Your standard for judging society")}</span>
+          <span>{t(locale, "당신의 정치 본능", "Your political instinct")}</span>
           <p>{localized(locale, result.basis)}</p>
         </section>
         <section>
@@ -532,7 +532,7 @@ function ResultView({
           <p>{localized(locale, result.strength)}</p>
         </section>
         <section>
-          <span>{t(locale, "주의할 점", "Watch-out")}</span>
+          <span>{t(locale, "팩트폭행 / 주의할 점", "Reality check / watch-out")}</span>
           <p>{localized(locale, result.caution)}</p>
         </section>
         <section>
