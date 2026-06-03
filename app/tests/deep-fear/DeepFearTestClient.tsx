@@ -827,7 +827,8 @@ const styles = `
     border-color: rgba(246, 234, 219, 0.18);
     padding: clamp(30px, 6vw, 72px);
     background:
-      linear-gradient(90deg, rgba(5, 5, 6, 0.92), rgba(8, 8, 10, 0.68) 56%, rgba(5, 5, 6, 0.92)),
+      linear-gradient(90deg, rgba(4, 4, 5, 0.98) 0%, rgba(5, 5, 6, 0.94) 42%, rgba(8, 8, 10, 0.76) 68%, rgba(5, 5, 6, 0.9) 100%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.42)),
       radial-gradient(circle at 78% 32%, rgba(196, 154, 97, 0.16), transparent 18rem),
       url("/thumbnails-generated/deep-fear-banner.png") center / cover,
       #08080a;
@@ -841,8 +842,9 @@ const styles = `
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(180deg, rgba(255, 244, 230, 0.05), transparent 34%),
-      radial-gradient(circle at 50% 108%, transparent 0 22rem, rgba(0, 0, 0, 0.2) 38rem);
+      linear-gradient(90deg, rgba(0, 0, 0, 0.46) 0%, rgba(0, 0, 0, 0.22) 48%, rgba(0, 0, 0, 0.08) 100%),
+      linear-gradient(180deg, rgba(255, 244, 230, 0.055), transparent 34%),
+      radial-gradient(circle at 50% 108%, transparent 0 22rem, rgba(0, 0, 0, 0.28) 38rem);
   }
   .deep-fear-page--intro .intro > * {
     position: relative;
@@ -860,15 +862,17 @@ const styles = `
     font-size: clamp(2.45rem, 6vw, 5rem);
     line-height: 1.08;
     color: #fff3e4;
-    text-shadow: 0 18px 46px rgba(0, 0, 0, 0.44);
+    text-shadow: 0 18px 46px rgba(0, 0, 0, 0.58);
   }
   .deep-fear-page .subtitle {
     max-width: 720px;
-    color: #d6b482;
+    color: #f1cf98;
+    text-shadow: 0 10px 26px rgba(0, 0, 0, 0.56);
   }
   .deep-fear-page .description {
     max-width: 720px;
-    color: rgba(246, 234, 219, 0.82);
+    color: rgba(255, 244, 230, 0.9);
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.58);
   }
   .deep-fear-page .intro-chips span {
     border-color: rgba(246, 234, 219, 0.17);
@@ -886,11 +890,13 @@ const styles = `
   }
   .deep-fear-page .disclaimer {
     max-width: 680px;
-    padding: 11px 13px;
-    border: 1px solid rgba(246, 234, 219, 0.12);
+    padding: 12px 14px;
+    border: 1px solid rgba(246, 234, 219, 0.18);
     border-radius: 16px;
-    background: rgba(7, 7, 8, 0.34);
-    color: rgba(246, 234, 219, 0.58);
+    background: rgba(5, 5, 6, 0.66);
+    color: rgba(255, 244, 230, 0.74);
+    box-shadow: inset 0 1px 0 rgba(255, 244, 230, 0.06);
+    backdrop-filter: blur(12px);
   }
   .deep-fear-page--quiz .shell {
     min-height: calc(100svh - 20px);
