@@ -216,19 +216,21 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
       <div className="intro-mark" aria-hidden>
         <span />
       </div>
-      <p className="eyebrow">{DEEP_FEAR_COPY.badge[locale]}</p>
-      <h1>{DEEP_FEAR_COPY.title[locale]}</h1>
-      <p className="subtitle">{DEEP_FEAR_COPY.subtitle[locale]}</p>
-      <p className="description">{DEEP_FEAR_COPY.description[locale]}</p>
-      <div className="intro-chips" aria-label={locale === "ko" ? "테스트 정보" : "Test info"}>
-        <span>{locale === "ko" ? "16문항" : "16 questions"}</span>
-        <span>{locale === "ko" ? "약 4분" : "About 4 min"}</span>
-        <span>{locale === "ko" ? "심리 호러" : "Quiet horror"}</span>
+      <div className="intro-copy-panel">
+        <p className="eyebrow">{DEEP_FEAR_COPY.badge[locale]}</p>
+        <h1>{DEEP_FEAR_COPY.title[locale]}</h1>
+        <p className="subtitle">{DEEP_FEAR_COPY.subtitle[locale]}</p>
+        <p className="description">{DEEP_FEAR_COPY.description[locale]}</p>
+        <div className="intro-chips" aria-label={locale === "ko" ? "테스트 정보" : "Test info"}>
+          <span>{locale === "ko" ? "16문항" : "16 questions"}</span>
+          <span>{locale === "ko" ? "약 4분" : "About 4 min"}</span>
+          <span>{locale === "ko" ? "심리 호러" : "Quiet horror"}</span>
+        </div>
+        <button type="button" className="primary" onClick={onStart}>
+          {DEEP_FEAR_COPY.start[locale]}
+        </button>
+        <p className="disclaimer">{DEEP_FEAR_COPY.disclaimer[locale]}</p>
       </div>
-      <button type="button" className="primary" onClick={onStart}>
-        {DEEP_FEAR_COPY.start[locale]}
-      </button>
-      <p className="disclaimer">{DEEP_FEAR_COPY.disclaimer[locale]}</p>
     </section>
   );
 }
@@ -827,8 +829,8 @@ const styles = `
     border-color: rgba(246, 234, 219, 0.18);
     padding: clamp(30px, 6vw, 72px);
     background:
-      linear-gradient(90deg, rgba(4, 4, 5, 0.98) 0%, rgba(5, 5, 6, 0.94) 42%, rgba(8, 8, 10, 0.76) 68%, rgba(5, 5, 6, 0.9) 100%),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.42)),
+      linear-gradient(90deg, rgba(4, 4, 5, 0.64) 0%, rgba(5, 5, 6, 0.42) 46%, rgba(8, 8, 10, 0.2) 74%, rgba(5, 5, 6, 0.4) 100%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24)),
       radial-gradient(circle at 78% 32%, rgba(196, 154, 97, 0.16), transparent 18rem),
       url("/thumbnails-generated/deep-fear-banner.png") center / cover,
       #08080a;
@@ -842,13 +844,28 @@ const styles = `
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, rgba(0, 0, 0, 0.46) 0%, rgba(0, 0, 0, 0.22) 48%, rgba(0, 0, 0, 0.08) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.08) 48%, transparent 100%),
       linear-gradient(180deg, rgba(255, 244, 230, 0.055), transparent 34%),
-      radial-gradient(circle at 50% 108%, transparent 0 22rem, rgba(0, 0, 0, 0.28) 38rem);
+      radial-gradient(circle at 50% 108%, transparent 0 22rem, rgba(0, 0, 0, 0.18) 38rem);
   }
   .deep-fear-page--intro .intro > * {
     position: relative;
     z-index: 1;
+  }
+  .deep-fear-page--intro .intro-copy-panel {
+    width: min(100%, 720px);
+    display: grid;
+    justify-items: start;
+    padding: clamp(22px, 4vw, 38px);
+    border: 1px solid rgba(255, 244, 230, 0.2);
+    border-radius: 28px;
+    background:
+      linear-gradient(135deg, rgba(9, 9, 12, 0.74), rgba(8, 6, 8, 0.58)),
+      rgba(5, 5, 8, 0.62);
+    box-shadow:
+      0 28px 70px rgba(0, 0, 0, 0.42),
+      inset 0 1px 0 rgba(255, 244, 230, 0.08);
+    backdrop-filter: blur(16px) saturate(1.1);
   }
   .deep-fear-page--intro .intro-mark {
     right: clamp(26px, 6vw, 74px);
@@ -866,17 +883,18 @@ const styles = `
   }
   .deep-fear-page .subtitle {
     max-width: 720px;
-    color: #f1cf98;
+    color: #ffdca3;
     text-shadow: 0 10px 26px rgba(0, 0, 0, 0.56);
   }
   .deep-fear-page .description {
     max-width: 720px;
-    color: rgba(255, 244, 230, 0.9);
+    color: rgba(255, 246, 235, 0.94);
     text-shadow: 0 8px 24px rgba(0, 0, 0, 0.58);
   }
   .deep-fear-page .intro-chips span {
-    border-color: rgba(246, 234, 219, 0.17);
-    background: rgba(7, 7, 8, 0.42);
+    border-color: rgba(255, 244, 230, 0.22);
+    background: rgba(255, 244, 230, 0.1);
+    color: rgba(255, 244, 230, 0.82);
     backdrop-filter: blur(12px);
   }
   .deep-fear-page .primary {
@@ -891,10 +909,10 @@ const styles = `
   .deep-fear-page .disclaimer {
     max-width: 680px;
     padding: 12px 14px;
-    border: 1px solid rgba(246, 234, 219, 0.18);
+    border: 1px solid rgba(255, 244, 230, 0.24);
     border-radius: 16px;
-    background: rgba(5, 5, 6, 0.66);
-    color: rgba(255, 244, 230, 0.74);
+    background: rgba(0, 0, 0, 0.34);
+    color: rgba(255, 246, 235, 0.84);
     box-shadow: inset 0 1px 0 rgba(255, 244, 230, 0.06);
     backdrop-filter: blur(12px);
   }
