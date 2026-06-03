@@ -221,7 +221,7 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
         <h1>{DEEP_FEAR_COPY.title[locale]}</h1>
         <p className="subtitle">{DEEP_FEAR_COPY.subtitle[locale]}</p>
         <p className="description">{DEEP_FEAR_COPY.description[locale]}</p>
-        <p className="disclaimer">{DEEP_FEAR_COPY.disclaimer[locale]}</p>
+        <p className="intro-disclaimer">{DEEP_FEAR_COPY.disclaimer[locale]}</p>
         <div className="intro-chips" aria-label={locale === "ko" ? "테스트 정보" : "Test info"}>
           <span>{locale === "ko" ? "16문항" : "16 questions"}</span>
           <span>{locale === "ko" ? "약 4분" : "About 4 min"}</span>
@@ -467,22 +467,24 @@ const styles = `
     word-break: keep-all;
   }
   .description,
-  .disclaimer {
+  .intro-disclaimer {
     max-width: 700px;
     line-height: 1.74;
     word-break: keep-all;
   }
   .description {
-    margin: 14px 0 26px;
+    margin: 14px 0 10px;
     color: rgba(243, 230, 214, 0.78);
     font-size: 1.02rem;
     font-weight: 650;
   }
-  .disclaimer {
-    margin: 12px 0 0;
-    color: rgba(243, 230, 214, 0.52);
-    font-size: 0.9rem;
-    font-weight: 650;
+  .intro-disclaimer {
+    margin: 0 0 24px;
+    color: #fff0d8;
+    font-size: 1rem;
+    font-weight: 850;
+    line-height: 1.62;
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.78);
   }
   .intro-chips {
     display: flex;
@@ -906,18 +908,15 @@ const styles = `
       0 18px 42px rgba(155, 77, 85, 0.32),
       inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
-  .deep-fear-page .disclaimer {
-    max-width: 680px;
-    margin: 12px 0 22px;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    color: #f8e7d0;
-    font-size: 0.9rem;
-    font-weight: 800;
+  .deep-fear-page .intro-disclaimer {
+    max-width: 720px;
+    color: #fff0d8;
+    font-size: 1rem;
+    font-weight: 850;
     line-height: 1.62;
-    text-shadow: 0 8px 22px rgba(0, 0, 0, 0.68);
+    text-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.55),
+      0 10px 28px rgba(0, 0, 0, 0.82);
   }
   .deep-fear-page--quiz .shell {
     min-height: calc(100svh - 20px);
