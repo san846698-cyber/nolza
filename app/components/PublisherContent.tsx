@@ -272,6 +272,98 @@ const OVERRIDES: Record<string, ContentOverride> = {
       qa("SNS에 공유해도 되나요?", "Can I share it on social media?", "가능합니다. 다만 결과에 표시되는 정보가 괜찮은지 먼저 확인하세요.", "Yes. Check that you are comfortable with any visible information first."),
     ],
   },
+  ahmolla: {
+    intro: {
+      ko: "아 몰라는 선택지가 너무 많을 때 결국 아무거나 고르고 싶어지는 마음을 게임으로 만든 짧은 결정 피로 콘텐츠입니다. 선택을 미루다가 어디까지 가는지, 포기 버튼 앞에서 얼마나 버티는지 가볍게 확인합니다.",
+      en: "Ah, Whatever is a short decision-fatigue game about the moment when too many choices make you want to pick anything. It turns hesitation, giving up, and overthinking into a playful result.",
+    },
+    method: {
+      ko: "화면에 나오는 선택지를 따라가다가 더 이상 고르기 싫어지는 순간을 느껴보세요. 규칙은 단순하지만, 계속 선택을 요구받는 과정 자체가 이 게임의 핵심입니다.",
+      en: "Follow the choices on screen and notice when you no longer want to choose. The rules are simple, but the repeated pressure to decide is the point of the game.",
+    },
+    result: {
+      ko: "결과는 실제 결정력이나 성격을 평가하지 않습니다. 몇 번의 선택 끝에 멈췄는지를 바탕으로 만든 재미용 해석이며, 집중력이나 의지력의 진지한 측정값이 아닙니다.",
+      en: "The result does not judge your real decision-making ability or personality. It is an entertainment reading based on how long you kept choosing, not a serious measure of focus or willpower.",
+    },
+    share: {
+      ko: "친구와 비교할 때는 누가 더 우유부단한지 몰아가기보다, 누가 더 빨리 '아 몰라' 모드가 되는지 웃으면서 이야기해보세요.",
+      en: "When sharing, compare who reaches the 'whatever' point faster without turning it into a real judgment. It works best as a light conversation starter.",
+    },
+    faq: [
+      qa("점수가 낮으면 결정력이 부족한 건가요?", "Does a low result mean I am bad at decisions?", "아닙니다. 이 게임은 반복 선택 상황을 장난스럽게 풀어낸 콘텐츠이며 실제 능력 평가가 아닙니다.", "No. This is a playful take on repeated choices, not an ability test."),
+      qa("결과를 진지하게 봐야 하나요?", "Should I take the result seriously?", "가볍게 읽어주세요. 결과 문장은 웃고 공유하기 위한 해석입니다.", "Read it lightly. Result lines are written for fun and sharing."),
+      qa("친구에게 보내도 되나요?", "Can I send it to friends?", "가능합니다. 서로를 놀리기보다 각자 언제 선택 피로를 느끼는지 이야기해보면 좋습니다.", "Yes. Use it to talk about when each person gets tired of choosing, not to mock anyone."),
+    ],
+  },
+  nunchi: {
+    intro: {
+      ko: "눈치 측정기는 대화와 상황 속에서 '지금 눌러야 하는 타이밍'을 감으로 읽어보는 짧은 사회 감각 게임입니다. 말의 내용보다 분위기, 멈칫하는 순간, 기다려야 할 타이밍을 보는 데 초점을 둡니다.",
+      en: "Nunchi-meter is a short social-timing game about reading the moment. It focuses on mood, pauses, and when to act rather than on memorizing facts.",
+    },
+    method: {
+      ko: "각 라운드에서 문장을 읽고, 행동해야 한다고 느끼는 순간 버튼을 누르세요. 어떤 장면은 누르지 않고 기다리는 것이 더 좋은 선택일 수 있습니다.",
+      en: "Read each scene and press when you feel it is the right moment to act. In some rounds, not pressing and waiting is the better choice.",
+    },
+    result: {
+      ko: "점수는 실제 사회성이나 인간관계 능력을 평가하지 않습니다. 게임 속 상황에서 타이밍을 어떻게 읽었는지 보여주는 가벼운 기록입니다.",
+      en: "The score does not measure real social skill or relationship ability. It is a light marker of how you read timing inside these game scenes.",
+    },
+    share: {
+      ko: "친구와 점수를 비교하면 누가 더 빠르게 눈치챘는지, 누가 끝까지 기다렸는지 이야기하기 쉽습니다. 결과는 장난스럽게 비교하는 용도로만 읽어주세요.",
+      en: "Sharing makes it easy to compare who acted quickly and who waited longer. Treat the result as a friendly comparison only.",
+    },
+    faq: [
+      qa("눈치 점수가 낮으면 사회성이 낮은 건가요?", "Does a low score mean poor social skill?", "아닙니다. 제한된 게임 장면에서의 타이밍 결과일 뿐 실제 사회성을 판단하지 않습니다.", "No. It only reflects timing in limited game scenes and does not judge real social ability."),
+      qa("정답이 항상 하나인가요?", "Is there always one right answer?", "게임 안에서는 점수 기준이 있지만 실제 대화에서는 맥락과 관계가 더 중요합니다.", "The game has scoring rules, but real conversations depend on context and relationships."),
+      qa("결과를 어떻게 공유하면 좋나요?", "How should I share the result?", "점수로 줄 세우기보다 서로 다른 타이밍 감각을 비교하는 식으로 즐겨주세요.", "Use it to compare different timing instincts rather than ranking people."),
+    ],
+  },
+  react: {
+    intro: {
+      ko: "반응속도 게임은 화면이 초록색으로 바뀌는 순간을 기다렸다가 최대한 빠르게 누르는 5라운드 미니 챌린지입니다. 짧은 집중, 타이밍, 손의 반응을 가볍게 확인합니다.",
+      en: "Reaction Speed is a five-round mini challenge where you wait for green and tap as quickly as possible. It is a quick check of focus, timing, and reflex.",
+    },
+    method: {
+      ko: "너무 일찍 누르면 그 라운드는 다시 시작됩니다. 다섯 번의 기록을 모아 평균 반응속도를 계산하고, 가장 빠른 기록과 평균 기준 차이도 함께 보여줍니다.",
+      en: "Tap too early and the round restarts. After five valid taps, the game calculates your average reaction time and shows your fastest tap and comparison markers.",
+    },
+    result: {
+      ko: "결과는 실제 운동 능력, 집중력, 신경 반응을 진단하지 않습니다. 기기 상태, 화면 주사율, 손 위치, 그날 컨디션에 따라 달라지는 재미용 기록입니다.",
+      en: "The result does not diagnose athletic ability, focus, or neurological reflexes. Device speed, screen refresh rate, hand position, and your condition can all affect the number.",
+    },
+    share: {
+      ko: "친구와 평균 ms를 비교하거나 가장 빠른 한 번의 기록을 자랑해보세요. 다만 결과는 진지한 능력 평가보다 다시 도전하게 만드는 가벼운 기록으로 보는 것이 좋습니다.",
+      en: "Compare average milliseconds with friends or brag about your fastest tap. Treat it as a replayable mini score, not a serious ability ranking.",
+    },
+    faq: [
+      qa("반응속도 점수가 실제 능력인가요?", "Is the reaction time my real ability?", "아닙니다. 브라우저와 기기 환경의 영향을 받는 게임 기록입니다.", "No. It is a browser-game score affected by device and browser conditions."),
+      qa("왜 너무 일찍 누르면 다시 시작되나요?", "Why does tapping early restart the round?", "예상으로 누르는 것과 실제 신호에 반응하는 것을 구분하기 위한 게임 규칙입니다.", "It separates guessing from reacting to the actual signal."),
+      qa("친구와 비교해도 괜찮나요?", "Can I compare with friends?", "네. 같은 기기나 비슷한 환경에서 비교하면 더 재미있지만, 결과는 가볍게만 봐주세요.", "Yes. It is more fun on similar devices, but keep the comparison light."),
+    ],
+  },
+  timesense: {
+    intro: {
+      ko: "시간 감각 게임은 화면 없이 몸으로 시간을 세어보는 조용한 타이밍 챌린지입니다. 목표 초를 보고 시작한 뒤, 어둠 속에서 시간이 지났다고 느끼는 순간 다시 누릅니다.",
+      en: "Time Sense is a quiet timing challenge where you count seconds without watching the screen. See the target, start, then tap again when you feel the time has passed.",
+    },
+    method: {
+      ko: "각 라운드는 서로 다른 목표 시간을 제시합니다. 실제로 멈춘 시간과 목표 시간의 차이를 바탕으로 정확도를 계산하고, 여러 라운드의 평균으로 최종 결과를 보여줍니다.",
+      en: "Each round gives a different target duration. The game compares your stopped time with the target and averages multiple rounds into a final accuracy result.",
+    },
+    result: {
+      ko: "정확도는 실제 시간 감각이나 집중력을 전문적으로 측정하지 않습니다. 주변 소리, 긴장감, 기기 조작 타이밍에 따라 달라지는 재미용 기록입니다.",
+      en: "Accuracy is not a professional measure of time perception or concentration. Sound, tension, device handling, and timing can all change the result.",
+    },
+    share: {
+      ko: "친구와 비교하면 누가 시간을 빠르게 느끼는지, 누가 오래 버티는지 쉽게 이야기할 수 있습니다. 결과는 가볍게 공유하고 다시 도전하는 기록으로 즐겨주세요.",
+      en: "Sharing lets friends compare who feels time faster or slower. Treat the score as a light replayable result.",
+    },
+    faq: [
+      qa("정확도가 낮으면 시간 감각이 나쁜 건가요?", "Does low accuracy mean I have bad time sense?", "아닙니다. 몇 번의 게임 라운드 결과일 뿐 실제 능력 판단이 아닙니다.", "No. It is only a few game rounds, not a real ability judgment."),
+      qa("소리를 듣고 세어도 되나요?", "Can I count using sound?", "가능하지만 조용한 곳에서 마음속으로 세면 게임의 의도에 더 가깝습니다.", "You can, but counting internally in a quiet place is closer to the intended challenge."),
+      qa("결과를 어떻게 비교하면 좋나요?", "How should I compare results?", "최종 정확도뿐 아니라 어떤 목표 시간에서 흔들렸는지도 함께 보면 더 재미있습니다.", "Compare not only final accuracy, but also which target duration felt hardest."),
+    ],
+  },
 };
 
 function titleFromSlug(slug: string) {

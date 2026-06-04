@@ -63,6 +63,37 @@ export default function TestsIndexPage() {
           </div>
         </header>
 
+        <section className="guide-section guide-section--cards" aria-labelledby="tests-about-title">
+          <div className="guide-section__head">
+            <p>How to read</p>
+            <h2 id="tests-about-title">Nolza 테스트는 이렇게 읽어주세요</h2>
+            <span>
+              Nolza의 테스트는 짧은 선택을 통해 감정, 관계, 생각 습관, 문화적 취향을 가볍게 돌아보는 엔터테인먼트 콘텐츠입니다.
+            </span>
+          </div>
+          <article>
+            <span>01</span>
+            <h2>무엇을 보는가</h2>
+            <p>
+              각 테스트는 정답을 맞히는 시험이 아니라, 특정 상황에서 먼저 떠오르는 반응과 판단 기준을 읽어보는 경험입니다.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h2>결과를 읽는 법</h2>
+            <p>
+              결과는 자기성찰과 대화를 위한 참고용 설명입니다. 의학적, 심리학적, 법률적, 재정적 조언이나 전문 진단을 대신하지 않습니다.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h2>공유와 비교</h2>
+            <p>
+              친구와 결과를 비교할 때는 누가 맞고 틀린지보다 서로 어떤 장면에서 다르게 반응하는지 이야기해보는 것이 좋습니다.
+            </p>
+          </article>
+        </section>
+
         {sections.map((section) => {
           const games = visibleGames(section.filter);
           if (games.length === 0) return null;

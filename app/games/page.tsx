@@ -63,6 +63,37 @@ export default function GamesIndexPage() {
           </div>
         </header>
 
+        <section className="guide-section guide-section--cards" aria-labelledby="games-about-title">
+          <div className="guide-section__head">
+            <p>How to play</p>
+            <h2 id="games-about-title">Nolza 게임은 짧게 즐기고 가볍게 비교하는 콘텐츠입니다</h2>
+            <span>
+              설치 없이 브라우저에서 바로 시작하고, 점수나 결과를 친구와 공유하기 쉽게 만든 미니 게임과 인터랙티브 콘텐츠를 모았습니다.
+            </span>
+          </div>
+          <article>
+            <span>01</span>
+            <h2>브라우저 기반</h2>
+            <p>
+              대부분의 게임은 짧은 라운드로 구성되어 있으며, 휴대폰이나 데스크톱 브라우저에서 바로 플레이할 수 있습니다.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h2>점수의 의미</h2>
+            <p>
+              점수와 기록은 재미를 위한 비교 기준입니다. 실제 능력, 성격, 관계, 건강 상태를 전문적으로 측정하지 않습니다.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h2>친구와 비교</h2>
+            <p>
+              결과를 공유할 때는 순위를 매기기보다 서로 다른 타이밍, 선택, 반응을 가볍게 이야기하는 방식으로 즐겨주세요.
+            </p>
+          </article>
+        </section>
+
         {sections.map((section) => {
           const games = visibleGames(section.filter);
           if (games.length === 0) return null;

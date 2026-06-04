@@ -26,9 +26,13 @@ const footerCopy: Record<
     contact: "문의",
     links: [
       { href: "/about", label: "소개" },
+      { href: "/tests", label: "테스트" },
+      { href: "/games", label: "게임" },
+      { href: "/guides", label: "가이드" },
       { href: "/contact", label: "문의" },
       { href: "/privacy", label: "개인정보처리방침" },
       { href: "/terms", label: "이용약관" },
+      { href: "/disclaimer", label: "고지" },
     ],
   },
   en: {
@@ -37,9 +41,13 @@ const footerCopy: Record<
     contact: "Contact",
     links: [
       { href: "/about", label: "About" },
+      { href: "/tests", label: "Tests" },
+      { href: "/games", label: "Games" },
+      { href: "/guides", label: "Guides" },
       { href: "/contact", label: "Contact" },
       { href: "/privacy", label: "Privacy Policy" },
       { href: "/terms", label: "Terms" },
+      { href: "/disclaimer", label: "Disclaimer" },
     ],
   },
   ja: {
@@ -48,9 +56,13 @@ const footerCopy: Record<
     contact: "お問い合わせ",
     links: [
       { href: "/about", label: "紹介" },
+      { href: "/tests", label: "テスト" },
+      { href: "/games", label: "ゲーム" },
+      { href: "/guides", label: "ガイド" },
       { href: "/contact", label: "お問い合わせ" },
       { href: "/privacy", label: "プライバシーポリシー" },
       { href: "/terms", label: "利用規約" },
+      { href: "/disclaimer", label: "免責事項" },
     ],
   },
 };
