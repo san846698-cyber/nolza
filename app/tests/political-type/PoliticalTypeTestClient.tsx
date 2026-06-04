@@ -1755,12 +1755,15 @@ const styles = `
   }
   .political-value-map {
     border-radius: 30px;
-    border-color: rgba(15, 23, 42, 0.11);
+    border: 1px solid rgba(30, 41, 59, 0.22);
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 249, 0.9)),
-      #fff;
+      radial-gradient(circle at 12% 8%, rgba(15, 118, 110, 0.13), transparent 32%),
+      radial-gradient(circle at 92% 14%, rgba(120, 113, 108, 0.15), transparent 36%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(239, 236, 228, 0.96)),
+      #fbfaf7;
     box-shadow:
-      0 24px 64px rgba(15, 23, 42, 0.12),
+      0 32px 82px rgba(15, 23, 42, 0.18),
+      0 1px 0 rgba(255, 255, 255, 0.74),
       inset 0 1px 0 rgba(255, 255, 255, 0.92);
   }
   .political-value-map--intro {
@@ -1769,11 +1772,12 @@ const styles = `
     padding: clamp(20px, 3.2vw, 32px);
   }
   .political-value-map--result {
-    grid-template-columns: minmax(240px, 0.58fr) minmax(300px, 1fr);
+    grid-template-columns: minmax(250px, 0.56fr) minmax(340px, 1fr);
     padding: clamp(20px, 3vw, 34px);
     background:
-      linear-gradient(135deg, color-mix(in srgb, var(--result-accent) 7%, white), rgba(255, 255, 255, 0.96)),
-      #fff;
+      radial-gradient(circle at 12% 10%, color-mix(in srgb, var(--result-accent) 14%, transparent), transparent 34%),
+      linear-gradient(135deg, color-mix(in srgb, var(--result-accent) 10%, white), rgba(255, 255, 255, 0.96)),
+      #fbfaf7;
   }
   .political-value-map-copy span {
     color: #25635f;
@@ -1782,58 +1786,102 @@ const styles = `
     font-size: clamp(1.18rem, 2.2vw, 1.62rem);
   }
   .political-map-frame {
-    padding: 44px 52px;
+    display: grid;
+    gap: 14px;
+    padding: 48px 54px 20px;
+    border: 1px solid rgba(30, 41, 59, 0.18);
+    border-radius: 26px;
+    background:
+      radial-gradient(circle at 20% 12%, rgba(15, 118, 110, 0.12), transparent 34%),
+      linear-gradient(180deg, #fbfaf7, #ebe8df);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(30, 41, 59, 0.06),
+      0 22px 52px rgba(15, 23, 42, 0.15);
   }
   .political-map-grid {
     border-radius: 28px;
-    border-color: rgba(15, 23, 42, 0.18);
+    border: 2px solid rgba(30, 41, 59, 0.3);
     background:
-      linear-gradient(90deg, rgba(19, 78, 74, 0.08), rgba(255, 255, 255, 0.82) 50%, rgba(120, 113, 108, 0.08)),
-      linear-gradient(180deg, rgba(51, 65, 85, 0.1), transparent 50%, rgba(20, 184, 166, 0.08)),
-      repeating-linear-gradient(0deg, transparent 0 12.25%, rgba(15, 23, 42, 0.045) 12.55% 12.75%),
-      repeating-linear-gradient(90deg, transparent 0 12.25%, rgba(15, 23, 42, 0.045) 12.55% 12.75%),
-      #f8fafc;
+      repeating-linear-gradient(0deg, transparent 0 11.7%, rgba(30, 41, 59, 0.08) 11.9% 12.08%),
+      repeating-linear-gradient(90deg, transparent 0 11.7%, rgba(30, 41, 59, 0.08) 11.9% 12.08%),
+      linear-gradient(90deg, rgba(15, 118, 110, 0.21), rgba(255, 255, 255, 0.58) 50%, rgba(120, 113, 108, 0.21)),
+      linear-gradient(180deg, rgba(31, 41, 55, 0.21), rgba(255, 255, 255, 0.32) 50%, rgba(20, 184, 166, 0.17)),
+      #f8f7f3;
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.86),
-      inset 0 24px 60px rgba(255, 255, 255, 0.36),
-      0 22px 54px rgba(15, 23, 42, 0.14);
+      inset 0 20px 46px rgba(255, 255, 255, 0.26),
+      0 26px 60px rgba(15, 23, 42, 0.2);
   }
   .political-map-grid::before,
   .political-map-grid::after {
-    background: rgba(15, 23, 42, 0.48);
+    background: rgba(17, 24, 39, 0.76);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.56),
+      0 0 24px rgba(15, 23, 42, 0.14);
+  }
+  .political-map-grid::before {
+    width: 2px;
+  }
+  .political-map-grid::after {
+    height: 2px;
   }
   .political-map-grid > span {
     align-items: start;
     justify-items: start;
     place-items: start;
     padding: 14px;
-    color: rgba(15, 23, 42, 0.62);
-    font-size: 0.76rem;
+    color: rgba(17, 24, 39, 0.78);
+    font-size: 0.8rem;
+    font-weight: 950;
     text-align: left;
+    opacity: 0.82;
+  }
+  .political-map-grid > span:nth-child(1) {
+    background: linear-gradient(135deg, rgba(15, 118, 110, 0.18), rgba(255, 255, 255, 0.22));
+  }
+  .political-map-grid > span:nth-child(2) {
+    background: linear-gradient(225deg, rgba(120, 113, 108, 0.18), rgba(255, 255, 255, 0.22));
+  }
+  .political-map-grid > span:nth-child(3) {
+    background: linear-gradient(45deg, rgba(20, 184, 166, 0.15), rgba(255, 255, 255, 0.22));
+  }
+  .political-map-grid > span:nth-child(4) {
+    background: linear-gradient(315deg, rgba(87, 83, 78, 0.16), rgba(255, 255, 255, 0.22));
   }
   .political-map-grid > span.active {
     color: #0f172a;
     opacity: 1;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--result-accent, #0f766e) 36%, rgba(255, 255, 255, 0.66)), rgba(255, 255, 255, 0.48));
+    box-shadow:
+      inset 0 0 0 3px color-mix(in srgb, var(--result-accent, #0f766e) 60%, rgba(17, 24, 39, 0.18)),
+      inset 0 0 70px color-mix(in srgb, var(--result-accent, #0f766e) 24%, transparent);
   }
   .political-map-axis {
-    border: 1px solid rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(30, 41, 59, 0.24);
     border-radius: 999px;
-    padding: 5px 9px;
-    background: rgba(255, 255, 255, 0.88);
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.97);
+    color: #172026;
+    font-size: 0.78rem;
+    box-shadow:
+      0 12px 26px rgba(15, 23, 42, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
   .political-map-marker,
   .political-map-center {
-    width: 42px;
-    height: 42px;
-    border-width: 6px;
+    width: 64px;
+    height: 64px;
+    border-width: 8px;
     background:
       radial-gradient(circle at 32% 28%, #fff 0 10%, transparent 12%),
       #101828;
     box-shadow:
-      0 20px 48px rgba(15, 23, 42, 0.42),
-      0 0 0 12px color-mix(in srgb, var(--result-accent, #0f766e) 22%, transparent),
-      0 0 0 24px rgba(255, 255, 255, 0.64);
+      0 34px 74px rgba(15, 23, 42, 0.54),
+      0 0 0 12px color-mix(in srgb, var(--result-accent, #0f766e) 38%, transparent),
+      0 0 0 25px rgba(255, 255, 255, 0.72),
+      0 0 0 30px rgba(17, 24, 39, 0.12);
   }
   .political-page--quiz {
     background:
