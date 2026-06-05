@@ -25,7 +25,6 @@ import {
   localized,
   resultMidpoint,
   spectrumPercent,
-  valueMapYPercent,
   type PoliticalAnswer,
   type PoliticalAgreementValue,
   type PoliticalResult,
@@ -68,23 +67,6 @@ function orderFreedomTag(locale: SimpleLocale, score: number): string {
   if (score >= 14) return t(locale, "질서 우선", "order first");
   if (score <= -14) return t(locale, "자유 우선", "freedom first");
   return t(locale, "자유와 질서 균형", "balanced freedom and order");
-}
-
-function mapQuadrant(leftRightScore: number, orderFreedomScore: number): "change-order" | "stability-order" | "change-freedom" | "stability-freedom" {
-  if (leftRightScore < 0 && orderFreedomScore >= 0) return "change-order";
-  if (leftRightScore >= 0 && orderFreedomScore >= 0) return "stability-order";
-  if (leftRightScore < 0) return "change-freedom";
-  return "stability-freedom";
-}
-
-function quadrantLabel(locale: SimpleLocale, quadrant: ReturnType<typeof mapQuadrant>): string {
-  const labels = {
-    "change-order": t(locale, "변화 + 질서", "Change + order"),
-    "stability-order": t(locale, "안정 + 질서", "Stability + order"),
-    "change-freedom": t(locale, "변화 + 자유", "Change + freedom"),
-    "stability-freedom": t(locale, "안정 + 자유", "Stability + freedom"),
-  };
-  return labels[quadrant];
 }
 
 export default function PoliticalTypeTestClient(): ReactElement {
@@ -330,7 +312,7 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
             </button>
             <p className="political-disclaimer">{POLITICAL_TEST_COPY.disclaimer[locale]}</p>
           </div>
-          <PoliticalValueMap locale={locale} variant="intro" />
+          <PoliticalIntroAxisPanel locale={locale} />
         </div>
       </section>
 
@@ -386,6 +368,63 @@ function IntroView({ locale, onStart }: { locale: SimpleLocale; onStart: () => v
         </details>
       </section>
     </>
+  );
+}
+
+function PoliticalIntroAxisPanel({ locale }: { locale: SimpleLocale }): ReactElement {
+  const axisCards = [
+    {
+      label: t(locale, "좌우축", "Left-right axis"),
+      title: t(locale, "변화와 안정", "Change and stability"),
+      text: t(
+        locale,
+        "왼쪽은 제도 변화와 사회적 책임을 더 먼저 봅니다. 오른쪽은 안정, 책임, 기존 질서가 흔들리지 않는지를 더 먼저 봅니다.",
+        "The left side reads issues through change and social responsibility. The right side first checks stability, responsibility, and whether existing order can hold.",
+      ),
+    },
+    {
+      label: t(locale, "자유-질서축", "Freedom-order axis"),
+      title: t(locale, "개인의 자유와 사회 질서", "Personal freedom and social order"),
+      text: t(
+        locale,
+        "아래쪽은 개인의 선택권과 자율성을 더 중시합니다. 위쪽은 공동체 신뢰, 규칙, 예측 가능한 질서를 더 중시합니다.",
+        "The lower side values personal choice and autonomy. The upper side values social trust, rules, and predictable order.",
+      ),
+    },
+    {
+      label: t(locale, "결과 위치", "Result position"),
+      title: t(locale, "끝나면 두 축으로 정리됩니다", "Your result is summarized on two axes"),
+      text: t(
+        locale,
+        "테스트를 마치면 좌우 성향과 자유-질서 성향을 두 개의 간단한 막대로 보여줍니다.",
+        "After the test, two simple bars show your left-right tendency and your freedom-order tendency.",
+      ),
+    },
+  ];
+
+  return (
+    <aside className="political-intro-axis-panel" aria-label={t(locale, "2축 결과 안내", "Two-axis result guide")}>
+      <div className="political-intro-axis-head">
+        <span>{t(locale, "결과는 이렇게 읽습니다", "How to read the result")}</span>
+        <h2>{t(locale, "결과는 더 단순하게 보여드립니다", "The result stays simple")}</h2>
+        <p>
+          {t(
+            locale,
+            "시작 화면에서는 기준만 가볍게 확인하고, 답변이 끝난 뒤 결과 유형과 두 개의 성향 막대로 정리합니다.",
+            "On the start screen, review the standards briefly. After your answers, the result type and two tendency bars summarize your pattern.",
+          )}
+        </p>
+      </div>
+      <div className="political-intro-axis-cards">
+        {axisCards.map((card) => (
+          <article key={card.label} className="political-intro-axis-card">
+            <span>{card.label}</span>
+            <strong>{card.title}</strong>
+            <p>{card.text}</p>
+          </article>
+        ))}
+      </div>
+    </aside>
   );
 }
 
@@ -446,88 +485,67 @@ function QuestionView({
   );
 }
 
-function PoliticalValueMap({
+function PoliticalResultBars({
   locale,
-  variant,
-  leftRightScore = 0,
-  orderFreedomScore = 0,
+  score,
+  orderFreedomScore,
 }: {
   locale: SimpleLocale;
-  variant: "intro" | "result";
-  leftRightScore?: number;
-  orderFreedomScore?: number;
+  score: number;
+  orderFreedomScore: number;
 }): ReactElement {
-  const showMarker = variant === "result";
-  const quadrant = mapQuadrant(leftRightScore, orderFreedomScore);
-  const markerStyle = {
-    left: `${spectrumPercent(leftRightScore)}%`,
-    top: `${valueMapYPercent(orderFreedomScore)}%`,
-  } as CSSProperties;
-  const currentPosition = quadrantLabel(locale, quadrant);
-  const leftRightReading = politicalAxisTag(locale, leftRightScore);
+  const leftRightReading = politicalAxisTag(locale, score);
   const orderFreedomReading = orderFreedomTag(locale, orderFreedomScore);
-  const quadrants = [
-    { id: "change-order", label: t(locale, "변화 + 질서", "Change + order") },
-    { id: "stability-order", label: t(locale, "안정 + 질서", "Stability + order") },
-    { id: "change-freedom", label: t(locale, "변화 + 자유", "Change + freedom") },
-    { id: "stability-freedom", label: t(locale, "안정 + 자유", "Stability + freedom") },
-  ] as const;
+  const bars = [
+    {
+      label: t(locale, "좌우 성향", "Left-right tendency"),
+      value: score,
+      reading: leftRightReading,
+      left: t(locale, "진보", "Progressive"),
+      center: t(locale, "중도", "Center"),
+      right: t(locale, "보수", "Conservative"),
+    },
+    {
+      label: t(locale, "자유-질서 성향", "Freedom-order tendency"),
+      value: orderFreedomScore,
+      reading: orderFreedomReading,
+      left: t(locale, "자유 중시", "Freedom first"),
+      center: t(locale, "균형", "Balance"),
+      right: t(locale, "질서 중시", "Order first"),
+    },
+  ];
 
   return (
-    <section className={`political-value-map political-value-map--${variant}`}>
-      <div className="political-value-map-copy">
-        <span>{t(locale, "2축 가치 지도", "Two-axis value map")}</span>
-        <h2>{t(locale, "당신의 위치가 결과의 핵심입니다", "Your position is the core of the result")}</h2>
+    <section className="political-result-bars" aria-label={t(locale, "성향 점수 요약", "Tendency score summary")}>
+      <div className="political-result-bars-head">
+        <span>{t(locale, "성향 요약", "Tendency summary")}</span>
+        <h3>{t(locale, "복잡한 지도 대신 핵심 축만 보여드립니다", "The key axes, without the complex map")}</h3>
         <p>
-          {variant === "intro"
-            ? t(
-                locale,
-                "이 테스트는 좌우 성향뿐 아니라, 자유와 질서를 바라보는 감각까지 함께 살펴봅니다.",
-                "This test looks not only at left-right orientation, but also at how you balance freedom and order.",
-              )
-            : t(
-                locale,
-                "점은 당신의 답변이 만든 위치입니다. 어느 사분면에 있는지가 당신이 이슈를 읽는 방식을 보여줍니다.",
-                "The marker is the position created by your answers. Its quadrant shows how you tend to read political issues.",
-              )}
-        </p>
-        {showMarker ? (
-          <div className="political-map-tags" aria-label={t(locale, "지도 해석", "Map reading")}>
-            <span>{t(locale, "현재 위치", "Current position")}: {quadrantLabel(locale, quadrant)}</span>
-            <span>{t(locale, "좌우축", "Left-right axis")}: {politicalAxisTag(locale, leftRightScore)}</span>
-            <span>{t(locale, "자유-질서축", "Freedom-order axis")}: {orderFreedomTag(locale, orderFreedomScore)}</span>
-          </div>
-        ) : null}
-      </div>
-      <div className="political-map-frame" aria-label={t(locale, "정치 가치 지도", "Political value map")}>
-        <span className="political-map-axis political-map-axis--top">{t(locale, "권위/질서", "Order")}</span>
-        <span className="political-map-axis political-map-axis--bottom">{t(locale, "자유/자율", "Freedom")}</span>
-        <span className="political-map-axis political-map-axis--left">{t(locale, "진보", "Progressive")}</span>
-        <span className="political-map-axis political-map-axis--right">{t(locale, "보수", "Conservative")}</span>
-        <div className="political-map-grid">
-          {quadrants.map((item) => (
-            <span
-              key={item.id}
-              className={showMarker && item.id === quadrant ? "active" : ""}
-            >
-              {item.label}
-            </span>
-          ))}
-          {showMarker ? (
-            <i className="political-map-marker" style={markerStyle}>
-              <b>{t(locale, "당신의 위치", "Your position")}</b>
-            </i>
-          ) : (
-            <i className="political-map-center" aria-hidden />
+          {t(
+            locale,
+            "결과 유형은 그대로 유지하고, 좌우 성향과 자유-질서 감각만 간단한 막대로 정리했습니다.",
+            "The result type stays the same, with left-right tendency and freedom-order preference summarized as simple bars.",
           )}
-        </div>
-        {showMarker ? (
-          <div className="political-map-stats" aria-label={t(locale, "\uD604\uC7AC \uC704\uCE58 \uC694\uC57D", "Current position summary")}>
-            <span>{t(locale, "\uD604\uC7AC \uC704\uCE58", "Current position")}: <strong>{currentPosition}</strong></span>
-            <span>{t(locale, "\uC88C\uC6B0\uCD95", "Left-right axis")}: <strong>{leftRightReading}</strong></span>
-            <span>{t(locale, "\uC790\uC720-\uC9C8\uC11C\uCD95", "Freedom-order axis")}: <strong>{orderFreedomReading}</strong></span>
+        </p>
+      </div>
+      <div className="political-result-bar-list">
+        {bars.map((bar) => (
+          <div className="political-result-bar-card" key={bar.label}>
+            <div className="political-result-bar-top">
+              <span>{bar.label}</span>
+              <strong>{bar.reading}</strong>
+            </div>
+            <div className="political-result-bar-track">
+              <i style={{ left: `${spectrumPercent(bar.value)}%` }} />
+            </div>
+            <div className="political-result-bar-labels">
+              <span>{bar.left}</span>
+              <span>{bar.center}</span>
+              <span>{bar.right}</span>
+            </div>
+            <span className="political-result-bar-score">{scoreLabel(bar.value)}</span>
           </div>
-        ) : null}
+        ))}
       </div>
     </section>
   );
@@ -579,10 +597,9 @@ function ResultView({
         </div>
       </section>
 
-      <PoliticalValueMap
+      <PoliticalResultBars
         locale={locale}
-        variant="result"
-        leftRightScore={score}
+        score={score}
         orderFreedomScore={orderFreedomScore}
       />
 
@@ -1028,18 +1045,14 @@ const styles = `
     z-index: 8;
     left: 50%;
     top: 50%;
-    width: 52px;
-    height: 52px;
-    border: 7px solid #fff;
+    width: 46px;
+    height: 46px;
+    border: 6px solid #fff;
     border-radius: 999px;
-    background:
-      radial-gradient(circle at 32% 28%, #fff 0 10%, transparent 12%),
-      #0f172a;
+    background: #0f172a;
     box-shadow:
-      0 26px 58px rgba(15, 23, 42, 0.44),
-      0 0 0 10px color-mix(in srgb, var(--result-accent, #0f766e) 30%, transparent),
-      0 0 0 21px rgba(255, 255, 255, 0.7),
-      0 0 0 24px rgba(17, 24, 39, 0.09);
+      0 16px 30px rgba(15, 23, 42, 0.34),
+      0 0 0 3px color-mix(in srgb, var(--result-accent, #0f766e) 22%, transparent);
     transform: translate(-50%, -50%);
   }
   .political-map-center {
@@ -1476,6 +1489,110 @@ const styles = `
   .political-spectrum-labels span:nth-child(5) {
     text-align: right;
   }
+  .political-result-bars {
+    display: grid;
+    gap: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 22px;
+    padding: clamp(16px, 2.5vw, 22px);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94)),
+      #fff;
+    box-shadow: 0 16px 42px rgba(15, 23, 42, 0.07);
+  }
+  .political-result-bars-head {
+    display: grid;
+    gap: 6px;
+  }
+  .political-result-bars-head span,
+  .political-result-bar-top span {
+    color: #475569;
+    font-size: 0.76rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .political-result-bars-head h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: clamp(1.08rem, 2.1vw, 1.34rem);
+    line-height: 1.3;
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
+  .political-result-bars-head p {
+    margin: 0;
+    color: rgba(15, 23, 42, 0.68);
+    font-size: 0.94rem;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+  .political-result-bar-list {
+    display: grid;
+    gap: 10px;
+  }
+  .political-result-bar-card {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    border: 1px solid rgba(15, 23, 42, 0.09);
+    border-radius: 18px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.82);
+  }
+  .political-result-bar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .political-result-bar-top strong {
+    color: #0f172a;
+    font-size: 0.94rem;
+    font-weight: 950;
+    text-align: right;
+    word-break: keep-all;
+  }
+  .political-result-bar-track {
+    position: relative;
+    height: 14px;
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, #0f766e 0%, #e5e7eb 50%, #57534e 100%);
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+  }
+  .political-result-bar-track i {
+    position: absolute;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    border: 4px solid #fff;
+    border-radius: 999px;
+    background: #111827;
+    box-shadow: 0 9px 22px rgba(15, 23, 42, 0.24);
+    transform: translate(-50%, -50%);
+  }
+  .political-result-bar-labels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 850;
+  }
+  .political-result-bar-labels span:nth-child(2) {
+    text-align: center;
+  }
+  .political-result-bar-labels span:nth-child(3) {
+    text-align: right;
+  }
+  .political-result-bar-score {
+    position: absolute;
+    right: 14px;
+    bottom: 12px;
+    color: rgba(15, 23, 42, 0.56);
+    font-size: 0.72rem;
+    font-weight: 950;
+  }
   .political-result-core {
     margin: 0;
     color: #0f172a;
@@ -1669,9 +1786,9 @@ const styles = `
     }
     .political-map-marker,
     .political-map-center {
-      width: 40px;
-      height: 40px;
-      border-width: 5px;
+      width: 34px;
+      height: 34px;
+      border-width: 4px;
     }
     .political-map-marker b {
       left: 50%;
@@ -1723,8 +1840,9 @@ const styles = `
     filter: saturate(0.78);
   }
   .political-intro-layout {
-    grid-template-columns: minmax(0, 0.9fr) minmax(390px, 1.1fr);
-    gap: clamp(28px, 5vw, 64px);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+    gap: clamp(28px, 4.5vw, 54px);
+    align-items: center;
   }
   .political-intro h1 {
     max-width: 640px;
@@ -1752,6 +1870,74 @@ const styles = `
     box-shadow:
       0 18px 38px rgba(15, 118, 110, 0.24),
       inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+  .political-intro-copy .political-primary {
+    min-width: min(100%, 260px);
+    min-height: 60px;
+    font-size: 1rem;
+  }
+  .political-intro-axis-panel {
+    position: relative;
+    display: grid;
+    gap: 16px;
+    align-self: center;
+    border: 1px solid rgba(30, 41, 59, 0.14);
+    border-radius: 28px;
+    padding: clamp(18px, 3vw, 26px);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(15, 118, 110, 0.1), transparent 34%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(244, 241, 233, 0.92)),
+      #fbfaf7;
+    box-shadow:
+      0 24px 62px rgba(15, 23, 42, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  .political-intro-axis-head {
+    display: grid;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+  .political-intro-axis-head span,
+  .political-intro-axis-card span {
+    color: #25635f;
+    font-size: 0.72rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .political-intro-axis-head h2 {
+    margin: 0;
+    color: #101828;
+    font-size: clamp(1.28rem, 2.4vw, 1.75rem);
+    line-height: 1.22;
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
+  .political-intro-axis-head p,
+  .political-intro-axis-card p {
+    margin: 0;
+    color: rgba(15, 23, 42, 0.68);
+    font-size: 0.93rem;
+    line-height: 1.62;
+    word-break: keep-all;
+  }
+  .political-intro-axis-cards {
+    display: grid;
+    gap: 10px;
+  }
+  .political-intro-axis-card {
+    display: grid;
+    gap: 6px;
+    border: 1px solid rgba(30, 41, 59, 0.1);
+    border-radius: 18px;
+    padding: 14px 15px;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  .political-intro-axis-card strong {
+    color: #172033;
+    font-size: 1rem;
+    line-height: 1.28;
+    word-break: keep-all;
   }
   .political-value-map {
     border-radius: 30px;
@@ -1871,17 +2057,13 @@ const styles = `
   }
   .political-map-marker,
   .political-map-center {
-    width: 64px;
-    height: 64px;
-    border-width: 8px;
-    background:
-      radial-gradient(circle at 32% 28%, #fff 0 10%, transparent 12%),
-      #101828;
+    width: 46px;
+    height: 46px;
+    border-width: 6px;
+    background: #101828;
     box-shadow:
-      0 34px 74px rgba(15, 23, 42, 0.54),
-      0 0 0 12px color-mix(in srgb, var(--result-accent, #0f766e) 38%, transparent),
-      0 0 0 25px rgba(255, 255, 255, 0.72),
-      0 0 0 30px rgba(17, 24, 39, 0.12);
+      0 16px 34px rgba(15, 23, 42, 0.38),
+      0 0 0 3px color-mix(in srgb, var(--result-accent, #0f766e) 24%, transparent);
   }
   .political-page--quiz {
     background:
