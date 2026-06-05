@@ -15,7 +15,6 @@ import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 import {
   POLITICAL_AGREEMENT_OPTIONS,
   POLITICAL_QUESTIONS,
-  POLITICAL_SPECTRUM_LABELS,
   POLITICAL_TEST_COPY,
   calculatePoliticalAnswer,
   calculatePoliticalResult,
@@ -48,10 +47,6 @@ function t(locale: SimpleLocale, ko: string, en: string): string {
   return locale === "ko" ? ko : en;
 }
 
-function scoreLabel(score: number): string {
-  return score > 0 ? `+${score}` : `${score}`;
-}
-
 function safeScore(value: unknown, fallback: number): number {
   if (typeof value !== "number" || Number.isNaN(value)) return fallback;
   return Math.max(-100, Math.min(100, Math.round(value)));
@@ -67,6 +62,11 @@ function orderFreedomTag(locale: SimpleLocale, score: number): string {
   if (score >= 14) return t(locale, "질서 우선", "order first");
   if (score <= -14) return t(locale, "자유 우선", "freedom first");
   return t(locale, "자유와 질서 균형", "balanced freedom and order");
+}
+
+function resultBarPercent(value: number, neutral: boolean): number {
+  if (value === 0 || neutral) return 50;
+  return spectrumPercent(value);
 }
 
 export default function PoliticalTypeTestClient(): ReactElement {
@@ -500,6 +500,7 @@ function PoliticalResultBars({
     {
       label: t(locale, "좌우 성향", "Left-right tendency"),
       value: score,
+      neutral: score > -33 && score < 33,
       reading: leftRightReading,
       left: t(locale, "진보", "Progressive"),
       center: t(locale, "중도", "Center"),
@@ -508,6 +509,7 @@ function PoliticalResultBars({
     {
       label: t(locale, "자유-질서 성향", "Freedom-order tendency"),
       value: orderFreedomScore,
+      neutral: orderFreedomScore > -14 && orderFreedomScore < 14,
       reading: orderFreedomReading,
       left: t(locale, "자유 중시", "Freedom first"),
       center: t(locale, "균형", "Balance"),
@@ -536,14 +538,13 @@ function PoliticalResultBars({
               <strong>{bar.reading}</strong>
             </div>
             <div className="political-result-bar-track">
-              <i style={{ left: `${spectrumPercent(bar.value)}%` }} />
+              <i style={{ left: `${resultBarPercent(bar.value, bar.neutral)}%` }} />
             </div>
             <div className="political-result-bar-labels">
               <span>{bar.left}</span>
               <span>{bar.center}</span>
               <span>{bar.right}</span>
             </div>
-            <span className="political-result-bar-score">{scoreLabel(bar.value)}</span>
           </div>
         ))}
       </div>
@@ -581,21 +582,6 @@ function ResultView({
         <strong className="political-axis-summary">{localized(locale, axisInterpretation.label)}</strong>
         <p>{localized(locale, result.summary)}</p>
       </div>
-
-      <section className="political-spectrum" aria-label={t(locale, "정치 성향 스펙트럼", "Political spectrum")}>
-        <div className="political-spectrum-head">
-          <span>{localized(locale, result.spectrumPosition)}</span>
-          <strong>{scoreLabel(score)}</strong>
-        </div>
-        <div className="political-spectrum-track">
-          <i style={{ left: `${spectrumPercent(score)}%` }} />
-        </div>
-        <div className="political-spectrum-labels">
-          {POLITICAL_SPECTRUM_LABELS.map((label) => (
-            <span key={label.en}>{localized(locale, label)}</span>
-          ))}
-        </div>
-      </section>
 
       <PoliticalResultBars
         locale={locale}
@@ -1432,63 +1418,6 @@ const styles = `
     line-height: 1.32;
     word-break: keep-all;
   }
-  .political-spectrum {
-    display: grid;
-    gap: 10px;
-    border: 1px solid rgba(15, 23, 42, 0.1);
-    border-radius: 20px;
-    padding: 16px;
-    background: #f8fafc;
-  }
-  .political-spectrum-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .political-spectrum-head span {
-    color: #475569;
-    font-weight: 850;
-  }
-  .political-spectrum-head strong {
-    color: #0f172a;
-    font-size: 1.22rem;
-    font-weight: 950;
-  }
-  .political-spectrum-track {
-    position: relative;
-    height: 18px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #0f766e 0%, #e2e8f0 50%, #a16207 100%);
-    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
-  }
-  .political-spectrum-track i {
-    position: absolute;
-    top: 50%;
-    width: 26px;
-    height: 26px;
-    border: 4px solid #fff;
-    border-radius: 999px;
-    background: #111827;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.28);
-    transform: translate(-50%, -50%);
-  }
-  .political-spectrum-labels {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 6px;
-    color: #64748b;
-    font-size: 0.8rem;
-    font-weight: 850;
-  }
-  .political-spectrum-labels span:nth-child(2),
-  .political-spectrum-labels span:nth-child(3),
-  .political-spectrum-labels span:nth-child(4) {
-    text-align: center;
-  }
-  .political-spectrum-labels span:nth-child(5) {
-    text-align: right;
-  }
   .political-result-bars {
     display: grid;
     gap: 14px;
@@ -1584,14 +1513,6 @@ const styles = `
   }
   .political-result-bar-labels span:nth-child(3) {
     text-align: right;
-  }
-  .political-result-bar-score {
-    position: absolute;
-    right: 14px;
-    bottom: 12px;
-    color: rgba(15, 23, 42, 0.56);
-    font-size: 0.72rem;
-    font-weight: 950;
   }
   .political-result-core {
     margin: 0;
@@ -1807,9 +1728,6 @@ const styles = `
     .political-primary,
     .political-secondary {
       width: 100%;
-    }
-    .political-spectrum-labels {
-      font-size: 0.68rem;
     }
   }
 
@@ -2159,18 +2077,6 @@ const styles = `
   .political-result-title h2 {
     max-width: 860px;
     font-size: clamp(2.2rem, 5.6vw, 4.85rem);
-  }
-  .political-spectrum {
-    border-radius: 26px;
-    padding: clamp(16px, 2.5vw, 24px);
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.98), color-mix(in srgb, var(--result-accent) 5%, white)),
-      #fff;
-    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
-  }
-  .political-spectrum-track {
-    height: 20px;
-    background: linear-gradient(90deg, #134e4a 0%, #e5e7eb 50%, #57534e 100%);
   }
   @media (max-width: 780px) {
     .political-intro-layout,
