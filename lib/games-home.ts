@@ -432,6 +432,14 @@ export const GAMES: Game[] = [
     skin: "block", tone: 2, art: "kbti", labels: ["popular", "share"],
   },
   {
+    id: "football-lineup", href: "/tests/football-lineup", cat: "sim", no: "WC",
+    ko: { title: "대표팀 전술판", sub: "등번호와 이름만 올려서 나만의 베스트11 만들기", kicker: "월드컵 감독모드" },
+    en: { title: "Korea Lineup Board", sub: "Build your own starting XI with number and name chips", kicker: "World Cup manager mode" },
+    type: "game", category: "mini-games",
+    palette: P.forest, font: "sans",
+    skin: "block", tone: 3, labels: ["new", "quick", "share"], duration: { ko: "약 1분", en: "1 min" },
+  },
+  {
     id: "mbti-depth", href: "/games/mbti-depth", cat: "self", no: "11",
     ko: { title: "MBTI 심층 분석", sub: "16가지 MBTI를 더 구체적으로 열어보는 심층 성향 분석", kicker: "대표 테스트" },
     en: { title: "Deep MBTI Analysis", sub: "A deeper personality read that opens up the 16 MBTI types in more detail", kicker: "Featured Test" },

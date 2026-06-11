@@ -5,7 +5,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
 import { AdBottom } from "@/app/components/Ads";
-import { ShareCard } from "@/app/components/ShareCard";
+import ResultScreen from "@/app/components/game/ResultScreen";
 import { trackResultView, trackRetryClick, trackShareClick, trackTestStart } from "@/lib/analytics";
 import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 import {
@@ -34,6 +34,10 @@ const C = {
 
 const FONT_SERIF = `"Noto Serif KR", "Noto Serif", Georgia, serif`;
 const FONT_SANS = `"Noto Sans KR", "Noto Sans", system-ui, sans-serif`;
+
+// Star emoji built from its codepoint so the source never carries a raw
+// surrogate pair (avoids encoding issues).
+const STAR = String.fromCodePoint(0x2b50);
 
 /* ---------------- 점수 ---------------- */
 function totalScore(a: number, b: number) {
@@ -128,7 +132,6 @@ function FriendMatchInner() {
   const [a, setA] = useState<Person>({ name: "", year: "" });
   const [b, setB] = useState<Person>({ name: "", year: "" });
   const [submitted, setSubmitted] = useState(false);
-  const [shareCopied, setShareCopied] = useState(false);
   const [isSharedResult, setIsSharedResult] = useState(false);
 
   // URL 파라미터로 들어온 경우 자동 결과
@@ -244,7 +247,6 @@ function FriendMatchInner() {
     setIsSharedResult(false);
     setA({ name: "", year: "" });
     setB({ name: "", year: "" });
-    setShareCopied(false);
     router.replace("/games/friend-match");
   };
 
@@ -287,8 +289,6 @@ function FriendMatchInner() {
     }
     try {
       await navigator.clipboard.writeText(`${title}\n${desc}\n${url}`);
-      setShareCopied(true);
-      setTimeout(() => setShareCopied(false), 2000);
     } catch {
       /* ignore */
     }
@@ -345,7 +345,6 @@ function FriendMatchInner() {
             result={result}
             onShare={handleShare}
             onReset={handleReset}
-            shareCopied={shareCopied}
             isSharedResult={isSharedResult}
             t={t}
             locale={locale}
@@ -938,7 +937,6 @@ function ResultView({
   result,
   onShare,
   onReset,
-  shareCopied,
   isSharedResult,
   t,
   locale,
@@ -948,12 +946,22 @@ function ResultView({
   result: Result;
   onShare: () => void;
   onReset: () => void;
-  shareCopied: boolean;
   isSharedResult: boolean;
   t: (ko: string, en: string) => string;
   locale: "ko" | "en";
 }) {
-  const total = useCountUp(result.total, 1200);
+  const archeTitle = locale === "ko" ? result.archetype.title : result.archetype.enTitle;
+  const verdict = locale === "ko" ? result.archetype.verdict : result.archetype.enVerdict;
+  const keywords = result.archetype.keywords.slice(0, 4);
+  const shareUrl = encodeShareUrl(a, b);
+  const shareTitle = t(
+    `${a.name} × ${b.name}: ${result.archetype.title} (${result.total}점)`,
+    `${a.name} × ${b.name}: ${result.archetype.enTitle} (${result.total}/100)`,
+  );
+  const shareText =
+    locale === "ko"
+      ? buildKoreanShareText(a.name, b.name, result)
+      : `${a.name} and ${b.name}: ${result.archetype.enTitle}. ${result.archetype.enVerdict}`;
 
   const emojiA = ELEMENT_EMOJI[result.e1];
   const emojiB = ELEMENT_EMOJI[result.e2];
@@ -1012,181 +1020,49 @@ function ResultView({
   ];
 
   return (
-    <ShareCard
-      filename={`nolza-friend-match-${a.name}x${b.name}`}
+    <ResultScreen
       locale={locale}
-      buttonLabel={{ ko: "결과 이미지 저장", en: "Save result image" }}
-      backgroundColor={C.bg}
-      buttonStyle={{
-        padding: "13px 24px",
-        borderRadius: 999,
-        border: `1px solid ${C.gold}`,
-        background: "transparent",
-        color: C.gold,
-        fontWeight: 700,
-        fontSize: 14,
-        cursor: "pointer",
-        fontFamily: FONT_SANS,
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-        minHeight: 44,
-      }}
-    >
-      {({ cardRef }) => (
-        <>
-        <div ref={cardRef} style={{ background: C.bg, paddingBottom: 8 }}>
-      {/* 상단 — 두 이름 + 종합 점수 */}
-      <section style={{ textAlign: "center", margin: "8px 0 32px" }}>
-        {isSharedResult && (
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "7px 13px",
-              borderRadius: 999,
-              border: `1px solid ${C.line}`,
-              color: C.goldSoft,
-              background: "rgba(201,168,76,0.10)",
-              fontFamily: FONT_SANS,
-              fontSize: 12,
-              fontWeight: 700,
-              marginBottom: 14,
-            }}
-          >
-            {t("공유된 결과", "Shared Result")}
+      currentGameId="friend-match"
+      tone="navy"
+      gameName={t("친구 궁합", "FRIEND MATCH")}
+      emoji={STAR}
+      eyebrow={`${a.name} × ${b.name}`}
+      title={archeTitle}
+      score={String(result.total)}
+      scoreLabel="/ 100"
+      description={verdict}
+      details={keywords}
+      shareTitle={shareTitle}
+      shareText={shareText}
+      shareUrl={shareUrl}
+      onReplay={onReset}
+      replayLabel={isSharedResult ? t("나도 해보기", "Try it myself") : t("다시 하기", "Try again")}
+      onKakaoShare={onShare}
+      kakaoLabel={t("카카오 공유", "Share on Kakao")}
+      recommendedIds={["kbti", "attachment", "mbti-depth"]}
+      afterCard={
+        <div className="fm-detail" style={{ width: "100%", maxWidth: 680, margin: "10px auto 0" }}>
+          {/* 오행 조합 + 한 줄 요약 */}
+          <div style={{ textAlign: "center", marginBottom: 24 }}>
+            <div style={{ fontSize: 28, letterSpacing: "0.15em", lineHeight: 1 }}>
+              {emojiA} <span style={{ color: C.gold, fontSize: 22 }}>×</span> {emojiB}
+            </div>
+            <div style={{ marginTop: 6, fontSize: 12, color: C.sub, fontFamily: FONT_SERIF }}>
+              {elemA} · {elemB}
+            </div>
+            <p
+              style={{
+                margin: "16px auto 0",
+                maxWidth: 560,
+                fontFamily: FONT_SERIF,
+                fontSize: "clamp(15px, 2.4vw, 18px)",
+                color: C.goldSoft,
+                lineHeight: 1.7,
+              }}
+            >
+              “{result.copy.summary[locale]}”
+            </p>
           </div>
-        )}
-        <div
-          style={{
-            fontFamily: FONT_SERIF,
-            fontSize: "clamp(22px, 4vw, 32px)",
-            fontWeight: 700,
-            letterSpacing: "0.02em",
-            color: C.ink,
-          }}
-        >
-          {a.name}
-          <span style={{ color: C.gold, margin: "0 10px" }}>×</span>
-          {b.name}
-        </div>
-        <div
-          style={{
-            marginTop: 14,
-            fontSize: 28,
-            letterSpacing: "0.15em",
-            lineHeight: 1,
-          }}
-        >
-          {emojiA} <span style={{ color: C.gold, fontSize: 22 }}>×</span> {emojiB}
-        </div>
-        <div style={{ marginTop: 6, fontSize: 12, color: C.sub, fontFamily: FONT_SERIF }}>
-          {elemA} · {elemB}
-        </div>
-
-        <div
-          style={{
-            marginTop: 28,
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "center",
-            gap: 8,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: FONT_SERIF,
-              fontSize: "clamp(72px, 16vw, 132px)",
-              fontWeight: 900,
-              color: C.gold,
-              lineHeight: 1,
-              textShadow: "0 0 40px rgba(201,168,76,0.35)",
-              fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            {total}
-          </span>
-          <span style={{ fontFamily: FONT_SERIF, fontSize: 24, color: C.sub }}>
-            / 100
-          </span>
-        </div>
-
-        <div
-          style={{
-            margin: "18px auto 0",
-            maxWidth: 680,
-            padding: 24,
-            borderRadius: 24,
-            border: `1px solid ${C.line}`,
-            background: "linear-gradient(180deg, rgba(201,168,76,0.16), rgba(255,255,255,0.04))",
-            boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
-          }}
-        >
-          <div
-            style={{
-              fontFamily: FONT_SERIF,
-              fontSize: "clamp(24px, 5.6vw, 40px)",
-              fontWeight: 900,
-              color: C.goldSoft,
-              lineHeight: 1.25,
-            }}
-          >
-            {locale === "ko" ? result.archetype.title : result.archetype.enTitle}
-          </div>
-          <p
-            style={{
-              margin: "12px auto 0",
-              fontSize: "clamp(15px, 2.4vw, 18px)",
-              color: C.ink,
-              lineHeight: 1.7,
-              maxWidth: 560,
-            }}
-          >
-            {locale === "ko" ? result.archetype.verdict : result.archetype.enVerdict}
-          </p>
-          <div
-            style={{
-              marginTop: 18,
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: 8,
-            }}
-          >
-            {result.archetype.keywords.slice(0, 4).map((keyword) => (
-              <span
-                key={keyword}
-                style={{
-                  padding: "7px 12px",
-                  borderRadius: 999,
-                  border: `1px solid ${C.line}`,
-                  background: "rgba(15,15,26,0.62)",
-                  color: C.ink,
-                  fontSize: 13,
-                  lineHeight: 1.25,
-                }}
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <p
-          style={{
-            marginTop: 18,
-            fontFamily: FONT_SERIF,
-            fontSize: "clamp(16px, 2.4vw, 20px)",
-            color: C.goldSoft,
-            lineHeight: 1.6,
-            maxWidth: 560,
-            margin: "18px auto 0",
-          }}
-        >
-          “{result.copy.summary[locale]}”
-        </p>
-      </section>
 
       {/* 카테고리 카드 4개 */}
       {locale === "ko" ? (
@@ -1305,77 +1181,19 @@ function ResultView({
         </div>
       </section>
 
+          <style jsx>{`
+            @media (min-width: 720px) {
+              :global(.fm-cat-grid) {
+                grid-template-columns: 1fr 1fr !important;
+              }
+              :global(.fm-insight-grid) {
+                grid-template-columns: 1fr 1fr !important;
+              }
+            }
+          `}</style>
         </div>
-      {/* 액션 버튼 */}
-      <div
-        style={{
-          marginTop: 28,
-          display: "flex",
-          gap: 10,
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <button
-          type="button"
-          onClick={onShare}
-          style={{
-            padding: "13px 24px",
-            borderRadius: 999,
-            border: "none",
-            background: "#fee500",
-            color: "#191600",
-            fontWeight: 700,
-            fontSize: 14,
-            cursor: "pointer",
-            fontFamily: FONT_SANS,
-          }}
-        >
-          {shareCopied
-            ? t("결과 링크가 복사됐어요!", "Result link copied!")
-            : t("결과 공유하기", "Share result")}
-        </button>
-        <button
-          type="button"
-          onClick={onReset}
-          style={{
-            padding: "13px 24px",
-            borderRadius: 999,
-            border: `1px solid ${C.line}`,
-            background: "transparent",
-            color: C.ink,
-            fontWeight: 600,
-            fontSize: 14,
-            cursor: "pointer",
-            fontFamily: FONT_SANS,
-          }}
-        >
-          {isSharedResult ? t("나도 해보기", "Try it myself") : t("다시 하기", "Try again")}
-        </button>
-      </div>
-
-      <div style={{ marginTop: 24, textAlign: "center" }}>
-        <Link
-          href="/"
-          style={{ color: C.sub, fontSize: 13, textDecoration: "none" }}
-        >
-          ← {t("놀자.fun에서 다른 게임", "More games on nolza.fun")}
-        </Link>
-      </div>
-
-      <style jsx>{`
-        @media (min-width: 720px) {
-          :global(.fm-cat-grid) {
-            grid-template-columns: 1fr 1fr !important;
-          }
-          :global(.fm-insight-grid) {
-            grid-template-columns: 1fr 1fr !important;
-          }
-        }
-      `}</style>
-        </>
-      )}
-    </ShareCard>
+      }
+    />
   );
 }
 

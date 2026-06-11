@@ -47,3 +47,6 @@ thumbnail-generated-contact-sheet.jpg
 next-env.d.ts
 
 .vercel
+
+# marketing capture artifacts (videos, browser profiles, renders)
+marketing/

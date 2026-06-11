@@ -8,6 +8,7 @@ import {
   type ReactElement,
 } from "react";
 import { AdResult } from "../../components/Ads";
+import ResultScreen from "../../components/game/ResultScreen";
 import { useLocale } from "@/hooks/useLocale";
 import {
   QUESTIONS,
@@ -38,6 +39,50 @@ const SUBTLE = "rgba(42,42,42,0.6)";
 const RULE = "rgba(42,42,42,0.12)";
 const SERIF = "var(--font-noto-serif-kr), 'Noto Serif KR', serif";
 const INTER = "var(--font-inter), 'Inter', sans-serif";
+
+// Purple-heart emoji built from its codepoint so the source never carries a
+// raw surrogate pair (avoids encoding issues).
+const PURPLE_HEART = String.fromCodePoint(0x1f49c);
+
+function firstLine(text: string): string {
+  return text.split("\n").find((line) => line.trim().length > 0)?.trim() ?? text.trim();
+}
+
+function shareKakao(title: string, desc: string, url: string) {
+  const w =
+    typeof window !== "undefined"
+      ? (window as unknown as {
+          Kakao?: {
+            isInitialized?: () => boolean;
+            Share?: { sendDefault: (a: unknown) => void };
+          };
+        })
+      : undefined;
+  if (w?.Kakao?.Share && w.Kakao.isInitialized?.()) {
+    try {
+      w.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: { title, description: desc, link: { webUrl: url, mobileWebUrl: url } },
+      });
+      return;
+    } catch {
+      /* fall through */
+    }
+  }
+  if (typeof navigator === "undefined") return;
+  const nav = navigator as Navigator & {
+    share?: (d: { title: string; text: string; url: string }) => Promise<void>;
+  };
+  if (typeof nav.share === "function") {
+    nav.share({ title, text: desc, url }).catch(() => {
+      /* user cancelled */
+    });
+    return;
+  }
+  nav.clipboard?.writeText(`${title}\n${desc}\n${url}`).catch(() => {
+    /* ignore */
+  });
+}
 
 // ─────────────────────────────────────────────────────────────
 // Per-type theming — drives the entire result screen
@@ -147,7 +192,6 @@ export default function AttachmentPage(): ReactElement {
   const [questionIdx, setQuestionIdx] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [stats, setStats] = useState<Stats>(defaultStats());
-  const [copied, setCopied] = useState(false);
   const [mode, setMode] = useState<Mode>("serious");
   const [partnerType, setPartnerType] = useState<AttachmentTypeId | null>(null);
   const [partnerName, setPartnerName] = useState("");
@@ -221,24 +265,9 @@ export default function AttachmentPage(): ReactElement {
     setTarget(null);
   }, []);
 
-  const handleShare = useCallback(async () => {
-    if (!typeId) return;
-    const text =
-      locale === "ko" ? TYPES[typeId].ko.shareText : TYPES[typeId].en.shareText;
-    try {
-      if (typeof navigator !== "undefined" && navigator.clipboard) {
-        await navigator.clipboard.writeText(text);
-      }
-    } catch {
-      /* ignore */
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [typeId, locale]);
-
   const pageBg =
-    phase === "result" && typeId
-      ? TYPE_THEME[typeId].bg
+    phase === "result"
+      ? "radial-gradient(circle at 50% 0%, rgba(124, 111, 255, 0.14), transparent 32rem), linear-gradient(135deg, #fbf7ff 0%, #faf8f3 60%, #fbf7ff 100%)"
       : phase === "intro"
         ? "radial-gradient(circle at 50% 18%, rgba(124, 111, 255, 0.18), transparent 34rem), radial-gradient(circle at 18% 84%, rgba(255, 183, 197, 0.22), transparent 26rem), linear-gradient(135deg, #fffaf5 0%, #f7f1ff 48%, #f7fbff 100%)"
         : BG;
@@ -293,8 +322,6 @@ export default function AttachmentPage(): ReactElement {
               mode={mode}
               onModeChange={setMode}
               onRestart={handleRestart}
-              onShare={handleShare}
-              copied={copied}
               partnerType={partnerType}
               partnerName={partnerName}
               showPartnerModal={showPartnerModal}
@@ -1423,8 +1450,6 @@ function ResultView({
   mode,
   onModeChange,
   onRestart,
-  onShare,
-  copied,
   partnerType,
   partnerName,
   showPartnerModal,
@@ -1442,8 +1467,6 @@ function ResultView({
   mode: Mode;
   onModeChange: (m: Mode) => void;
   onRestart: () => void;
-  onShare: () => void;
-  copied: boolean;
   partnerType: AttachmentTypeId | null;
   partnerName: string;
   showPartnerModal: boolean;
@@ -1465,122 +1488,18 @@ function ResultView({
   const total = Math.max(1, stats.total);
   const samePct = Math.round((myCount / total) * 100);
 
+  const tagline = firstLine(txt.serious);
+  const shareUrl = "https://nolza.fun/games/attachment";
+  const shareTitle = t(`애착유형 · ${txt.name}`, `Attachment · ${txt.name}`);
+  const shareText = txt.shareText;
+
   let staggerIdx = 0;
   const stagger = (): React.CSSProperties => ({
     ["--i" as string]: String(staggerIdx++),
   });
 
-  return (
-    <div style={{ maxWidth: 560, width: "100%" }}>
-      {/* Eyebrow — relation context */}
-      <div
-        className="att-reveal"
-        style={{
-          ...stagger(),
-          textAlign: "center",
-          color: theme.name,
-          fontSize: 13,
-          letterSpacing: "0.3em",
-          fontWeight: 700,
-          marginBottom: 8,
-          fontFamily: INTER,
-          opacity: 0.7,
-        }}
-      >
-        {locale === "ko"
-          ? `${targetMeta.emoji} ${targetText.relation.toUpperCase()}`
-          : `${targetMeta.emoji} ${targetText.relation.toUpperCase()}`}
-      </div>
-
-      {/* SVG visual — drops in */}
-      <div
-        className="att-drop"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginBottom: 8,
-        }}
-      >
-        <TypeVisual typeId={typeId} />
-      </div>
-
-      {/* Type name + EN subtitle */}
-      <div style={{ textAlign: "center", marginBottom: 18 }}>
-        <h1
-          style={{
-            fontFamily: SERIF,
-            fontSize: 48,
-            fontWeight: 700,
-            letterSpacing: "-0.04em",
-            lineHeight: 1.05,
-            color: theme.name,
-            margin: 0,
-            minHeight: 56,
-          }}
-        >
-          <TypingText text={txt.name} startDelay={500} speedMs={75} />
-        </h1>
-        <div
-          className="att-reveal"
-          style={{
-            ...stagger(),
-            marginTop: 14,
-            fontFamily: INTER,
-            fontSize: 16,
-            fontWeight: 300,
-            letterSpacing: "0.25em",
-            opacity: 0.5,
-            color: theme.name,
-            textTransform: "uppercase",
-          }}
-        >
-          {locale === "ko" ? type.en.name : type.ko.name}
-        </div>
-      </div>
-
-      {/* Match badge */}
-      <div
-        className="att-reveal"
-        style={{
-          ...stagger(),
-          display: "flex",
-          justifyContent: "center",
-          marginBottom: 28,
-        }}
-      >
-        <div
-          className="tabular-nums"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "8px 18px",
-            background: theme.ringBg,
-            border: `1px solid ${theme.ringBorder}`,
-            borderRadius: 999,
-            color: theme.name,
-            fontFamily: INTER,
-            fontSize: 15,
-            fontWeight: 700,
-            letterSpacing: "0.16em",
-          }}
-        >
-          <span style={{ textTransform: "uppercase" }}>
-            {t("매치율", "Match")}
-          </span>
-          <span
-            style={{
-              width: 4,
-              height: 4,
-              borderRadius: 999,
-              background: theme.accent,
-              opacity: 0.6,
-            }}
-          />
-          <span>{match}%</span>
-        </div>
-      </div>
-
+  const detail = (
+    <div className="att-detail" style={{ width: "100%", marginTop: 24 }}>
       {/* Mode toggle pill */}
       <div
         className="att-reveal"
@@ -1839,66 +1758,42 @@ function ResultView({
         </div>
       </GlassSection>
 
-      {/* Big share button */}
+      {/* Partner compatibility trigger */}
       <div
         className="att-reveal"
         style={{
           ...stagger(),
-          marginTop: 28,
+          marginTop: 22,
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 14,
+          justifyContent: "center",
         }}
       >
         <button
           type="button"
-          onClick={onShare}
+          onClick={onOpenPartnerModal}
           style={{
-            background: theme.accent,
-            color: "#fff",
-            border: "none",
-            padding: "16px 32px",
-            borderRadius: 16,
-            fontSize: 16,
+            background: theme.ringBg,
+            color: theme.name,
+            border: `1px solid ${theme.ringBorder}`,
+            padding: "13px 26px",
+            borderRadius: 999,
+            fontSize: 15,
             fontWeight: 700,
             cursor: "pointer",
             fontFamily: SERIF,
             display: "inline-flex",
             alignItems: "center",
-            gap: 10,
-            boxShadow: `0 12px 30px ${theme.accent}55`,
-            transition: "transform 0.15s ease, box-shadow 0.15s ease",
-            letterSpacing: "0.02em",
+            gap: 8,
+            transition: "transform 0.15s ease, background 0.15s ease",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = `0 16px 36px ${theme.accent}66`;
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = `0 12px 30px ${theme.accent}55`;
           }}
         >
-          <ShareUpIcon />
-          <span>{copied ? t("✓ 복사됨", "✓ Copied") : t("결과 공유하기", "Share result")}</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={onRestart}
-          style={{
-            background: "transparent",
-            border: "none",
-            color: SUBTLE,
-            fontSize: 15,
-            cursor: "pointer",
-            fontFamily: SERIF,
-            padding: "4px 8px",
-            marginTop: 4,
-          }}
-        >
-          ↺ {t("다시 하기", "Try Again")}
+          {targetMeta.emoji} {t("상대와 궁합 확인하기", "Check compatibility with them")}
         </button>
       </div>
 
@@ -1918,193 +1813,32 @@ function ResultView({
       )}
     </div>
   );
-}
-
-// ═══════════════════════════════════════════════════════════
-// Type-specific abstract SVG visuals
-// ═══════════════════════════════════════════════════════════
-
-function TypeVisual({ typeId }: { typeId: AttachmentTypeId }): ReactElement {
-  const size = 160;
-  const common = {
-    width: size,
-    height: size,
-    viewBox: "0 0 200 200",
-  };
-  const className = "att-spin";
-
-  if (typeId === "secure") {
-    return (
-      <svg {...common} className={className} aria-hidden>
-        <ellipse
-          cx="102"
-          cy="100"
-          rx="25"
-          ry="40"
-          fill="#10b981"
-          opacity="0.2"
-        />
-        <circle
-          cx="90"
-          cy="100"
-          r="60"
-          fill="none"
-          stroke="#10b981"
-          strokeWidth="3"
-          opacity="0.6"
-        />
-        <circle
-          cx="115"
-          cy="100"
-          r="60"
-          fill="none"
-          stroke="#34d399"
-          strokeWidth="3"
-          opacity="0.4"
-        />
-      </svg>
-    );
-  }
-
-  if (typeId === "anxious") {
-    return (
-      <svg {...common} className={className} aria-hidden>
-        <circle
-          cx="80"
-          cy="100"
-          r="55"
-          fill="none"
-          stroke="#f43f5e"
-          strokeWidth="3"
-          opacity="0.7"
-        />
-        <circle
-          cx="140"
-          cy="100"
-          r="40"
-          fill="none"
-          stroke="#fb7185"
-          strokeWidth="2"
-          opacity="0.5"
-        />
-        <path
-          d="M 130 80 Q 105 100 130 120"
-          fill="none"
-          stroke="#f43f5e"
-          strokeWidth="2"
-        />
-      </svg>
-    );
-  }
-
-  if (typeId === "avoidant") {
-    return (
-      <svg {...common} className={className} aria-hidden>
-        <circle
-          cx="75"
-          cy="100"
-          r="55"
-          fill="none"
-          stroke="#3b82f6"
-          strokeWidth="3"
-          opacity="0.6"
-        />
-        <circle
-          cx="145"
-          cy="100"
-          r="55"
-          fill="none"
-          stroke="#60a5fa"
-          strokeWidth="3"
-          opacity="0.4"
-        />
-      </svg>
-    );
-  }
-
-  // disorganized
-  return (
-    <svg {...common} className={className} aria-hidden>
-      <circle
-        cx="100"
-        cy="100"
-        r="50"
-        fill="none"
-        stroke="#8b5cf6"
-        strokeWidth="2"
-        opacity="0.5"
-        strokeDasharray="8 4"
-      />
-      <circle
-        cx="100"
-        cy="100"
-        r="30"
-        fill="none"
-        stroke="#a78bfa"
-        strokeWidth="2"
-        opacity="0.4"
-        strokeDasharray="4 8"
-      />
-      <circle cx="100" cy="75" r="8" fill="#8b5cf6" opacity="0.7" />
-    </svg>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// Typing text — reveals character-by-character with caret
-// ═══════════════════════════════════════════════════════════
-
-function TypingText({
-  text,
-  startDelay = 200,
-  speedMs = 70,
-}: {
-  text: string;
-  startDelay?: number;
-  speedMs?: number;
-}): ReactElement {
-  const [revealed, setRevealed] = useState("");
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    setRevealed("");
-    setDone(false);
-    let cancelled = false;
-    let interval: ReturnType<typeof setInterval> | null = null;
-    const startTimer = window.setTimeout(() => {
-      if (cancelled) return;
-      let i = 0;
-      interval = setInterval(() => {
-        i += 1;
-        setRevealed(text.slice(0, i));
-        if (i >= text.length) {
-          if (interval) clearInterval(interval);
-          setDone(true);
-        }
-      }, speedMs);
-    }, startDelay);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(startTimer);
-      if (interval) clearInterval(interval);
-    };
-  }, [text, startDelay, speedMs]);
 
   return (
-    <>
-      {revealed}
-      {!done && (
-        <span
-          aria-hidden
-          className="att-caret"
-          style={{
-            background: "currentColor",
-            height: "0.85em",
-            verticalAlign: "baseline",
-          }}
-        />
-      )}
-    </>
+    <div style={{ width: "100%" }}>
+      <ResultScreen
+        locale={locale}
+        currentGameId="attachment"
+        tone="burgundy"
+        gameName={t("애착유형", "ATTACHMENT")}
+        emoji={PURPLE_HEART}
+        eyebrow={targetText.relation}
+        title={txt.name}
+        score={`${match}%`}
+        scoreLabel={t("매치율", "Match")}
+        description={tagline}
+        details={txt.strengths.slice(0, 4)}
+        shareTitle={shareTitle}
+        shareText={shareText}
+        shareUrl="/games/attachment"
+        onReplay={onRestart}
+        replayLabel={t("다시 하기", "Try again")}
+        onKakaoShare={() => shareKakao(shareTitle, tagline, shareUrl)}
+        kakaoLabel={t("카카오 공유", "Share on Kakao")}
+        recommendedIds={["kbti", "mbti-depth", "defense-mechanism"]}
+        afterCard={detail}
+      />
+    </div>
   );
 }
 
@@ -2246,26 +1980,6 @@ function Stars({ rating }: { rating: number }): ReactElement {
         {"★".repeat(5 - rating)}
       </span>
     </div>
-  );
-}
-
-function ShareUpIcon(): ReactElement {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12 18V5" />
-      <path d="m6 11 6-6 6 6" />
-      <path d="M5 21h14" />
-    </svg>
   );
 }
 

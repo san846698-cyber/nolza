@@ -10,9 +10,54 @@ import {
   type ReactElement,
 } from "react";
 import { AdMobileSticky } from "../../components/Ads";
-import { ShareCard } from "../../components/ShareCard";
+import ResultScreen from "../../components/game/ResultScreen";
 import { useLocale } from "@/hooks/useLocale";
 import { trackResultView, trackRetryClick, trackShareClick, trackTestStart } from "@/lib/analytics";
+
+// Sparkle emoji built from its codepoint so the source never carries a raw
+// surrogate pair (avoids encoding issues).
+const SPARKLE = String.fromCodePoint(0x2728);
+
+function shareKakao(title: string, desc: string, url: string) {
+  const w =
+    typeof window !== "undefined"
+      ? (window as unknown as {
+          Kakao?: {
+            isInitialized?: () => boolean;
+            Share?: { sendDefault: (a: unknown) => void };
+          };
+        })
+      : undefined;
+  if (w?.Kakao?.Share && w.Kakao.isInitialized?.()) {
+    try {
+      w.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: { title, description: desc, link: { webUrl: url, mobileWebUrl: url } },
+      });
+      return;
+    } catch {
+      /* fall through */
+    }
+  }
+  if (typeof navigator === "undefined") return;
+  const nav = navigator as Navigator & {
+    share?: (d: { title: string; text: string; url: string }) => Promise<void>;
+  };
+  if (typeof nav.share === "function") {
+    nav.share({ title, text: desc, url }).catch(() => {
+      /* user cancelled */
+    });
+    return;
+  }
+  nav.clipboard?.writeText(`${title}\n${desc}\n${url}`).catch(() => {
+    /* ignore */
+  });
+}
+
+function firstSentence(text: string): string {
+  const normalized = text.replace(/\s+/g, " ").trim();
+  return normalized.match(/^.*?[.!?。](\s|$)/)?.[0].trim() ?? normalized;
+}
 
 /* ============================================================================
    Theme — fortune-teller's chamber: deep navy + gold + crimson
@@ -862,7 +907,6 @@ export default function SajuPage(): ReactElement {
   });
 
   const [result, setResult] = useState<SajuResult | null>(null);
-  const [copied, setCopied] = useState(false);
 
   // Reset to top on phase change
   useEffect(() => {
@@ -953,40 +997,7 @@ export default function SajuPage(): ReactElement {
     setGeneratedName(null);
     setForm({ name: "", year: "", month: "", day: "", hour: "", unknownHour: false });
     setResult(null);
-    setCopied(false);
   }, []);
-
-  /* ── Share ───────────────────────────────────────────────────────────── */
-
-  const onShare = useCallback(async () => {
-    if (!result) return;
-    trackShareClick("saju", "fortune", `${result.day.stem.element}-${result.dominant}`);
-    const reading = DAY_STEM_READINGS[result.day.stem.ko];
-    const ext = buildExtendedReading(result);
-    // First sentence of the overview as the "타고난 기질" hook.
-    const traitLine = ext.overview.split("\n")[0];
-    // First sentence of yearly outlook.
-    const yearLine = ext.yearly.overall.split(".")[0] + ".";
-    const text = t(
-      `내 사주풀이 결과:\n` +
-        `타고난 기질 — ${traitLine}\n` +
-        `올해 운세 — ${yearLine}\n` +
-        `→ nolza.fun/games/saju`,
-      `My saju reading:\n` +
-        `Nature — ${reading.trait}\n` +
-        `${new Date().getFullYear()} — ${yearLine}\n` +
-        `→ nolza.fun/games/saju`,
-    );
-    try {
-      if (typeof navigator !== "undefined" && navigator.clipboard) {
-        await navigator.clipboard.writeText(text);
-      }
-    } catch {
-      /* ignore */
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [result, t]);
 
   /* ── Step indicator ──────────────────────────────────────────────────── */
 
@@ -1122,8 +1133,6 @@ export default function SajuPage(): ReactElement {
             name={form.name}
             originalName={!isKorean ? foreignName : null}
             result={result}
-            copied={copied}
-            onShare={onShare}
             onReset={handleReset}
           />
         )}
@@ -2130,67 +2139,84 @@ function ResultView({
   name,
   originalName,
   result,
-  copied,
-  onShare,
   onReset,
 }: {
   name: string;
   originalName: string | null;
   result: SajuResult;
-  copied: boolean;
-  onShare: () => void;
   onReset: () => void;
 }): ReactElement {
-  const { locale } = useLocale();
-  const showEn = locale !== "ko";
+  const { locale, t } = useLocale();
   const dayReading = DAY_STEM_READINGS[result.day.stem.ko];
   const yearAnimal = result.year.branch.animal;
   const zodiacBrief = ZODIAC_BRIEF[yearAnimal] ?? "";
   const dominantInfo = ELEMENT_INFO[result.dominant];
   const weakestInfo = ELEMENT_INFO[result.weakest];
+  const dayEl = ELEMENT_INFO[result.day.stem.element];
+
+  const eyebrow =
+    locale === "ko"
+      ? `일간 ${result.day.stem.ko}(${result.day.stem.hanja}) · ${dayEl.ko}${dayEl.hanja}`
+      : `Day master · ${dayEl.en}`;
+  const title = locale === "ko" ? `${name}의 사주` : `${name}'s Saju`;
+  const description = firstSentence(dayReading.trait);
+  const detailsPills =
+    locale === "ko"
+      ? [
+          `${dominantInfo.emoji} ${dominantInfo.ko}(${dominantInfo.hanja}) 강함`,
+          `${weakestInfo.emoji} ${weakestInfo.ko}(${weakestInfo.hanja}) 보완`,
+          `${result.year.branch.emoji} ${yearAnimal}띠`,
+        ]
+      : [
+          `${dominantInfo.emoji} ${dominantInfo.en} strong`,
+          `${weakestInfo.emoji} ${weakestInfo.en} weak`,
+          `${result.year.branch.emoji} ${result.year.branch.animalEn}`,
+        ];
+
+  const ext = buildExtendedReading(result);
+  const traitLine = ext.overview.split("\n")[0];
+  const yearLine = `${ext.yearly.overall.split(".")[0]}.`;
+  const shareUrl = "https://nolza.fun/games/saju";
+  const shareTitle = title;
+  const shareText = t(
+    `내 사주풀이 결과:\n타고난 기질 — ${traitLine}\n올해 운세 — ${yearLine}\n→ nolza.fun/games/saju`,
+    `My saju reading:\nNature — ${dayReading.trait}\n${yearLine}\n→ nolza.fun/games/saju`,
+  );
 
   return (
-    <ShareCard
-      filename={`nolza-saju-${name}`}
+    <ResultScreen
       locale={locale}
-      backgroundColor={BG}
-      buttonLabel={{ ko: "사주 이미지 저장", en: "Save saju image" }}
-      buttonStyle={{
-        padding: "12px 22px",
-        borderRadius: 999,
-        border: `1px solid ${ACCENT}`,
-        background: "transparent",
-        color: ACCENT,
-        fontWeight: 700,
-        fontSize: 13,
-        letterSpacing: "0.18em",
-        cursor: "pointer",
-        minHeight: 44,
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 6,
-      }}
-    >
-      {({ cardRef }) => (
-        <div style={{ maxWidth: 560, width: "100%" }}>
-          <div ref={cardRef} style={{ background: BG, padding: "4px 0" }}>
-      <div style={{ textAlign: "center", marginBottom: 24 }}>
-        <Eyebrow>SAJU READING</Eyebrow>
-        <h1 style={{ ...titleStyle, color: ACCENT }}>{name}</h1>
-        {originalName && (
-          <p
-            style={{
-              fontSize: 15,
-              color: SUBTLE,
-              marginTop: 4,
-              fontFamily: "var(--font-noto-sans-kr), sans-serif",
-            }}
-          >
-            ({originalName})
-          </p>
-        )}
-        <p style={{ ...subtitleStyle, marginTop: 8 }}>의 사주</p>
-      </div>
+      currentGameId="saju"
+      tone="midnight"
+      gameName={t("사주", "SAJU")}
+      emoji={SPARKLE}
+      eyebrow={eyebrow}
+      title={title}
+      description={description}
+      details={detailsPills}
+      shareTitle={shareTitle}
+      shareText={shareText}
+      shareUrl="/games/saju"
+      onReplay={onReset}
+      replayLabel={t("다시 보기", "Read again")}
+      onKakaoShare={() => shareKakao(shareTitle, traitLine, shareUrl)}
+      kakaoLabel={t("카카오 공유", "Share on Kakao")}
+      recommendedIds={["kbti", "attachment", "mbti-depth"]}
+      afterCard={
+        <div className="saju-detail" style={{ width: "100%", maxWidth: 560, margin: "8px auto 0" }}>
+          {originalName && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: 14,
+                color: SUBTLE,
+                marginBottom: 18,
+                fontFamily: "var(--font-noto-sans-kr), sans-serif",
+              }}
+            >
+              ({originalName})
+            </p>
+          )}
 
       {/* Four pillars */}
       <div
@@ -2354,30 +2380,9 @@ function ResultView({
 
       {/* ── Extended reading ─────────────────────────────────────── */}
       <ExtendedSections result={result} />
-          </div>
-
-      {/* Buttons */}
-      <div
-        style={{
-          display: "flex",
-          gap: 10,
-          justifyContent: "center",
-          flexWrap: "wrap",
-          marginTop: 28,
-        }}
-      >
-        <button type="button" onClick={onShare} style={primaryButtonStyle}>
-          {copied
-            ? (locale === "ko" ? "결과 링크가 복사됐어요!" : "RESULT LINK COPIED!")
-            : (locale === "ko" ? "결과 공유하기" : "SHARE RESULT")}
-        </button>
-        <button type="button" onClick={onReset} style={secondaryButtonStyle}>
-          ↺ 다시 보기
-        </button>
-      </div>
         </div>
-      )}
-    </ShareCard>
+      }
+    />
   );
 }
 
@@ -2888,21 +2893,6 @@ const primaryButtonStyle: React.CSSProperties = {
   boxShadow:
     "0 16px 42px rgba(185,148,84,0.24), inset 0 1px 0 rgba(255,255,255,0.45)",
   fontFamily: "'Inter', sans-serif",
-};
-
-const secondaryButtonStyle: React.CSSProperties = {
-  background: "rgba(255,255,255,0.04)",
-  color: INK,
-  border: `1px solid ${RULE}`,
-  padding: "18px 32px",
-  borderRadius: 999,
-  fontSize: 18,
-  fontWeight: 600,
-  letterSpacing: "0.16em",
-  cursor: "pointer",
-  touchAction: "manipulation",
-  fontFamily: "'Inter', sans-serif",
-  backdropFilter: "blur(10px)",
 };
 
 function Eyebrow({ children }: { children: React.ReactNode }): ReactElement {

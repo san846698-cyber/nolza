@@ -27,10 +27,16 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
 
   return (
     <nav
-      className="relative z-10 bg-transparent"
+      className="sticky top-[57px] z-40"
+      style={{
+        background: "rgba(250, 250, 247, 0.92)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid var(--border)",
+      }}
       aria-label="Jump to category"
     >
-      <div className="mx-auto flex max-w-col justify-start gap-2.5 overflow-x-auto px-4 py-3.5 sm:justify-center sm:gap-3 sm:px-6 sm:py-4 lg:px-6 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+      <div className="mx-auto flex max-w-col items-center gap-1.5 overflow-x-auto px-4 py-2.5 sm:gap-2 sm:px-6 lg:px-7 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
         {categories.map((c, i) => {
           const isActive = active === c.id;
           return (
@@ -38,24 +44,38 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
               key={c.id}
               href={`#${c.id}`}
               aria-current={isActive ? "true" : undefined}
-              className={[
-                "inline-flex min-h-11 shrink-0 items-center gap-2.5 rounded-full px-[18px] py-2.5 sm:min-h-[50px] sm:px-5 lg:min-h-[48px] lg:px-5",
-                "border text-[14.5px] font-black tracking-tight sm:text-[15px]",
-                "whitespace-nowrap no-underline shadow-[0_10px_24px_rgba(48,35,24,0.055)] transition-[background,color,border-color,transform,box-shadow]",
+              className="inline-flex min-h-9 shrink-0 items-center gap-2 rounded-full px-4 py-2 font-inter text-[13px] font-bold tracking-tight whitespace-nowrap no-underline transition-[background,color] duration-200"
+              style={
                 isActive
-                  ? "border-home-ink bg-home-ink text-white shadow-[0_16px_34px_rgba(20,17,14,0.16)]"
-                  : "border-home-hairline bg-white/78 text-home-ink hover:-translate-y-0.5 hover:border-home-coral/35 hover:bg-white hover:shadow-[0_16px_34px_rgba(48,35,24,0.10)]",
-              ].join(" ")}
+                  ? {
+                      background: "var(--text-primary)",
+                      color: "#FFFFFF",
+                    }
+                  : {
+                      background: "transparent",
+                      color: "var(--text-secondary)",
+                    }
+              }
+              onMouseEnter={(e) => {
+                if (!isActive)
+                  (e.currentTarget as HTMLElement).style.background =
+                    "var(--bg-secondary)";
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive)
+                  (e.currentTarget as HTMLElement).style.background =
+                    "transparent";
+              }}
             >
               <span
-                className={[
-                  "font-mono text-[11px] font-black tracking-[0.1em]",
-                  isActive ? "text-white/62" : "text-home-coral/80",
-                ].join(" ")}
+                className="font-mono text-[10px] font-black tracking-[0.12em]"
+                style={{
+                  color: isActive ? "rgba(255,255,255,0.5)" : "var(--accent)",
+                }}
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span>{t(c.labelKo, c.labelEn)}</span>
+              {t(c.labelKo, c.labelEn)}
             </a>
           );
         })}

@@ -9,9 +9,7 @@ import {
   type ReactElement,
 } from "react";
 import { AdResult } from "../../components/Ads";
-import { ShareCard } from "../../components/ShareCard";
-import RecommendedGames from "../../components/game/RecommendedGames";
-import ResultActions from "../../components/game/ResultActions";
+import ResultScreen from "../../components/game/ResultScreen";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   buildQuestionList,
@@ -838,6 +836,42 @@ function QuizView({
   );
 }
 
+function shareKakao(title: string, desc: string, url: string) {
+  const w =
+    typeof window !== "undefined"
+      ? (window as unknown as {
+          Kakao?: {
+            isInitialized?: () => boolean;
+            Share?: { sendDefault: (a: unknown) => void };
+          };
+        })
+      : undefined;
+  if (w?.Kakao?.Share && w.Kakao.isInitialized?.()) {
+    try {
+      w.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: { title, description: desc, link: { webUrl: url, mobileWebUrl: url } },
+      });
+      return;
+    } catch {
+      /* fall through */
+    }
+  }
+  if (typeof navigator === "undefined") return;
+  const nav = navigator as Navigator & {
+    share?: (d: { title: string; text: string; url: string }) => Promise<void>;
+  };
+  if (typeof nav.share === "function") {
+    nav.share({ title, text: desc, url }).catch(() => {
+      /* user cancelled */
+    });
+    return;
+  }
+  nav.clipboard?.writeText(`${title}\n${desc}\n${url}`).catch(() => {
+    /* ignore */
+  });
+}
+
 function ResultView({
   result,
   stats,
@@ -859,267 +893,135 @@ function ResultView({
   const total = Math.max(1, stats.total);
   const samePct = Math.round((myCount / total) * 100);
   const traits = locale === "ko" ? vibe.traitsKo : vibe.traitsEn;
+  const alias = locale === "ko" ? vibe.aliasKo : vibe.aliasEn;
+  const subtitle = locale === "ko" ? vibe.subtitleKo : vibe.subtitleEn;
+  const summary = locale === "ko" ? vibe.summaryKo : vibe.summaryEn;
+  const oneliner = firstLine(txt.oneliner);
   const shareLine = t(
     `내 KBTI 결과는 '${vibe.aliasKo}' 나왔습니다. 근데 설명이 너무 나 같음...`,
     `My KBTI result is '${vibe.aliasEn}'. This is way too accurate...`,
   );
-  const shareText = `${shareLine}\n${firstLine(txt.oneliner)}\nhttps://nolza.fun/games/kbti`;
+  const shareUrl = "https://nolza.fun/games/kbti";
+  const shareTitle = t(`KBTI · ${alias}`, `KBTI · ${alias}`);
+  const shareText = `${shareLine}\n${oneliner}\n${shareUrl}`;
 
   let revealIdx = 0;
   const stagger = (): CSSProperties => ({
     ["--i" as string]: String(revealIdx++),
   });
 
-  return (
-    <ShareCard
-      filename={`nolza-kbti-${txt.code.replace(/\s+/g, "")}`}
-      locale={locale === "ko" ? "ko" : "en"}
-      backgroundColor={BG}
-      buttonLabel={{ ko: "결과 이미지 저장", en: "Save result image" }}
-      buttonStyle={{
-        padding: "12px 22px",
-        borderRadius: 999,
-        border: `1px solid ${ACCENT}`,
-        background: "transparent",
-        color: ACCENT,
-        fontWeight: 800,
-        fontSize: 13,
-        cursor: "pointer",
-        minHeight: 44,
-      }}
-    >
-      {({ cardRef }) => (
-        <div style={{ maxWidth: 720, width: "100%" }}>
-          <div ref={cardRef} className="kbti-result-card">
-            <div
-              className="kbti-reveal"
-              style={{
-                ...stagger(),
-                textAlign: "center",
-                color: ACCENT,
-                fontSize: 12,
-                letterSpacing: "0.28em",
-                fontWeight: 900,
-                marginBottom: 12,
-                fontFamily: "var(--font-inter), sans-serif",
-              }}
-            >
-              {hidden ? t("숨겨진 유형 발견", "HIDDEN TYPE UNLOCKED") : t("당신의 KBTI", "YOUR KBTI")}
-            </div>
+  const detail = (
+    <div className="kbti-detail" style={{ width: "100%", marginTop: 24 }}>
+      <Callout style={stagger()} label={t("한 줄 요약", "One-line summary")} body={oneliner} />
 
-            <section
-              className="kbti-reveal"
-              style={{
-                ...stagger(),
-                background:
-                  "linear-gradient(180deg, rgba(198,12,48,0.18), rgba(255,255,255,0.045))",
-                border: `1px solid rgba(198,12,48,0.55)`,
-                borderRadius: 24,
-                padding: "32px 24px 26px",
-                textAlign: "center",
-                boxShadow: "0 24px 70px rgba(0,0,0,0.34)",
-              }}
-            >
-              <div style={{ fontSize: 52, marginBottom: 6 }}>{type.emoji}</div>
-              <div
-                style={{
-                  fontSize: "clamp(48px, 10vw, 78px)",
-                  fontWeight: 950,
-                  lineHeight: 0.95,
-                  color: ACCENT,
-                  letterSpacing: 0,
-                }}
-              >
-                {txt.code}
-              </div>
-              <div
-                style={{
-                  marginTop: 8,
-                  color: "rgba(246,243,239,0.54)",
-                  fontSize: 14,
-                  fontFamily: "var(--font-inter), sans-serif",
-                }}
-              >
-                {otherTxt.code}
-              </div>
-              <h1
-                style={{
-                  margin: "18px 0 0",
-                  fontSize: "clamp(24px, 5vw, 34px)",
-                  lineHeight: 1.18,
-                  fontWeight: 900,
-                  letterSpacing: 0,
-                  wordBreak: "keep-all",
-                }}
-              >
-                {locale === "ko" ? vibe.aliasKo : vibe.aliasEn}
-              </h1>
-              <p
-                style={{
-                  margin: "10px auto 0",
-                  color: SUBTLE,
-                  maxWidth: 520,
-                  fontSize: 15,
-                  lineHeight: 1.65,
-                  wordBreak: "keep-all",
-                }}
-              >
-                {locale === "ko" ? vibe.subtitleKo : vibe.subtitleEn}
-              </p>
-              {!hidden && (
-                <div
-                  className="tabular-nums"
-                  style={{
-                    marginTop: 18,
-                    color: ACCENT,
-                    fontSize: 13,
-                    fontWeight: 900,
-                    letterSpacing: "0.16em",
-                    fontFamily: "var(--font-inter), sans-serif",
-                  }}
-                >
-                  {t("매치율", "MATCH")} {match}%
-                </div>
-              )}
-            </section>
+      <p
+        className="kbti-reveal"
+        style={{
+          ...stagger(),
+          margin: "22px auto",
+          maxWidth: 640,
+          color: "rgba(246,243,239,0.84)",
+          fontSize: 16,
+          lineHeight: 1.8,
+          textAlign: "center",
+          wordBreak: "keep-all",
+        }}
+      >
+        {summary}
+      </p>
 
-            <Callout
-              style={stagger()}
-              label={t("한 줄 요약", "One-line summary")}
-              body={firstLine(txt.oneliner)}
-            />
+      <div style={{ display: "grid", gap: 14 }}>
+        <ResultSection label={t("강점", "Strengths")} body={txt.strengths} accent="#7bdba0" style={stagger()} />
+        <ResultSection label={t("약점 / 블라인드스팟", "Blind spots")} body={txt.watchOut} accent="#ff9b6b" style={stagger()} />
+        <TwoColumnSection
+          leftLabel={t("관계 스타일", "Social style")}
+          leftBody={txt.howOthersSee}
+          rightLabel={t("일 / 공부 스타일", "Work / study style")}
+          rightBody={txt.shines}
+          style={stagger()}
+        />
+        <MiniGrid
+          style={stagger()}
+          items={[
+            [t("겉모습", "Outer look"), firstLine(txt.howOthersSee)],
+            [t("속마음", "Inside"), locale === "ko" ? vibe.innerKo : vibe.innerEn],
+            [t("사람들이 오해하는 점", "Common misunderstanding"), locale === "ko" ? vibe.misunderstoodKo : vibe.misunderstoodEn],
+            [t("친해지면 보이는 모습", "Once close"), locale === "ko" ? vibe.closeKo : vibe.closeEn],
+            [t("잘 맞는 유형", "Best match"), locale === "ko" ? vibe.goodMatchKo : vibe.goodMatchEn],
+            [t("안 맞는 상황", "Worst setting"), locale === "ko" ? vibe.badSituationKo : vibe.badSituationEn],
+          ]}
+        />
+        <ListSection label={t("이런 말 자주 들음", "You hear this often")} items={locale === "ko" ? vibe.heardKo : vibe.heardEn} style={stagger()} />
+        <ListSection label={t("친구가 보면 인정할 포인트", "Friend-proof evidence")} items={locale === "ko" ? vibe.friendProofKo : vibe.friendProofEn} style={stagger()} />
+      </div>
 
-            <p
-              className="kbti-reveal"
-              style={{
-                ...stagger(),
-                margin: "22px auto",
-                maxWidth: 640,
-                color: "rgba(246,243,239,0.84)",
-                fontSize: 16,
-                lineHeight: 1.8,
-                textAlign: "center",
-                wordBreak: "keep-all",
-              }}
-            >
-              {locale === "ko" ? vibe.summaryKo : vibe.summaryEn}
-            </p>
-
-            <div
-              className="kbti-reveal"
-              style={{
-                ...stagger(),
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(138px, 1fr))",
-                gap: 8,
-                margin: "18px 0 26px",
-              }}
-            >
-              {traits.slice(0, 5).map((trait) => (
-                <span
-                  key={trait}
-                  style={{
-                    border: `1px solid ${RULE}`,
-                    background: PAPER,
-                    borderRadius: 12,
-                    padding: "12px 10px",
-                    textAlign: "center",
-                    color: INK,
-                    fontSize: 13,
-                    fontWeight: 800,
-                    lineHeight: 1.35,
-                    wordBreak: "keep-all",
-                  }}
-                >
-                  {trait}
-                </span>
-              ))}
-            </div>
-
-            <div style={{ display: "grid", gap: 14 }}>
-              <ResultSection
-                label={t("강점", "Strengths")}
-                body={txt.strengths}
-                accent="#7bdba0"
-                style={stagger()}
-              />
-              <ResultSection
-                label={t("약점 / 블라인드스팟", "Blind spots")}
-                body={txt.watchOut}
-                accent="#ff9b6b"
-                style={stagger()}
-              />
-              <TwoColumnSection
-                leftLabel={t("관계 스타일", "Social style")}
-                leftBody={txt.howOthersSee}
-                rightLabel={t("일 / 공부 스타일", "Work / study style")}
-                rightBody={txt.shines}
-                style={stagger()}
-              />
-              <MiniGrid
-                style={stagger()}
-                items={[
-                  [t("겉모습", "Outer look"), firstLine(txt.howOthersSee)],
-                  [t("속마음", "Inside"), locale === "ko" ? vibe.innerKo : vibe.innerEn],
-                  [t("사람들이 오해하는 점", "Common misunderstanding"), locale === "ko" ? vibe.misunderstoodKo : vibe.misunderstoodEn],
-                  [t("친해지면 보이는 모습", "Once close"), locale === "ko" ? vibe.closeKo : vibe.closeEn],
-                  [t("잘 맞는 유형", "Best match"), locale === "ko" ? vibe.goodMatchKo : vibe.goodMatchEn],
-                  [t("안 맞는 상황", "Worst setting"), locale === "ko" ? vibe.badSituationKo : vibe.badSituationEn],
-                ]}
-              />
-              <ListSection
-                label={t("이런 말 자주 들음", "You hear this often")}
-                items={locale === "ko" ? vibe.heardKo : vibe.heardEn}
-                style={stagger()}
-              />
-              <ListSection
-                label={t("친구가 보면 인정할 포인트", "Friend-proof evidence")}
-                items={locale === "ko" ? vibe.friendProofKo : vibe.friendProofEn}
-                style={stagger()}
-              />
-            </div>
-
-            <Callout
-              style={stagger()}
-              label={t("공유 멘트", "Share copy")}
-              body={shareLine}
-            />
-
-            {stats.total > 0 && (
-              <div
-                className="kbti-reveal"
-                style={{
-                  ...stagger(),
-                  textAlign: "center",
-                  fontSize: 14,
-                  color: SUBTLE,
-                  margin: "18px 0 8px",
-                  lineHeight: 1.6,
-                }}
-              >
-                {t(
-                  `이 기기에서 ${stats.total}번 플레이 중 ${samePct}%가 같은 유형`,
-                  `${samePct}% of ${stats.total} plays on this device got the same type`,
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="kbti-action-wrap kbti-reveal" style={stagger()}>
-            <ResultActions
-              locale={locale}
-              title={t("KBTI 결과", "KBTI result")}
-              text={shareText}
-              url="/games/kbti"
-              onReplay={onRestart}
-              replayLabel={t("다시 하기", "Try again")}
-            />
-            <AdResult placement="kbti-result" />
-            <RecommendedGames currentId="kbti" ids={["mbti-depth", "attachment", "defense-mechanism"]} />
-          </div>
+      {otherTxt.code && (
+        <div
+          className="kbti-reveal"
+          style={{
+            ...stagger(),
+            marginTop: 16,
+            textAlign: "center",
+            fontSize: 13,
+            color: "rgba(246,243,239,0.46)",
+            fontFamily: "var(--font-inter), sans-serif",
+            letterSpacing: "0.04em",
+          }}
+        >
+          {txt.code} · {otherTxt.code}
         </div>
       )}
-    </ShareCard>
+
+      {stats.total > 0 && (
+        <div
+          className="kbti-reveal"
+          style={{
+            ...stagger(),
+            textAlign: "center",
+            fontSize: 14,
+            color: SUBTLE,
+            margin: "10px 0 0",
+            lineHeight: 1.6,
+          }}
+        >
+          {t(
+            `이 기기에서 ${stats.total}번 플레이 중 ${samePct}%가 같은 유형`,
+            `${samePct}% of ${stats.total} plays on this device got the same type`,
+          )}
+        </div>
+      )}
+
+      <div style={{ marginTop: 22 }}>
+        <AdResult placement="kbti-result" />
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ width: "100%" }}>
+      <ResultScreen
+        locale={locale}
+        currentGameId="kbti"
+        tone="navy"
+        gameName="KBTI"
+        emoji={type.emoji}
+        eyebrow={hidden ? t(`숨겨진 유형 · ${txt.code}`, `HIDDEN · ${txt.code}`) : `KBTI · ${txt.code}`}
+        title={alias}
+        score={hidden ? undefined : `${match}%`}
+        scoreLabel={hidden ? undefined : t("매치율", "Match")}
+        description={subtitle}
+        details={traits.slice(0, 4)}
+        shareTitle={shareTitle}
+        shareText={shareText}
+        shareUrl="/games/kbti"
+        onReplay={onRestart}
+        replayLabel={t("다시 하기", "Try again")}
+        onKakaoShare={() => shareKakao(shareTitle, `${oneliner}`, shareUrl)}
+        kakaoLabel={t("카카오 공유", "Share on Kakao")}
+        recommendedIds={["mbti-depth", "attachment", "defense-mechanism"]}
+        afterCard={detail}
+      />
+    </div>
   );
 }
 

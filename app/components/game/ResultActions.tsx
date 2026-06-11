@@ -15,6 +15,9 @@ type ResultActionsProps = {
   contentId?: string;
   contentType?: string;
   resultName?: string;
+  /** When provided, the primary action becomes a Kakao share button. */
+  onKakaoShare?: () => void;
+  kakaoLabel?: string;
 };
 
 export default function ResultActions({
@@ -28,6 +31,8 @@ export default function ResultActions({
   contentId,
   contentType = "result",
   resultName,
+  onKakaoShare,
+  kakaoLabel,
 }: ResultActionsProps) {
   const share = useShareActions({ title, text, url });
   const isKo = locale === "ko";
@@ -43,14 +48,24 @@ export default function ResultActions({
     if (contentId) trackShareClick(contentId, contentType, resultName);
     share.shareResult();
   };
+  const handleKakao = () => {
+    if (contentId) trackShareClick(contentId, contentType, resultName);
+    onKakaoShare?.();
+  };
 
   return (
     <div className={`result-actions ${compact ? "result-actions--compact" : ""}`}>
-      <button type="button" className="result-actions__btn result-actions__btn--primary result-actions__btn--share btn-press" onClick={handleShare}>
-        {share.shared
-          ? isKo ? "\uACF5\uC720\uB428" : "Shared"
-          : isKo ? "\uACB0\uACFC \uACF5\uC720\uD558\uAE30" : "Share result"}
-      </button>
+      {onKakaoShare ? (
+        <button type="button" className="result-actions__btn result-actions__btn--kakao btn-press" onClick={handleKakao}>
+          {kakaoLabel ?? (isKo ? "\uCE74\uCE74\uC624\uD1A1 \uACF5\uC720" : "Share on Kakao")}
+        </button>
+      ) : (
+        <button type="button" className="result-actions__btn result-actions__btn--primary result-actions__btn--share btn-press" onClick={handleShare}>
+          {share.shared
+            ? isKo ? "\uACF5\uC720\uB428" : "Shared"
+            : isKo ? "\uACB0\uACFC \uACF5\uC720\uD558\uAE30" : "Share result"}
+        </button>
+      )}
       {onReplay && (
         <button type="button" className="result-actions__btn result-actions__btn--secondary btn-press" onClick={handleReplay}>
           {replayLabel ?? (isKo ? "\uB2E4\uC2DC \uBD84\uC11D\uD558\uAE30" : "Analyze again")}

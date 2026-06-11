@@ -132,6 +132,15 @@ export default function RootLayout({
 }) {
   const adsenseClient =
     process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? "ca-pub-3027162336323004";
+  const zeroToStudioProjectKey =
+    process.env.NEXT_PUBLIC_ZERO_TO_STUDIO_PROJECT_KEY ??
+    "zts_pk_3bbad73665734c3095afa8803f9a7a1c";
+  const zeroToStudioSdkSrc =
+    process.env.NEXT_PUBLIC_ZERO_TO_STUDIO_SDK_SRC ??
+    "https://studio4any.com/v1/sdk.js";
+  const zeroToStudioFeedbackSlug =
+    process.env.NEXT_PUBLIC_ZERO_TO_STUDIO_FEEDBACK_SLUG ?? "nolza-3b91e6";
+
   return (
     <html
       lang="ko"
@@ -142,6 +151,19 @@ export default function RootLayout({
           name="google-adsense-account"
           content={adsenseClient}
         />
+        {zeroToStudioProjectKey ? (
+          <script
+            id="zero-to-studio-sdk"
+            defer
+            src={zeroToStudioSdkSrc}
+            data-project-key={zeroToStudioProjectKey}
+            data-feedback-slug={zeroToStudioFeedbackSlug}
+            data-feedback-prompt="true"
+            data-feedback-display="modal"
+            data-feedback-mode="smart"
+            data-feedback-cooldown-days="7"
+          />
+        ) : null}
       </head>
       <body className="font-sans antialiased">
         <Analytics />

@@ -16,28 +16,77 @@ export default function CategorySection({
   const { t } = useLocale();
 
   return (
-    <section id={cat.id} data-cat={cat.id} className="scroll-mt-[76px]">
-      <div className="mx-auto max-w-col px-4 py-9 sm:px-6 sm:py-12 lg:px-6 lg:py-11">
-        <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-[760px]">
-            <span className="mb-2.5 inline-flex rounded-full border border-home-hairline bg-white/64 px-3 py-1.5 font-inter text-[10.5px] font-black uppercase tracking-[0.16em] text-home-coral/90 shadow-[0_10px_24px_rgba(48,35,24,0.045)]">
+    <section
+      id={cat.id}
+      data-cat={cat.id}
+      className="scroll-mt-[57px]"
+    >
+      <div className="mx-auto max-w-col px-4 py-10 sm:px-6 sm:py-14 lg:px-7">
+
+        {/* ── Section header ─────────────────────────────────────── */}
+        <div className="mb-8 flex items-end gap-4 sm:mb-10 sm:gap-5">
+          {/* Big number — decorative */}
+          <span
+            className="hidden select-none font-serif font-black leading-none sm:block"
+            aria-hidden
+            style={{
+              fontSize: "clamp(64px, 8vw, 96px)",
+              color: "var(--border)",
+              lineHeight: "0.9",
+            }}
+          >
+            {String(index).padStart(2, "0")}
+          </span>
+
+          <div className="flex-1">
+            {/* Mobile number */}
+            <span
+              className="mb-2 block font-inter text-[11px] font-black uppercase tracking-[0.2em] sm:hidden"
+              style={{ color: "var(--accent-warm)" }}
+            >
               {String(index).padStart(2, "0")}
             </span>
-            <h2 className="m-0 text-[27px] font-black leading-[1.08] tracking-[-0.025em] text-home-ink sm:text-[36px]">
+
+            <h2
+              className="m-0 font-serif font-bold leading-[1.1] tracking-[-0.02em] [word-break:keep-all]"
+              style={{
+                fontSize: "clamp(24px, 4vw, 38px)",
+                color: "var(--text-primary)",
+              }}
+            >
               {t(cat.labelKo, cat.labelEn)}
             </h2>
-            <p className="mt-2.5 max-w-[58ch] text-[14.5px] font-medium leading-relaxed text-home-ink-2/72 sm:text-[15px]">
+
+            <p
+              className="mt-2 text-[14px] leading-relaxed"
+              style={{ color: "var(--text-secondary)" }}
+            >
               {t(cat.subKo, cat.subEn)}
             </p>
           </div>
-          <span className="w-max rounded-full border border-home-hairline bg-white/70 px-3.5 py-1.5 font-inter text-[11px] font-black tracking-[0.08em] text-home-muted shadow-[0_10px_24px_rgba(48,35,24,0.045)]">
+
+          {/* Game count badge */}
+          <span
+            className="mb-0.5 shrink-0 self-end rounded-full border px-3 py-1 font-inter text-[11px] font-bold"
+            style={{
+              borderColor: "var(--border)",
+              color: "var(--text-secondary)",
+              background: "#FFFFFF",
+            }}
+          >
             {String(games.length).padStart(2, "0")}
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-[18px] lg:grid-cols-3 lg:gap-5">
+        {/* ── Game grid ──────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
           {games.map((g, i) => (
-            <GameTile key={g.id} game={g} no={i + 1} featured={cat.id === "featured"} />
+            <GameTile
+              key={g.id}
+              game={g}
+              no={i + 1}
+              featured={cat.id === "featured"}
+            />
           ))}
         </div>
       </div>

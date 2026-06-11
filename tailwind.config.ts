@@ -8,12 +8,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // ── New design system 2026 v2 ─────────────────────────────
+        "bg-primary": "var(--bg-primary)",
+        "bg-secondary": "var(--bg-secondary)",
+        "text-primary": "var(--text-primary)",
+        "text-secondary": "var(--text-secondary)",
+        accent: "var(--accent)",
+        "accent-warm": "var(--accent-warm)",
+        border: "var(--border)",
+        // ── Legacy dark-game tokens ───────────────────────────────
         bg: "#0d0d0d",
         card: "#141414",
-        border: "#222222",
-        accent: "#FF3B30",
-        // Home redesign palette — namespaced under `home-*` and `cat-*` /
-        // `skin-*` so dark game pages keep using the existing dark tokens.
         home: {
           bg: "var(--home-bg)",
           paper: "var(--home-paper)",

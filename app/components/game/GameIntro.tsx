@@ -34,11 +34,14 @@ export default function GameIntro({
       <p className="game-intro__hook">{hook}</p>
       <p className="game-intro__how">{howTo}</p>
       {meta.length > 0 && (
-        <div className="game-intro__meta" aria-label="game details">
-          {meta.map((item) => (
-            <span key={item}>{item}</span>
-          ))}
-        </div>
+        <>
+          <div className="game-intro__divider" aria-hidden />
+          <div className="game-intro__meta" aria-label="game details">
+            {meta.map((item) => (
+              <span key={item}>{item}</span>
+            ))}
+          </div>
+        </>
       )}
       {children}
       {onStart && (

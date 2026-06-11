@@ -3,9 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AdResult } from "../../components/Ads";
-import { ShareCard } from "../../components/ShareCard";
-import RecommendedGames from "../../components/game/RecommendedGames";
-import ResultActions from "../../components/game/ResultActions";
+import ResultScreen from "../../components/game/ResultScreen";
 import { useLocale } from "@/hooks/useLocale";
 import BrandMark, { brandText, homeBackLabel } from "@/app/components/BrandMark";
 import {
@@ -22,6 +20,46 @@ import {
 type Phase = "intro" | "transition" | "quiz" | "result";
 
 const BEST_KEY = "nolza-mbti-depth-best";
+
+// Brain emoji built from its codepoint so the source never carries a raw
+// surrogate pair (avoids encoding issues).
+const BRAIN = String.fromCodePoint(0x1f9e0);
+
+function shareKakao(title: string, desc: string, url: string) {
+  const w =
+    typeof window !== "undefined"
+      ? (window as unknown as {
+          Kakao?: {
+            isInitialized?: () => boolean;
+            Share?: { sendDefault: (a: unknown) => void };
+          };
+        })
+      : undefined;
+  if (w?.Kakao?.Share && w.Kakao.isInitialized?.()) {
+    try {
+      w.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: { title, description: desc, link: { webUrl: url, mobileWebUrl: url } },
+      });
+      return;
+    } catch {
+      /* fall through */
+    }
+  }
+  if (typeof navigator === "undefined") return;
+  const nav = navigator as Navigator & {
+    share?: (d: { title: string; text: string; url: string }) => Promise<void>;
+  };
+  if (typeof nav.share === "function") {
+    nav.share({ title, text: desc, url }).catch(() => {
+      /* user cancelled */
+    });
+    return;
+  }
+  nav.clipboard?.writeText(`${title}\n${desc}\n${url}`).catch(() => {
+    /* ignore */
+  });
+}
 
 export default function MbtiDepthGame() {
   const { locale, setLocale, t } = useLocale();
@@ -356,84 +394,44 @@ function ResultView({
     info: LEVELS[d.side][d.level],
     copy: axisShortCopy(d, locale),
   }));
-  const strengthLine = firstSentence(
-    LEVELS[result.T.side][result.T.level].hiddenStrength[locale],
-  );
   const watchLine = firstSentence(
     LEVELS[result.J.side][result.J.level].factCheck[locale],
   );
   const friendLines = friendCommentLines(result, locale);
+  const axisCodes = dims.map((d) => `${d.side}${d.level}`);
+  const shareUrl = "https://nolza.fun/games/mbti-depth";
+  const shareTitle = t(`MBTI 심층분석 · ${result.code}`, `Deep MBTI · ${result.code}`);
   const shareText = t(
     `나는 MBTI 심층 분석에서 ${result.code} · ${tagline} 나왔다.\n${result.detail} 조합이라는데 꽤 맞는 듯.\n너도 해봐.\nhttps://nolza.fun/games/mbti-depth`,
     `I got ${result.code} · ${tagline} on the Deep MBTI Analysis.\nApparently my mix is ${result.detail}, and it feels pretty accurate.\nTry yours too.\nhttps://nolza.fun/games/mbti-depth`,
   );
 
   return (
-    <ShareCard
-      filename={`nolza-mbti-depth-${result.code}`}
+    <ResultScreen
       locale={locale}
-      backgroundColor="#0f0f11"
-      buttonLabel={{ ko: "분석 카드 저장", en: "Save analysis card" }}
-      buttonClassName="mx-auto mt-4 flex rounded-full border border-accent px-6 py-3 text-sm font-bold text-accent hover:bg-accent hover:text-white"
-    >
-      {({ cardRef }) => (
-        <section className="mbti-depth-result animate-[fade_0.35s_ease-out]">
-          <style jsx global>{`
-            @keyframes fade {
-              from { opacity: 0; transform: translateY(8px); }
-              to   { opacity: 1; transform: translateY(0); }
-            }
-            .mbti-depth-result .result-actions__btn {
-              border-color: rgba(255, 255, 255, 0.18);
-              background: rgba(255, 255, 255, 0.055);
-              color: #f4f4f4;
-            }
-            .mbti-depth-result .result-actions__btn--primary {
-              border-color: #ff3b30;
-              background: linear-gradient(135deg, #ff654f 0%, #d93d2f 48%, #d89a50 100%);
-              color: #fffaf0;
-            }
-            .mbti-depth-result .result-actions__btn--share {
-              border-color: #ff3b30;
-              color: #fffaf0;
-            }
-            .mbti-depth-result .recommended-games__head,
-            .mbti-depth-result .recommended-games__item {
-              color: #f4f4f4;
-            }
-            .mbti-depth-result .recommended-games {
-              border-color: rgba(255, 255, 255, 0.16);
-              background:
-                radial-gradient(circle at 18% 0%, rgba(255, 59, 48, 0.18), transparent 25rem),
-                linear-gradient(135deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.045));
-            }
-            .mbti-depth-result .recommended-games__item {
-              border-color: rgba(255, 255, 255, 0.14);
-              background: rgba(255, 255, 255, 0.075);
-            }
-            .mbti-depth-result .recommended-games__head small,
-            .mbti-depth-result .recommended-games__item em {
-              color: #fff7e8;
-            }
-          `}</style>
+      currentGameId="mbti-depth"
+      tone="navy"
+      gameName={t("MBTI 심층분석", "DEEP MBTI")}
+      emoji={BRAIN}
+      eyebrow={result.detail}
+      title={result.code}
+      description={tagline}
+      details={axisCodes}
+      shareTitle={shareTitle}
+      shareText={shareText}
+      shareUrl="/games/mbti-depth"
+      onReplay={onRestart}
+      replayLabel={t("다시 분석하기", "Analyze again")}
+      onKakaoShare={() => shareKakao(shareTitle, tagline, shareUrl)}
+      kakaoLabel={t("카카오 공유", "Share on Kakao")}
+      recommendedIds={["kbti", "attachment", "defense-mechanism"]}
+      afterCard={
+        <div className="mbti-depth-detail mt-2 space-y-6 text-left">
+          <p className="mx-auto max-w-2xl text-center text-sm leading-relaxed text-gray-300 md:text-base">
+            {summary}
+          </p>
 
-          <div ref={cardRef} className="rounded-[24px] border border-accent/35 bg-[#0f0f11] p-5 shadow-2xl shadow-black/30 md:p-8">
-            <div className="rounded-[20px] border border-accent/40 bg-[radial-gradient(circle_at_50%_0%,rgba(239,68,68,0.22),transparent_32rem),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-7 text-center md:p-10">
-              <div className="text-xs font-black uppercase tracking-[0.26em] text-accent">
-                {t("MBTI 심층분석 결과", "Deep MBTI analysis")}
-              </div>
-              <div className="mt-4 font-serif text-6xl font-black tracking-normal text-white md:text-8xl">
-                {result.code}
-              </div>
-              <div className="mt-5 font-serif text-xl font-bold italic leading-snug text-accent md:text-2xl">
-                “{tagline}”
-              </div>
-              <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-gray-300 md:text-base">
-                {summary}
-              </p>
-            </div>
-
-            <section className="mt-6 rounded-2xl border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
+          <section className="rounded-2xl border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
               <div className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">
                 {t("결과를 읽는 방법", "How to read this result")}
               </div>
@@ -606,28 +604,12 @@ function ResultView({
                   </p>
                 ))}
               </div>
-            </section>
-          </div>
+          </section>
 
-          <div className="mt-7 flex flex-col items-center gap-5">
-            <ResultActions
-              locale={locale}
-              title={t("MBTI 심층분석 결과", "Deep MBTI result")}
-              text={shareText}
-              url="/games/mbti-depth"
-              onReplay={onRestart}
-              replayLabel={t("다시 분석하기", "Analyze again")}
-            />
-            <AdResult placement="mbti-depth-result" />
-            <RecommendedGames
-              currentId="mbti-depth"
-              ids={["kbti", "attachment", "defense-mechanism"]}
-              title={{ ko: "이 테스트도 해보세요", en: "Try These Next" }}
-            />
-          </div>
-        </section>
-      )}
-    </ShareCard>
+          <AdResult placement="mbti-depth-result" />
+        </div>
+      }
+    />
   );
 }
 
