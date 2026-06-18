@@ -348,6 +348,14 @@ const P = {
     sub: "#A89A95",
     line: "rgba(232,196,184,0.18)",
   } as Palette,
+  judgment: {
+    bg: "#0D0D0D",
+    paper: "#141414",
+    ink: "#F5F0E8",
+    accent: "#C0392B",
+    sub: "#7A7269",
+    line: "rgba(245,240,232,0.16)",
+  } as Palette,
 };
 
 export const GAMES: Game[] = [
@@ -702,6 +710,14 @@ export const GAMES: Game[] = [
     palette: P.paperGold, font: "sans", thumb: "/thumbnails-generated/korean-name.png",
     skin: "hand", tone: 1,
   },
+  {
+    id: "human-test", href: "/games/human-test", cat: "self", no: "36",
+    ko: { title: "인간실격 테스트", sub: "당신은 인간 자격이 있습니까? 30개의 심판", kicker: "다자이 오사무 감성 심판" },
+    en: { title: "No Longer Human Test", sub: "Do you qualify as human? 30 judgments", kicker: "A Dazai-style tribunal" },
+    type: "test", category: "tests",
+    palette: P.judgment, font: "serif",
+    skin: "paper", tone: 4, labels: ["new", "share"], duration: { ko: "약 2분", en: "2 min" },
+  },
 ];
 
 export type HomeRailId = "today" | "quick" | "share";
@@ -786,6 +802,7 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
     "kbti",
     "joseon",
     "korean-name",
+    "human-test",
   ],
   compatibility: [
     "crush-type",
