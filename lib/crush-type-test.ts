@@ -194,7 +194,7 @@ export const CRUSH_QUESTIONS: CrushQuestion[] = [
       { id: "a", text: { ko: "조용히 도와주고 그 사람이 고마워한 순간을 오래 간직한다", en: "I help quietly and keep the moment they thanked me for a long time." }, weights: { "quiet-observer": 2 } },
       { id: "b", text: { ko: "필요한 것보다 더 빨리 나서서 내 마음이 티 난다", en: "I jump in faster than necessary, and my feelings show." }, weights: { "obvious-crush": 2 } },
       { id: "c", text: { ko: "“이 정도는 해준다” 하며 장난스럽게 친구처럼 돕는다", en: "I help with a playful “I can do this much” friend vibe." }, weights: { "friend-disguise": 2 } },
-      { id: "d", text: { ko: "너무 eager해 보일까 봐 일부러 한 박자 늦게 움직인다", en: "I move a beat late so I do not look too eager." }, weights: { "acting-cold": 2 } },
+      { id: "d", text: { ko: "너무 적극적으로 보일까 봐 일부러 한 박자 늦게 움직인다", en: "I move a beat late so I do not look too eager." }, weights: { "acting-cold": 2 } },
     ],
   },
   {
