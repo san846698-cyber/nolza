@@ -18,6 +18,8 @@ export type GuidePage = {
   metaDescription: string;
   homeTitle: string;
   homeDescription: string;
+  homeTitleEn: string;
+  homeDescriptionEn: string;
   intro: string[];
   what: string;
   how: string;
@@ -42,6 +44,8 @@ export const GUIDES: GuidePage[] = [
       "관계에서 갑자기 마음이 식는 순간, 상처와 거리두기 반응을 어떻게 읽으면 좋을지 설명합니다.",
     homeTitle: "마음이 식는 순간 이해하기",
     homeDescription: "상처, 실망, 거리두기가 갑자기 차가운 반응으로 바뀌는 이유를 풀어봅니다.",
+    homeTitleEn: "Understanding when feelings cool",
+    homeDescriptionEn: "Why hurt, disappointment, and distance can suddenly turn into a cold reaction.",
     intro: [
       "누군가에게 실망했을 때 사람은 곧바로 화를 내기도 하지만, 아무 말 없이 차가워지기도 합니다. 이때의 차가움은 감정이 없는 상태라기보다 더 다치지 않으려는 보호 반응에 가까울 때가 많습니다.",
       "나를 차갑게 만드는 순간 테스트는 그런 전환점을 가볍게 살펴보는 콘텐츠입니다. 이 가이드는 결과를 진단처럼 받아들이기보다, 어떤 상황에서 내 마음이 문을 닫는지 읽는 방법을 설명합니다.",
@@ -91,6 +95,8 @@ export const GUIDES: GuidePage[] = [
       "부정, 합리화, 회피, 투사처럼 불편한 감정을 피하거나 다루는 마음의 보호 반응을 쉽게 설명합니다.",
     homeTitle: "방어기제 쉽게 이해하기",
     homeDescription: "불편한 감정이 올라올 때 마음이 스스로를 지키는 방식을 읽어봅니다.",
+    homeTitleEn: "Defense mechanisms made simple",
+    homeDescriptionEn: "How the mind protects itself when uncomfortable feelings rise.",
     intro: [
       "방어기제는 마음이 불편한 감정과 충돌을 한 번에 감당하기 어려울 때 사용하는 보호 반응입니다. 이것은 나쁜 습관이라는 뜻이 아니라, 사람이 스트레스를 견디기 위해 자연스럽게 익히는 심리적 움직임에 가깝습니다.",
       "다만 어떤 방어가 반복되면 문제를 해결하기보다 미루게 만들 수 있습니다. 그래서 방어기제를 알아차린다는 것은 자신을 탓하는 일이 아니라, 내가 어떤 방식으로 마음을 보호하는지 관찰하는 일입니다.",
@@ -140,6 +146,8 @@ export const GUIDES: GuidePage[] = [
       "흑백논리, 파국화, 마음읽기, 과잉일반화 등 자주 꼬이는 생각 패턴을 쉬운 예시로 설명합니다.",
     homeTitle: "인지왜곡 7가지 읽기",
     homeDescription: "생각이 사실보다 먼저 달려갈 때 나타나는 대표 패턴을 정리했습니다.",
+    homeTitleEn: "Reading 7 cognitive distortions",
+    homeDescriptionEn: "The main patterns that show up when thoughts race ahead of the facts.",
     intro: [
       "인지왜곡은 현실을 일부러 왜곡한다는 뜻이 아닙니다. 불안하거나 상처받은 순간에 생각이 빠르게 결론을 내리면서, 사실보다 해석이 앞서가는 상태를 말합니다.",
       "인지왜곡 테스트는 내가 어떤 방향으로 생각을 과장하거나 단정하는지 가볍게 확인하는 콘텐츠입니다. 이 가이드는 대표 유형을 쉬운 예시로 설명해 결과를 더 안전하게 읽도록 돕습니다.",
@@ -189,6 +197,8 @@ export const GUIDES: GuidePage[] = [
       "애착유형 테스트 결과를 낙인 없이 읽고 관계 속 반응 패턴을 이해하는 방법을 설명합니다.",
     homeTitle: "애착유형 결과 읽는 법",
     homeDescription: "안정형, 불안형, 회피형, 혼란형을 관계 반응의 언어로 풀어봅니다.",
+    homeTitleEn: "How to read attachment results",
+    homeDescriptionEn: "Secure, anxious, avoidant, and disorganized styles as the language of relationship reactions.",
     intro: [
       "애착유형은 관계에서 친밀감, 거리감, 불안, 독립성을 어떻게 경험하는지 설명할 때 자주 쓰이는 언어입니다. 하지만 결과 이름 하나로 사람을 고정하는 도구는 아닙니다.",
       "애착유형 테스트를 더 잘 읽으려면 '나는 어떤 사람인가'보다 '관계에서 불안해질 때 어떤 행동을 반복하는가'에 초점을 맞추는 것이 좋습니다.",
@@ -238,6 +248,8 @@ export const GUIDES: GuidePage[] = [
       "버려짐, 들킴, 통제 상실, 반복, 망각처럼 공포가 사람마다 다르게 느껴지는 이유를 설명합니다.",
     homeTitle: "공포가 다르게 느껴지는 이유",
     homeDescription: "괴물보다 더 무서운 것은 각자가 숨기고 있는 감정의 모양일 수 있습니다.",
+    homeTitleEn: "Why fear feels different for each of us",
+    homeDescriptionEn: "Scarier than any monster may be the shape of the emotion each of us hides.",
     intro: [
       "누군가는 어두운 방보다 연락이 끊기는 순간을 더 무서워하고, 누군가는 낯선 존재보다 자기 마음을 통제하지 못하는 상황을 더 두려워합니다. 공포는 단순히 무서운 이미지에 반응하는 감각이 아니라, 내가 잃고 싶지 않은 것과 연결되어 있습니다.",
       "당신 안의 가장 깊은 공포는? 테스트는 귀신이나 괴물을 맞히는 퀴즈가 아니라, 일상적인 장면 속에서 어떤 심리적 위협에 민감하게 반응하는지 읽어보는 심리 호러형 콘텐츠입니다.",
@@ -286,6 +298,8 @@ export const GUIDES: GuidePage[] = [
       "심리테스트 결과를 친구와 공유할 때 낙인, 놀림, 과한 해석을 피하고 재미있게 대화하는 방법을 안내합니다.",
     homeTitle: "친구와 결과 비교하는 법",
     homeDescription: "재미있는 테스트 결과를 대화로 이어갈 때 조심하면 좋은 지점을 정리했습니다.",
+    homeTitleEn: "Comparing results with friends",
+    homeDescriptionEn: "What to keep in mind when turning fun test results into a conversation.",
     intro: [
       "심리테스트는 혼자 해도 재미있지만, 친구와 비교할 때 훨씬 더 오래 이야기하게 됩니다. 같은 질문을 보고도 서로 전혀 다른 선택을 한다는 사실이 의외의 친밀감을 만들기 때문입니다.",
       "하지만 결과 이름을 가지고 상대를 단정하거나 놀리면, 가벼운 콘텐츠가 불편한 대화가 될 수 있습니다. 좋은 공유는 결과를 무기처럼 쓰지 않고 대화의 시작점으로 쓰는 것입니다.",
@@ -334,6 +348,8 @@ export const GUIDES: GuidePage[] = [
       "감정을 피할 때 나타나는 농담, 바쁨, 설명, 거리두기 같은 작은 신호를 살펴봅니다.",
     homeTitle: "회피하는 감정 알아차리기",
     homeDescription: "농담, 침묵, 바쁨 뒤에 숨어 있는 감정의 신호를 읽어봅니다.",
+    homeTitleEn: "Noticing the emotions you avoid",
+    homeDescriptionEn: "Reading the emotional signals hidden behind jokes, silence, and busyness.",
     intro: [
       "사람은 감정을 모를 때보다 너무 잘 알 것 같을 때 오히려 피하기도 합니다. 서운함을 느끼면 별일 아닌 척하고, 불안을 느끼면 바쁜 일로 덮고, 화가 나면 논리적인 설명만 길어지는 식입니다.",
       "회피는 게으름이나 차가움만을 뜻하지 않습니다. 어떤 감정은 지금 당장 느끼기 버거워서 잠시 우회로를 찾는 것에 가깝습니다.",
@@ -383,6 +399,8 @@ export const GUIDES: GuidePage[] = [
       "관계에서 선을 긋는 것이 차가움이나 이기심이 아니라 서로를 지키는 방식일 수 있음을 설명합니다.",
     homeTitle: "관계에서 선 긋기 이해하기",
     homeDescription: "차가움과 건강한 경계 사이의 차이를 현실적인 예시로 살펴봅니다.",
+    homeTitleEn: "Understanding boundaries in relationships",
+    homeDescriptionEn: "The difference between coldness and a healthy boundary, with real-life examples.",
     intro: [
       "선을 긋는다는 말은 종종 차갑게 들립니다. 하지만 건강한 경계는 상대를 밀어내기 위한 벽이 아니라, 관계를 오래 유지하기 위한 울타리에 가깝습니다.",
       "내가 감당할 수 있는 것과 없는 것을 구분하지 못하면, 처음에는 배려처럼 보여도 나중에는 억울함이나 폭발로 돌아올 수 있습니다.",
@@ -432,6 +450,8 @@ export const GUIDES: GuidePage[] = [
       "조선시대 나의 일대기 테스트를 역사 진단이 아닌 가상 생애 기록 콘텐츠로 즐기는 방법을 안내합니다.",
     homeTitle: "조선 일대기 세계관 안내",
     homeDescription: "이름 하나로 펼쳐지는 가상 조선 생애 기록을 어떻게 즐기면 좋을지 설명합니다.",
+    homeTitleEn: "A guide to the Joseon life world",
+    homeDescriptionEn: "How to enjoy a fictional Joseon-era life story built from a single name.",
     intro: [
       "조선시대 나의 일대기는 이름을 바탕으로 가상의 신분, 성격, 인생 장면을 만들어보는 세계관형 테스트입니다. 역사 시험이 아니라, 조선이라는 익숙한 시대 이미지를 빌린 캐릭터 카드에 가깝습니다.",
       "이 테스트는 사용자가 한 사람의 생애 기록을 읽듯 결과를 따라가도록 구성되어 있습니다. 그래서 결과를 더 재미있게 보려면 점수보다 장면과 문장에 집중하는 편이 좋습니다.",
@@ -481,6 +501,8 @@ export const GUIDES: GuidePage[] = [
       "심리테스트 결과를 과하게 믿지 않으면서 자기 이해와 대화의 소재로 활용하는 방법을 설명합니다.",
     homeTitle: "심리테스트 더 잘 즐기기",
     homeDescription: "결과를 정답처럼 믿기보다 나와 친구를 이해하는 가벼운 언어로 사용하는 법입니다.",
+    homeTitleEn: "Enjoying psychology tests better",
+    homeDescriptionEn: "Using results as light language to understand yourself and friends, not as answers to trust.",
     intro: [
       "재미있는 심리테스트는 짧은 시간 안에 '나를 설명하는 문장'을 건네줍니다. 그래서 가볍게 시작했는데도 결과 한 줄이 이상하게 오래 남을 때가 있습니다.",
       "좋은 테스트 경험은 결과를 맹신하는 것이 아니라, 맞는 부분과 아닌 부분을 나누어 읽고 친구와 이야기할 수 있는 언어를 얻는 데 있습니다.",

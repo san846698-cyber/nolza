@@ -136,8 +136,8 @@ export default function HomePublisherContent() {
           <div className="home-publisher__guide-list">
             {GUIDES.map((guide) => (
               <Link key={guide.slug} href={guide.href} className="home-publisher__guide-link">
-                <strong>{guide.homeTitle}</strong>
-                <span>{guide.homeDescription}</span>
+                <strong>{t(guide.homeTitle, guide.homeTitleEn)}</strong>
+                <span>{t(guide.homeDescription, guide.homeDescriptionEn)}</span>
               </Link>
             ))}
           </div>
