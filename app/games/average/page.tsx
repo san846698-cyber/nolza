@@ -211,7 +211,7 @@ export default function AverageGame() {
                 fontWeight: 600,
               }}
             >
-              {copied ? "✓ COPIED" : t("결과 공유하기", "SHARE RESULT")}
+              {copied ? "✓ COPIED" : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
             </button>
           </div>
           <AdBottom />

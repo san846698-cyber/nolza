@@ -91,10 +91,7 @@ export default function ResultScreen({
       <ShareCard
         filename={`nolza-${currentGameId}-result`}
         locale={locale}
-        showButton
         backgroundColor={TONE_CAPTURE_BG[tone]}
-        buttonLabel={{ ko: "이미지로 저장", en: "Save as image" }}
-        buttonClassName="result-screen__image-btn btn-press"
       >
         {({ cardRef }) => (
           <div ref={cardRef} className="result-screen__card" id="result-card">

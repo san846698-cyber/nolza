@@ -213,7 +213,7 @@ export default function CaloriesGame() {
             disabled={total === 0}
             className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90 disabled:opacity-30"
           >
-            {copied ? "✓ 복사됐어요" : "📋 결과 공유하기"}
+            {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
           </button>
         </div>
 

@@ -733,7 +733,7 @@ function ResultPanel({
 
         <div style={buttonRowStyle}>
           <button type="button" onClick={onShare} style={primaryButtonStyle}>
-            {copied ? t("복사 완료", "Copied") : t("결과 공유", "Share result")}
+            {copied ? t("복사 완료", "Copied") : t("친구에게 공유하기", "Share with friends")}
           </button>
           <button type="button" onClick={onRestart} style={secondaryButtonStyle}>
             {t("다른 방향으로 다시 시뮬레이션", "Simulate another direction")}

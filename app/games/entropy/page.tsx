@@ -247,7 +247,7 @@ export default function EntropyGame() {
                     letterSpacing: "0.15em",
                   }}
                 >
-                  {copied ? "✓ COPIED" : t("결과 공유하기", "SHARE RESULT")}
+                  {copied ? "✓ COPIED" : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
                 </button>
               </div>
             </div>

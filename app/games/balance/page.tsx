@@ -173,7 +173,7 @@ export default function BalanceGame() {
               >
                 {copied
                   ? t("✓ 복사됐어요", "✓ Copied")
-                  : `📋 ${t("결과 공유하기", "Share Result")}`}
+                  : `📋 ${t("친구에게 공유하기", "Share with friends")}`}
               </button>
             </div>
             <AdBottom />

@@ -972,18 +972,16 @@ function ResultView({
       </div>
 
       {/* 버튼 */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-        <SaveImageButton t={t} />
-        <button type="button" onClick={onShareKakao} className="ht-kakao">
-          {t("카카오 공유", "Share")}
-        </button>
-      </div>
+      <button type="button" onClick={onShareKakao} className="ht-kakao">
+        {t("친구에게 공유하기", "Share with friends")}
+      </button>
       <button type="button" onClick={onRetry} className="ht-retry">
         {isShared ? t("나도 심판받기", "Judge me too") : t("다시 심판받기", "Be judged again")}
       </button>
 
       <style jsx>{`
         .ht-kakao {
+          width: 100%;
           padding: 15px;
           border: none;
           background: #fee500;
@@ -1013,70 +1011,6 @@ function ResultView({
         }
       `}</style>
     </div>
-  );
-}
-
-/* 이미지 저장 — #result-card 캡처 */
-function SaveImageButton({ t }: { t: (ko: string, en: string) => string }) {
-  const [saving, setSaving] = useState(false);
-  const [done, setDone] = useState(false);
-
-  const handle = async () => {
-    if (saving) return;
-    const node = document.getElementById("result-card");
-    if (!node) return;
-    setSaving(true);
-    setDone(false);
-    try {
-      const { toBlob } = await import("html-to-image");
-      const blob = await toBlob(node, {
-        pixelRatio: 2,
-        cacheBust: true,
-        backgroundColor: C.bg,
-        filter: (el: HTMLElement) => {
-          if (el.tagName === "IFRAME") return false;
-          if (el.dataset?.shareCardSkip === "true") return false;
-          return true;
-        },
-      });
-      if (!blob) throw new Error("no-blob");
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "human-test.png";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setDone(true);
-      setTimeout(() => setDone(false), 2000);
-    } catch (err) {
-      console.error("save image failed:", err);
-      alert(t("이미지 저장에 실패했어요. 화면을 캡처해주세요.", "Couldn't save. Please screenshot."));
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <>
-      <button type="button" onClick={handle} disabled={saving} className="ht-save">
-        {done ? t("저장됨", "Saved") : saving ? t("저장 중…", "Saving…") : `↓ ${t("이미지 저장", "Save image")}`}
-      </button>
-      <style jsx>{`
-        .ht-save {
-          padding: 15px;
-          border: 1px solid ${C.red};
-          background: rgba(192, 57, 43, 0.1);
-          color: ${C.redSoft};
-          font-family: ${FONT};
-          font-size: 15px;
-          font-weight: 700;
-          cursor: ${saving ? "wait" : "pointer"};
-          opacity: ${saving ? 0.7 : 1};
-        }
-      `}</style>
-    </>
   );
 }
 

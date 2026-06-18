@@ -237,7 +237,7 @@ export default function DeepSeaExperience() {
           </div>
           <div className={s.actions}>
             <button type="button" className={s.primary} onClick={share}>
-              {copied ? t("복사됨", "Copied") : t("결과 공유하기", "Share result")}
+              {copied ? t("복사됨", "Copied") : t("친구에게 공유하기", "Share with friends")}
             </button>
             <button type="button" className={s.secondary} onClick={scrollToTop}>
               {t("다시 수면으로", "Back to surface")}

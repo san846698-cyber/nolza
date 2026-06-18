@@ -222,7 +222,7 @@ export default function TodayGame() {
                 className="rounded-full px-6 py-3 text-sm font-bold text-black hover:opacity-90"
                 style={{ backgroundColor: "#34C759" }}
               >
-                {copied ? "✓ 복사됐어요" : "📋 결과 공유하기"}
+                {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
               </button>
             </div>
           </>

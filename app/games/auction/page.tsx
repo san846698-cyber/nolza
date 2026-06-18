@@ -631,7 +631,7 @@ function SummaryView({
         <button onClick={onShare} className={`${s.btn} ${s.btnGhost}`}>
           {copied
             ? t("✓ 복사됐어요", "✓ Copied")
-            : `${t("결과 공유하기", "Share result")} ↗`}
+            : `${t("친구에게 공유하기", "Share with friends")} ↗`}
         </button>
       </div>
     </section>

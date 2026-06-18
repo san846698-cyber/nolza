@@ -32,17 +32,12 @@ export default function ResultActions({
   contentType = "result",
   resultName,
   onKakaoShare,
-  kakaoLabel,
 }: ResultActionsProps) {
   const share = useShareActions({ title, text, url });
   const isKo = locale === "ko";
   const handleReplay = () => {
     if (contentId) trackRetryClick(contentId, contentType);
     onReplay?.();
-  };
-  const handleCopy = () => {
-    if (contentId) trackShareClick(contentId, contentType, resultName);
-    share.copyLink();
   };
   const handleShare = () => {
     if (contentId) trackShareClick(contentId, contentType, resultName);
@@ -57,13 +52,13 @@ export default function ResultActions({
     <div className={`result-actions ${compact ? "result-actions--compact" : ""}`}>
       {onKakaoShare ? (
         <button type="button" className="result-actions__btn result-actions__btn--kakao btn-press" onClick={handleKakao}>
-          {kakaoLabel ?? (isKo ? "\uCE74\uCE74\uC624\uD1A1 \uACF5\uC720" : "Share on Kakao")}
+          {isKo ? "\uCE5C\uAD6C\uC5D0\uAC8C \uACF5\uC720\uD558\uAE30" : "Share with friends"}
         </button>
       ) : (
         <button type="button" className="result-actions__btn result-actions__btn--primary result-actions__btn--share btn-press" onClick={handleShare}>
           {share.shared
             ? isKo ? "\uACF5\uC720\uB428" : "Shared"
-            : isKo ? "\uACB0\uACFC \uACF5\uC720\uD558\uAE30" : "Share result"}
+            : isKo ? "\uCE5C\uAD6C\uC5D0\uAC8C \uACF5\uC720\uD558\uAE30" : "Share with friends"}
         </button>
       )}
       {onReplay && (
@@ -71,9 +66,6 @@ export default function ResultActions({
           {replayLabel ?? (isKo ? "\uB2E4\uC2DC \uBD84\uC11D\uD558\uAE30" : "Analyze again")}
         </button>
       )}
-      <button type="button" className="result-actions__btn result-actions__btn--secondary btn-press" onClick={handleCopy}>
-        {share.copied ? (isKo ? "\uB9C1\uD06C \uBCF5\uC0AC\uB428" : "Link copied") : (isKo ? "\uB9C1\uD06C \uBCF5\uC0AC\uD558\uAE30" : "Copy link")}
-      </button>
       {share.failed && (
         <span className="result-actions__note">
           {isKo ? "\uACF5\uC720\uAC00 \uB9C9\uD614\uC5B4\uC694. \uC8FC\uC18C\uCC3D \uB9C1\uD06C\uB97C \uBCF5\uC0AC\uD574 \uC8FC\uC138\uC694." : "Sharing failed. Please copy the address bar link."}

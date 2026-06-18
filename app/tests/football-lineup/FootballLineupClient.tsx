@@ -379,10 +379,7 @@ export default function FootballLineupClient() {
 
             <ShareCard
               filename={`korea-lineup-${formation.name}`}
-              showButton
               locale="ko"
-              buttonLabel={{ ko: "이미지 저장", en: "Save image" }}
-              buttonClassName="image-save"
               backgroundColor="#17380f"
             >
               {({ cardRef }) => (
@@ -430,7 +427,7 @@ export default function FootballLineupClient() {
 
             <div className="field-actions" data-share-card-skip="true">
               <button type="button" onClick={copyLineup}>
-                텍스트 복사
+                친구에게 공유하기
               </button>
               <button type="button" onClick={reset}>
                 초기화

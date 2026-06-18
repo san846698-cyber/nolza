@@ -627,7 +627,7 @@ function ResultScreen({
         }}
       >
         <Pill onClick={onShare}>
-          {copied ? t("링크 복사됨", "Link copied") : t("링크 공유", "Share link")}
+          {copied ? t("링크 복사됨", "Link copied") : t("친구에게 공유하기", "Share with friends")}
         </Pill>
         <Pill onClick={onRestart}>{t("다시", "Again")}</Pill>
       </div>
@@ -1472,7 +1472,7 @@ function ShareCardPanel({
         >
           {copied
             ? t("링크 복사됨", "Link copied")
-            : t("링크 공유", "Share link")}
+            : t("친구에게 공유하기", "Share with friends")}
         </button>
       </div>
       <div

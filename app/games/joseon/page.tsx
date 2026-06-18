@@ -836,7 +836,7 @@ export default function JoseonLifePage(): ReactElement {
             <strong>{locale === "ko" ? result.archetype.finalLine.ko : result.archetype.finalLine.en}</strong>
           </div>
           <div className="actions">
-            <button className="primary" onClick={share}>{t("결과 공유하기", "Share result")}</button>
+            <button className="primary" onClick={share}>{t("친구에게 공유하기", "Share with friends")}</button>
             <button
               className="secondary"
               onClick={() => {

@@ -156,7 +156,7 @@ export default function SpendPresident() {
             🏛️ 실제 정부 예산으로
           </button>
           <button type="button" onClick={handleShare} className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90">
-            {copied ? "✓ 복사됐어요" : "📋 결과 공유하기"}
+            {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
           </button>
         </div>
 

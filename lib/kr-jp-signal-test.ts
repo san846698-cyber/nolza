@@ -129,8 +129,8 @@ export const SIGNAL_COPY = {
     ja: "もう一度やる",
   },
   share: {
-    ko: "결과 공유하기",
-    en: "Share with a friend",
+    ko: "친구에게 공유하기",
+    en: "Share with friends",
     ja: "友達にシェア",
   },
   copied: {

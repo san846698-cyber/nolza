@@ -1319,7 +1319,7 @@ function ResultView({
       </div>
       <div className="result-actions">
         <button type="button" className="primary" onClick={onShare}>
-          {t(locale, "결과 공유하기", "Share result")}
+          {t(locale, "친구에게 공유하기", "Share with friends")}
         </button>
         <button
           type="button"

@@ -1179,10 +1179,7 @@ function ResultView({
 
           <div className="kdc-mobile-stack" style={{ display: "flex", gap: 10, marginTop: 20 }}>
             <button className="kdc-button" type="button" onClick={onShare} style={primaryButton}>
-              {t("결과 공유하기", "Share result")}
-            </button>
-            <button className="kdc-button" type="button" onClick={onCopy} style={secondaryButton}>
-              {copied ? t("복사 완료", "Copied") : t("링크 복사", "Copy link")}
+              {t("친구에게 공유하기", "Share with friends")}
             </button>
             <button className="kdc-button" type="button" onClick={onReset} style={secondaryButton}>
               {t("다시 하기", "Replay")}

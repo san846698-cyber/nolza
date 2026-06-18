@@ -973,7 +973,7 @@ function Result({
             cursor: "pointer",
           }}
         >
-          {copied ? t("✓ 복사됨", "COPIED") : t("결과 공유하기", "SHARE RESULT")}
+          {copied ? t("✓ 복사됨", "COPIED") : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
         </button>
         <button
           type="button"

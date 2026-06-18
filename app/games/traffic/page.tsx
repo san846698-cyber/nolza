@@ -607,7 +607,7 @@ export default function TrafficGame() {
               <button type="button" className={s.btn} onClick={share}>
                 {copied
                   ? t("복사됨", "Copied")
-                  : <><span>↗</span>{t("결과 공유하기", "Share result")}</>}
+                  : <><span>↗</span>{t("친구에게 공유하기", "Share with friends")}</>}
               </button>
               {!isFinal && (
                 <button

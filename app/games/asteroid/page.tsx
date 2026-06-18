@@ -646,7 +646,7 @@ function ResultNarrative({
             ↻ {t("다른 곳에 떨어뜨리기", "Hit another place")}
           </button>
           <button type="button" onClick={onShare} className={s.shareBtn}>
-            📋 {t("결과 공유", "Share result")}
+            📋 {t("친구에게 공유하기", "Share with friends")}
           </button>
         </div>
       </section>

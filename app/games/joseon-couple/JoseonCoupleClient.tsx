@@ -1840,7 +1840,7 @@ function ResultView({
           <button type="button" onClick={onShare} style={primarySealButton}>
             {copied
               ? t("결과 링크가 복사됐어요!", "Result link copied!")
-              : t("결과 공유하기", "Share result")}
+              : t("친구에게 공유하기", "Share with friends")}
           </button>
           <button type="button" onClick={onReset} style={secondaryButton}>
             {isSharedResult ? t("나도 해보기", "Try it myself") : t("다시 하기", "Try again")}
