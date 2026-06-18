@@ -5,7 +5,6 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "@/hooks/useLocale";
 import { AdBottom } from "@/app/components/Ads";
-import ResultScreen from "@/app/components/game/ResultScreen";
 import { trackResultView, trackRetryClick, trackShareClick, trackTestStart } from "@/lib/analytics";
 import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
 import {
@@ -19,27 +18,28 @@ import {
   elementFromYear,
 } from "./copy";
 
-/* ---------------- 색상 ---------------- */
+/* ============================================================
+ * 색상 / 폰트
+ * ========================================================== */
 const C = {
-  bg: "#0f0f1a",
-  paper: "#171726",
-  paper2: "#1f1f30",
+  bg: "#0a0e1a",
+  bgDeep: "#070a14",
+  card: "rgba(255,255,255,0.06)",
+  cardBorder: "rgba(255,255,255,0.10)",
   ink: "#f5f1e6",
-  sub: "#a09cb5",
+  sub: "#9aa0b8",
   gold: "#c9a84c",
   goldSoft: "#e6c878",
   lavender: "#a78bfa",
-  line: "rgba(245,241,230,0.10)",
+  lavenderSoft: "#c7b6ff",
 };
 
 const FONT_SERIF = `"Noto Serif KR", "Noto Serif", Georgia, serif`;
 const FONT_SANS = `"Noto Sans KR", "Noto Sans", system-ui, sans-serif`;
 
-// Star emoji built from its codepoint so the source never carries a raw
-// surrogate pair (avoids encoding issues).
-const STAR = String.fromCodePoint(0x2b50);
-
-/* ---------------- 점수 ---------------- */
+/* ============================================================
+ * 점수 계산 — (로직 유지)
+ * ========================================================== */
 function totalScore(a: number, b: number) {
   return Math.round(
     (friendshipScore(a, b) +
@@ -62,8 +62,9 @@ function growthScore(a: number, b: number) {
   return ((((a + 3) * (b + 5)) * 5 + Math.abs(a - b) * 11 + a * 2 + 17) % 41) + 60;
 }
 
-
-/* ---------------- 모드 / 입력 ---------------- */
+/* ============================================================
+ * 입력 / 공유 유틸 — (로직 유지)
+ * ========================================================== */
 type Person = { name: string; year: string };
 type FriendSharePayload = { v: 1; a: Person; b: Person };
 
@@ -102,7 +103,9 @@ function encodeShareUrl(a: Person, b: Person): string {
   return buildShareUrl("/games/friend-match", { v: 1, a, b } satisfies FriendSharePayload);
 }
 
-/* ---------------- 카운트업 훅 ---------------- */
+/* ============================================================
+ * 카운트업 훅 — (로직 유지)
+ * ========================================================== */
 function useCountUp(target: number, ms = 1100): number {
   const [v, setV] = useState(0);
   const startedAt = useRef<number | null>(null);
@@ -123,7 +126,194 @@ function useCountUp(target: number, ms = 1100): number {
   return v;
 }
 
-/* ---------------- 페이지 ---------------- */
+/* ============================================================
+ * 별빛 파티클 (canvas)
+ * ========================================================== */
+function Starfield() {
+  const ref = useRef<HTMLCanvasElement | null>(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let raf = 0;
+    let w = 0;
+    let h = 0;
+    let dpr = 1;
+    type Star = { x: number; y: number; r: number; tw: number; sp: number; hue: number };
+    let stars: Star[] = [];
+
+    const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+    const seed = () => {
+      const count = Math.min(160, Math.floor((w * h) / 9000));
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: rand(0.4, 1.6),
+        tw: Math.random() * Math.PI * 2,
+        sp: rand(0.6, 1.8),
+        hue: Math.random() < 0.18 ? 1 : Math.random() < 0.5 ? 2 : 0,
+      }));
+    };
+
+    const resize = () => {
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      seed();
+    };
+
+    let t = 0;
+    const draw = () => {
+      t += 0.016;
+      ctx.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        const a = 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(s.tw + t * s.sp));
+        const color =
+          s.hue === 1
+            ? `rgba(201,168,76,${a})`
+            : s.hue === 2
+              ? `rgba(167,139,250,${a * 0.9})`
+              : `rgba(245,241,230,${a})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={ref}
+      aria-hidden
+      style={{
+        position: "fixed",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    />
+  );
+}
+
+/* ============================================================
+ * 팔괘 로딩 스피너
+ * ========================================================== */
+const TRIGRAMS = ["☰", "☱", "☲", "☳", "☴", "☵", "☶", "☷"];
+
+function BaguaLoader({ t }: { t: (ko: string, en: string) => string }) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        zIndex: 1,
+        minHeight: "70svh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 28,
+      }}
+    >
+      <div className="fm-bagua" style={{ position: "relative", width: 168, height: 168 }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: "50%",
+            border: `1px solid rgba(201,168,76,0.25)`,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 26,
+            borderRadius: "50%",
+            border: `1px solid rgba(167,139,250,0.18)`,
+          }}
+        />
+        {TRIGRAMS.map((g, i) => {
+          const angle = (i / TRIGRAMS.length) * 360;
+          return (
+            <span
+              key={g}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                fontSize: 22,
+                color: i % 2 === 0 ? C.gold : C.lavender,
+                transform: `rotate(${angle}deg) translateY(-78px) rotate(-${angle}deg)`,
+                transformOrigin: "0 0",
+                marginLeft: -8,
+                marginTop: -14,
+              }}
+            >
+              {g}
+            </span>
+          );
+        })}
+        <span
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%,-50%)",
+            fontSize: 30,
+            color: C.goldSoft,
+          }}
+        >
+          ✦
+        </span>
+      </div>
+      <p
+        style={{
+          fontFamily: FONT_SERIF,
+          color: C.sub,
+          fontSize: 14,
+          letterSpacing: "0.08em",
+        }}
+      >
+        {t("하늘의 결을 읽는 중…", "Reading the heavens…")}
+      </p>
+
+      <style jsx>{`
+        .fm-bagua {
+          animation: fm-spin 2s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+        }
+        @keyframes fm-spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+/* ============================================================
+ * 페이지 루트
+ * ========================================================== */
 function FriendMatchInner() {
   const router = useRouter();
   const params = useSearchParams();
@@ -132,9 +322,10 @@ function FriendMatchInner() {
   const [a, setA] = useState<Person>({ name: "", year: "" });
   const [b, setB] = useState<Person>({ name: "", year: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isSharedResult, setIsSharedResult] = useState(false);
 
-  // URL 파라미터로 들어온 경우 자동 결과
+  // URL 파라미터로 들어온 경우 자동 결과 (로직 유지)
   useEffect(() => {
     let restored: { a: Person; b: Person } | null = null;
     const shared = decodeSharePayload<FriendSharePayload>(params.get("s"));
@@ -233,8 +424,12 @@ function FriendMatchInner() {
     setIsSharedResult(false);
     setA(nextA);
     setB(nextB);
-    setSubmitted(true);
-    // URL을 갱신하여 새로고침/공유에도 결과가 남도록.
+    // 팔괘 로딩 2초 → 결과
+    setLoading(true);
+    window.setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 2000);
     if (typeof window !== "undefined") {
       const path = url.replace(window.location.origin, "");
       router.replace(path);
@@ -244,6 +439,7 @@ function FriendMatchInner() {
   const handleReset = () => {
     trackRetryClick("friend-match", "compatibility");
     setSubmitted(false);
+    setLoading(false);
     setIsSharedResult(false);
     setA({ name: "", year: "" });
     setB({ name: "", year: "" });
@@ -258,14 +454,17 @@ function FriendMatchInner() {
       `${withJosa(a.name, "과/와")} ${b.name}: ${result.archetype.title} (${result.total}점)`,
       `${a.name} × ${b.name}: ${result.total} / 100`,
     );
-    const desc = locale === "ko"
-      ? buildKoreanShareText(a.name, b.name, result)
-      : `${a.name} and ${b.name}: ${result.archetype.enTitle}. ${result.archetype.enVerdict}`;
+    const desc =
+      locale === "ko"
+        ? buildKoreanShareText(a.name, b.name, result)
+        : `${a.name} and ${b.name}: ${result.archetype.enTitle}. ${result.archetype.enVerdict}`;
 
-    // Kakao SDK 가 있으면 사용, 없으면 navigator.share, 없으면 클립보드.
-    const w = typeof window !== "undefined" ? (window as unknown as {
-      Kakao?: { isInitialized?: () => boolean; Share?: { sendDefault: (a: unknown) => void } };
-    }) : undefined;
+    const w =
+      typeof window !== "undefined"
+        ? (window as unknown as {
+            Kakao?: { isInitialized?: () => boolean; Share?: { sendDefault: (a: unknown) => void } };
+          })
+        : undefined;
     if (w?.Kakao?.Share && w.Kakao.isInitialized?.()) {
       try {
         w.Kakao.Share.sendDefault({
@@ -297,11 +496,12 @@ function FriendMatchInner() {
   return (
     <main
       style={{
+        position: "relative",
         minHeight: "100svh",
-        background: C.bg,
+        background: `radial-gradient(120% 80% at 50% -10%, #131a30 0%, ${C.bg} 55%, ${C.bgDeep} 100%)`,
         color: C.ink,
         fontFamily: FONT_SANS,
-        paddingBottom: 80,
+        overflow: "hidden",
       }}
     >
       <link
@@ -309,26 +509,36 @@ function FriendMatchInner() {
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700;900&display=swap"
       />
 
-      {/* 헤더 */}
-      <div style={{ borderBottom: `1px solid ${C.line}` }}>
-        <div
-          style={{
-            maxWidth: 880,
-            margin: "0 auto",
-            padding: "18px 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      <Starfield />
+
+      {/* 상단 홈 링크 */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          maxWidth: 880,
+          margin: "0 auto",
+          padding: "18px 20px 0",
+        }}
+      >
+        <Link
+          href="/"
+          style={{ color: "rgba(245,241,230,0.55)", textDecoration: "none", fontSize: 13 }}
         >
-          <div style={{ fontFamily: FONT_SERIF, fontSize: 13, color: C.gold, letterSpacing: "0.05em" }}>
-            ✦ {t("우리 사이, 하늘이 정해놨다", "Written in the stars")}
-          </div>
-        </div>
+          ← {t("놀자 홈", "Home")}
+        </Link>
       </div>
 
-      <div style={{ maxWidth: 880, margin: "0 auto", padding: "32px 20px" }}>
-        {!submitted || !result ? (
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          padding: "8px 20px 96px",
+        }}
+      >
+        {loading ? (
+          <BaguaLoader t={t} />
+        ) : !submitted || !result ? (
           <InputView
             a={a}
             b={b}
@@ -355,7 +565,9 @@ function FriendMatchInner() {
   );
 }
 
-/* ---------------- 입력 화면 ---------------- */
+/* ============================================================
+ * 입력 화면
+ * ========================================================== */
 function InputView({
   a,
   b,
@@ -374,58 +586,44 @@ function InputView({
   t: (ko: string, en: string) => string;
 }) {
   return (
-    <>
-      <header style={{ textAlign: "center", marginBottom: 36 }}>
+    <div style={{ maxWidth: 520, margin: "0 auto" }}>
+      <header style={{ textAlign: "center", margin: "28px 0 30px" }}>
+        <div
+          style={{
+            fontFamily: FONT_SERIF,
+            fontSize: 13,
+            color: C.gold,
+            letterSpacing: "0.14em",
+            marginBottom: 16,
+          }}
+        >
+          ✦ {t("FRIEND MATCH", "FRIEND MATCH")} ✦
+        </div>
         <h1
           style={{
             fontFamily: FONT_SERIF,
             fontWeight: 900,
-            fontSize: "clamp(28px, 5vw, 44px)",
-            lineHeight: 1.2,
+            fontSize: "clamp(28px, 7vw, 42px)",
+            lineHeight: 1.28,
             margin: 0,
             color: C.ink,
           }}
         >
-          {t("우리 사이, 하늘이 정해놨다", "Was it written in the stars?")}
+          {t("우리 사이,", "Was our bond")}
+          <br />
+          {t("하늘이 정해놨다", "written in the stars?")}
         </h1>
-        <p style={{ marginTop: 14, color: C.sub, fontSize: 14, lineHeight: 1.7 }}>
+        <p style={{ marginTop: 16, color: C.sub, fontSize: 14, lineHeight: 1.7 }}>
           {t(
-            "두 사람의 생년월일로 사주 기반 궁합을 봐드려요. 가볍게 보지만, 결은 진짜.",
-            "A saju-rooted compatibility read for two — light to play with, real in tone.",
+            "두 사람의 이름과 태어난 해로 보는 사주 기반 궁합.",
+            "A saju-rooted compatibility read for two.",
           )}
         </p>
       </header>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: 16,
-          alignItems: "stretch",
-          position: "relative",
-        }}
-        className="fm-grid"
-      >
-        <PersonCard
-          label={t("나", "Me")}
-          person={a}
-          setPerson={setA}
-          accent={C.gold}
-          t={t}
-        />
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: C.gold,
-            fontFamily: FONT_SERIF,
-            fontSize: 28,
-          }}
-          className="fm-divider"
-        >
-          ✦
-        </div>
+      <div className="fm-pair">
+        <PersonCard label={t("나", "Me")} person={a} setPerson={setA} accent={C.gold} t={t} />
+        <div className="fm-cross">✦</div>
         <PersonCard
           label={t("친구", "Friend")}
           person={b}
@@ -435,49 +633,66 @@ function InputView({
         />
       </div>
 
-      <div style={{ marginTop: 32, display: "flex", justifyContent: "center" }}>
-        <button
-          type="button"
-          disabled={!canSubmit}
-          onClick={onSubmit}
-          style={{
-            padding: "14px 36px",
-            borderRadius: 999,
-            border: "none",
-            background: canSubmit ? C.gold : "rgba(201,168,76,0.25)",
-            color: canSubmit ? "#1a1408" : "rgba(245,241,230,0.5)",
-            fontFamily: FONT_SERIF,
-            fontWeight: 700,
-            fontSize: 16,
-            letterSpacing: "0.04em",
-            cursor: canSubmit ? "pointer" : "not-allowed",
-            transition: "transform 0.15s",
-            boxShadow: canSubmit ? "0 8px 24px rgba(201,168,76,0.25)" : "none",
-          }}
-          onMouseDown={(e) => {
-            if (canSubmit) (e.currentTarget.style.transform = "scale(0.97)");
-          }}
-          onMouseUp={(e) => (e.currentTarget.style.transform = "")}
-        >
-          {t("우리 궁합 보기", "See our compatibility")}
-        </button>
-      </div>
+      <button
+        type="button"
+        disabled={!canSubmit}
+        onClick={onSubmit}
+        style={{
+          marginTop: 30,
+          width: "100%",
+          padding: "17px 24px",
+          borderRadius: 16,
+          border: "none",
+          background: canSubmit
+            ? `linear-gradient(180deg, ${C.goldSoft} 0%, ${C.gold} 100%)`
+            : "rgba(201,168,76,0.18)",
+          color: canSubmit ? "#1a1408" : "rgba(245,241,230,0.4)",
+          fontFamily: FONT_SERIF,
+          fontWeight: 800,
+          fontSize: 18,
+          letterSpacing: "0.04em",
+          cursor: canSubmit ? "pointer" : "not-allowed",
+          transition: "transform 0.12s, box-shadow 0.2s",
+          boxShadow: canSubmit ? "0 12px 32px rgba(201,168,76,0.30)" : "none",
+        }}
+        onMouseDown={(e) => {
+          if (canSubmit) e.currentTarget.style.transform = "scale(0.98)";
+        }}
+        onMouseUp={(e) => (e.currentTarget.style.transform = "")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "")}
+      >
+        {t("궁합 보기", "See our compatibility")}
+      </button>
 
-      <p style={{ marginTop: 18, textAlign: "center", color: C.sub, fontSize: 12 }}>
-        {t("· 데이터는 저장되지 않아요 ·", "· nothing is stored ·")}
+      <p style={{ marginTop: 16, textAlign: "center", color: "rgba(154,160,184,0.7)", fontSize: 12 }}>
+        {t("· 입력한 정보는 저장되지 않아요 ·", "· nothing is stored ·")}
       </p>
 
       <style jsx>{`
-        @media (min-width: 720px) {
-          :global(.fm-grid) {
-            grid-template-columns: 1fr 60px 1fr !important;
+        .fm-pair {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          align-items: stretch;
+        }
+        .fm-cross {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: ${C.gold};
+          font-family: ${FONT_SERIF};
+          font-size: 26px;
+        }
+        @media (min-width: 560px) {
+          .fm-pair {
+            grid-template-columns: 1fr 44px 1fr;
           }
-          :global(.fm-divider) {
-            font-size: 36px !important;
+          .fm-cross {
+            font-size: 30px;
           }
         }
       `}</style>
-    </>
+    </div>
   );
 }
 
@@ -494,54 +709,77 @@ function PersonCard({
   accent: string;
   t: (ko: string, en: string) => string;
 }) {
+  const year = clampYear(person.year);
+  const symbol = year !== null ? ELEMENT_EMOJI[elementFromYear(year)] : "✦";
+
+  const underline: React.CSSProperties = {
+    width: "100%",
+    padding: "9px 2px",
+    border: "none",
+    borderBottom: `1px solid rgba(245,241,230,0.22)`,
+    background: "transparent",
+    color: C.ink,
+    fontSize: 16,
+    fontWeight: 600,
+    fontFamily: FONT_SANS,
+    outline: "none",
+  };
+
   return (
     <div
       style={{
-        background: C.paper,
-        border: `1px solid ${C.line}`,
-        borderRadius: 18,
-        padding: 22,
+        background: C.card,
+        border: `1px solid ${C.cardBorder}`,
+        borderRadius: 20,
+        padding: "22px 20px 24px",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
       }}
     >
       <div
         style={{
-          fontFamily: FONT_SERIF,
-          fontSize: 14,
-          letterSpacing: "0.1em",
+          fontSize: 40,
+          textAlign: "center",
+          lineHeight: 1,
+          filter: year !== null ? "none" : "grayscale(0.4) opacity(0.55)",
           color: accent,
-          marginBottom: 14,
         }}
       >
-        {label.toUpperCase()}
+        {symbol}
+      </div>
+      <div
+        style={{
+          marginTop: 10,
+          marginBottom: 18,
+          textAlign: "center",
+          fontFamily: FONT_SERIF,
+          fontSize: 14,
+          letterSpacing: "0.12em",
+          color: accent,
+        }}
+      >
+        {label}
       </div>
 
-      <label style={{ display: "block", marginBottom: 14 }}>
-        <div style={{ fontSize: 12, color: C.sub, marginBottom: 6 }}>
-          {t("이름 또는 닉네임", "Name or nickname")}
+      <label style={{ display: "block", marginBottom: 18 }}>
+        <div style={{ fontSize: 11, color: C.sub, marginBottom: 2 }}>
+          {t("이름 / 닉네임", "Name")}
         </div>
         <input
           type="text"
           value={person.name}
           onChange={(e) => setPerson({ ...person, name: e.target.value })}
           maxLength={12}
-          style={{
-            width: "100%",
-            padding: "12px 14px",
-            borderRadius: 12,
-            border: `1px solid rgba(245,241,230,0.18)`,
-            background: "rgba(255,255,255,0.045)",
-            color: C.ink,
-            fontSize: 16,
-            fontWeight: 600,
-            fontFamily: FONT_SANS,
-            outline: "none",
-          }}
+          placeholder={t("이름", "Name")}
+          style={underline}
+          onFocus={(e) => (e.currentTarget.style.borderBottomColor = accent)}
+          onBlur={(e) => (e.currentTarget.style.borderBottomColor = "rgba(245,241,230,0.22)")}
         />
       </label>
 
       <label style={{ display: "block" }}>
-        <div style={{ fontSize: 12, color: C.sub, marginBottom: 6 }}>
-          {t("출생 연도", "Birth year")}
+        <div style={{ fontSize: 11, color: C.sub, marginBottom: 2 }}>
+          {t("태어난 해", "Birth year")}
         </div>
         <input
           type="number"
@@ -551,25 +789,18 @@ function PersonCard({
           placeholder="1995"
           min={1900}
           max={2100}
-          style={{
-            width: "100%",
-            padding: "12px 14px",
-            borderRadius: 12,
-            border: `1px solid rgba(245,241,230,0.18)`,
-            background: "rgba(255,255,255,0.045)",
-            color: C.ink,
-            fontSize: 16,
-            fontWeight: 600,
-            fontFamily: FONT_SANS,
-            outline: "none",
-          }}
+          style={underline}
+          onFocus={(e) => (e.currentTarget.style.borderBottomColor = accent)}
+          onBlur={(e) => (e.currentTarget.style.borderBottomColor = "rgba(245,241,230,0.22)")}
         />
       </label>
     </div>
   );
 }
 
-/* ---------------- 결과 화면 ---------------- */
+/* ============================================================
+ * 관계 아키타입 데이터 / 선택 로직 — (데이터·로직 유지)
+ * ========================================================== */
 type Result = {
   i1: number;
   i2: number;
@@ -931,6 +1162,9 @@ function buildKoreanShareText(aName: string, bName: string, result: Result): str
   return `우리 사이 결과: '${result.archetype.title}' 나왔는데, 설명이 너무 우리임.\n하늘이 정한 우리 사이 점수 ${result.total}점.\n관계 키워드: ${keywords}\n${result.archetype.sendLine}`;
 }
 
+/* ============================================================
+ * 결과 화면
+ * ========================================================== */
 function ResultView({
   a,
   b,
@@ -953,15 +1187,7 @@ function ResultView({
   const archeTitle = locale === "ko" ? result.archetype.title : result.archetype.enTitle;
   const verdict = locale === "ko" ? result.archetype.verdict : result.archetype.enVerdict;
   const keywords = result.archetype.keywords.slice(0, 4);
-  const shareUrl = encodeShareUrl(a, b);
-  const shareTitle = t(
-    `${a.name} × ${b.name}: ${result.archetype.title} (${result.total}점)`,
-    `${a.name} × ${b.name}: ${result.archetype.enTitle} (${result.total}/100)`,
-  );
-  const shareText =
-    locale === "ko"
-      ? buildKoreanShareText(a.name, b.name, result)
-      : `${a.name} and ${b.name}: ${result.archetype.enTitle}. ${result.archetype.enVerdict}`;
+  const total = useCountUp(result.total, 1400);
 
   const emojiA = ELEMENT_EMOJI[result.e1];
   const emojiB = ELEMENT_EMOJI[result.e2];
@@ -980,220 +1206,488 @@ function ResultView({
     sub: string;
     score: number;
     body: string;
+    accent: string;
   }> = [
     {
       icon: "🤝",
       name: t("우정", "Friendship"),
       sub: t("함께할수록 깊어지는 사이", "Deepens the more you stay near"),
       score: result.friendship,
-      body: locale === "ko"
-        ? `${scoreRangeText("우정", result.friendship)}\n\n${result.copy.friendship[locale]}`
-        : result.copy.friendship[locale],
+      accent: C.gold,
+      body:
+        locale === "ko"
+          ? `${scoreRangeText("우정", result.friendship)}\n\n${result.copy.friendship[locale]}`
+          : result.copy.friendship[locale],
     },
     {
       icon: "💬",
       name: t("대화", "Conversation"),
       sub: t("말이 통하는 정도", "How well your words meet"),
       score: result.conversation,
-      body: locale === "ko"
-        ? `${scoreRangeText("대화", result.conversation)}\n\n${result.copy.conversation[locale]}`
-        : result.copy.conversation[locale],
+      accent: C.lavender,
+      body:
+        locale === "ko"
+          ? `${scoreRangeText("대화", result.conversation)}\n\n${result.copy.conversation[locale]}`
+          : result.copy.conversation[locale],
     },
     {
       icon: "✨",
       name: t("시너지", "Synergy"),
       sub: t("같이하면 1+1=3이 되는가", "Whether 1+1 turns into 3"),
       score: result.synergy,
-      body: locale === "ko"
-        ? `${scoreRangeText("시너지", result.synergy)}\n\n${result.copy.synergy[locale]}`
-        : result.copy.synergy[locale],
+      accent: C.gold,
+      body:
+        locale === "ko"
+          ? `${scoreRangeText("시너지", result.synergy)}\n\n${result.copy.synergy[locale]}`
+          : result.copy.synergy[locale],
     },
     {
       icon: "🌱",
       name: t("성장", "Growth"),
       sub: t("서로에게 좋은 영향을 주는가", "Whether you push each other up"),
       score: result.growth,
-      body: locale === "ko"
-        ? `${scoreRangeText("성장", result.growth)}\n\n${result.copy.growth[locale]}`
-        : result.copy.growth[locale],
+      accent: C.lavender,
+      body:
+        locale === "ko"
+          ? `${scoreRangeText("성장", result.growth)}\n\n${result.copy.growth[locale]}`
+          : result.copy.growth[locale],
     },
   ];
 
   return (
-    <ResultScreen
-      locale={locale}
-      currentGameId="friend-match"
-      tone="navy"
-      gameName={t("친구 궁합", "FRIEND MATCH")}
-      emoji={STAR}
-      eyebrow={`${a.name} × ${b.name}`}
-      title={archeTitle}
-      score={String(result.total)}
-      scoreLabel="/ 100"
-      description={verdict}
-      details={keywords}
-      shareTitle={shareTitle}
-      shareText={shareText}
-      shareUrl={shareUrl}
-      onReplay={onReset}
-      replayLabel={isSharedResult ? t("나도 해보기", "Try it myself") : t("다시 하기", "Try again")}
-      onKakaoShare={onShare}
-      kakaoLabel={t("카카오 공유", "Share on Kakao")}
-      recommendedIds={["kbti", "attachment", "mbti-depth"]}
-      afterCard={
-        <div className="fm-detail" style={{ width: "100%", maxWidth: 680, margin: "10px auto 0" }}>
-          {/* 오행 조합 + 한 줄 요약 */}
-          <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <div style={{ fontSize: 28, letterSpacing: "0.15em", lineHeight: 1 }}>
-              {emojiA} <span style={{ color: C.gold, fontSize: 22 }}>×</span> {emojiB}
-            </div>
-            <div style={{ marginTop: 6, fontSize: 12, color: C.sub, fontFamily: FONT_SERIF }}>
-              {elemA} · {elemB}
-            </div>
-            <p
-              style={{
-                margin: "16px auto 0",
-                maxWidth: 560,
-                fontFamily: FONT_SERIF,
-                fontSize: "clamp(15px, 2.4vw, 18px)",
-                color: C.goldSoft,
-                lineHeight: 1.7,
-              }}
-            >
-              “{result.copy.summary[locale]}”
-            </p>
-          </div>
+    <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      {/* 상단: 두 이름 */}
+      <header style={{ textAlign: "center", margin: "30px 0 6px" }}>
+        <h1
+          style={{
+            fontFamily: FONT_SERIF,
+            fontWeight: 900,
+            fontSize: "clamp(26px, 6.4vw, 40px)",
+            lineHeight: 1.25,
+            margin: 0,
+          }}
+        >
+          <span style={{ color: C.goldSoft }}>{a.name}</span>
+          <span style={{ color: C.sub, margin: "0 12px", fontWeight: 400 }}>×</span>
+          <span style={{ color: C.lavenderSoft }}>{b.name}</span>
+        </h1>
+      </header>
 
-      {/* 카테고리 카드 4개 */}
-      {locale === "ko" ? (
-        <section style={{ marginBottom: 18 }}>
-          <ResultStoryCard
-            title="둘의 관계 서사"
-            body={result.archetype.story}
-            highlight={buildKoreanShareText(a.name, b.name, result)}
-          />
-        </section>
-      ) : null}
-
-      <section
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: 14,
-        }}
-        className="fm-cat-grid"
-      >
-        {categories.slice(0, 2).map((cat) => (
-          <CategoryCard key={cat.name} {...cat} />
-        ))}
-      </section>
-
-      {/* AdSense 슬롯 — 결과 카드 사이 */}
-      <div style={{ margin: "20px 0" }}>
-        <AdBottom />
+      {/* 종합 점수 카운트업 */}
+      <div style={{ textAlign: "center", marginTop: 6 }}>
+        <div
+          style={{
+            fontFamily: FONT_SERIF,
+            fontWeight: 900,
+            fontSize: 80,
+            lineHeight: 1,
+            color: C.gold,
+            textShadow: "0 8px 40px rgba(201,168,76,0.35)",
+            fontVariantNumeric: "tabular-nums",
+          }}
+        >
+          {total}
+        </div>
+        <div style={{ marginTop: 2, color: C.sub, fontSize: 13, letterSpacing: "0.1em" }}>
+          / 100 · {t("하늘이 정한 점수", "score from the stars")}
+        </div>
       </div>
 
-      <section
+      {/* 아키타입 제목 + 한 줄 총평 */}
+      <div style={{ textAlign: "center", marginTop: 22 }}>
+        <div
+          style={{
+            fontFamily: FONT_SERIF,
+            fontSize: "clamp(19px, 4vw, 24px)",
+            fontWeight: 700,
+            color: C.ink,
+            lineHeight: 1.4,
+          }}
+        >
+          {archeTitle}
+        </div>
+        <p
+          style={{
+            margin: "12px auto 0",
+            maxWidth: 460,
+            fontStyle: "italic",
+            color: "rgba(245,241,230,0.78)",
+            fontSize: 15,
+            lineHeight: 1.7,
+          }}
+        >
+          “{verdict}”
+        </p>
+      </div>
+
+      {/* 오행 조합: 금색별 × 라벤더별 */}
+      <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: 14,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 12,
+          marginTop: 24,
         }}
-        className="fm-cat-grid"
       >
-        {categories.slice(2).map((cat) => (
+        <ElementBadge emoji={emojiA} name={elemA} accent={C.gold} />
+        <span style={{ color: C.sub, fontSize: 18 }}>✦</span>
+        <ElementBadge emoji={emojiB} name={elemB} accent={C.lavender} />
+      </div>
+
+      {/* 키워드 칩 */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: 8,
+          marginTop: 20,
+        }}
+      >
+        {keywords.map((kw) => (
+          <span
+            key={kw}
+            style={{
+              padding: "6px 13px",
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.06)",
+              border: `1px solid ${C.cardBorder}`,
+              fontSize: 12.5,
+              color: "rgba(245,241,230,0.85)",
+            }}
+          >
+            {kw}
+          </span>
+        ))}
+      </div>
+
+      {/* 4개 카테고리 카드 */}
+      <section className="fm-cats" style={{ marginTop: 30 }}>
+        {categories.map((cat) => (
           <CategoryCard key={cat.name} {...cat} />
         ))}
       </section>
 
-      {/* 하단 총평 카드 */}
+      {/* 관계 서사 (한국어) */}
       {locale === "ko" ? (
         <section
           style={{
             marginTop: 18,
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: 12,
+            padding: 22,
+            borderRadius: 20,
+            background: C.card,
+            border: `1px solid ${C.cardBorder}`,
           }}
-          className="fm-insight-grid"
         >
+          <div style={{ fontFamily: FONT_SERIF, color: C.goldSoft, fontSize: 17, fontWeight: 800 }}>
+            {t("둘의 관계 서사", "Your story")}
+          </div>
+          <p
+            style={{
+              margin: "12px 0 0",
+              color: "rgba(245,241,230,0.84)",
+              fontSize: 14.5,
+              lineHeight: 1.85,
+            }}
+          >
+            {result.archetype.story}
+          </p>
+        </section>
+      ) : null}
+
+      {/* 광고 슬롯 */}
+      <div style={{ margin: "22px 0" }}>
+        <AdBottom />
+      </div>
+
+      {/* 미니 인사이트 (한국어) */}
+      {locale === "ko" ? (
+        <section className="fm-insights">
           <MiniInsight title="남들이 보는 우리" body={result.archetype.outsideView} />
           <MiniInsight title="둘만 아는 포인트" body={result.archetype.secretPoint} />
           <MiniInsight title="싸우면 생기는 일" body={result.archetype.fightPattern} />
           <MiniInsight title="화해 방식" body={result.archetype.makeUpStyle} />
-          <MiniInsight title="같이 있으면 생기는 현상" body={result.archetype.togetherEffect} />
+          <MiniInsight title="같이 있으면" body={result.archetype.togetherEffect} />
           <MiniInsight title="주의할 점" body={result.archetype.watchout} />
           <MiniInsight title="현실 관계로 치면" body={result.archetype.realLifeType} />
-          <MiniInsight title="친구에게 보내는 한 줄" body={result.archetype.sendLine} />
+          <MiniInsight title="친구에게 한 줄" body={result.archetype.sendLine} />
         </section>
       ) : null}
 
-      <section
-        style={{
-          marginTop: 26,
-          padding: 26,
-          borderRadius: 20,
-          background: `linear-gradient(135deg, ${C.gold} 0%, ${C.goldSoft} 60%, #b58a2c 100%)`,
-          color: "#1a1408",
-          boxShadow: "0 14px 40px rgba(201,168,76,0.25)",
-        }}
-      >
-        <div style={{ fontFamily: FONT_SERIF, fontSize: 13, opacity: 0.7, letterSpacing: "0.08em" }}>
-          {t("이 조합의 한 문장", "The one line for this pair")}
-        </div>
-        <div
-          style={{
-            marginTop: 10,
-            fontFamily: FONT_SERIF,
-            fontSize: "clamp(20px, 3.2vw, 26px)",
-            fontWeight: 700,
-            lineHeight: 1.4,
-          }}
-        >
-          {locale === "ko" ? result.archetype.title : result.copy.title[locale]}
-        </div>
-        <div style={{ marginTop: 18, fontSize: 14, lineHeight: 1.7, opacity: 0.85 }}>
-          {locale === "ko" ? result.archetype.sendLine : result.copy.summary[locale]}
-        </div>
-        <div
-          style={{
-            marginTop: 18,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 8,
-          }}
-        >
-          {(locale === "ko" ? result.archetype.keywords : result.copy.tags[locale]).map((tag) => (
-            <span
-              key={tag}
+      {/* 하단: 공유용 캡처 카드 + 버튼 */}
+      <div>
+        <div>
+            <div
+              id="result-card"
               style={{
-                padding: "6px 12px",
-                borderRadius: 999,
-                background: "rgba(26,20,8,0.15)",
-                fontFamily: FONT_SANS,
-                fontSize: 13,
-                fontWeight: 500,
+                marginTop: 28,
+                padding: "34px 28px 30px",
+                borderRadius: 24,
+                background: `radial-gradient(120% 90% at 50% 0%, #1b2440 0%, #111935 45%, ${C.bgDeep} 100%)`,
+                border: "1px solid rgba(201,168,76,0.28)",
+                textAlign: "center",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
               }}
             >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </section>
+              <div
+                style={{
+                  fontFamily: FONT_SERIF,
+                  fontSize: 12,
+                  letterSpacing: "0.2em",
+                  color: C.gold,
+                }}
+              >
+                ✦ {t("우리 사이, 하늘이 정해놨다", "WRITTEN IN THE STARS")} ✦
+              </div>
 
-          <style jsx>{`
-            @media (min-width: 720px) {
-              :global(.fm-cat-grid) {
-                grid-template-columns: 1fr 1fr !important;
-              }
-              :global(.fm-insight-grid) {
-                grid-template-columns: 1fr 1fr !important;
-              }
-            }
-          `}</style>
+              <div
+                style={{
+                  marginTop: 18,
+                  fontFamily: FONT_SERIF,
+                  fontWeight: 900,
+                  fontSize: "clamp(22px, 5.4vw, 30px)",
+                  lineHeight: 1.3,
+                }}
+              >
+                <span style={{ color: C.goldSoft }}>{a.name}</span>
+                <span style={{ color: C.sub, margin: "0 10px", fontWeight: 400 }}>×</span>
+                <span style={{ color: C.lavenderSoft }}>{b.name}</span>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  marginTop: 8,
+                  fontSize: 22,
+                }}
+              >
+                <span>{emojiA}</span>
+                <span style={{ color: C.sub, fontSize: 15 }}>×</span>
+                <span>{emojiB}</span>
+              </div>
+
+              <div
+                style={{
+                  marginTop: 14,
+                  fontFamily: FONT_SERIF,
+                  fontWeight: 900,
+                  fontSize: 64,
+                  lineHeight: 1,
+                  color: C.gold,
+                  textShadow: "0 6px 28px rgba(201,168,76,0.4)",
+                }}
+              >
+                {result.total}
+                <span style={{ fontSize: 22, color: C.sub, fontWeight: 400 }}> / 100</span>
+              </div>
+
+              <div
+                style={{
+                  marginTop: 16,
+                  fontFamily: FONT_SERIF,
+                  fontSize: 17,
+                  fontWeight: 700,
+                  color: C.ink,
+                  lineHeight: 1.4,
+                }}
+              >
+                {archeTitle}
+              </div>
+              <p
+                style={{
+                  margin: "10px auto 0",
+                  maxWidth: 380,
+                  fontStyle: "italic",
+                  color: "rgba(245,241,230,0.75)",
+                  fontSize: 13.5,
+                  lineHeight: 1.7,
+                }}
+              >
+                “{verdict}”
+              </p>
+
+              <div
+                style={{
+                  marginTop: 22,
+                  paddingTop: 16,
+                  borderTop: "1px solid rgba(245,241,230,0.12)",
+                  fontFamily: FONT_SERIF,
+                  letterSpacing: "0.16em",
+                  fontSize: 14,
+                  color: C.goldSoft,
+                }}
+              >
+                nolza.fun
+              </div>
+            </div>
+
+            {/* 버튼 영역 (캡처 제외) */}
+            <div data-share-card-skip="true" style={{ marginTop: 18 }}>
+              <ShareButtons onShare={onShare} t={t} />
+              <button
+                type="button"
+                onClick={onReset}
+                style={{
+                  marginTop: 12,
+                  width: "100%",
+                  padding: "13px",
+                  borderRadius: 14,
+                  border: "1px solid rgba(245,241,230,0.18)",
+                  background: "transparent",
+                  color: "rgba(245,241,230,0.75)",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                {isSharedResult ? t("나도 해보기", "Try it myself") : t("다시 하기", "Try again")}
+              </button>
+            </div>
         </div>
-      }
-    />
+      </div>
+
+      <style jsx>{`
+        .fm-cats {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .fm-insights {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+          margin-bottom: 4px;
+        }
+        @media (min-width: 600px) {
+          .fm-cats {
+            grid-template-columns: 1fr 1fr;
+          }
+          .fm-insights {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function ElementBadge({ emoji, name, accent }: { emoji: string; name: string; accent: string }) {
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "8px 14px",
+        borderRadius: 999,
+        background: "rgba(255,255,255,0.05)",
+        border: `1px solid ${accent}55`,
+      }}
+    >
+      <span style={{ fontSize: 18 }}>{emoji}</span>
+      <span style={{ fontFamily: FONT_SERIF, fontSize: 14, color: accent, fontWeight: 700 }}>
+        {name}
+      </span>
+    </div>
+  );
+}
+
+/* ShareCard 의 이미지 저장 버튼 + 카카오 공유 버튼 묶음 */
+function ShareButtons({
+  onShare,
+  t,
+}: {
+  onShare: () => void;
+  t: (ko: string, en: string) => string;
+}) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+      <ImageSaveButton t={t} />
+      <button
+        type="button"
+        onClick={onShare}
+        style={{
+          padding: "14px",
+          borderRadius: 14,
+          border: "none",
+          background: "#FEE500",
+          color: "#191600",
+          fontSize: 14.5,
+          fontWeight: 800,
+          cursor: "pointer",
+        }}
+      >
+        {t("카카오 공유", "Share")}
+      </button>
+    </div>
+  );
+}
+
+/* 이미지 저장 버튼 — 가장 가까운 #result-card 를 html-to-image 로 캡처 */
+function ImageSaveButton({ t }: { t: (ko: string, en: string) => string }) {
+  const [saving, setSaving] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const handle = async () => {
+    if (saving) return;
+    const node = document.getElementById("result-card");
+    if (!node) return;
+    setSaving(true);
+    setDone(false);
+    try {
+      const { toBlob } = await import("html-to-image");
+      const blob = await toBlob(node, {
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: C.bgDeep,
+        filter: (n: HTMLElement) => {
+          if (n.tagName === "IFRAME") return false;
+          if (n.dataset?.shareCardSkip === "true") return false;
+          return true;
+        },
+      });
+      if (!blob) throw new Error("no-blob");
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "friend-match.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setDone(true);
+      setTimeout(() => setDone(false), 2000);
+    } catch (err) {
+      console.error("save image failed:", err);
+      alert(t("이미지 저장에 실패했어요. 화면을 캡처해주세요.", "Couldn't save. Please screenshot."));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handle}
+      disabled={saving}
+      style={{
+        padding: "14px",
+        borderRadius: 14,
+        border: `1px solid ${C.gold}`,
+        background: "rgba(201,168,76,0.12)",
+        color: C.goldSoft,
+        fontSize: 14.5,
+        fontWeight: 700,
+        cursor: saving ? "wait" : "pointer",
+        opacity: saving ? 0.7 : 1,
+      }}
+    >
+      {done ? t("저장됨", "Saved") : saving ? t("저장 중…", "Saving…") : `↓ ${t("이미지 저장", "Save")}`}
+    </button>
   );
 }
 
@@ -1203,45 +1697,40 @@ function CategoryCard({
   sub,
   score,
   body,
+  accent,
 }: {
   icon: string;
   name: string;
   sub: string;
   score: number;
   body: string;
+  accent: string;
 }) {
   const v = useCountUp(score, 900);
   const pct = Math.max(0, Math.min(100, score));
   return (
     <div
       style={{
-        background: C.paper,
-        border: `1px solid ${C.line}`,
+        background: C.card,
+        border: `1px solid ${C.cardBorder}`,
         borderRadius: 18,
-        padding: 22,
+        padding: 20,
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <span style={{ fontSize: 22 }}>{icon}</span>
+        <span style={{ fontSize: 20 }}>{icon}</span>
         <div style={{ flex: 1 }}>
-          <div
-            style={{
-              fontFamily: FONT_SERIF,
-              fontSize: 17,
-              fontWeight: 700,
-              color: C.ink,
-            }}
-          >
+          <div style={{ fontFamily: FONT_SERIF, fontSize: 16, fontWeight: 700, color: C.ink }}>
             {name}
           </div>
-          <div style={{ fontSize: 12, color: C.sub, marginTop: 2 }}>{sub}</div>
+          <div style={{ fontSize: 11.5, color: C.sub, marginTop: 1 }}>{sub}</div>
         </div>
         <div
           style={{
             fontFamily: FONT_SERIF,
-            fontSize: 26,
+            fontSize: 24,
             fontWeight: 900,
-            color: C.gold,
+            color: accent,
             fontVariantNumeric: "tabular-nums",
           }}
         >
@@ -1251,7 +1740,7 @@ function CategoryCard({
 
       <div
         style={{
-          marginTop: 14,
+          marginTop: 12,
           height: 6,
           borderRadius: 999,
           background: "rgba(245,241,230,0.07)",
@@ -1271,64 +1760,15 @@ function CategoryCard({
 
       <p
         style={{
-          marginTop: 14,
-          fontSize: 13.5,
-          lineHeight: 1.75,
-          color: "rgba(245,241,230,0.82)",
-        }}
-      >
-        {body}
-      </p>
-    </div>
-  );
-}
-
-function ResultStoryCard({
-  title,
-  body,
-  highlight,
-}: {
-  title: string;
-  body: string;
-  highlight: string;
-}) {
-  return (
-    <div
-      style={{
-        padding: 24,
-        borderRadius: 20,
-        background: C.paper,
-        border: `1px solid ${C.line}`,
-      }}
-    >
-      <div
-        style={{
-          fontFamily: FONT_SERIF,
-          color: C.goldSoft,
-          fontSize: 18,
-          fontWeight: 800,
-        }}
-      >
-        {title}
-      </div>
-      <p style={{ margin: "12px 0 0", color: "rgba(245,241,230,0.86)", fontSize: 15, lineHeight: 1.85 }}>
-        {body}
-      </p>
-      <div
-        style={{
-          marginTop: 16,
-          padding: "14px 16px",
-          borderRadius: 16,
-          background: "rgba(201,168,76,0.12)",
-          border: "1px solid rgba(201,168,76,0.22)",
-          color: C.goldSoft,
-          fontSize: 13.5,
+          marginTop: 12,
+          fontSize: 13,
           lineHeight: 1.7,
+          color: "rgba(245,241,230,0.8)",
           whiteSpace: "pre-line",
         }}
       >
-        {highlight}
-      </div>
+        {body}
+      </p>
     </div>
   );
 }
@@ -1337,30 +1777,25 @@ function MiniInsight({ title, body }: { title: string; body: string }) {
   return (
     <article
       style={{
-        minHeight: 132,
-        padding: 18,
-        borderRadius: 18,
-        background: C.paper,
-        border: `1px solid ${C.line}`,
+        padding: 16,
+        borderRadius: 16,
+        background: C.card,
+        border: `1px solid ${C.cardBorder}`,
       }}
     >
-      <div
-        style={{
-          fontFamily: FONT_SERIF,
-          color: C.goldSoft,
-          fontWeight: 800,
-          fontSize: 15,
-        }}
-      >
+      <div style={{ fontFamily: FONT_SERIF, color: C.goldSoft, fontWeight: 800, fontSize: 14 }}>
         {title}
       </div>
-      <p style={{ margin: "10px 0 0", color: "rgba(245,241,230,0.82)", fontSize: 13.5, lineHeight: 1.75 }}>
+      <p style={{ margin: "8px 0 0", color: "rgba(245,241,230,0.8)", fontSize: 13, lineHeight: 1.7 }}>
         {body}
       </p>
     </article>
   );
 }
 
+/* ============================================================
+ * Suspense 래퍼 + 폴백
+ * ========================================================== */
 export default function FriendMatchPage() {
   return (
     <Suspense fallback={<FriendMatchFallback />}>
@@ -1370,114 +1805,21 @@ export default function FriendMatchPage() {
 }
 
 function FriendMatchFallback() {
-  const inputBox = {
-    width: "100%",
-    boxSizing: "border-box" as const,
-    border: `1px solid ${C.line}`,
-    background: "rgba(255,255,255,0.05)",
-    color: C.ink,
-    borderRadius: 16,
-    padding: "15px 16px",
-    fontSize: 16,
-    outline: "none",
-  };
-
   return (
     <main
       style={{
         minHeight: "100svh",
-        background: C.bg,
+        background: `radial-gradient(120% 80% at 50% -10%, #131a30 0%, ${C.bg} 55%, ${C.bgDeep} 100%)`,
         color: C.ink,
         fontFamily: FONT_SANS,
-        padding: "20px 20px 72px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <div style={{ maxWidth: 880, margin: "0 auto" }}>
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 16,
-            alignItems: "center",
-            paddingBottom: 28,
-          }}
-        >
-          <Link href="/" style={{ color: C.sub, textDecoration: "none", fontSize: 13 }}>
-            ← 놀자 홈으로
-          </Link>
-          <span style={{ color: C.goldSoft, fontSize: 13, fontWeight: 800 }}>
-            친구 궁합
-          </span>
-        </header>
-
-        <section style={{ textAlign: "center", padding: "18px 0 28px" }}>
-          <p style={{ margin: 0, color: C.goldSoft, fontSize: 13, fontWeight: 800 }}>
-            우리 사이, 하늘이 정해놨다
-          </p>
-          <h1
-            style={{
-              margin: "12px 0 0",
-              fontFamily: FONT_SERIF,
-              fontSize: "clamp(34px, 8vw, 64px)",
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            친구 궁합 보기
-          </h1>
-          <p
-            style={{
-              maxWidth: 560,
-              margin: "18px auto 0",
-              color: "rgba(245,241,230,0.78)",
-              fontSize: 16,
-              lineHeight: 1.75,
-            }}
-          >
-            두 사람의 이름과 태어난 해를 입력하면, 관계의 결을 가볍게 읽어드려요.
-          </p>
-        </section>
-
-        <section
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 16,
-            padding: 22,
-            borderRadius: 24,
-            background: C.paper,
-            border: `1px solid ${C.line}`,
-          }}
-        >
-          {["나", "친구"].map((label) => (
-            <div key={label}>
-              <div style={{ marginBottom: 10, color: C.goldSoft, fontWeight: 800 }}>
-                {label}
-              </div>
-              <input disabled placeholder="이름 또는 닉네임" style={inputBox} />
-              <input disabled placeholder="태어난 해" style={{ ...inputBox, marginTop: 10 }} />
-            </div>
-          ))}
-        </section>
-
-        <div style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
-          <button
-            type="button"
-            disabled
-            style={{
-              border: 0,
-              borderRadius: 999,
-              padding: "15px 28px",
-              background: C.gold,
-              color: "#17120b",
-              fontWeight: 900,
-              fontSize: 15,
-              opacity: 0.9,
-            }}
-          >
-            궁합 분석하기
-          </button>
-        </div>
+      <div style={{ textAlign: "center", color: C.sub }}>
+        <div style={{ fontSize: 30, color: C.goldSoft }}>✦</div>
+        <p style={{ marginTop: 12, fontFamily: FONT_SERIF }}>우리 사이, 하늘이 정해놨다</p>
       </div>
     </main>
   );
