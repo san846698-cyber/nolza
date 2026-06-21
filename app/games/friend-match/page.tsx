@@ -831,6 +831,7 @@ type RelationshipArchetype = {
   verdict: string;
   enVerdict: string;
   keywords: [string, string, string, string];
+  enKeywords: [string, string, string, string];
   story: string;
   outsideView: string;
   secretPoint: string;
@@ -850,6 +851,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "완벽하진 않아도, 둘이 붙으면 관계의 설명서가 짧아집니다.",
     enVerdict: "Not perfect, but the manual gets shorter when you are together.",
     keywords: ["눈빛 번역 가능", "같은 편 본능", "시간 삭제", "오래 가는 케미"],
+    enKeywords: ["reads your eyes", "same-side instinct", "time disappears", "chemistry that lasts"],
     story: "둘은 처음부터 모든 게 딱 맞는 사이는 아니어도, 중요한 순간에 같은 방향을 보는 조합입니다. 한 명이 흐름을 놓치면 다른 한 명이 자연스럽게 잡아주고, 대화가 샛길로 빠져도 이상하게 결론은 같이 도착합니다. 주변에서는 운이 좋다고 말하지만, 사실은 서로의 리듬을 꽤 성실하게 배워온 관계입니다.",
     outsideView: "둘이 있으면 굳이 설명하지 않아도 편이 정해져 보입니다.",
     secretPoint: "별말 안 했는데도 상대가 지금 무슨 표정인지 대충 압니다.",
@@ -867,6 +869,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "대화가 길지 않아도 핵심은 묘하게 전달됩니다.",
     enVerdict: "Even short talks somehow carry the whole signal.",
     keywords: ["눈빛 번역 가능", "짧은 말 긴 이해", "침묵 안 어색함", "같은 웃음 포인트"],
+    enKeywords: ["reads your eyes", "few words, full grasp", "easy silences", "same sense of humor"],
     story: "둘은 말이 많은 날도 좋고, 말이 적은 날도 크게 어색하지 않습니다. 설명을 길게 하지 않아도 상대가 중간 과정을 알아서 채워 넣는 편이라, 대화가 빠르게 본론으로 들어갑니다. 다만 너무 익숙해서 가끔은 고마운 걸 말로 빼먹기 쉬운 조합입니다.",
     outsideView: "왜 저 말에 웃는지 남들은 모르는데 둘만 이미 터져 있습니다.",
     secretPoint: "대화가 끝난 줄 알았는데 세 시간 뒤에 자연스럽게 이어집니다.",
@@ -884,6 +887,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "결과물은 좋은데 그 과정에서 자막이 조금 필요합니다.",
     enVerdict: "The output works, but the process needs subtitles.",
     keywords: ["협업 케미", "말투 번역 필요", "결과로 증명", "오해 회복형"],
+    enKeywords: ["work chemistry", "tone needs subtitles", "proven by results", "bounces back from spats"],
     story: "둘은 같은 목표가 생기면 의외로 손발이 잘 맞습니다. 문제는 과정에서 말이 짧아지거나 의도가 다르게 들리는 순간이 잦다는 점입니다. 그래도 막상 끝나고 보면 서로가 없었으면 이만큼 못 했다는 걸 인정하게 되는, 조금 피곤하지만 쓸모가 확실한 관계입니다.",
     outsideView: "둘이 싸우는 줄 알았는데 결과물은 제일 잘 나옵니다.",
     secretPoint: "말로는 삐걱대도 일단 시작하면 역할이 저절로 나뉩니다.",
@@ -901,6 +905,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "말은 많이 하는데 실행 버튼은 가끔 늦게 눌립니다.",
     enVerdict: "Lots of talk, but the action button takes a while.",
     keywords: ["대화 주제 자동 생성", "계획만 3회차", "편한 수다", "느린 업데이트"],
+    enKeywords: ["topics never run out", "planned it three times", "easy chatter", "slow to update"],
     story: "둘이 만나면 대화 주제는 끊기지 않습니다. 서로의 생각을 꺼내는 데는 능하지만, 그 대화가 바로 변화로 이어지지는 않을 때가 있습니다. 그래도 이 관계의 장점은 말하는 동안 마음이 정리되고, 언젠가 그 말들이 천천히 행동으로 넘어간다는 점입니다.",
     outsideView: "둘이 또 무슨 얘기를 저렇게 오래 하나 싶어 보입니다.",
     secretPoint: "작년에도 한 얘기를 올해 더 구체적으로 다시 합니다.",
@@ -918,6 +923,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "편안함보다 자극이 먼저 오는 관계입니다.",
     enVerdict: "The spark arrives before comfort does.",
     keywords: ["성장 자극", "불편한 고마움", "현실 조언", "레벨업 관계"],
+    enKeywords: ["growth spark", "uncomfortable gratitude", "real-talk advice", "level-up bond"],
     story: "둘은 마냥 편한 조합이라기보다 서로의 빈틈을 보게 만드는 관계입니다. 상대의 한마디가 가끔은 찔리지만, 시간이 지나면 그 말 때문에 내가 조금 나아졌다는 걸 알게 됩니다. 오래 가려면 날카로운 조언 뒤에 애정 표현을 꼭 남겨야 합니다.",
     outsideView: "친한 건지 경쟁하는 건지 헷갈리지만 둘 다 은근히 신경 씁니다.",
     secretPoint: "상대에게 들은 말이 오래 남아서 나중에 행동을 바꿉니다.",
@@ -935,6 +941,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "한 번에 폭발하진 않아도, 오래 두면 맛이 깊어집니다.",
     enVerdict: "Not explosive, but deeper with time.",
     keywords: ["느린 친밀감", "안정 상승", "서서히 가까움", "오래 보기"],
+    enKeywords: ["slow closeness", "steady climb", "gradually nearer", "in it for the long run"],
     story: "둘은 처음부터 강렬하게 맞아떨어지는 관계는 아닐 수 있습니다. 대신 시간이 쌓일수록 서로의 기준과 속도를 이해하게 되고, 그 과정에서 안정감이 생깁니다. 급하게 결론 내리기보다 자주 보고 조금씩 쌓을수록 진짜 장점이 나오는 조합입니다.",
     outsideView: "엄청 가까워 보이진 않는데 은근히 오래 갑니다.",
     secretPoint: "크게 티 내지 않아도 서로의 생활에 조금씩 들어와 있습니다.",
@@ -952,6 +959,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "마음은 가까운데 업무 방식은 각자 세계관이 있습니다.",
     enVerdict: "Close hearts, separate operating systems.",
     keywords: ["친밀감 높음", "협업 주의", "역할분담 필수", "놀 때 강함"],
+    enKeywords: ["high closeness", "careful at teamwork", "split the roles", "unbeatable at fun"],
     story: "둘은 관계 자체의 온도는 따뜻하지만, 같이 뭔가를 굴리기 시작하면 방식 차이가 드러납니다. 한 명은 빠르게 움직이고 싶고, 다른 한 명은 다르게 확인하고 싶을 수 있습니다. 그래서 이 조합은 같이 일하기보다 같이 쉬고 웃을 때 진가가 더 잘 나옵니다.",
     outsideView: "분명 친한데 팀플만 하면 표정이 복잡해집니다.",
     secretPoint: "일 얘기만 빼면 둘의 텐션은 꽤 안정적입니다.",
@@ -969,6 +977,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "편해지는 데 시간은 걸리지만, 남는 게 많은 관계입니다.",
     enVerdict: "Comfort takes time, but the relationship leaves something behind.",
     keywords: ["어색함 회복 중", "배울 점 많음", "낯가림 성장", "천천히 신뢰"],
+    enKeywords: ["thawing the awkward", "lots to learn", "shy but growing", "trust builds slowly"],
     story: "둘은 처음부터 친밀감이 확 올라오는 조합은 아닙니다. 하지만 대화와 경험이 쌓일수록 서로에게 없는 관점이 있다는 걸 발견합니다. 친해지는 속도는 느려도, 어느 순간 '이 사람 덕분에 내가 달라졌네'라고 느끼기 쉬운 관계입니다.",
     outsideView: "처음엔 어색해 보이는데 은근히 서로를 챙깁니다.",
     secretPoint: "불편한 침묵을 지나고 나면 진짜 이야기가 나옵니다.",
@@ -986,6 +995,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "잘 맞는 순간은 분명한데, 친밀감은 천천히 여는 타입입니다.",
     enVerdict: "The chemistry is real; the closeness opens slowly.",
     keywords: ["케미 선명", "거리 조절", "대화 잘 굴러감", "천천히 마음 열기"],
+    enKeywords: ["vivid chemistry", "managing the distance", "talk flows easily", "opening up slowly"],
     story: "둘은 말과 행동의 합이 꽤 잘 맞습니다. 같이 무언가를 하면 자연스럽게 흐름이 생기지만, 마음의 거리까지 바로 좁혀지는 건 아닙니다. 서로를 너무 빨리 규정하지 않고 시간을 주면, 이 케미가 진짜 친밀감으로 바뀔 가능성이 큽니다.",
     outsideView: "둘이 잘 맞아 보이는데 막상 본인들은 아직 조심스럽습니다.",
     secretPoint: "재밌게 대화하고 나서도 혼자 거리감을 다시 계산합니다.",
@@ -1003,6 +1013,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "연락이 뜸해도 관계가 끊긴 느낌은 아닙니다.",
     enVerdict: "Sparse messages, steady bond.",
     keywords: ["조용한 의리", "연락 텀 긴데 안 멀어짐", "무소식 안정", "오래 감"],
+    enKeywords: ["quiet loyalty", "distance, never distant", "no news is fine", "goes the distance"],
     story: "둘은 매일 연락하거나 감정을 자주 확인하는 스타일은 아닐 수 있습니다. 그래도 이상하게 끊겼다는 느낌이 적고, 필요할 때 다시 연결되는 힘이 있습니다. 이 관계의 핵심은 빈도보다 신뢰에 가깝습니다.",
     outsideView: "별로 안 친한 줄 알았는데 중요한 날엔 꼭 챙깁니다.",
     secretPoint: "몇 달 만에 연락해도 어제 본 사람처럼 시작됩니다.",
@@ -1020,6 +1031,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "친밀감이 높아서 놀릴 거리도 자산처럼 쌓입니다.",
     enVerdict: "So close that teasing material becomes shared property.",
     keywords: ["흑역사 보관함", "놀림 방지선 있음", "편한 장난", "오래된 증거"],
+    enKeywords: ["archive of cringe", "knows where the line is", "easy teasing", "old receipts"],
     story: "둘 사이에는 남들이 모르는 에피소드가 꽤 쌓여 있습니다. 서로를 놀리지만 선은 기가 막히게 알고, 웃기게 말해도 관계의 바닥에는 편이 되어준다는 믿음이 있습니다. 이 조합은 시간이 지날수록 추억보다 증거 자료가 많아지는 타입입니다.",
     outsideView: "둘이 서로 너무 놀리는데 이상하게 기분 나빠 보이진 않습니다.",
     secretPoint: "상대의 과거 발언을 정확한 날짜감으로 기억합니다.",
@@ -1037,6 +1049,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "같이 있을 때 몰아서 충전하는 관계입니다.",
     enVerdict: "You charge the bond in intense in-person bursts.",
     keywords: ["만나면 폭주", "헤어지면 잠잠", "대화 몰아치기", "현장형 케미"],
+    enKeywords: ["wild when together", "quiet once apart", "talk in bursts", "in-person chemistry"],
     story: "둘은 평소 연락이 엄청 촘촘하지 않아도, 만나면 말이 한번에 터지는 편입니다. 대화가 꼬리에 꼬리를 물고, 작은 사건도 둘 사이에서는 큰 에피소드가 됩니다. 이 관계는 매일 확인하는 친밀감보다 만나서 살아나는 현장감이 강합니다.",
     outsideView: "아까 만난 사람들 맞나 싶을 정도로 말이 많아집니다.",
     secretPoint: "연락창은 조용한데 만나면 업데이트가 폭포처럼 나옵니다.",
@@ -1054,6 +1067,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "방향만 같으면 추진력이 꽤 무섭습니다.",
     enVerdict: "When aligned, the momentum gets serious.",
     keywords: ["팀플 전투력", "같은 편 버프", "결과 집착", "추진력 상승"],
+    enKeywords: ["teamwork firepower", "same-side buff", "results-obsessed", "momentum boost"],
     story: "둘은 같은 목표를 잡았을 때 에너지가 크게 올라갑니다. 한 명이 시작하면 다른 한 명이 밀고, 중간에 흐름이 죽을 때도 서로를 다시 끌어올립니다. 다만 방향이 어긋나는 순간 둘 다 만만치 않아서, 시작 전에 기준을 맞추는 게 중요합니다.",
     outsideView: "같은 편이면 무섭고, 반대편이면 피곤해 보입니다.",
     secretPoint: "둘 다 은근히 지기 싫어해서 결과가 좋아집니다.",
@@ -1071,6 +1085,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "한 명이 흔들리면 다른 한 명이 방향을 잡아줍니다.",
     enVerdict: "When one swerves, the other finds the lane.",
     keywords: ["급발진 방지턱", "현실 조언 담당", "서로 보정", "성장 스위치"],
+    enKeywords: ["the speed bump", "reality-check duty", "calibrate each other", "growth switch"],
     story: "둘은 서로를 그냥 편하게만 두지는 않습니다. 한 명이 너무 빨리 달리면 다른 한 명이 속도를 조절하고, 한 명이 멈춰 있으면 다른 한 명이 살짝 밀어줍니다. 그래서 이 관계는 편안함과 자극 사이에서 묘하게 균형을 잡습니다.",
     outsideView: "둘이 서로를 말리다가도 결국 제일 응원합니다.",
     secretPoint: "상대가 하는 잔소리 중 일부는 실제로 도움이 됩니다.",
@@ -1088,6 +1103,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "한 군데가 삐걱대도 전체 그림은 이상하게 굴러갑니다.",
     enVerdict: "One part squeaks, yet the whole thing moves.",
     keywords: ["삐걱 케미", "오해 후 회복", "다름 인정", "묘한 안정감"],
+    enKeywords: ["squeaky chemistry", "recovers after spats", "owns the differences", "oddly steady"],
     story: "둘 사이에는 분명히 잘 안 맞는 구간이 있습니다. 그런데 그 부분이 관계 전체를 망치기보다, 오히려 서로를 더 구체적으로 알게 만드는 장치처럼 작동합니다. 맞지 않는 척하면서도 계속 돌아오는 힘이 있는 관계입니다.",
     outsideView: "안 맞는다고 말하면서 계속 같이 있습니다.",
     secretPoint: "불평은 하는데 막상 없으면 허전합니다.",
@@ -1105,6 +1121,7 @@ const RELATIONSHIP_ARCHETYPES: RelationshipArchetype[] = [
     verdict: "완벽한 밀착형은 아니어도, 관계의 복귀력이 좋습니다.",
     enVerdict: "Not always close, but good at finding the way back.",
     keywords: ["복귀력 좋음", "느슨한 신뢰", "다시 연결", "편한 거리"],
+    enKeywords: ["bounces back", "loose trust", "reconnects easily", "comfortable distance"],
     story: "둘은 늘 같은 텐션으로 붙어 있는 관계는 아닐 수 있습니다. 하지만 거리가 생겨도 완전히 끊어졌다는 느낌보다는, 다시 이어질 수 있는 여지가 남습니다. 서로의 생활을 인정하면서도 중요한 순간에는 다시 같은 편이 되는 조합입니다.",
     outsideView: "자주 붙어 있진 않아도 묘하게 관계가 유지됩니다.",
     secretPoint: "오랜만에 연락해도 생각보다 어색함 회복이 빠릅니다.",
@@ -1186,7 +1203,7 @@ function ResultView({
 }) {
   const archeTitle = locale === "ko" ? result.archetype.title : result.archetype.enTitle;
   const verdict = locale === "ko" ? result.archetype.verdict : result.archetype.enVerdict;
-  const keywords = result.archetype.keywords.slice(0, 4);
+  const keywords = (locale === "ko" ? result.archetype.keywords : result.archetype.enKeywords).slice(0, 4);
   const total = useCountUp(result.total, 1400);
 
   const emojiA = ELEMENT_EMOJI[result.e1];
@@ -1805,6 +1822,7 @@ export default function FriendMatchPage() {
 }
 
 function FriendMatchFallback() {
+  const { t } = useLocale();
   return (
     <main
       style={{
@@ -1819,7 +1837,9 @@ function FriendMatchFallback() {
     >
       <div style={{ textAlign: "center", color: C.sub }}>
         <div style={{ fontSize: 30, color: C.goldSoft }}>✦</div>
-        <p style={{ marginTop: 12, fontFamily: FONT_SERIF }}>우리 사이, 하늘이 정해놨다</p>
+        <p style={{ marginTop: 12, fontFamily: FONT_SERIF }}>
+          {t("우리 사이, 하늘이 정해놨다", "Was our bond written in the stars?")}
+        </p>
       </div>
     </main>
   );

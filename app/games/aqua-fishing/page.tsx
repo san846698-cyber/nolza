@@ -528,6 +528,17 @@ export default function AquaFishingGame() {
     return getFishName(key);
   };
   const getFishImageCredit = (key: string) => FISH_IMAGE_METADATA[key];
+  const getRarityLabel = (rarity: string) => {
+    switch (rarity) {
+      case 'Common': return t('일반', 'Common');
+      case 'Uncommon': return t('고급', 'Uncommon');
+      case 'Rare': return t('희귀', 'Rare');
+      case 'Epic': return t('영웅', 'Epic');
+      case 'Legendary': return t('전설', 'Legendary');
+      case 'Mythic': return t('신화', 'Mythic');
+      default: return rarity;
+    }
+  };
 
   useEffect(() => {
     const handleToggleEnc = () => setShowEncyclopedia(s => !s);
@@ -2259,7 +2270,7 @@ export default function AquaFishingGame() {
                                 {/* Stats pills */}
                                 <div className="flex flex-wrap gap-2 mb-4 justify-center shrink-0">
                                    <span className="px-3 py-1 rounded-md text-sm font-bold bg-slate-200 text-slate-800 border-2 border-slate-300 shadow-sm">
-                                       {t('희귀도', 'Rarity')}: {FISH_DATABASE[selectedFish].rarity}
+                                       {t('희귀도', 'Rarity')}: {getRarityLabel(FISH_DATABASE[selectedFish].rarity)}
                                    </span>
                                    <span className="px-3 py-1 rounded-md text-sm font-bold bg-amber-100 text-amber-800 border-2 border-amber-300 shadow-sm">
                                        {t('점수', 'Score')}: {FISH_DATABASE[selectedFish].score}

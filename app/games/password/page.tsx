@@ -329,6 +329,11 @@ export default function PasswordGame() {
   const revealedRef = useRef(revealed);
   useEffect(() => { revealedRef.current = revealed; }, [revealed]);
   const wonRef = useRef(false);
+  // Keep the latest t() available to the long-lived interval closures (which
+  // intentionally subscribe once with empty deps) so demon-log toasts follow
+  // the current locale instead of the one captured at mount.
+  const tRef = useRef(t);
+  useEffect(() => { tRef.current = t; }, [t]);
 
   const currentMonth = useMemo(() => new Date().getMonth() + 1, []);
   const weekdayKo = useMemo(() => WEEKDAYS_KO[new Date().getDay()], []);
@@ -368,8 +373,9 @@ export default function PasswordGame() {
       if (idx === -1) return;
       const removed = arr.splice(idx, 1)[0];
       setPw(arr.join(""));
-      setDemonLog(`🔥 ate "${removed}"`);
-      setTimeout(() => setDemonLog((m) => (m === `🔥 ate "${removed}"` ? null : m)), 1800);
+      const msg = tRef.current(`🔥 "${removed}" 잡아먹음`, `🔥 ate "${removed}"`);
+      setDemonLog(msg);
+      setTimeout(() => setDemonLog((m) => (m === msg ? null : m)), 1800);
     }, 8000);
     return () => clearInterval(id);
   }, []);
@@ -386,8 +392,9 @@ export default function PasswordGame() {
       // Swap with next char.
       [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
       setPw(arr.join(""));
-      setDemonLog("🍗 walked right");
-      setTimeout(() => setDemonLog((m) => (m === "🍗 walked right" ? null : m)), 1500);
+      const msg = tRef.current("🍗 오른쪽으로 한 칸 이동", "🍗 walked right");
+      setDemonLog(msg);
+      setTimeout(() => setDemonLog((m) => (m === msg ? null : m)), 1500);
     }, 5000);
     return () => clearInterval(id);
   }, []);
@@ -398,8 +405,9 @@ export default function PasswordGame() {
       if (wonRef.current) return;
       if (revealedRef.current < 23) return;
       setMinLengthBoost((b) => b + 1);
-      setDemonLog("📏 min length +1");
-      setTimeout(() => setDemonLog((m) => (m === "📏 min length +1" ? null : m)), 2000);
+      const msg = tRef.current("📏 최소 글자수 +1", "📏 min length +1");
+      setDemonLog(msg);
+      setTimeout(() => setDemonLog((m) => (m === msg ? null : m)), 2000);
     }, 60000);
     return () => clearInterval(id);
   }, []);

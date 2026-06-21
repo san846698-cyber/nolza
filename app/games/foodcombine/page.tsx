@@ -12,33 +12,34 @@
  */
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
-type Combo = { id: number; name: string; emoji: string };
+type Combo = { id: number; name: string; name_en: string; emoji: string };
 type Choice = "tried" | "never" | "no_thanks";
 type Tally = { tried: number; never: number; no_thanks: number };
 
 const COMBOS: Combo[] = [
-  { id: 1, name: "라면 + 밥", emoji: "🍜🍚" },
-  { id: 2, name: "치킨 + 콜라", emoji: "🍗🥤" },
-  { id: 3, name: "삼겹살 + 소주", emoji: "🥓🍶" },
-  { id: 4, name: "떡볶이 + 순대", emoji: "🌶️🌭" },
-  { id: 5, name: "짜장면 + 짬뽕 (짬짜면)", emoji: "🍜🍝" },
-  { id: 6, name: "맥주 + 치킨 (치맥)", emoji: "🍻🍗" },
-  { id: 7, name: "김밥 + 라면", emoji: "🍙🍜" },
-  { id: 8, name: "피자 + 김치", emoji: "🍕🥬" },
-  { id: 9, name: "수박 + 소금", emoji: "🍉🧂" },
-  { id: 10, name: "비빔밥 + 짜파게티", emoji: "🍱🍜" },
-  { id: 11, name: "삼겹살 + 냉면", emoji: "🥓🍜" },
-  { id: 12, name: "민트초코 + 아메리카노", emoji: "🍫☕" },
-  { id: 13, name: "햄버거 + 김치", emoji: "🍔🥬" },
-  { id: 14, name: "초밥 + 김치찌개", emoji: "🍣🍲" },
-  { id: 15, name: "떡볶이 + 우유", emoji: "🌶️🥛" },
-  { id: 16, name: "탕수육 + 부먹/찍먹", emoji: "🥡🥢" },
-  { id: 17, name: "라면 + 떡", emoji: "🍜🍡" },
-  { id: 18, name: "삼겹살 + 파인애플", emoji: "🥓🍍" },
-  { id: 19, name: "막걸리 + 파전", emoji: "🍶🥞" },
-  { id: 20, name: "찌개 + 누룽지", emoji: "🍲🍘" },
+  { id: 1, name: "라면 + 밥", name_en: "Ramyeon + rice", emoji: "🍜🍚" },
+  { id: 2, name: "치킨 + 콜라", name_en: "Fried chicken + cola", emoji: "🍗🥤" },
+  { id: 3, name: "삼겹살 + 소주", name_en: "Pork belly + soju", emoji: "🥓🍶" },
+  { id: 4, name: "떡볶이 + 순대", name_en: "Tteokbokki + sundae", emoji: "🌶️🌭" },
+  { id: 5, name: "짜장면 + 짬뽕 (짬짜면)", name_en: "Jjajangmyeon + jjamppong (jjamjjamyeon)", emoji: "🍜🍝" },
+  { id: 6, name: "맥주 + 치킨 (치맥)", name_en: "Beer + fried chicken (chimaek)", emoji: "🍻🍗" },
+  { id: 7, name: "김밥 + 라면", name_en: "Gimbap + ramyeon", emoji: "🍙🍜" },
+  { id: 8, name: "피자 + 김치", name_en: "Pizza + kimchi", emoji: "🍕🥬" },
+  { id: 9, name: "수박 + 소금", name_en: "Watermelon + salt", emoji: "🍉🧂" },
+  { id: 10, name: "비빔밥 + 짜파게티", name_en: "Bibimbap + Chapagetti", emoji: "🍱🍜" },
+  { id: 11, name: "삼겹살 + 냉면", name_en: "Pork belly + naengmyeon", emoji: "🥓🍜" },
+  { id: 12, name: "민트초코 + 아메리카노", name_en: "Mint choco + americano", emoji: "🍫☕" },
+  { id: 13, name: "햄버거 + 김치", name_en: "Burger + kimchi", emoji: "🍔🥬" },
+  { id: 14, name: "초밥 + 김치찌개", name_en: "Sushi + kimchi stew", emoji: "🍣🍲" },
+  { id: 15, name: "떡볶이 + 우유", name_en: "Tteokbokki + milk", emoji: "🌶️🥛" },
+  { id: 16, name: "탕수육 + 부먹/찍먹", name_en: "Sweet & sour pork: sauce-poured or dipped", emoji: "🥡🥢" },
+  { id: 17, name: "라면 + 떡", name_en: "Ramyeon + rice cakes", emoji: "🍜🍡" },
+  { id: 18, name: "삼겹살 + 파인애플", name_en: "Pork belly + pineapple", emoji: "🥓🍍" },
+  { id: 19, name: "막걸리 + 파전", name_en: "Makgeolli + pajeon", emoji: "🍶🥞" },
+  { id: 20, name: "찌개 + 누룽지", name_en: "Stew + scorched-rice crust", emoji: "🍲🍘" },
 ];
 
 const VOTES_KEY = "nolza-foodcombine-votes";
@@ -71,14 +72,15 @@ function loadChoices(): Record<number, Choice> {
   return {};
 }
 
-function getStyle(triedRatio: number): string {
-  if (triedRatio >= 0.7) return "🌟 모험가형";
-  if (triedRatio >= 0.4) return "🍱 평범한 미식가";
-  if (triedRatio >= 0.2) return "🥢 보수적인 입맛";
-  return "😅 까다로운 분";
+function getStyle(triedRatio: number, t: (ko: string, en: string) => string): string {
+  if (triedRatio >= 0.7) return t("🌟 모험가형", "🌟 The Adventurer");
+  if (triedRatio >= 0.4) return t("🍱 평범한 미식가", "🍱 The Everyday Foodie");
+  if (triedRatio >= 0.2) return t("🥢 보수적인 입맛", "🥢 The Conservative Palate");
+  return t("😅 까다로운 분", "😅 The Picky Eater");
 }
 
 export default function FoodCombineGame() {
+  const { t, locale } = useLocale();
   const [idx, setIdx] = useState(0);
   const [votes, setVotes] = useState<Record<number, Tally>>({});
   const [choices, setChoices] = useState<Record<number, Choice>>({});
@@ -119,12 +121,13 @@ export default function FoodCombineGame() {
   };
 
   const triedCount = Object.values(choices).filter((c) => c === "tried").length;
-  const triedRatio = Object.keys(choices).length > 0
-    ? triedCount / Object.keys(choices).length
-    : 0;
+  const triedRatio = COMBOS.length > 0 ? triedCount / COMBOS.length : 0;
 
   const handleShare = async () => {
-    const text = `이상한 음식 조합 ${triedCount}/${COMBOS.length}개 먹어봤다 (${getStyle(triedRatio)}) → nolza.fun/games/foodcombine`;
+    const text = t(
+      `이상한 음식 조합 ${triedCount}/${COMBOS.length}개 먹어봤다 (${getStyle(triedRatio, t)}) → nolza.fun/games/foodcombine`,
+      `I've tried ${triedCount}/${COMBOS.length} weird food combos (${getStyle(triedRatio, t)}) → nolza.fun/games/foodcombine`,
+    );
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -138,23 +141,31 @@ export default function FoodCombineGame() {
         <div className="border-b border-border">
           <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
             <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-              ← 놀자 홈으로
+              {t("← 놀자 홈으로", "← Back to nolza home")}
             </Link>
           </div>
         </div>
         <div className="mx-auto max-w-3xl px-5 pt-16 md:px-8">
           <div className="rounded-2xl border border-accent/40 bg-card p-8 text-center md:p-12">
-            <div className="text-sm text-accent">당신의 식성</div>
-            <div className="mt-3 text-5xl font-black md:text-6xl">{getStyle(triedRatio)}</div>
+            <div className="text-sm text-accent">{t("당신의 식성", "Your taste type")}</div>
+            <div className="mt-3 text-5xl font-black md:text-6xl">{getStyle(triedRatio, t)}</div>
             <div className="mt-4 text-base text-gray-400">
-              {COMBOS.length}개 중 <span className="text-accent font-bold">{triedCount}개</span> 먹어봤어요
+              {locale === "ko" ? (
+                <>
+                  {COMBOS.length}개 중 <span className="text-accent font-bold">{triedCount}개</span> 먹어봤어요
+                </>
+              ) : (
+                <>
+                  You&apos;ve tried <span className="text-accent font-bold">{triedCount}</span> of {COMBOS.length}
+                </>
+              )}
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <button onClick={restart} type="button" className="rounded-full border border-border bg-bg px-6 py-3 text-sm font-medium text-white hover:border-accent hover:text-accent">
-                ↻ 다시 보기
+                {t("↻ 다시 보기", "↻ Start over")}
               </button>
               <button onClick={handleShare} type="button" className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90">
-                {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
+                {copied ? t("✓ 복사됐어요", "✓ COPIED") : t("📋 친구에게 공유하기", "📋 Share with friends")}
               </button>
             </div>
           </div>
@@ -166,9 +177,9 @@ export default function FoodCombineGame() {
   if (!current) return <main className="min-h-screen bg-bg" />;
 
   const buttons: { key: Choice; label: string; color: string }[] = [
-    { key: "tried", label: "✅ 먹어봤다", color: "border-emerald-500/40 hover:border-emerald-500" },
-    { key: "never", label: "🤔 안 먹어봤다", color: "border-yellow-400/40 hover:border-yellow-400" },
-    { key: "no_thanks", label: "🙅 먹기 싫다", color: "border-accent/40 hover:border-accent" },
+    { key: "tried", label: t("✅ 먹어봤다", "✅ Tried it"), color: "border-emerald-500/40 hover:border-emerald-500" },
+    { key: "never", label: t("🤔 안 먹어봤다", "🤔 Never tried"), color: "border-yellow-400/40 hover:border-yellow-400" },
+    { key: "no_thanks", label: t("🙅 먹기 싫다", "🙅 No thanks"), color: "border-accent/40 hover:border-accent" },
   ];
 
   return (
@@ -176,7 +187,7 @@ export default function FoodCombineGame() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
           <div className="text-xs text-gray-500">
             <span className="font-medium text-white">{idx + 1}</span> / {COMBOS.length}
@@ -187,14 +198,22 @@ export default function FoodCombineGame() {
       <div className="mx-auto max-w-3xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-8">
           <h1 className="text-3xl font-black md:text-5xl">
-            이 조합 <span className="text-accent">먹어봤어?</span>
+            {locale === "ko" ? (
+              <>
+                이 조합 <span className="text-accent">먹어봤어?</span>
+              </>
+            ) : (
+              <>
+                Have you <span className="text-accent">tried this combo?</span>
+              </>
+            )}
           </h1>
         </header>
 
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
           <div className="text-center">
             <div className="text-7xl">{current.emoji}</div>
-            <div className="mt-4 text-2xl font-black md:text-3xl">{current.name}</div>
+            <div className="mt-4 text-2xl font-black md:text-3xl">{t(current.name, current.name_en)}</div>
           </div>
 
           {!userChoice ? (
@@ -231,14 +250,16 @@ export default function FoodCombineGame() {
                       <span className="text-sm font-medium">{b.label}</span>
                       <span className="text-sm tabular-nums text-gray-300">
                         {pct.toFixed(1)}%
-                        {isMine && <span className="ml-2 text-accent">← 내 답</span>}
+                        {isMine && <span className="ml-2 text-accent">{t("← 내 답", "← My answer")}</span>}
                       </span>
                     </div>
                   </div>
                 );
               })}
               <div className="text-center text-xs text-gray-500">
-                총 {total.toLocaleString("ko-KR")}명 응답
+                {locale === "ko"
+                  ? `총 ${total.toLocaleString("ko-KR")}명 응답`
+                  : `${total.toLocaleString("en-US")} responses`}
               </div>
             </div>
           )}
@@ -252,13 +273,17 @@ export default function FoodCombineGame() {
                 : "border border-border bg-bg text-gray-400 hover:border-accent hover:text-accent"
             }`}
           >
-            {idx + 1 >= COMBOS.length ? "결과 보기 →" : userChoice ? "다음 →" : "스킵 →"}
+            {idx + 1 >= COMBOS.length
+              ? t("결과 보기 →", "See results →")
+              : userChoice
+                ? t("다음 →", "Next →")
+                : t("스킵 →", "Skip →")}
           </button>
         </div>
 
         <div className="mt-12 flex justify-center">
           <Link href="/" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

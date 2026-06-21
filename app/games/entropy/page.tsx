@@ -121,7 +121,7 @@ export default function EntropyGame() {
         transition: "background-color 0.4s",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home">
+      <Link href="/" className="back-arrow dark" aria-label={t("홈", "home")}>
         ←
       </Link>
       <div className="mx-auto max-w-3xl px-6 pt-20">
@@ -247,7 +247,9 @@ export default function EntropyGame() {
                     letterSpacing: "0.15em",
                   }}
                 >
-                  {copied ? "✓ COPIED" : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
+                  {copied
+                    ? t("✓ 복사됐어요", "✓ COPIED")
+                    : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
                 </button>
               </div>
             </div>

@@ -374,7 +374,7 @@ export default function TimeSenseGame() {
                 cursor: "pointer",
               }}
             >
-              {copied ? "✓ COPIED" : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
+              {copied ? t("✓ 복사됐어요", "✓ COPIED") : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
             </button>
           </div>
           <AdBottom />

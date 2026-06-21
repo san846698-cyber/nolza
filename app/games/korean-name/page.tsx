@@ -45,6 +45,7 @@ type GeneratedName = {
 type Celebrity = {
   name: string;
   role: string;
+  roleEn: string;
 };
 
 type Country = {
@@ -622,89 +623,89 @@ const BR_FEMALE: GeneratedName[] = [
    ============================================================================ */
 
 const KO_CELEBS: Celebrity[] = [
-  { name: "BTS RM", role: "방탄소년단 리더·래퍼" },
-  { name: "BTS Jin", role: "방탄소년단 보컬" },
-  { name: "BTS Jungkook", role: "방탄소년단 메인보컬" },
-  { name: "BLACKPINK Jisoo", role: "블랙핑크 보컬" },
-  { name: "BLACKPINK Jennie", role: "블랙핑크 래퍼" },
-  { name: "IU 아이유", role: "싱어송라이터" },
-  { name: "박보검", role: "배우" },
-  { name: "손흥민", role: "축구 선수" },
-  { name: "김연아", role: "피겨 스케이팅 전설" },
-  { name: "봉준호", role: "영화감독 (기생충)" },
-  { name: "박서준", role: "배우" },
-  { name: "NewJeans 하니", role: "뉴진스 멤버" },
-  { name: "이민호", role: "배우" },
-  { name: "차은우", role: "ASTRO 멤버·배우" },
+  { name: "BTS RM", role: "방탄소년단 리더·래퍼", roleEn: "BTS leader & rapper" },
+  { name: "BTS Jin", role: "방탄소년단 보컬", roleEn: "BTS vocalist" },
+  { name: "BTS Jungkook", role: "방탄소년단 메인보컬", roleEn: "BTS main vocalist" },
+  { name: "BLACKPINK Jisoo", role: "블랙핑크 보컬", roleEn: "BLACKPINK vocalist" },
+  { name: "BLACKPINK Jennie", role: "블랙핑크 래퍼", roleEn: "BLACKPINK rapper" },
+  { name: "IU 아이유", role: "싱어송라이터", roleEn: "Singer-songwriter" },
+  { name: "박보검", role: "배우", roleEn: "Actor" },
+  { name: "손흥민", role: "축구 선수", roleEn: "Footballer" },
+  { name: "김연아", role: "피겨 스케이팅 전설", roleEn: "Figure skating legend" },
+  { name: "봉준호", role: "영화감독 (기생충)", roleEn: "Film director (Parasite)" },
+  { name: "박서준", role: "배우", roleEn: "Actor" },
+  { name: "NewJeans 하니", role: "뉴진스 멤버", roleEn: "NewJeans member" },
+  { name: "이민호", role: "배우", roleEn: "Actor" },
+  { name: "차은우", role: "ASTRO 멤버·배우", roleEn: "ASTRO member & actor" },
 ];
 
 const JP_CELEBS: Celebrity[] = [
-  { name: "Hayao Miyazaki", role: "지브리 애니메이션 거장" },
-  { name: "Haruki Murakami", role: "소설가 (1Q84)" },
-  { name: "Takuya Kimura", role: "국민 배우" },
-  { name: "Naomi Osaka", role: "테니스 선수" },
-  { name: "Hideo Kojima", role: "메탈기어 게임 디자이너" },
-  { name: "Akira Kurosawa", role: "전설의 영화감독" },
-  { name: "Ryuichi Sakamoto", role: "작곡가·피아니스트" },
-  { name: "Rui Hachimura", role: "NBA 농구 선수" },
-  { name: "Yuzuru Hanyu", role: "피겨 스케이팅 챔피언" },
-  { name: "Yui Aragaki", role: "여배우" },
-  { name: "Ken Watanabe", role: "할리우드도 진출한 배우" },
+  { name: "Hayao Miyazaki", role: "지브리 애니메이션 거장", roleEn: "Studio Ghibli animation master" },
+  { name: "Haruki Murakami", role: "소설가 (1Q84)", roleEn: "Novelist (1Q84)" },
+  { name: "Takuya Kimura", role: "국민 배우", roleEn: "Beloved national actor" },
+  { name: "Naomi Osaka", role: "테니스 선수", roleEn: "Tennis player" },
+  { name: "Hideo Kojima", role: "메탈기어 게임 디자이너", roleEn: "Metal Gear game designer" },
+  { name: "Akira Kurosawa", role: "전설의 영화감독", roleEn: "Legendary film director" },
+  { name: "Ryuichi Sakamoto", role: "작곡가·피아니스트", roleEn: "Composer & pianist" },
+  { name: "Rui Hachimura", role: "NBA 농구 선수", roleEn: "NBA basketball player" },
+  { name: "Yuzuru Hanyu", role: "피겨 스케이팅 챔피언", roleEn: "Figure skating champion" },
+  { name: "Yui Aragaki", role: "여배우", roleEn: "Actress" },
+  { name: "Ken Watanabe", role: "할리우드도 진출한 배우", roleEn: "Actor who broke into Hollywood" },
 ];
 
 const CN_CELEBS: Celebrity[] = [
-  { name: "Jet Li 이연걸", role: "무술 액션 배우" },
-  { name: "Jackie Chan 성룡", role: "쿵푸 액션 스타" },
-  { name: "Yang Mi 양미", role: "톱 여배우" },
-  { name: "Yao Ming 야오밍", role: "NBA 전설" },
-  { name: "Fan Bingbing 판빙빙", role: "여배우" },
-  { name: "Tony Leung 양조위", role: "홍콩 명배우" },
-  { name: "Maggie Cheung 장만옥", role: "여배우 (화양연화)" },
-  { name: "Andy Lau 유덕화", role: "가수·배우 슈퍼스타" },
-  { name: "Liu Yifei 유역비", role: "여배우 (뮬란)" },
-  { name: "Lang Lang 랑랑", role: "세계적 피아니스트" },
-  { name: "Chow Yun-fat 주윤발", role: "전설의 액션 배우" },
+  { name: "Jet Li 이연걸", role: "무술 액션 배우", roleEn: "Martial arts action actor" },
+  { name: "Jackie Chan 성룡", role: "쿵푸 액션 스타", roleEn: "Kung fu action star" },
+  { name: "Yang Mi 양미", role: "톱 여배우", roleEn: "Top actress" },
+  { name: "Yao Ming 야오밍", role: "NBA 전설", roleEn: "NBA legend" },
+  { name: "Fan Bingbing 판빙빙", role: "여배우", roleEn: "Actress" },
+  { name: "Tony Leung 양조위", role: "홍콩 명배우", roleEn: "Acclaimed Hong Kong actor" },
+  { name: "Maggie Cheung 장만옥", role: "여배우 (화양연화)", roleEn: "Actress (In the Mood for Love)" },
+  { name: "Andy Lau 유덕화", role: "가수·배우 슈퍼스타", roleEn: "Singer & actor superstar" },
+  { name: "Liu Yifei 유역비", role: "여배우 (뮬란)", roleEn: "Actress (Mulan)" },
+  { name: "Lang Lang 랑랑", role: "세계적 피아니스트", roleEn: "World-renowned pianist" },
+  { name: "Chow Yun-fat 주윤발", role: "전설의 액션 배우", roleEn: "Legendary action actor" },
 ];
 
 const US_CELEBS: Celebrity[] = [
-  { name: "Taylor Swift", role: "Pop 슈퍼스타" },
-  { name: "LeBron James", role: "NBA 농구 황제" },
-  { name: "Tom Cruise", role: "할리우드 액션 스타" },
-  { name: "Beyoncé", role: "R&B 디바" },
-  { name: "Michael Jordan", role: "농구의 신" },
-  { name: "Oprah Winfrey", role: "미국 토크쇼의 전설" },
-  { name: "Elon Musk", role: "테슬라·SpaceX CEO" },
-  { name: "Brad Pitt", role: "할리우드 배우" },
-  { name: "Lady Gaga", role: "팝 아티스트" },
-  { name: "Steven Spielberg", role: "전설의 영화감독" },
-  { name: "Serena Williams", role: "테니스 챔피언" },
-  { name: "Barack Obama", role: "전 미국 대통령" },
+  { name: "Taylor Swift", role: "Pop 슈퍼스타", roleEn: "Pop superstar" },
+  { name: "LeBron James", role: "NBA 농구 황제", roleEn: "NBA basketball king" },
+  { name: "Tom Cruise", role: "할리우드 액션 스타", roleEn: "Hollywood action star" },
+  { name: "Beyoncé", role: "R&B 디바", roleEn: "R&B diva" },
+  { name: "Michael Jordan", role: "농구의 신", roleEn: "Basketball god" },
+  { name: "Oprah Winfrey", role: "미국 토크쇼의 전설", roleEn: "American talk show legend" },
+  { name: "Elon Musk", role: "테슬라·SpaceX CEO", roleEn: "Tesla & SpaceX CEO" },
+  { name: "Brad Pitt", role: "할리우드 배우", roleEn: "Hollywood actor" },
+  { name: "Lady Gaga", role: "팝 아티스트", roleEn: "Pop artist" },
+  { name: "Steven Spielberg", role: "전설의 영화감독", roleEn: "Legendary film director" },
+  { name: "Serena Williams", role: "테니스 챔피언", roleEn: "Tennis champion" },
+  { name: "Barack Obama", role: "전 미국 대통령", roleEn: "Former U.S. president" },
 ];
 
 const ES_CELEBS: Celebrity[] = [
-  { name: "Rafa Nadal", role: "테니스 황제" },
-  { name: "Penélope Cruz", role: "오스카 여배우" },
-  { name: "Antonio Banderas", role: "할리우드도 정복한 배우" },
-  { name: "Pablo Picasso", role: "20세기 화가의 거장" },
-  { name: "Salvador Dalí", role: "초현실주의 화가" },
-  { name: "Sergio Ramos", role: "축구 수비수 전설" },
-  { name: "Javier Bardem", role: "오스카 남우조연상 배우" },
-  { name: "Plácido Domingo", role: "오페라 테너" },
-  { name: "Andrés Iniesta", role: "월드컵 우승 미드필더" },
-  { name: "Enrique Iglesias", role: "라틴 팝 스타" },
+  { name: "Rafa Nadal", role: "테니스 황제", roleEn: "Tennis king" },
+  { name: "Penélope Cruz", role: "오스카 여배우", roleEn: "Oscar-winning actress" },
+  { name: "Antonio Banderas", role: "할리우드도 정복한 배우", roleEn: "Actor who conquered Hollywood" },
+  { name: "Pablo Picasso", role: "20세기 화가의 거장", roleEn: "Master painter of the 20th century" },
+  { name: "Salvador Dalí", role: "초현실주의 화가", roleEn: "Surrealist painter" },
+  { name: "Sergio Ramos", role: "축구 수비수 전설", roleEn: "Legendary football defender" },
+  { name: "Javier Bardem", role: "오스카 남우조연상 배우", roleEn: "Oscar-winning supporting actor" },
+  { name: "Plácido Domingo", role: "오페라 테너", roleEn: "Opera tenor" },
+  { name: "Andrés Iniesta", role: "월드컵 우승 미드필더", roleEn: "World Cup-winning midfielder" },
+  { name: "Enrique Iglesias", role: "라틴 팝 스타", roleEn: "Latin pop star" },
 ];
 
 const BR_CELEBS: Celebrity[] = [
-  { name: "Neymar", role: "축구 슈퍼스타" },
-  { name: "Anitta", role: "라틴 팝 디바" },
-  { name: "Pelé", role: "축구의 신" },
-  { name: "Ronaldinho", role: "축구 마법사" },
-  { name: "Gisele Bündchen", role: "톱 모델" },
-  { name: "Caetano Veloso", role: "MPB 음악의 전설" },
-  { name: "Alessandra Ambrosio", role: "Victoria's Secret 모델" },
-  { name: "Adriana Lima", role: "수퍼모델" },
-  { name: "Camila Pitanga", role: "여배우" },
-  { name: "Fernando Meirelles", role: "영화감독 (시티 오브 갓)" },
+  { name: "Neymar", role: "축구 슈퍼스타", roleEn: "Football superstar" },
+  { name: "Anitta", role: "라틴 팝 디바", roleEn: "Latin pop diva" },
+  { name: "Pelé", role: "축구의 신", roleEn: "God of football" },
+  { name: "Ronaldinho", role: "축구 마법사", roleEn: "Football wizard" },
+  { name: "Gisele Bündchen", role: "톱 모델", roleEn: "Top model" },
+  { name: "Caetano Veloso", role: "MPB 음악의 전설", roleEn: "MPB music legend" },
+  { name: "Alessandra Ambrosio", role: "Victoria's Secret 모델", roleEn: "Victoria's Secret model" },
+  { name: "Adriana Lima", role: "수퍼모델", roleEn: "Supermodel" },
+  { name: "Camila Pitanga", role: "여배우", roleEn: "Actress" },
+  { name: "Fernando Meirelles", role: "영화감독 (시티 오브 갓)", roleEn: "Film director (City of God)" },
 ];
 
 /* ============================================================================
@@ -1098,7 +1099,7 @@ export default function KoreanNamePage(): ReactElement {
       /* ignore */
     }
     flashCopied(p.country.code);
-  }, [currentProfile, flashCopied]);
+  }, [currentProfile, flashCopied, t]);
 
   const speak = useCallback(
     (text: string, lang: string, code: CountryCode) => {
@@ -1148,7 +1149,7 @@ export default function KoreanNamePage(): ReactElement {
           gap: 6,
           alignItems: "center",
         }}
-        aria-label={`Step ${stepNum} of 4`}
+        aria-label={t(`4단계 중 ${stepNum}단계`, `Step ${stepNum} of 4`)}
       >
         {[1, 2, 3, 4].map((n) => (
           <span
@@ -1186,11 +1187,11 @@ export default function KoreanNamePage(): ReactElement {
         )}
 
         {phase === "gender" && (
-          <GenderStep onPick={handleGenderPick} t={t} />
+          <GenderStep onPick={handleGenderPick} t={t} locale={locale} />
         )}
 
         {phase === "origin" && (
-          <OriginStep onPick={handleOriginPick} t={t} />
+          <OriginStep onPick={handleOriginPick} t={t} locale={locale} />
         )}
 
         {phase === "result" && gender && origin && (
@@ -1288,7 +1289,7 @@ function NameStep({
    Step 2 — Gender
    ============================================================================ */
 
-function GenderStep({ onPick, t }: { onPick: (g: Gender) => void; t: (ko: string, en: string) => string }): ReactElement {
+function GenderStep({ onPick, t, locale }: { onPick: (g: Gender) => void; t: (ko: string, en: string) => string; locale: "ko" | "en" }): ReactElement {
   return (
     <div style={{ maxWidth: 520, width: "100%", textAlign: "center" }}>
       <StepEyebrow>{t("2 / 4 단계", "STEP 2 / 4")}</StepEyebrow>
@@ -1301,8 +1302,8 @@ function GenderStep({ onPick, t }: { onPick: (g: Gender) => void; t: (ko: string
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 14, marginTop: 34 }}>
-        <ChoiceTile emoji="👨" en="Male" ko="남성" onClick={() => onPick("male")} />
-        <ChoiceTile emoji="👩" en="Female" ko="여성" onClick={() => onPick("female")} />
+        <ChoiceTile emoji="👨" en="Male" ko="남성" locale={locale} onClick={() => onPick("male")} />
+        <ChoiceTile emoji="👩" en="Female" ko="여성" locale={locale} onClick={() => onPick("female")} />
       </div>
     </div>
   );
@@ -1312,7 +1313,7 @@ function GenderStep({ onPick, t }: { onPick: (g: Gender) => void; t: (ko: string
    Step 3 — Origin country
    ============================================================================ */
 
-function OriginStep({ onPick, t }: { onPick: (c: CountryCode) => void; t: (ko: string, en: string) => string }): ReactElement {
+function OriginStep({ onPick, t, locale }: { onPick: (c: CountryCode) => void; t: (ko: string, en: string) => string; locale: "ko" | "en" }): ReactElement {
   return (
     <div style={{ maxWidth: 540, width: "100%", textAlign: "center" }}>
       <StepEyebrow>{t("3 / 4 단계", "STEP 3 / 4")}</StepEyebrow>
@@ -1337,7 +1338,7 @@ function OriginStep({ onPick, t }: { onPick: (c: CountryCode) => void; t: (ko: s
         }}
       >
         {COUNTRIES.map((c) => (
-          <CountryTile key={c.code} country={c} onClick={() => onPick(c.code)} />
+          <CountryTile key={c.code} country={c} locale={locale} onClick={() => onPick(c.code)} />
         ))}
       </div>
     </div>
@@ -1416,7 +1417,7 @@ function ResultStep({
           }}
         >
           {visibleCountries.map((c) => (
-            <CountryTile key={c.code} country={c} onClick={() => onCountryPick(c.code)} />
+            <CountryTile key={c.code} country={c} locale={locale} onClick={() => onCountryPick(c.code)} />
           ))}
         </div>
 
@@ -1432,7 +1433,7 @@ function ResultStep({
   return (
     <div style={{ maxWidth: 520, width: "100%" }}>
       <div style={{ textAlign: "center", marginBottom: 18 }}>
-        <StepEyebrow>RESULT  ·  &ldquo;{input}&rdquo;</StepEyebrow>
+        <StepEyebrow>{t("결과", "RESULT")}  ·  &ldquo;{input}&rdquo;</StepEyebrow>
       </div>
 
       <BigCard
@@ -1467,6 +1468,7 @@ function ResultStep({
               key={c.code}
               country={c}
               compact
+              locale={locale}
               onClick={() => onCountryPick(c.code)}
             />
           ))}
@@ -1606,8 +1608,16 @@ function BigCard({
           <button
             type="button"
             onClick={onSpeak}
-            aria-label={speaking ? "Stop pronunciation" : "Play pronunciation"}
-            title={speaking ? "Stop" : "Play"}
+            aria-label={
+              speaking
+                ? locale === "ko"
+                  ? "발음 멈추기"
+                  : "Stop pronunciation"
+                : locale === "ko"
+                  ? "발음 듣기"
+                  : "Play pronunciation"
+            }
+            title={speaking ? (locale === "ko" ? "멈추기" : "Stop") : locale === "ko" ? "듣기" : "Play"}
             style={{
               flexShrink: 0,
               background: speaking ? ACCENT : "rgba(31,27,22,0.06)",
@@ -1704,7 +1714,7 @@ function BigCard({
         >
           <span style={{ fontWeight: 700 }}>{celebrity.name}</span>
           <span style={{ color: "rgba(31,27,22,0.55)", marginLeft: 6, fontSize: 14 }}>
-            · {celebrity.role}
+            · {locale === "ko" ? celebrity.role : celebrity.roleEn}
           </span>
         </div>
       </div>
@@ -1811,11 +1821,13 @@ function ChoiceTile({
   emoji,
   en,
   ko,
+  locale,
   onClick,
 }: {
   emoji: string;
   en: string;
   ko: string;
+  locale: "ko" | "en";
   onClick: () => void;
 }): ReactElement {
   return (
@@ -1863,7 +1875,7 @@ function ChoiceTile({
         >
           {en.toUpperCase()}
         </span>
-        <span style={{ fontSize: 17, color: "rgba(31,27,22,0.7)", fontWeight: 500 }}>{ko}</span>
+        <span style={{ fontSize: 17, color: "rgba(31,27,22,0.7)", fontWeight: 500 }}>{locale === "ko" ? ko : en}</span>
       </div>
     </button>
   );
@@ -1873,10 +1885,12 @@ function CountryTile({
   country,
   onClick,
   compact = false,
+  locale = "ko",
 }: {
   country: Country;
   onClick: () => void;
   compact?: boolean;
+  locale?: "ko" | "en";
 }): ReactElement {
   return (
     <button
@@ -1924,7 +1938,7 @@ function CountryTile({
           {country.enName.toUpperCase()}
         </span>
         <span style={{ fontSize: compact ? 11 : 13, color: "rgba(31,27,22,0.65)" }}>
-          {country.koName}
+          {locale === "ko" ? country.koName : country.enName}
         </span>
       </div>
     </button>

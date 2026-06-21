@@ -35,7 +35,22 @@ type CharacterRole = {
   title: string;
   line: string;
   tag: string;
+  titleEn: string;
+  lineEn: string;
+  tagEn: string;
 };
+
+type LocalizedRole = {
+  title: string;
+  line: string;
+  tag: string;
+};
+
+function localizeRole(role: CharacterRole, loc: Loc): LocalizedRole {
+  return loc === "ko"
+    ? { title: role.title, line: role.line, tag: role.tag }
+    : { title: role.titleEn, line: role.lineEn, tag: role.tagEn };
+}
 
 type DramaResult = {
   title: string;
@@ -46,8 +61,8 @@ type DramaResult = {
   synopsis: string;
   viewingPoints: string[];
   dynamicFlavor: string;
-  firstRole: CharacterRole;
-  secondRole: CharacterRole;
+  firstRole: LocalizedRole;
+  secondRole: LocalizedRole;
   firstMeeting: string;
   conflict: string;
   famousLine: string;
@@ -168,31 +183,49 @@ const FEMALE_ROLES: CharacterRole[] = [
     title: "재벌가에 휘말린 평범한 주인공",
     line: "평범하게 살고 싶었는데, 이상하게 회장님 집안 비밀의 중심에 서게 됩니다.",
     tag: "생활력 만렙 여주",
+    titleEn: "An ordinary lead tangled up with a chaebol family",
+    lineEn: "All she wanted was a normal life, yet somehow she lands at the center of the chairman family's secrets.",
+    tagEn: "Street-smart female lead",
   },
   {
     title: "전생을 기억하는 신비로운 인물",
     line: "처음 만난 얼굴인데도 자꾸 오래전 약속이 떠오르는 사람입니다.",
     tag: "전생 서사 담당",
+    titleEn: "A mysterious soul who remembers a past life",
+    lineEn: "It's the first time they meet, yet a promise from long ago keeps surfacing in her mind.",
+    tagEn: "Keeper of the past-life arc",
   },
   {
     title: "차갑지만 상처 많은 상속녀",
     line: "말은 차갑게 하는데, 혼자 있을 때는 누구보다 오래 흔들립니다.",
     tag: "냉온차 반전",
+    titleEn: "A cold heiress carrying old wounds",
+    lineEn: "Her words come out icy, but when she's alone she falls apart longer than anyone.",
+    tagEn: "Hot-and-cold twist",
   },
   {
     title: "모든 걸 알고 있는 첫사랑",
     line: "한 번 웃으면 과거 회상 3회분이 자동으로 열리는 존재입니다.",
     tag: "첫사랑 재등장",
+    titleEn: "A first love who already knows everything",
+    lineEn: "One smile from her unlocks three full episodes of flashbacks on its own.",
+    tagEn: "First love returns",
   },
   {
     title: "운명을 바꾸는 작가",
     line: "자기가 쓴 문장이 현실이 되는 바람에 사랑도 장르도 통제 불가가 됩니다.",
     tag: "세계관 조작자",
+    titleEn: "A writer who rewrites fate",
+    lineEn: "Whatever she writes turns real, so both the romance and the genre spin out of her control.",
+    tagEn: "Reality bender",
   },
   {
     title: "시간을 건너온 인물",
     line: "미래를 조금 알고 있지만, 마음만큼은 매번 예측에 실패합니다.",
     tag: "타임슬립 핵심",
+    titleEn: "A traveler who crossed time",
+    lineEn: "She knows a little of what's coming, but her own heart fails every prediction.",
+    tagEn: "Time-slip linchpin",
   },
 ];
 
@@ -201,36 +234,57 @@ const MALE_ROLES: CharacterRole[] = [
     title: "냉미남 재벌 3세",
     line: "표정은 영하 12도인데, 좋아하는 사람 앞에서는 카드보다 우산을 먼저 꺼냅니다.",
     tag: "대표님 계열",
+    titleEn: "An icy heir, third-generation chaebol",
+    lineEn: "His face reads minus twelve degrees, but in front of the one he likes he reaches for an umbrella before his card.",
+    tagEn: "CEO type",
   },
   {
     title: "상처 많은 검사",
     line: "정의감으로 버티지만, 사실 가장 오래 숨긴 사건은 자기 마음입니다.",
     tag: "법정 멜로",
+    titleEn: "A scarred prosecutor",
+    lineEn: "He holds on through sheer sense of justice, but the case he's hidden longest is his own heart.",
+    tagEn: "Courtroom romance",
   },
   {
     title: "천년을 산 도깨비",
     line: "오래 산 만큼 이별도 많이 겪었고, 그래서 이번 사랑이 더 무섭습니다.",
     tag: "불멸 서사",
+    titleEn: "A goblin who has lived a thousand years",
+    lineEn: "Living so long meant countless goodbyes, which is exactly why this love terrifies him more.",
+    tagEn: "Immortal arc",
   },
   {
     title: "기억을 잃은 왕세자",
     line: "현대에 떨어져도 말투만큼은 사극 16부작을 놓지 못합니다.",
     tag: "궁중 타임슬립",
+    titleEn: "A crown prince who lost his memory",
+    lineEn: "Even dropped into the present day, his speech still can't let go of a 16-episode period drama.",
+    tagEn: "Palace time-slip",
   },
   {
     title: "과거를 숨긴 보디가드",
     line: "지키는 일은 잘하지만, 정작 자기 마음은 방어에 실패합니다.",
     tag: "경호 로맨스",
+    titleEn: "A bodyguard hiding his past",
+    lineEn: "He's great at protecting others, but he fails completely at defending his own heart.",
+    tagEn: "Bodyguard romance",
   },
   {
     title: "첫사랑을 못 잊은 남자주인공",
     line: "잊었다고 말하는 장면마다 OST가 더 크게 깔리는 타입입니다.",
     tag: "미련 남주",
+    titleEn: "A male lead who can't get over his first love",
+    lineEn: "The kind of guy where the OST swells louder in every scene he insists he's moved on.",
+    tagEn: "Lingering male lead",
   },
   {
     title: "인간이 되고 싶은 신비로운 존재",
     line: "사람처럼 살고 싶었는데, 사랑 때문에 진짜 사람이 되고 싶어집니다.",
     tag: "판타지 남주",
+    titleEn: "A mysterious being who longs to become human",
+    lineEn: "He wanted to live like a person, but love makes him want to become a real one.",
+    tagEn: "Fantasy male lead",
   },
 ];
 
@@ -239,43 +293,61 @@ const NEUTRAL_ROLES: CharacterRole[] = [
     title: "시간을 건너온 존재",
     line: "시대가 바뀌어도 이상하게 같은 사람에게 계속 도착합니다.",
     tag: "시간 이탈자",
+    titleEn: "A being who crossed time",
+    lineEn: "No matter how the era changes, they somehow keep arriving back at the same person.",
+    tagEn: "Time drifter",
   },
   {
     title: "운명을 기록하는 인물",
     line: "남의 결말은 다 아는데, 자기 마음의 다음 회차만 모릅니다.",
     tag: "운명 기록자",
+    titleEn: "A keeper who records fate",
+    lineEn: "They know everyone else's ending, yet have no idea what the next episode of their own heart holds.",
+    tagEn: "Chronicler of fate",
   },
   {
     title: "전생의 기억을 가진 사람",
     line: "처음 보는 사람에게서 오래된 계절의 냄새를 알아차립니다.",
     tag: "기억 보유자",
+    titleEn: "Someone who carries past-life memories",
+    lineEn: "In a complete stranger they catch the scent of a long-ago season.",
+    tagEn: "Memory bearer",
   },
   {
     title: "비밀을 숨긴 동거인",
     line: "같은 집에 살게 된 건 계약이었지만, 감정은 계약서에 없었습니다.",
     tag: "동거 계약",
+    titleEn: "A housemate with a secret",
+    lineEn: "Sharing the house was a contract, but the feelings were never in the fine print.",
+    tagEn: "Cohabitation contract",
   },
   {
     title: "세계관의 균형을 깨는 인물",
     line: "등장하는 순간부터 주변 인물의 계획과 시청자의 심박수를 동시에 망칩니다.",
     tag: "변수 그 자체",
+    titleEn: "A character who tips the whole story off balance",
+    lineEn: "From the moment they appear, they wreck everyone's plans and the viewers' heart rates at once.",
+    tagEn: "The wild card itself",
   },
   {
     title: "계약 관계에서 시작된 운명",
     line: "처음엔 조건이 중요했는데, 6화쯤 되면 조건보다 눈빛이 더 위험해집니다.",
     tag: "계약 서사",
+    titleEn: "A fate that began as a contract",
+    lineEn: "At first the terms mattered most, but by episode six the glances get more dangerous than any clause.",
+    tagEn: "Contract arc",
   },
 ];
 
-const GENRES = [
-  "판타지 로맨스",
-  "오피스 로맨스",
-  "재벌가 멜로",
-  "타임슬립 로맨스",
-  "법정 멜로",
-  "힐링 청춘물",
-  "미스터리 로맨스",
-  "계약 동거 로코",
+const GENRES: { ko: string; en: string }[] = [
+  { ko: "판타지 로맨스", en: "Fantasy romance" },
+  { ko: "오피스 로맨스", en: "Office romance" },
+  { ko: "재벌가 멜로", en: "Chaebol melodrama" },
+  { ko: "타임슬립 로맨스", en: "Time-slip romance" },
+  { ko: "법정 멜로", en: "Courtroom melodrama" },
+  { ko: "힐링 청춘물", en: "Healing coming-of-age" },
+  { ko: "미스터리 로맨스", en: "Mystery romance" },
+  { ko: "계약 동거 로코", en: "Contract-cohabitation rom-com" },
 ];
 
 const EDGE_NAME_PUNCT_RE = /^[\s"'`“”‘’「」『』!?.,，。！？]+|[\s"'`“”‘’「」『』!?.,，。！？]+$/g;
@@ -288,6 +360,18 @@ function hashStr(s: string): number {
 
 function pick<T>(items: T[], seed: string, salt: string): T {
   return items[hashStr(`${seed}:${salt}`) % items.length];
+}
+
+type LocPair = { ko: string; en: string };
+
+function locStr(pair: LocPair, loc: Loc): string {
+  return loc === "ko" ? pair.ko : pair.en;
+}
+
+// Deterministic pick that uses the same hash/seed for both locales, then
+// returns the localized string — so EN stays index-aligned with KO.
+function pickLoc(items: LocPair[], seed: string, salt: string, loc: Loc): string {
+  return locStr(pick(items, seed, salt), loc);
 }
 
 function sanitizeDisplayName(name: string): string {
@@ -382,80 +466,105 @@ function roleLabel(role: RoleStyle, loc: Loc): string {
   return loc === "ko" ? option.ko : option.en;
 }
 
-function relationshipFor(a: ProtagonistInput, b: ProtagonistInput, seed: string): string {
+function relationshipFor(a: ProtagonistInput, b: ProtagonistInput, seed: string, loc: Loc): string {
   const sameKnown = a.role === b.role && (a.role === "male" || a.role === "female");
   const hasNeutral = a.role === "neutral" || b.role === "neutral";
   const hasRandom = a.role === "random" || b.role === "random";
 
   if (sameKnown) {
-    return pick(
-      [
-        "서로를 제일 잘 이해해서 더 자주 싸우는 운명 공동체",
-        "친구인 척 시작했지만 눈빛으로 이미 장르가 바뀐 관계",
-        "세상은 둘을 설명하지 못하지만 시청자는 2화부터 확신한 관계",
-      ],
-      seed,
-      "same-known",
+    return locStr(
+      pick(
+        [
+          { ko: "서로를 제일 잘 이해해서 더 자주 싸우는 운명 공동체", en: "Two fates bound so tightly that understanding each other best is exactly why they fight more" },
+          { ko: "친구인 척 시작했지만 눈빛으로 이미 장르가 바뀐 관계", en: "It started off as friends, but their glances already switched the genre" },
+          { ko: "세상은 둘을 설명하지 못하지만 시청자는 2화부터 확신한 관계", en: "The world can't explain these two, but viewers were sure of them by episode two" },
+        ],
+        seed,
+        "same-known",
+      ),
+      loc,
     );
   }
 
   if (hasNeutral) {
-    return pick(
-      [
-        "계약서에는 없었지만 세계관이 강제로 밀어주는 운명",
-        "정체보다 마음이 먼저 들켜버린 미스터리 로맨스",
-        "서로의 비밀을 알게 된 뒤부터 안전거리가 사라진 관계",
-      ],
-      seed,
-      "neutral-relation",
+    return locStr(
+      pick(
+        [
+          { ko: "계약서에는 없었지만 세계관이 강제로 밀어주는 운명", en: "A fate the contract never mentioned, but the story keeps shoving them together" },
+          { ko: "정체보다 마음이 먼저 들켜버린 미스터리 로맨스", en: "A mystery romance where the feelings get exposed before the secret identity does" },
+          { ko: "서로의 비밀을 알게 된 뒤부터 안전거리가 사라진 관계", en: "Once they learn each other's secrets, the safe distance between them vanishes" },
+        ],
+        seed,
+        "neutral-relation",
+      ),
+      loc,
     );
   }
 
   if (hasRandom) {
-    return pick(
-      [
-        "랜덤처럼 보였지만 작가가 1화부터 복선을 깔아둔 관계",
-        "처음엔 최악의 조합인데 댓글창이 먼저 알아본 케미",
-        "장르가 갈피를 못 잡을수록 더 맛있어지는 관계",
-      ],
-      seed,
-      "random-relation",
+    return locStr(
+      pick(
+        [
+          { ko: "랜덤처럼 보였지만 작가가 1화부터 복선을 깔아둔 관계", en: "It looked random, but the writer planted the foreshadowing from episode one" },
+          { ko: "처음엔 최악의 조합인데 댓글창이 먼저 알아본 케미", en: "The worst pairing at first, yet the comment section spotted the chemistry first" },
+          { ko: "장르가 갈피를 못 잡을수록 더 맛있어지는 관계", en: "The more the genre loses its footing, the tastier this pairing gets" },
+        ],
+        seed,
+        "random-relation",
+      ),
+      loc,
     );
   }
 
-  return pick(
-    [
-      "서로를 최악이라고 생각하지만 6화쯤 시청자가 결혼 날짜를 잡는 관계",
-      "말은 안 통하는데 눈빛으로 12부작을 끌고 가는 관계",
-      "오해로 시작해서 구원 서사로 끝나는 정통 K-드라마 관계",
-    ],
-    seed,
-    "classic-relation",
+  return locStr(
+    pick(
+      [
+        { ko: "서로를 최악이라고 생각하지만 6화쯤 시청자가 결혼 날짜를 잡는 관계", en: "They think each other the worst, yet by episode six viewers are picking a wedding date" },
+        { ko: "말은 안 통하는데 눈빛으로 12부작을 끌고 가는 관계", en: "They can't agree on a word, yet they carry all twelve episodes on glances alone" },
+        { ko: "오해로 시작해서 구원 서사로 끝나는 정통 K-드라마 관계", en: "A classic K-drama bond that starts in misunderstanding and ends in a redemption arc" },
+      ],
+      seed,
+      "classic-relation",
+    ),
+    loc,
   );
 }
 
-function buildTitle(a: string, b: string, seed: string): string {
-  const titles = [
-    `${a}와 ${b}의 운명 편성표`,
-    `${a}와 ${b}: 비가 오면 시작되는 장면`,
-    `${a}와 ${b}의 12부작 계약서`,
-    `${a}와 ${b}, 그해의 OST`,
-    `${a}와 ${b}: 다음 생에도 1화`,
-    `${a}와 ${b}의 눈빛 재방송`,
+function buildTitle(a: string, b: string, seed: string, loc: Loc): string {
+  const titles: LocPair[] = [
+    { ko: `${a}와 ${b}의 운명 편성표`, en: `${a} & ${b}: The Schedule of Fate` },
+    { ko: `${a}와 ${b}: 비가 오면 시작되는 장면`, en: `${a} & ${b}: The Scene That Starts When It Rains` },
+    { ko: `${a}와 ${b}의 12부작 계약서`, en: `${a} & ${b}: A 12-Episode Contract` },
+    { ko: `${a}와 ${b}, 그해의 OST`, en: `${a} & ${b}, the OST of That Year` },
+    { ko: `${a}와 ${b}: 다음 생에도 1화`, en: `${a} & ${b}: Episode 1 in the Next Life Too` },
+    { ko: `${a}와 ${b}의 눈빛 재방송`, en: `${a} & ${b}: A Rerun in Their Eyes` },
   ];
-  return pick(titles, seed, "title");
+  return pickLoc(titles, seed, "title", loc);
 }
 
-function buildFirstMeeting(a: string, b: string, result: DramaResultDraft, seed: string): string {
-  return pick(
+function buildFirstMeeting(a: string, b: string, result: DramaResultDraft, seed: string, loc: Loc): string {
+  return pickLoc(
     [
-      `${a}는 비 오는 횡단보도에서 ${b}의 휴대폰을 대신 주워줍니다. 첫 만남은 재난에 가까웠지만, 이상하게도 그 순간부터 OST가 깔리기 시작합니다.`,
-      `${a}와 ${b}는 잘못 배달된 계약서 한 장 때문에 같은 장소에 불려옵니다. 둘 다 "말도 안 돼"라고 하지만 카메라는 이미 슬로모션을 켭니다.`,
-      `${a}는 엘리베이터 정전 속에서 ${b}와 갇힙니다. 대화는 삐걱대는데, 비상등 아래 눈빛만큼은 과하게 선명합니다.`,
-      `${a}가 가장 숨기고 싶은 순간을 ${b}가 정확히 목격합니다. 최악의 타이밍인데, 시청자는 그게 첫 장면이라는 걸 압니다.`,
+      {
+        ko: `${a}는 비 오는 횡단보도에서 ${b}의 휴대폰을 대신 주워줍니다. 첫 만남은 재난에 가까웠지만, 이상하게도 그 순간부터 OST가 깔리기 시작합니다.`,
+        en: `${a} picks up ${b}'s dropped phone at a rainy crosswalk. The first meeting was basically a disaster, yet somehow the OST starts playing from that very moment.`,
+      },
+      {
+        ko: `${a}와 ${b}는 잘못 배달된 계약서 한 장 때문에 같은 장소에 불려옵니다. 둘 다 "말도 안 돼"라고 하지만 카메라는 이미 슬로모션을 켭니다.`,
+        en: `${a} and ${b} get summoned to the same place over a single misdelivered contract. Both say "no way," but the camera has already switched to slow motion.`,
+      },
+      {
+        ko: `${a}는 엘리베이터 정전 속에서 ${b}와 갇힙니다. 대화는 삐걱대는데, 비상등 아래 눈빛만큼은 과하게 선명합니다.`,
+        en: `${a} gets trapped with ${b} in a blacked-out elevator. The conversation keeps stalling, yet under the emergency light their eyes are almost too vivid.`,
+      },
+      {
+        ko: `${a}가 가장 숨기고 싶은 순간을 ${b}가 정확히 목격합니다. 최악의 타이밍인데, 시청자는 그게 첫 장면이라는 걸 압니다.`,
+        en: `${b} witnesses the exact moment ${a} most wanted to hide. It's the worst possible timing, and viewers know it's the opening scene.`,
+      },
     ],
     seed + result.genre,
     "meeting",
+    loc,
   );
 }
 
@@ -464,57 +573,104 @@ type DramaResultDraft = {
   relationship: string;
 };
 
-function buildConflict(a: string, b: string, firstRole: CharacterRole, secondRole: CharacterRole, seed: string): string {
-  return pick(
+function buildConflict(a: string, b: string, firstRole: CharacterRole, secondRole: CharacterRole, seed: string, loc: Loc): string {
+  const t1 = loc === "ko" ? firstRole.tag : firstRole.tagEn;
+  const t2 = loc === "ko" ? secondRole.tag : secondRole.tagEn;
+  return pickLoc(
     [
-      `${firstRole.tag}인 ${a}의 비밀과 ${secondRole.tag}인 ${b}의 선택이 정면으로 부딪힙니다. 둘 다 상대를 지키려다 상대에게 제일 큰 상처를 줍니다.`,
-      `${a}는 떠나야 안전하고, ${b}는 붙잡아야 후회하지 않습니다. 문제는 두 사람 모두 말을 예쁘게 못 해서 9화 내내 시청자가 답답해진다는 점입니다.`,
-      `중반부에는 과거의 오해가 터집니다. ${a}는 설명을 포기하고, ${b}는 모른 척하려 하지만 눈빛이 너무 정직합니다.`,
-      `${a}와 ${b}는 같은 목표를 향해 가지만 방법이 완전히 다릅니다. 그래서 싸울 때마다 장면은 예쁘고 댓글창은 난리 납니다.`,
+      {
+        ko: `${firstRole.tag}인 ${a}의 비밀과 ${secondRole.tag}인 ${b}의 선택이 정면으로 부딪힙니다. 둘 다 상대를 지키려다 상대에게 제일 큰 상처를 줍니다.`,
+        en: `${a}'s secret as the ${t1} collides head-on with ${b}'s choice as the ${t2}. Both try to protect the other, and end up hurting them most.`,
+      },
+      {
+        ko: `${a}는 떠나야 안전하고, ${b}는 붙잡아야 후회하지 않습니다. 문제는 두 사람 모두 말을 예쁘게 못 해서 9화 내내 시청자가 답답해진다는 점입니다.`,
+        en: `${a} is only safe if they leave, while ${b} will only avoid regret by holding on. The trouble is neither can say it gracefully, so viewers ache through all of episode nine.`,
+      },
+      {
+        ko: `중반부에는 과거의 오해가 터집니다. ${a}는 설명을 포기하고, ${b}는 모른 척하려 하지만 눈빛이 너무 정직합니다.`,
+        en: `Midway through, a past misunderstanding finally erupts. ${a} gives up explaining, and ${b} tries to play it off, but their eyes are far too honest.`,
+      },
+      {
+        ko: `${a}와 ${b}는 같은 목표를 향해 가지만 방법이 완전히 다릅니다. 그래서 싸울 때마다 장면은 예쁘고 댓글창은 난리 납니다.`,
+        en: `${a} and ${b} chase the same goal by completely opposite means. So every time they clash the scene looks gorgeous and the comment section goes wild.`,
+      },
     ],
     seed,
     "conflict",
+    loc,
   );
 }
 
-function buildFamousLine(a: string, b: string, seed: string): string {
-  return pick(
+function buildFamousLine(a: string, b: string, seed: string, loc: Loc): string {
+  return pickLoc(
     [
-      `${a}: "나는 너를 피하려고 했는데, 장면마다 네가 있었어."`,
-      `${b}: "이게 우연이면, 우연도 너무 성실한 거 아니야?"`,
-      `${a}: "나한테 오지 마. 근데 정말 안 오면 나 무너져."`,
-      `${b}: "우리가 말이 안 되는 건 아는데, 그래서 더 기억나."`,
-      `${a}: "이번 생에서 안 되면, 다음 회차라도 잡을게."`,
+      { ko: `${a}: "나는 너를 피하려고 했는데, 장면마다 네가 있었어."`, en: `${a}: "I kept trying to avoid you, but you were in every single scene."` },
+      { ko: `${b}: "이게 우연이면, 우연도 너무 성실한 거 아니야?"`, en: `${b}: "If this is a coincidence, isn't coincidence working a little too hard?"` },
+      { ko: `${a}: "나한테 오지 마. 근데 정말 안 오면 나 무너져."`, en: `${a}: "Don't come to me. But if you really don't, I fall apart."` },
+      { ko: `${b}: "우리가 말이 안 되는 건 아는데, 그래서 더 기억나."`, en: `${b}: "I know the two of us make no sense, and that's exactly why I can't forget it."` },
+      { ko: `${a}: "이번 생에서 안 되면, 다음 회차라도 잡을게."`, en: `${a}: "If it can't work in this life, I'll catch you in the next episode."` },
     ],
     seed,
     "line",
+    loc,
   );
 }
 
-function buildShipReason(a: string, b: string, seed: string): string {
-  return pick(
+function buildShipReason(a: string, b: string, seed: string, loc: Loc): string {
+  return pickLoc(
     [
-      `${a}와 ${b}는 대화보다 침묵이 더 시끄러운 커플입니다. 붙어 있으면 싸우고 떨어지면 화면 온도가 내려가서 시청자가 둘을 계속 붙여놓고 싶어 합니다.`,
-      `두 사람은 서로를 바꾸려고 하지 않는데, 이상하게 함께 있으면 조금씩 나아집니다. 이게 바로 댓글창에서 "이건 사랑이다"가 나오는 포인트입니다.`,
-      `${a}는 ${b} 앞에서만 방어가 느슨해지고, ${b}는 ${a} 앞에서만 진심을 숨기지 못합니다. 보는 사람 입장에선 이보다 명확한 고백이 없습니다.`,
-      `서사가 무겁다가도 둘이 한 화면에 잡히면 갑자기 로코가 됩니다. 장르를 흔드는 케미라 시청자가 끊기 어렵습니다.`,
+      {
+        ko: `${a}와 ${b}는 대화보다 침묵이 더 시끄러운 커플입니다. 붙어 있으면 싸우고 떨어지면 화면 온도가 내려가서 시청자가 둘을 계속 붙여놓고 싶어 합니다.`,
+        en: `${a} and ${b} are the kind of couple whose silence is louder than their talking. Together they fight, apart the screen goes cold, so viewers just want to keep them side by side.`,
+      },
+      {
+        ko: `두 사람은 서로를 바꾸려고 하지 않는데, 이상하게 함께 있으면 조금씩 나아집니다. 이게 바로 댓글창에서 "이건 사랑이다"가 나오는 포인트입니다.`,
+        en: `Neither tries to change the other, yet somehow they each get a little better together. That's exactly where the comment section starts saying "this is love."`,
+      },
+      {
+        ko: `${a}는 ${b} 앞에서만 방어가 느슨해지고, ${b}는 ${a} 앞에서만 진심을 숨기지 못합니다. 보는 사람 입장에선 이보다 명확한 고백이 없습니다.`,
+        en: `${a}'s guard only loosens in front of ${b}, and ${b} can only fail to hide their true heart in front of ${a}. For the viewer, no confession could be clearer.`,
+      },
+      {
+        ko: `서사가 무겁다가도 둘이 한 화면에 잡히면 갑자기 로코가 됩니다. 장르를 흔드는 케미라 시청자가 끊기 어렵습니다.`,
+        en: `However heavy the story gets, the moment they share one frame it suddenly turns into a rom-com. It's genre-bending chemistry, so viewers can't stop watching.`,
+      },
     ],
     seed,
     "ship",
+    loc,
   );
 }
 
-function buildTrailerHook(a: string, b: string, firstRole: CharacterRole, secondRole: CharacterRole, seed: string): string {
-  return pick(
+function buildTrailerHook(a: string, b: string, firstRole: CharacterRole, secondRole: CharacterRole, seed: string, loc: Loc): string {
+  const t1 = loc === "ko" ? firstRole.tag : firstRole.tagEn;
+  const t2 = loc === "ko" ? secondRole.tag : secondRole.tagEn;
+  return pickLoc(
     [
-      `${firstRole.tag}와 ${secondRole.tag}, 서로를 피하려는 순간마다 운명이 더 가까이 밀어붙인다.`,
-      `${a}는 숨기고, ${b}는 알아차린다. 두 사람의 비밀이 밝혀지는 순간 로맨스가 시작된다.`,
-      `이번 생에서 놓친 장면을 다음 장면에서 다시 붙잡을 수 있을까?`,
-      `기억하는 사람과 모른 척하는 사람의 가장 위험한 로맨스.`,
-      `서로를 구하려는 순간, 가장 숨기고 싶던 과거가 동시에 깨어난다.`,
+      {
+        ko: `${firstRole.tag}와 ${secondRole.tag}, 서로를 피하려는 순간마다 운명이 더 가까이 밀어붙인다.`,
+        en: `The ${t1} and the ${t2}: every time they try to avoid each other, fate shoves them closer.`,
+      },
+      {
+        ko: `${a}는 숨기고, ${b}는 알아차린다. 두 사람의 비밀이 밝혀지는 순간 로맨스가 시작된다.`,
+        en: `${a} hides it, ${b} catches on. The moment their secrets surface, the romance begins.`,
+      },
+      {
+        ko: `이번 생에서 놓친 장면을 다음 장면에서 다시 붙잡을 수 있을까?`,
+        en: `Can the scene missed in this life be caught again in the next?`,
+      },
+      {
+        ko: `기억하는 사람과 모른 척하는 사람의 가장 위험한 로맨스.`,
+        en: `The most dangerous romance between the one who remembers and the one who pretends not to.`,
+      },
+      {
+        ko: `서로를 구하려는 순간, 가장 숨기고 싶던 과거가 동시에 깨어난다.`,
+        en: `The instant they try to save each other, the past they most wanted buried wakes up at once.`,
+      },
     ],
     seed,
     "trailer",
+    loc,
   );
 }
 
@@ -527,154 +683,254 @@ function buildSynopsis(
   secondRole: CharacterRole,
   firstMeeting: string,
   seed: string,
+  loc: Loc,
 ): string {
-  const pull = pick(
+  const tag1 = loc === "ko" ? firstRole.tag : firstRole.tagEn;
+  const tag2 = loc === "ko" ? secondRole.tag : secondRole.tagEn;
+  const title1 = loc === "ko" ? firstRole.title : firstRole.titleEn;
+  const title2 = loc === "ko" ? secondRole.title : secondRole.titleEn;
+  const pull = pickLoc(
     [
-      `처음엔 서로를 최악의 타이밍에 나타난 변수라고 생각하지만, 이상하게도 가장 위험한 순간마다 서로를 먼저 구하게 된다.`,
-      `두 사람은 피해야 안전한 관계였지만, 한 번 마주친 뒤부터 모든 사건의 끝이 다시 서로에게 돌아온다.`,
-      `말은 차갑게 밀어내도 비 오는 날 우산은 늘 한쪽으로 기울고, OST는 둘의 마음을 먼저 들킨다.`,
-      `서로의 약점을 가장 정확히 알아본 탓에 더 자주 상처 주지만, 결국 가장 먼저 달려가는 사람도 서로다.`,
+      {
+        ko: `처음엔 서로를 최악의 타이밍에 나타난 변수라고 생각하지만, 이상하게도 가장 위험한 순간마다 서로를 먼저 구하게 된다.`,
+        en: `At first each sees the other as a complication who showed up at the worst time, yet somehow, in every most dangerous moment, they save each other first.`,
+      },
+      {
+        ko: `두 사람은 피해야 안전한 관계였지만, 한 번 마주친 뒤부터 모든 사건의 끝이 다시 서로에게 돌아온다.`,
+        en: `They were a pairing best avoided, but ever since their first encounter, every storyline keeps ending back at each other.`,
+      },
+      {
+        ko: `말은 차갑게 밀어내도 비 오는 날 우산은 늘 한쪽으로 기울고, OST는 둘의 마음을 먼저 들킨다.`,
+        en: `However coldly they push each other away, on rainy days the umbrella always tilts one way, and the OST gives their hearts away first.`,
+      },
+      {
+        ko: `서로의 약점을 가장 정확히 알아본 탓에 더 자주 상처 주지만, 결국 가장 먼저 달려가는 사람도 서로다.`,
+        en: `Because they read each other's weak spots so precisely, they wound each other more often, yet in the end the first to come running is each other too.`,
+      },
     ],
     seed,
     "synopsis-pull",
+    loc,
   );
-  const conflictHook = pick(
+  const conflictHook = pickLoc(
     [
-      `숨겨진 과거, 반복되는 오해, 그리고 끝내 말하지 못한 고백이 ${genre}의 한가운데서 폭발한다.`,
-      `${relationship}라는 설정은 3화 엔딩부터 흔들리고, 8화 회상 장면에서 시청자는 이미 모든 복선을 알아차린다.`,
-      `${firstRole.tag}와 ${secondRole.tag}라는 정체가 부딪히는 순간, 이 로맨스는 단순한 설렘이 아니라 구원 서사가 된다.`,
-      `두 사람이 가까워질수록 진실은 더 위험해지고, 멀어질수록 화면의 온도는 이상하게 내려간다.`,
+      {
+        ko: `숨겨진 과거, 반복되는 오해, 그리고 끝내 말하지 못한 고백이 ${genre}의 한가운데서 폭발한다.`,
+        en: `A hidden past, recurring misunderstandings, and a confession never quite spoken all erupt at the heart of ${genre}.`,
+      },
+      {
+        ko: `${relationship}라는 설정은 3화 엔딩부터 흔들리고, 8화 회상 장면에서 시청자는 이미 모든 복선을 알아차린다.`,
+        en: `The premise — ${relationship} — starts wobbling from the episode-three ending, and by the episode-eight flashback viewers have already caught every clue.`,
+      },
+      {
+        ko: `${firstRole.tag}와 ${secondRole.tag}라는 정체가 부딪히는 순간, 이 로맨스는 단순한 설렘이 아니라 구원 서사가 된다.`,
+        en: `The moment the ${tag1} and the ${tag2} identities collide, this romance stops being mere butterflies and becomes a redemption arc.`,
+      },
+      {
+        ko: `두 사람이 가까워질수록 진실은 더 위험해지고, 멀어질수록 화면의 온도는 이상하게 내려간다.`,
+        en: `The closer the two grow, the more dangerous the truth becomes; the farther apart, the stranger the screen turns cold.`,
+      },
     ],
     seed,
     "synopsis-conflict",
+    loc,
   );
-  const finalHook = pick(
+  const finalHook = pickLoc(
     [
-      `이 드라마는 「${a}와 ${b}가 서로의 결말을 바꿀 수 있을까」를 끝까지 묻게 만드는 이야기다.`,
-      `결국 시청자는 둘이 행복해지는 장면 하나를 보려고 16부작을 밤새 달리게 된다.`,
-      `그리고 마지막 10초, 처음 만났던 장면의 의미가 완전히 달라진다.`,
-      `이번 생에서 안 되면 다음 생에서라도 이어질 수밖에 없는 이야기다.`,
+      {
+        ko: `이 드라마는 「${a}와 ${b}가 서로의 결말을 바꿀 수 있을까」를 끝까지 묻게 만드는 이야기다.`,
+        en: `This drama keeps you asking right to the end: "Can ${a} and ${b} change each other's ending?"`,
+      },
+      {
+        ko: `결국 시청자는 둘이 행복해지는 장면 하나를 보려고 16부작을 밤새 달리게 된다.`,
+        en: `In the end, viewers binge all sixteen episodes overnight just to see one scene where the two are finally happy.`,
+      },
+      {
+        ko: `그리고 마지막 10초, 처음 만났던 장면의 의미가 완전히 달라진다.`,
+        en: `And in the final ten seconds, the meaning of their very first meeting changes completely.`,
+      },
+      {
+        ko: `이번 생에서 안 되면 다음 생에서라도 이어질 수밖에 없는 이야기다.`,
+        en: `It's a story that, if it can't work in this life, is bound to continue in the next.`,
+      },
     ],
     seed,
     "synopsis-final",
+    loc,
   );
 
-  return `${firstRole.title} ${a}는 어느 날 ${secondRole.title} ${b}와 마주칩니다. ${firstMeeting} ${pull} ${conflictHook} ${finalHook}`;
+  return loc === "ko"
+    ? `${title1} ${a}는 어느 날 ${title2} ${b}와 마주칩니다. ${firstMeeting} ${pull} ${conflictHook} ${finalHook}`
+    : `${a}, ${lowerFirst(title1)}, one day crosses paths with ${b}, ${lowerFirst(title2)}. ${firstMeeting} ${pull} ${conflictHook} ${finalHook}`;
 }
 
-function buildViewingPoints(a: string, b: string, firstRole: CharacterRole, secondRole: CharacterRole, seed: string): string[] {
+function lowerFirst(value: string): string {
+  return value ? value.charAt(0).toLowerCase() + value.slice(1) : value;
+}
+
+function buildViewingPoints(a: string, b: string, firstRole: CharacterRole, secondRole: CharacterRole, seed: string, loc: Loc): string[] {
+  const tag1 = loc === "ko" ? firstRole.tag : firstRole.tagEn;
+  const tag2 = loc === "ko" ? secondRole.tag : secondRole.tagEn;
   return [
-    pick(
+    pickLoc(
       [
-        `1화부터 오해로 시작하지만 3화 엔딩에서 시청자가 먼저 눈치채는 관계성`,
-        `${a}의 차가운 말과 ${b}의 흔들리는 표정이 동시에 잡히는 클로즈업`,
-        `처음엔 사건처럼 보이다가 점점 고백처럼 변하는 장면 배치`,
+        { ko: `1화부터 오해로 시작하지만 3화 엔딩에서 시청자가 먼저 눈치채는 관계성`, en: `A bond that opens on a misunderstanding in episode one, yet viewers figure it out first by the episode-three ending` },
+        { ko: `${a}의 차가운 말과 ${b}의 흔들리는 표정이 동시에 잡히는 클로즈업`, en: `Close-ups that catch ${a}'s cold words and ${b}'s wavering expression in the same frame` },
+        { ko: `처음엔 사건처럼 보이다가 점점 고백처럼 변하는 장면 배치`, en: `Scene order that looks like a case at first and slowly turns into a confession` },
       ],
       seed,
       "point-1",
+      loc,
     ),
-    pick(
+    pickLoc(
       [
-        `${firstRole.tag}와 ${secondRole.tag}가 부딪힐 때마다 장르가 멜로로 기우는 맛`,
-        `말보다 눈빛으로 서사가 쌓여서 대사 없는 장면이 더 크게 터지는 타입`,
-        `서로 상처 주면서도 제일 먼저 달려가는 정석 구원 서사`,
+        { ko: `${firstRole.tag}와 ${secondRole.tag}가 부딪힐 때마다 장르가 멜로로 기우는 맛`, en: `The thrill of the genre tipping toward melodrama every time the ${tag1} and the ${tag2} clash` },
+        { ko: `말보다 눈빛으로 서사가 쌓여서 대사 없는 장면이 더 크게 터지는 타입`, en: `The kind where the story builds through glances more than lines, so the wordless scenes land hardest` },
+        { ko: `서로 상처 주면서도 제일 먼저 달려가는 정석 구원 서사`, en: `A textbook redemption arc where they hurt each other yet are the first to come running` },
       ],
       seed,
       "point-2",
+      loc,
     ),
-    pick(
+    pickLoc(
       [
-        `8화쯤 터지는 과거 회상 장면과 마지막 회 댓글창 폭발 엔딩`,
-        `비 오는 날 우산 각도 하나로 관계 변화를 설명하는 K-드라마식 디테일`,
-        `시즌2를 외치게 만드는 마지막 10초짜리 떡밥`,
+        { ko: `8화쯤 터지는 과거 회상 장면과 마지막 회 댓글창 폭발 엔딩`, en: `The flashback that detonates around episode eight and a finale that blows up the comment section` },
+        { ko: `비 오는 날 우산 각도 하나로 관계 변화를 설명하는 K-드라마식 디테일`, en: `K-drama detail that explains a shift in the relationship through nothing but the tilt of an umbrella on a rainy day` },
+        { ko: `시즌2를 외치게 만드는 마지막 10초짜리 떡밥`, en: `A final ten-second teaser that has everyone shouting for season two` },
       ],
       seed,
       "point-3",
+      loc,
     ),
   ];
 }
 
-function buildDynamicFlavor(a: string, b: string, relationship: string, seed: string): string {
-  return pick(
+function buildDynamicFlavor(a: string, b: string, relationship: string, seed: string, loc: Loc): string {
+  return pickLoc(
     [
-      `${relationship}. 겉으로는 서로를 밀어내지만, 이미 화면 밖에서는 OST가 먼저 깔린 관계입니다.`,
-      `${a}와 ${b}는 대화는 자꾸 엇갈리는데 눈빛만큼은 16부작을 혼자 끌고 갑니다.`,
-      `혐관처럼 시작해 구원서사로 넘어가는 정석 루트입니다. 둘 다 괜찮은 척하지만 카메라는 거짓말을 못 합니다.`,
-      `서로 상처 주는 말은 잘하는데, 정작 무너지는 순간에는 가장 먼저 달려가는 타입입니다.`,
+      {
+        ko: `${relationship}. 겉으로는 서로를 밀어내지만, 이미 화면 밖에서는 OST가 먼저 깔린 관계입니다.`,
+        en: `${relationship}. On the surface they push each other away, but off-screen the OST has already started playing.`,
+      },
+      {
+        ko: `${a}와 ${b}는 대화는 자꾸 엇갈리는데 눈빛만큼은 16부작을 혼자 끌고 갑니다.`,
+        en: `${a} and ${b} keep talking past each other, yet their glances alone carry all sixteen episodes.`,
+      },
+      {
+        ko: `혐관처럼 시작해 구원서사로 넘어가는 정석 루트입니다. 둘 다 괜찮은 척하지만 카메라는 거짓말을 못 합니다.`,
+        en: `A textbook route that starts as enemies-to-lovers and shifts into a redemption arc. Both act like they're fine, but the camera can't lie.`,
+      },
+      {
+        ko: `서로 상처 주는 말은 잘하는데, 정작 무너지는 순간에는 가장 먼저 달려가는 타입입니다.`,
+        en: `They're great at saying hurtful things, yet when one of them breaks down, they're the first to come running.`,
+      },
     ],
     seed,
     "dynamic-flavor",
+    loc,
   );
 }
 
-function buildViewerComments(a: string, b: string, seed: string): string[] {
+function buildViewerComments(a: string, b: string, seed: string, loc: Loc): string[] {
   return [
-    pick(
+    pickLoc(
       [
-        `"둘이 싸우는데 왜 내가 설레죠?"`,
-        `"작가님 제발 이번 생에는 행복하게 해주세요."`,
-        `"이 장면에서 OST 들어오는 순간 끝났음."`,
+        { ko: `"둘이 싸우는데 왜 내가 설레죠?"`, en: `"They're fighting, so why am I the one getting butterflies?"` },
+        { ko: `"작가님 제발 이번 생에는 행복하게 해주세요."`, en: `"Writer-nim, please let them be happy in this life."` },
+        { ko: `"이 장면에서 OST 들어오는 순간 끝났음."`, en: `"The second the OST kicked in during this scene, it was over for me."` },
       ],
       seed,
       "comment-1",
+      loc,
     ),
-    pick(
+    pickLoc(
       [
-        `"${a} 눈빛 때문에 오늘도 잠 못 잠."`,
-        `"${b}가 모든 걸 알고 있었다는 게 진짜 미쳤다."`,
-        `"둘이 말 안 하는데 내가 다 알아들음."`,
+        { ko: `"${a} 눈빛 때문에 오늘도 잠 못 잠."`, en: `"Can't sleep again tonight because of the way ${a} looks at them."` },
+        { ko: `"${b}가 모든 걸 알고 있었다는 게 진짜 미쳤다."`, en: `"The fact that ${b} knew everything all along is genuinely wild."` },
+        { ko: `"둘이 말 안 하는데 내가 다 알아들음."`, en: `"They don't say a word and yet I understood all of it."` },
       ],
       seed,
       "comment-2",
+      loc,
     ),
-    pick(
+    pickLoc(
       [
-        `"이 정도면 넷플릭스 16부작 가능."`,
-        `"제발 외전 주세요. 둘이 행복한 것만 2시간 보여주세요."`,
-        `"9화 엔딩 보고 소리 지른 사람 저뿐인가요?"`,
+        { ko: `"이 정도면 넷플릭스 16부작 가능."`, en: `"This is easily good enough for a 16-episode Netflix run."` },
+        { ko: `"제발 외전 주세요. 둘이 행복한 것만 2시간 보여주세요."`, en: `"Please give us a spin-off. Just two hours of these two being happy."` },
+        { ko: `"9화 엔딩 보고 소리 지른 사람 저뿐인가요?"`, en: `"Am I the only one who screamed at the episode-nine ending?"` },
       ],
       seed,
       "comment-3",
+      loc,
     ),
   ];
 }
 
-function buildEndingTeaser(a: string, b: string, seed: string): string {
-  return pick(
+function buildEndingTeaser(a: string, b: string, seed: string, loc: Loc): string {
+  return pickLoc(
     [
-      `마지막 회에서 ${a}와 ${b}는 처음 만났던 장소로 돌아갑니다. 그런데 이번에는 한 사람이 모든 기억을 가지고 있습니다.`,
-      `엔딩은 해피엔딩처럼 보이지만, 마지막 10초 때문에 모두가 시즌2를 외치게 됩니다.`,
-      `${a}가 고백을 미루는 순간, ${b}의 시간이 다시 움직이기 시작합니다.`,
-      `둘 중 한 사람은 떠나야 하고, 다른 한 사람은 잡아야 합니다. 그런데 카메라는 끝까지 대답을 보여주지 않습니다.`,
+      {
+        ko: `마지막 회에서 ${a}와 ${b}는 처음 만났던 장소로 돌아갑니다. 그런데 이번에는 한 사람이 모든 기억을 가지고 있습니다.`,
+        en: `In the finale, ${a} and ${b} return to where they first met. Only this time, one of them holds all the memories.`,
+      },
+      {
+        ko: `엔딩은 해피엔딩처럼 보이지만, 마지막 10초 때문에 모두가 시즌2를 외치게 됩니다.`,
+        en: `The ending looks like a happy one, but the final ten seconds have everyone shouting for season two.`,
+      },
+      {
+        ko: `${a}가 고백을 미루는 순간, ${b}의 시간이 다시 움직이기 시작합니다.`,
+        en: `The moment ${a} puts off the confession, ${b}'s time starts moving again.`,
+      },
+      {
+        ko: `둘 중 한 사람은 떠나야 하고, 다른 한 사람은 잡아야 합니다. 그런데 카메라는 끝까지 대답을 보여주지 않습니다.`,
+        en: `One of them has to leave and the other has to hold on. Yet the camera never shows the answer, right to the very end.`,
+      },
     ],
     seed,
     "ending-teaser",
+    loc,
   );
 }
 
-function buildResult(first: ProtagonistInput, second: ProtagonistInput): DramaResult {
-  const a = displayName(first.name, "주인공 A");
-  const b = displayName(second.name, "주인공 B");
-  const seed = `${a}:${first.role}:${b}:${second.role}`;
-  const firstRole = pick(rolePool(first.role, `${seed}:first`), seed, "first-role");
-  const secondRole = pick(rolePool(second.role, `${seed}:second`), seed, "second-role");
-  const genre = pick(GENRES, seed, "genre");
+function buildResult(first: ProtagonistInput, second: ProtagonistInput, loc: Loc): DramaResult {
+  // Seed always uses the Korean-default fallbacks so the deterministic hash is
+  // identical across locales — EN renders the same picks as KO for any input.
+  const aSeed = displayName(first.name, "주인공 A");
+  const bSeed = displayName(second.name, "주인공 B");
+  const a = displayName(first.name, loc === "ko" ? "주인공 A" : "Lead A");
+  const b = displayName(second.name, loc === "ko" ? "주인공 B" : "Lead B");
+  const seed = `${aSeed}:${first.role}:${bSeed}:${second.role}`;
+  const firstRolePick = pick(rolePool(first.role, `${seed}:first`), seed, "first-role");
+  const secondRolePick = pick(rolePool(second.role, `${seed}:second`), seed, "second-role");
+  const genrePick = pick(GENRES, seed, "genre");
+  const genreSeed = genrePick.ko;
+  const genre = locStr(genrePick, loc);
   const score = 78 + (hashStr(seed + ":score") % 22);
-  const relationship = relationshipFor(first, second, seed);
-  const title = buildTitle(a, b, seed);
-  const draft = { genre, relationship };
-  const firstMeeting = buildFirstMeeting(a, b, draft, seed);
-  const conflict = buildConflict(a, b, firstRole, secondRole, seed);
-  const famousLine = buildFamousLine(a, b, seed);
-  const shipReason = buildShipReason(a, b, seed);
-  const trailerHook = buildTrailerHook(a, b, firstRole, secondRole, seed);
-  const synopsis = buildSynopsis(a, b, genre, relationship, firstRole, secondRole, firstMeeting, seed);
-  const viewingPoints = buildViewingPoints(a, b, firstRole, secondRole, seed);
-  const dynamicFlavor = buildDynamicFlavor(a, b, relationship, seed);
-  const viewerComments = buildViewerComments(a, b, seed);
-  const endingTeaser = buildEndingTeaser(a, b, seed);
-  const shareSummary = `우리 드라마 제목은 「${title}」래. 케미 ${score}점, 장르는 ${genre}. ${a}랑 ${b} 줄거리는 은근 16부작 가능해 보여.`;
-  const polish = (text: string) => polishKoreanParticles(text, [a, b, firstRole.tag, secondRole.tag]);
+  const relationship = relationshipFor(first, second, seed, loc);
+  const title = buildTitle(a, b, seed, loc);
+  const draft = { genre: genreSeed, relationship };
+  const firstMeeting = buildFirstMeeting(a, b, draft, seed, loc);
+  const conflict = buildConflict(a, b, firstRolePick, secondRolePick, seed, loc);
+  const famousLine = buildFamousLine(a, b, seed, loc);
+  const shipReason = buildShipReason(a, b, seed, loc);
+  const trailerHook = buildTrailerHook(a, b, firstRolePick, secondRolePick, seed, loc);
+  const synopsis = buildSynopsis(a, b, genre, relationship, firstRolePick, secondRolePick, firstMeeting, seed, loc);
+  const viewingPoints = buildViewingPoints(a, b, firstRolePick, secondRolePick, seed, loc);
+  const dynamicFlavor = buildDynamicFlavor(a, b, relationship, seed, loc);
+  const viewerComments = buildViewerComments(a, b, seed, loc);
+  const endingTeaser = buildEndingTeaser(a, b, seed, loc);
+  const firstRole = localizeRole(firstRolePick, loc);
+  const secondRole = localizeRole(secondRolePick, loc);
+  const shareSummary =
+    loc === "ko"
+      ? `우리 드라마 제목은 「${title}」래. 케미 ${score}점, 장르는 ${genre}. ${a}랑 ${b} 줄거리는 은근 16부작 가능해 보여.`
+      : `Our K-drama would be titled "${title}". Chemistry ${score}, genre ${genre}. ${a} and ${b} honestly sound like a 16-episode binge.`;
+
+  // Korean-particle polishing only applies to Korean output.
+  const polish =
+    loc === "ko"
+      ? (text: string) => polishKoreanParticles(text, [a, b, firstRole.tag, secondRole.tag])
+      : (text: string) => text;
 
   return {
     title: polish(title),
@@ -697,9 +953,6 @@ function buildResult(first: ProtagonistInput, second: ProtagonistInput): DramaRe
   };
 }
 
-function makeEnglishSummary(result: DramaResult, a: string, b: string): string {
-  return `Our K-Drama title is "${result.title}". Chemistry ${result.score}, genre ${result.genre}. ${a} and ${b} sound dangerously bingeable.`;
-}
 
 export default function KdramaCouplePage(): ReactElement {
   const { locale } = useLocale();
@@ -712,8 +965,8 @@ export default function KdramaCouplePage(): ReactElement {
 
   const result = useMemo(() => {
     if (!submitted) return null;
-    return buildResult(submitted.first, submitted.second);
-  }, [submitted]);
+    return buildResult(submitted.first, submitted.second, loc);
+  }, [submitted, loc]);
 
   const t = useCallback((ko: string, en: string) => (loc === "ko" ? ko : en), [loc]);
 
@@ -743,9 +996,7 @@ export default function KdramaCouplePage(): ReactElement {
 
   const share = useCallback(async () => {
     if (!result || !submitted) return;
-    const a = displayName(submitted.first.name, "A");
-    const b = displayName(submitted.second.name, "B");
-    const text = loc === "ko" ? result.shareSummary : makeEnglishSummary(result, a, b);
+    const text = result.shareSummary;
     const url = `${window.location.origin}/games/kdrama-couple`;
 
     try {
@@ -763,13 +1014,11 @@ export default function KdramaCouplePage(): ReactElement {
         setCopied(false);
       }
     }
-  }, [loc, result, submitted]);
+  }, [result, submitted]);
 
   const copyLink = useCallback(async () => {
     if (!result || !submitted) return;
-    const a = displayName(submitted.first.name, "A");
-    const b = displayName(submitted.second.name, "B");
-    const text = loc === "ko" ? result.shareSummary : makeEnglishSummary(result, a, b);
+    const text = result.shareSummary;
     const url = `${window.location.origin}/games/kdrama-couple`;
     try {
       await navigator.clipboard.writeText(`${text}\n${url}`);
@@ -777,7 +1026,7 @@ export default function KdramaCouplePage(): ReactElement {
     } catch {
       setCopied(false);
     }
-  }, [loc, result, submitted]);
+  }, [result, submitted]);
 
   return (
     <main
@@ -1132,8 +1381,8 @@ function ResultView({
   t: (ko: string, en: string) => string;
   loc: Loc;
 }): ReactElement {
-  const a = displayName(first.name, "A");
-  const b = displayName(second.name, "B");
+  const a = displayName(first.name, loc === "ko" ? "주인공 A" : "Lead A");
+  const b = displayName(second.name, loc === "ko" ? "주인공 B" : "Lead B");
 
   return (
     <section>
@@ -1178,8 +1427,13 @@ function ResultView({
           </div>
 
           <div className="kdc-mobile-stack" style={{ display: "flex", gap: 10, marginTop: 20 }}>
-            <button className="kdc-button" type="button" onClick={onShare} style={primaryButton}>
-              {t("친구에게 공유하기", "Share with friends")}
+            <button
+              className="kdc-button"
+              type="button"
+              onClick={copied ? onCopy : onShare}
+              style={primaryButton}
+            >
+              {copied ? t("✓ 복사됐어요", "✓ Copied") : t("친구에게 공유하기", "Share with friends")}
             </button>
             <button className="kdc-button" type="button" onClick={onReset} style={secondaryButton}>
               {t("다시 하기", "Replay")}
@@ -1210,7 +1464,7 @@ function ResultView({
           <BulletSection title={t("댓글 반응", "Viewer comments")} items={result.viewerComments} />
           <ResultSection title={t("시청자 반응", "Why viewers ship them")} body={result.shipReason} />
           <ResultSection title={t("엔딩 스포 없는 예고", "Ending teaser")} body={result.endingTeaser} />
-          <ResultSection title={t("공유 멘트", "Shareable summary")} body={loc === "ko" ? result.shareSummary : makeEnglishSummary(result, a, b)} />
+          <ResultSection title={t("공유 멘트", "Shareable summary")} body={result.shareSummary} />
 
           <section style={cardStyle}>
             <div style={eyebrowStyle}>{t("이 테스트도 해보세요", "Try these next")}</div>
@@ -1299,7 +1553,7 @@ function BulletSection({ title, items }: { title: string; items: string[] }): Re
   );
 }
 
-function RoleCard({ eyebrow, role }: { eyebrow: string; role: CharacterRole }): ReactElement {
+function RoleCard({ eyebrow, role }: { eyebrow: string; role: LocalizedRole }): ReactElement {
   return (
     <article style={cardStyle}>
       <div style={eyebrowStyle}>{eyebrow}</div>

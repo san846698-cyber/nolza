@@ -245,7 +245,7 @@ export default function InertiaGame() {
         fontFamily: "var(--font-noto-sans-kr)",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home">
+      <Link href="/" className="back-arrow dark" aria-label={t("놀자 홈으로", "Home")}>
         ←
       </Link>
       {/* Stats */}
@@ -328,7 +328,7 @@ export default function InertiaGame() {
             letterSpacing: "0.15em",
           }}
         >
-          {copied ? "✓ COPIED" : t("공유", "SHARE")}
+          {copied ? t("✓ 복사됐어요", "✓ COPIED") : t("공유", "SHARE")}
         </button>
       </div>
 

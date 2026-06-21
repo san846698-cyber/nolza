@@ -2,8 +2,40 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 const BASE_ELEMENTS = ["김치", "밥", "불", "물"] as const;
+
+// English display names for every element. The Korean string stays the
+// canonical internal key (used in EMOJI, RECIPES and localStorage); this
+// map only controls what an English-locale user sees on screen.
+const NAME_EN: Record<string, string> = {
+  김치: "Kimchi", 밥: "Rice", 불: "Fire", 물: "Water",
+  묵은지: "Aged Kimchi", 떡: "Rice Cake", 닭: "Chicken", 김: "Seaweed",
+  김치볶음밥: "Kimchi Fried Rice", 김치찌개: "Kimchi Stew", 김치국: "Kimchi Soup", 누룽지: "Scorched Rice",
+  죽: "Porridge", 증기: "Steam",
+  김치찜: "Braised Kimchi", 부대찌개: "Army Stew", 집밥: "Home Cooking", 묵은지찌개: "Aged Kimchi Stew",
+  숭늉: "Scorched Rice Tea", 면: "Noodles", 찐빵: "Steamed Bun", 떡볶이: "Tteokbokki",
+  라면: "Ramyeon", 비빔면: "Spicy Mixed Noodles", 회: "Sashimi", 김밥: "Gimbap",
+  치킨: "Fried Chicken", 맥주: "Beer", 소주: "Soju", 김치죽: "Kimchi Porridge",
+  김치라면: "Kimchi Ramyeon", 떡라면: "Rice Cake Ramyeon", 초밥: "Sushi", 안주: "Bar Snack",
+  치맥: "Chicken & Beer", 술: "Booze", 폭탄주: "Boilermaker", 생맥: "Draft Beer",
+  회식: "Company Dinner", 야식: "Late-Night Snack", 직장인: "Office Worker", 친구: "Friend",
+  모임: "Gathering", 파티: "Party", 노래방: "Karaoke", 가족: "Family",
+  사랑: "Love", 행복: "Happiness", 한국인: "Korean",
+  부장님: "Boss", 갓생: "God-Tier Life", 한국: "Korea", 한강: "Han River",
+  서울: "Seoul", 강남: "Gangnam", "K-POP": "K-POP", 한류: "Korean Wave",
+  매운맛: "Spicy Flavor", 한국혼: "Korean Spirit", 한식: "Korean Food", 한정식: "Korean Course Meal",
+  한국정서: "Korean Sentiment",
+  비: "Rain", 파전: "Scallion Pancake", 막걸리: "Makgeolli", 한강라면: "Han River Ramyeon",
+};
+
+// Localized element name for display. Falls back to the Korean key if no
+// English name is registered.
+function elementName(name: string, locale: "ko" | "en"): string {
+  if (locale === "ko") return name;
+  return NAME_EN[name] ?? name;
+}
 
 const EMOJI: Record<string, string> = {
   김치: "🌶️", 밥: "🍚", 불: "🔥", 물: "💧",
@@ -96,6 +128,7 @@ function recipeKey(a: string, b: string): string {
 }
 
 export default function ElementsGame() {
+  const { t, locale } = useLocale();
   const [discovered, setDiscovered] = useState<string[]>([...BASE_ELEMENTS]);
   const [selected, setSelected] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<{
@@ -113,7 +146,12 @@ export default function ElementsGame() {
       if (saved) {
         const arr = JSON.parse(saved);
         if (Array.isArray(arr)) {
-          const merged = Array.from(new Set([...BASE_ELEMENTS, ...arr]));
+          // Only merge saved names that still exist in the EMOJI map. This
+          // keeps stale or invalid entries from inflating progress past 100%.
+          const valid = arr.filter(
+            (name) => typeof name === "string" && name in EMOJI,
+          );
+          const merged = Array.from(new Set([...BASE_ELEMENTS, ...valid]));
           setDiscovered(merged);
         }
       }
@@ -150,7 +188,7 @@ export default function ElementsGame() {
   const reset = () => setSelected(null);
 
   const resetAll = () => {
-    if (!confirm("모든 발견을 초기화할까요?")) return;
+    if (!confirm(t("모든 발견을 초기화할까요?", "Reset all discoveries?"))) return;
     setDiscovered([...BASE_ELEMENTS]);
     setSelected(null);
     setLastResult(null);
@@ -162,7 +200,10 @@ export default function ElementsGame() {
   );
 
   const handleShare = async () => {
-    const text = `나 놀자.fun에서 한국 원소 ${discovered.length}개 조합 발견했다 (${progress.toFixed(0)}%) → nolza.fun/games/elements`;
+    const text = t(
+      `나 놀자.fun에서 한국 원소 ${discovered.length}개 조합 발견했다 (${progress.toFixed(0)}%) → nolza.fun/games/elements`,
+      `I discovered ${discovered.length} Korean element combos on nolza.fun (${progress.toFixed(0)}%) → nolza.fun/games/elements`,
+    );
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -175,7 +216,7 @@ export default function ElementsGame() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
           <div className="text-xs text-gray-500">
             <span className="font-medium text-white">{discovered.length}</span>
@@ -189,34 +230,46 @@ export default function ElementsGame() {
       <div className="mx-auto max-w-5xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-8">
           <h1 className="text-3xl font-black md:text-5xl">
-            한국 <span className="text-accent">원소 조합</span>
+            {t("한국 ", "Korean ")}
+            <span className="text-accent">
+              {t("원소 조합", "Element Crafting")}
+            </span>
           </h1>
           <p className="mt-3 text-sm text-gray-400 md:text-base">
-            두 원소를 차례로 클릭해서 조합해보세요. 김치 + 불 = ?
+            {t(
+              "두 원소를 차례로 클릭해서 조합해보세요. 김치 + 불 = ?",
+              "Tap two elements one after another to combine them. Kimchi + Fire = ?",
+            )}
           </p>
         </header>
 
         <div className="rounded-2xl border border-border bg-card p-5 md:p-7">
           <div className="flex flex-col items-center gap-3">
-            <div className="text-xs text-gray-500">조합대</div>
+            <div className="text-xs text-gray-500">{t("조합대", "Crafting bench")}</div>
             <div className="flex items-center gap-3 text-center">
               <div className="min-w-[100px] rounded-xl border border-border bg-bg px-4 py-3">
                 {selected ? (
                   <>
                     <div className="text-3xl">{EMOJI[selected] ?? "❓"}</div>
-                    <div className="mt-1 text-sm font-medium">{selected}</div>
+                    <div className="mt-1 text-sm font-medium">
+                      {elementName(selected, locale)}
+                    </div>
                   </>
                 ) : (
                   <>
                     <div className="text-3xl text-gray-700">＋</div>
-                    <div className="mt-1 text-xs text-gray-600">선택하세요</div>
+                    <div className="mt-1 text-xs text-gray-600">
+                      {t("선택하세요", "Pick one")}
+                    </div>
                   </>
                 )}
               </div>
               <div className="text-2xl text-accent">＋</div>
               <div className="min-w-[100px] rounded-xl border border-border bg-bg px-4 py-3 opacity-60">
                 <div className="text-3xl text-gray-700">？</div>
-                <div className="mt-1 text-xs text-gray-600">두번째</div>
+                <div className="mt-1 text-xs text-gray-600">
+                  {t("두번째", "Second")}
+                </div>
               </div>
             </div>
             {selected && (
@@ -225,7 +278,7 @@ export default function ElementsGame() {
                 onClick={reset}
                 className="text-xs text-gray-500 hover:text-accent"
               >
-                선택 취소
+                {t("선택 취소", "Cancel selection")}
               </button>
             )}
           </div>
@@ -235,19 +288,19 @@ export default function ElementsGame() {
               key={lastResult.nonce}
               className="palette-enter mt-5 rounded-xl border border-border bg-bg p-4 text-center"
             >
-              <div className="text-xs text-gray-500">최근 시도</div>
+              <div className="text-xs text-gray-500">{t("최근 시도", "Last attempt")}</div>
               <div className="mt-2 flex items-center justify-center gap-2 text-sm md:text-base">
-                <span>{EMOJI[lastResult.a]} {lastResult.a}</span>
+                <span>{EMOJI[lastResult.a]} {elementName(lastResult.a, locale)}</span>
                 <span className="text-gray-500">+</span>
-                <span>{EMOJI[lastResult.b]} {lastResult.b}</span>
+                <span>{EMOJI[lastResult.b]} {elementName(lastResult.b, locale)}</span>
                 <span className="text-gray-500">=</span>
                 {lastResult.result ? (
                   <span className={lastResult.isNew ? "font-bold text-accent" : "font-bold text-white"}>
-                    {EMOJI[lastResult.result]} {lastResult.result}
+                    {EMOJI[lastResult.result]} {elementName(lastResult.result, locale)}
                     {lastResult.isNew && <span className="ml-1">✨</span>}
                   </span>
                 ) : (
-                  <span className="text-gray-500">??? (조합 없음)</span>
+                  <span className="text-gray-500">{t("??? (조합 없음)", "??? (no combo)")}</span>
                 )}
               </div>
             </div>
@@ -256,13 +309,15 @@ export default function ElementsGame() {
 
         <section className="mt-8">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-sm font-bold text-gray-300">발견한 원소 ({discovered.length})</h2>
+            <h2 className="text-sm font-bold text-gray-300">
+              {t("발견한 원소", "Discovered elements")} ({discovered.length})
+            </h2>
             <button
               type="button"
               onClick={resetAll}
               className="text-xs text-gray-500 hover:text-accent"
             >
-              초기화
+              {t("초기화", "Reset")}
             </button>
           </div>
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
@@ -279,7 +334,7 @@ export default function ElementsGame() {
               >
                 <div className="text-2xl md:text-3xl">{EMOJI[name] ?? "❓"}</div>
                 <div className="mt-1 truncate text-xs font-medium md:text-sm">
-                  {name}
+                  {elementName(name, locale)}
                 </div>
               </button>
             ))}
@@ -292,7 +347,9 @@ export default function ElementsGame() {
             onClick={handleShare}
             className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90"
           >
-            {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
+            {copied
+              ? t("✓ 복사됐어요", "✓ Copied")
+              : t("📋 친구에게 공유하기", "📋 Share with friends")}
           </button>
         </div>
 
@@ -301,7 +358,7 @@ export default function ElementsGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

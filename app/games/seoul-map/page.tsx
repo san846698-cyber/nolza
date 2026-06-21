@@ -2,38 +2,39 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 type District = {
   name: string; en: string; row: number; col: number;
-  famous: string;
+  famous: string; famous_en: string;
 };
 
 const DISTRICTS: District[] = [
-  { name: "강북구", en: "Gangbuk", row: 0, col: 2, famous: "북한산" },
-  { name: "도봉구", en: "Dobong", row: 0, col: 3, famous: "도봉산" },
-  { name: "노원구", en: "Nowon", row: 0, col: 4, famous: "롯데백화점, 학원가" },
-  { name: "은평구", en: "Eunpyeong", row: 1, col: 1, famous: "은평한옥마을" },
-  { name: "성북구", en: "Seongbuk", row: 1, col: 2, famous: "길음역" },
-  { name: "중랑구", en: "Jungnang", row: 1, col: 4, famous: "면목·상봉" },
-  { name: "서대문구", en: "Seodaemun", row: 2, col: 1, famous: "연세대, 신촌" },
-  { name: "종로구", en: "Jongno", row: 2, col: 2, famous: "경복궁, 인사동" },
-  { name: "동대문구", en: "Dongdaemun", row: 2, col: 3, famous: "동대문시장, DDP" },
-  { name: "광진구", en: "Gwangjin", row: 2, col: 4, famous: "건대, 어린이대공원" },
-  { name: "마포구", en: "Mapo", row: 3, col: 1, famous: "홍대, 합정, 연남" },
-  { name: "용산구", en: "Yongsan", row: 3, col: 2, famous: "이태원, 용산역" },
-  { name: "중구", en: "Junggu", row: 3, col: 3, famous: "명동, 을지로" },
-  { name: "성동구", en: "Seongdong", row: 3, col: 4, famous: "성수동, 서울숲" },
-  { name: "강서구", en: "Gangseo", row: 4, col: 0, famous: "김포공항, 마곡" },
-  { name: "양천구", en: "Yangcheon", row: 4, col: 1, famous: "목동" },
-  { name: "영등포구", en: "Yeongdeungpo", row: 4, col: 2, famous: "여의도, IFC" },
-  { name: "동작구", en: "Dongjak", row: 4, col: 3, famous: "노량진, 사당" },
-  { name: "강동구", en: "Gangdong", row: 4, col: 5, famous: "천호, 둔촌" },
-  { name: "구로구", en: "Guro", row: 5, col: 1, famous: "구로디지털단지" },
-  { name: "관악구", en: "Gwanak", row: 5, col: 2, famous: "서울대, 신림" },
-  { name: "서초구", en: "Seocho", row: 5, col: 3, famous: "강남역, 반포" },
-  { name: "강남구", en: "Gangnam", row: 5, col: 4, famous: "압구정, 청담, 코엑스" },
-  { name: "송파구", en: "Songpa", row: 5, col: 5, famous: "잠실, 롯데타워" },
-  { name: "금천구", en: "Geumcheon", row: 6, col: 1, famous: "가산디지털" },
+  { name: "강북구", en: "Gangbuk", row: 0, col: 2, famous: "북한산", famous_en: "Bukhansan Mountain" },
+  { name: "도봉구", en: "Dobong", row: 0, col: 3, famous: "도봉산", famous_en: "Dobongsan Mountain" },
+  { name: "노원구", en: "Nowon", row: 0, col: 4, famous: "롯데백화점, 학원가", famous_en: "Lotte Department Store, cram-school district" },
+  { name: "은평구", en: "Eunpyeong", row: 1, col: 1, famous: "은평한옥마을", famous_en: "Eunpyeong Hanok Village" },
+  { name: "성북구", en: "Seongbuk", row: 1, col: 2, famous: "길음역", famous_en: "Gireum Station" },
+  { name: "중랑구", en: "Jungnang", row: 1, col: 4, famous: "면목·상봉", famous_en: "Myeonmok · Sangbong" },
+  { name: "서대문구", en: "Seodaemun", row: 2, col: 1, famous: "연세대, 신촌", famous_en: "Yonsei University, Sinchon" },
+  { name: "종로구", en: "Jongno", row: 2, col: 2, famous: "경복궁, 인사동", famous_en: "Gyeongbokgung Palace, Insadong" },
+  { name: "동대문구", en: "Dongdaemun", row: 2, col: 3, famous: "동대문시장, DDP", famous_en: "Dongdaemun Market, DDP" },
+  { name: "광진구", en: "Gwangjin", row: 2, col: 4, famous: "건대, 어린이대공원", famous_en: "Konkuk University, Children's Grand Park" },
+  { name: "마포구", en: "Mapo", row: 3, col: 1, famous: "홍대, 합정, 연남", famous_en: "Hongdae, Hapjeong, Yeonnam" },
+  { name: "용산구", en: "Yongsan", row: 3, col: 2, famous: "이태원, 용산역", famous_en: "Itaewon, Yongsan Station" },
+  { name: "중구", en: "Junggu", row: 3, col: 3, famous: "명동, 을지로", famous_en: "Myeongdong, Euljiro" },
+  { name: "성동구", en: "Seongdong", row: 3, col: 4, famous: "성수동, 서울숲", famous_en: "Seongsu-dong, Seoul Forest" },
+  { name: "강서구", en: "Gangseo", row: 4, col: 0, famous: "김포공항, 마곡", famous_en: "Gimpo Airport, Magok" },
+  { name: "양천구", en: "Yangcheon", row: 4, col: 1, famous: "목동", famous_en: "Mok-dong" },
+  { name: "영등포구", en: "Yeongdeungpo", row: 4, col: 2, famous: "여의도, IFC", famous_en: "Yeouido, IFC" },
+  { name: "동작구", en: "Dongjak", row: 4, col: 3, famous: "노량진, 사당", famous_en: "Noryangjin, Sadang" },
+  { name: "강동구", en: "Gangdong", row: 4, col: 5, famous: "천호, 둔촌", famous_en: "Cheonho, Dunchon" },
+  { name: "구로구", en: "Guro", row: 5, col: 1, famous: "구로디지털단지", famous_en: "Guro Digital Complex" },
+  { name: "관악구", en: "Gwanak", row: 5, col: 2, famous: "서울대, 신림", famous_en: "Seoul National University, Sillim" },
+  { name: "서초구", en: "Seocho", row: 5, col: 3, famous: "강남역, 반포", famous_en: "Gangnam Station, Banpo" },
+  { name: "강남구", en: "Gangnam", row: 5, col: 4, famous: "압구정, 청담, 코엑스", famous_en: "Apgujeong, Cheongdam, COEX" },
+  { name: "송파구", en: "Songpa", row: 5, col: 5, famous: "잠실, 롯데타워", famous_en: "Jamsil, Lotte Tower" },
+  { name: "금천구", en: "Geumcheon", row: 6, col: 1, famous: "가산디지털", famous_en: "Gasan Digital Complex" },
 ];
 
 function shuffle<T>(arr: T[]): T[] {
@@ -46,6 +47,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function SeoulMap() {
+  const { t, locale } = useLocale();
   const [mode, setMode] = useState<"explore" | "quiz">("explore");
   const [selected, setSelected] = useState<District | null>(null);
   const [quizList, setQuizList] = useState<District[]>([]);
@@ -91,7 +93,7 @@ export default function SeoulMap() {
       className="min-h-screen page-in"
       style={{ backgroundColor: "#f5f5f0", color: "#1a1a1a" }}
     >
-      <Link href="/" className="back-arrow" aria-label="home" style={{ color: "#5a5040" }}>
+      <Link href="/" className="back-arrow" aria-label={t("놀자 홈으로", "Back to home")} style={{ color: "#5a5040" }}>
         ←
       </Link>
 
@@ -110,8 +112,8 @@ export default function SeoulMap() {
 
         <div className="mt-8 flex justify-center gap-2">
           {([
-            { key: "explore", label: "EXPLORE" },
-            { key: "quiz", label: "QUIZ" },
+            { key: "explore", label: t("탐색", "EXPLORE") },
+            { key: "quiz", label: t("퀴즈", "QUIZ") },
           ] as const).map((m) => (
             <button
               key={m.key}
@@ -142,7 +144,7 @@ export default function SeoulMap() {
                 color: "#888",
               }}
             >
-              {quizIdx + 1} / 10 · FIND
+              {quizIdx + 1} / 10 · {t("찾기", "FIND")}
             </div>
             <div
               style={{
@@ -224,7 +226,7 @@ export default function SeoulMap() {
               {selected.name}
             </div>
             <div style={{ marginTop: 12, fontSize: 16, color: "#5a5040" }}>
-              {selected.famous}
+              {locale === "ko" ? selected.famous : selected.famous_en}
             </div>
           </div>
         )}
@@ -240,7 +242,7 @@ export default function SeoulMap() {
             }}
           >
             <div style={{ fontSize: 13, letterSpacing: "0.3em", color: "#888" }}>
-              FINAL
+              {t("최종 점수", "FINAL")}
             </div>
             <div
               className="tabular-nums"
@@ -263,7 +265,7 @@ export default function SeoulMap() {
                 padding: "10px 28px", fontSize: 14, letterSpacing: "0.2em",
               }}
             >
-              AGAIN
+              {t("다시", "AGAIN")}
             </button>
           </div>
         )}

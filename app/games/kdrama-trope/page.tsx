@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 type Choice = { ko: string; en: string; value: string };
 type QDef = {
@@ -86,11 +87,11 @@ const QUESTIONS: QDef[] = [
 
 const COSTARS = ["현빈","공유","박서준","이병헌","송중기","박보검","수지","송혜교","전지현","아이유","박은빈"];
 const RATINGS = [
-  { range: "10-15%", desc: "안정적인 흥행" },
-  { range: "15-20%", desc: "케이블 대박" },
-  { range: "20-25%", desc: "공중파 핫" },
-  { range: "25-30%", desc: "사회적 신드롬" },
-  { range: "30%+", desc: "전설의 명작" },
+  { range: "10-15%", desc: "안정적인 흥행", desc_en: "Solid hit" },
+  { range: "15-20%", desc: "케이블 대박", desc_en: "Cable smash" },
+  { range: "20-25%", desc: "공중파 핫", desc_en: "Network favorite" },
+  { range: "25-30%", desc: "사회적 신드롬", desc_en: "Cultural phenomenon" },
+  { range: "30%+", desc: "전설의 명작", desc_en: "Legendary masterpiece" },
 ];
 
 function generateTitle(answers: Record<string, string>): { ko: string; en: string } {
@@ -108,7 +109,7 @@ function generateTitle(answers: Record<string, string>): { ko: string; en: strin
 }
 
 export default function KdramaTrope() {
-  const [lang, setLang] = useState<"en" | "ko">("en");
+  const { t, locale, setLocale } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
 
@@ -132,7 +133,6 @@ export default function KdramaTrope() {
     setStep((s) => s + 1);
   };
   const restart = () => { setStep(0); setAnswers({}); };
-  const t = (en: string, ko: string) => (lang === "en" ? en : ko);
   const current = QUESTIONS[step];
 
   return (
@@ -144,12 +144,12 @@ export default function KdramaTrope() {
         fontFamily: "var(--font-inter)",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home" style={{ color: "rgba(255,215,0,0.7)" }}>
+      <Link href="/" className="back-arrow dark" aria-label={t("홈", "home")} style={{ color: "rgba(255,215,0,0.7)" }}>
         ←
       </Link>
       <button
         type="button"
-        onClick={() => setLang((l) => (l === "en" ? "ko" : "en"))}
+        onClick={() => setLocale(locale === "en" ? "ko" : "en")}
         className="fixed right-5 top-5 z-50 rounded-full transition-colors"
         style={{
           fontSize: 13, color: "rgba(255,215,0,0.7)",
@@ -157,7 +157,7 @@ export default function KdramaTrope() {
           border: "1px solid rgba(255,215,0,0.2)", letterSpacing: "0.1em",
         }}
       >
-        {lang === "en" ? "한" : "EN"}
+        {locale === "en" ? "한" : "EN"}
       </button>
 
       <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 pb-16 pt-20">
@@ -170,7 +170,7 @@ export default function KdramaTrope() {
                 letterSpacing: "0.3em", marginBottom: 32,
               }}
             >
-              EPISODE {step + 1} / {QUESTIONS.length}
+              {t("에피소드", "EPISODE")} {step + 1} / {QUESTIONS.length}
             </div>
             <h2
               className="fade-in"
@@ -179,7 +179,7 @@ export default function KdramaTrope() {
                 color: "#FFD700", marginBottom: 48,
               }}
             >
-              {t(current.en, current.ko)}
+              {t(current.ko, current.en)}
             </h2>
             <div className="space-y-3">
               {current.options.map((opt, i) => (
@@ -205,7 +205,7 @@ export default function KdramaTrope() {
                     e.currentTarget.style.borderColor = "rgba(255,215,0,0.3)";
                   }}
                 >
-                  {t(opt.en, opt.ko)}
+                  {t(opt.ko, opt.en)}
                 </button>
               ))}
             </div>
@@ -238,17 +238,17 @@ export default function KdramaTrope() {
                   letterSpacing: "0.05em",
                 }}
               >
-                {t("MY K-DRAMA", "내 K-드라마")}
+                {t("내 K-드라마", "MY K-DRAMA")}
               </div>
               <h1
                 style={{
                   marginTop: 16, fontSize: 42, fontWeight: 900,
                   color: "#FFD700", lineHeight: 1.1,
                   textShadow: "0 0 30px rgba(255,215,0,0.4)",
-                  fontFamily: lang === "ko" ? "var(--font-noto-serif-kr)" : "var(--font-inter)",
+                  fontFamily: locale === "ko" ? "var(--font-noto-serif-kr)" : "var(--font-inter)",
                 }}
               >
-                《{t(result.title.en, result.title.ko)}》
+                《{t(result.title.ko, result.title.en)}》
               </h1>
               <div
                 style={{
@@ -260,13 +260,13 @@ export default function KdramaTrope() {
                 }}
               >
                 <div>
-                  {t("STARRING", "주연")} · {t("YOU", "나")} & {result.costar}
+                  {t("주연", "STARRING")} · {t("나", "YOU")} & {result.costar}
                 </div>
                 <div>
-                  {t("EXPECTED RATINGS", "예상 시청률")} · {result.rating.range}
+                  {t("예상 시청률", "EXPECTED RATINGS")} · {result.rating.range}
                 </div>
                 <div style={{ fontSize: 13, opacity: 0.6, marginTop: 4 }}>
-                  {result.rating.desc}
+                  {t(result.rating.desc, result.rating.desc_en)}
                 </div>
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function KdramaTrope() {
                   fontSize: 14, letterSpacing: "0.2em",
                 }}
               >
-                NEW DRAMA
+                {t("새 드라마", "NEW DRAMA")}
               </button>
             </div>
           </div>

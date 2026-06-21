@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 type Role = "Scholar" | "General" | "Princess" | "King" | "Merchant" | "Farmer";
 
@@ -125,7 +126,7 @@ function HanbokSVG({ jeogori, chima, trim }: { jeogori: string; chima: string; t
 }
 
 export default function HanbokGame() {
-  const [lang, setLang] = useState<"en" | "ko">("en");
+  const { t, locale, setLocale } = useLocale();
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState<Record<Role, number>>({
     Scholar: 0, General: 0, Princess: 0, King: 0, Merchant: 0, Farmer: 0,
@@ -158,10 +159,10 @@ export default function HanbokGame() {
 
   const handleShare = async () => {
     if (!result) return;
-    const text =
-      lang === "en"
-        ? `My Hanbok Style: ${result.en} ${result.emoji} → nolza.fun/games/hanbok`
-        : `나의 한복 스타일: ${result.ko} ${result.emoji} → nolza.fun/games/hanbok`;
+    const text = t(
+      `나의 한복 스타일: ${result.ko} ${result.emoji} → nolza.fun/games/hanbok`,
+      `My Hanbok Style: ${result.en} ${result.emoji} → nolza.fun/games/hanbok`,
+    );
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -169,7 +170,6 @@ export default function HanbokGame() {
     } catch {}
   };
 
-  const t = (en: string, ko: string) => (lang === "en" ? en : ko);
   const current = QUESTIONS[step];
 
   return (
@@ -177,14 +177,14 @@ export default function HanbokGame() {
       <div className="border-b border-border" style={{ background: "linear-gradient(90deg, rgba(255,59,48,0.04), rgba(255,215,0,0.04), rgba(52,199,89,0.04), rgba(0,122,255,0.04), rgba(175,82,222,0.04))" }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza")}
           </Link>
           <button
             type="button"
-            onClick={() => setLang((l) => (l === "en" ? "ko" : "en"))}
+            onClick={() => setLocale(locale === "en" ? "ko" : "en")}
             className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium hover:border-accent"
           >
-            {lang === "en" ? "🌐 한국어" : "🌐 EN"}
+            {locale === "en" ? "🌐 한국어" : "🌐 EN"}
           </button>
         </div>
       </div>
@@ -192,12 +192,12 @@ export default function HanbokGame() {
       <div className="mx-auto max-w-3xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-8">
           <h1 className="text-3xl font-black md:text-5xl">
-            {t("My Hanbok Style", "나의 한복 스타일")} 🇰🇷
+            {t("나의 한복 스타일", "My Hanbok Style")} 🇰🇷
           </h1>
           <p className="mt-3 text-sm text-gray-400 md:text-base">
             {t(
-              "Discover your Joseon-era role and traditional Korean attire.",
               "조선시대의 신분과 어울리는 한복을 알려드려요.",
+              "Discover your Joseon-era role and traditional Korean attire.",
             )}
           </p>
         </header>
@@ -209,7 +209,7 @@ export default function HanbokGame() {
             </div>
             <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
               <div className="text-xs text-accent">Q{step + 1}/{QUESTIONS.length}</div>
-              <div className="mt-3 text-xl font-bold md:text-2xl">{t(current.en, current.ko)}</div>
+              <div className="mt-3 text-xl font-bold md:text-2xl">{t(current.ko, current.en)}</div>
               <div className="mt-6 flex flex-col gap-2">
                 {current.options.map((opt, i) => (
                   <button
@@ -218,7 +218,7 @@ export default function HanbokGame() {
                     onClick={() => select(opt.weight)}
                     className="rounded-xl border border-border bg-bg px-4 py-3 text-left text-sm hover:border-accent md:text-base"
                   >
-                    {t(opt.en, opt.ko)}
+                    {t(opt.ko, opt.en)}
                   </button>
                 ))}
               </div>
@@ -238,13 +238,13 @@ export default function HanbokGame() {
                 <div className="flex-1 text-center md:text-left">
                   <div className="text-7xl">{result.emoji}</div>
                   <div className="mt-3 text-xs text-accent">
-                    {t("Your Joseon Role", "조선시대 신분")}
+                    {t("조선시대 신분", "Your Joseon Role")}
                   </div>
                   <div className="mt-1 text-3xl font-black md:text-4xl">
-                    {t(result.en, result.ko)}
+                    {t(result.ko, result.en)}
                   </div>
                   <p className="mt-3 text-sm text-gray-300 md:text-base">
-                    {t(result.desc.en, result.desc.ko)}
+                    {t(result.desc.ko, result.desc.en)}
                   </p>
                   <div className="mt-4 flex gap-2">
                     <span className="inline-block h-6 w-6 rounded-full border border-white/20" style={{ backgroundColor: result.jeogori }} />
@@ -256,10 +256,10 @@ export default function HanbokGame() {
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <button type="button" onClick={restart} className="rounded-full border border-border bg-bg px-6 py-3 text-sm font-medium text-white hover:border-accent hover:text-accent">
-                ↻ {t("Try Again", "다시")}
+                ↻ {t("다시", "Try Again")}
               </button>
               <button type="button" onClick={handleShare} className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90">
-                {copied ? "✓" : "📋"} {t("Share Result", "공유")}
+                {copied ? "✓" : "📋"} {t("공유", "Share Result")}
               </button>
             </div>
           </>
@@ -267,7 +267,7 @@ export default function HanbokGame() {
 
         <div className="mt-12 flex justify-center">
           <Link href="/" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza")}
           </Link>
         </div>
       </div>

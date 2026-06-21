@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import { AdBottom } from "@/app/components/Ads";
 import { ShareCard } from "@/app/components/ShareCard";
 import { usePersistentTestSession } from "@/hooks/usePersistentTestSession";
+import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   ERA_LABELS,
   MEME_QUESTIONS,
@@ -39,9 +40,21 @@ const C = {
 };
 
 const RECOMMENDED = [
-  { href: "/games/kbti", title: "KBTI", sub: "한국형 성격 테스트" },
-  { href: "/games/whatgeneration", title: "세대 테스트", sub: "나는 어느 감성 세대?" },
-  { href: "/tests/defense-mechanism", title: "방어기제 테스트", sub: "내 마음의 보호 방식" },
+  {
+    href: "/games/kbti",
+    title: { ko: "KBTI", en: "KBTI" },
+    sub: { ko: "한국형 성격 테스트", en: "Korean-style personality test" },
+  },
+  {
+    href: "/games/whatgeneration",
+    title: { ko: "세대 테스트", en: "Generation Test" },
+    sub: { ko: "나는 어느 감성 세대?", en: "Which sensibility generation am I?" },
+  },
+  {
+    href: "/tests/defense-mechanism",
+    title: { ko: "방어기제 테스트", en: "Defense Mechanism Test" },
+    sub: { ko: "내 마음의 보호 방식", en: "How my mind protects me" },
+  },
 ];
 
 function isMemeSession(value: unknown): value is MemeSession {
@@ -70,6 +83,7 @@ function isMemeSession(value: unknown): value is MemeSession {
 }
 
 export default function MemeAgeTestClient() {
+  const { t, locale } = useLocale();
   const [session, setSession, resetSession] = usePersistentTestSession(
     SESSION_KEY,
     INITIAL_SESSION,
@@ -130,12 +144,12 @@ export default function MemeAgeTestClient() {
   const shareResult = async () => {
     const result = calculated.result;
     const url = typeof window !== "undefined" ? window.location.href : "https://nolza.fun/tests/meme-age";
-    const text = `${result.shareLine}\n${result.name} (${result.memeAge})\n${url}`;
+    const text = `${result.shareLine[locale]}\n${result.name[locale]} (${result.memeAge[locale]})\n${url}`;
 
     if (typeof navigator !== "undefined" && "share" in navigator) {
       try {
         await navigator.share({
-          title: "당신의 밈 나이는 몇 살?",
+          title: t("당신의 밈 나이는 몇 살?", "How old is your meme age?"),
           text,
           url,
         });
@@ -171,7 +185,7 @@ export default function MemeAgeTestClient() {
 
       <div className="meme-shell">
         {phase === "intro" ? (
-          <IntroScreen onStart={start} />
+          <IntroScreen onStart={start} t={t} />
         ) : phase === "quiz" ? (
           <QuizScreen
             question={currentQuestion}
@@ -180,6 +194,8 @@ export default function MemeAgeTestClient() {
             streak={currentStreak}
             selectedId={selectedId}
             onChoose={chooseAnswer}
+            t={t}
+            locale={locale}
           />
         ) : (
           <ResultScreen
@@ -193,6 +209,8 @@ export default function MemeAgeTestClient() {
             onReplay={start}
             onShare={shareResult}
             shareCopied={shareCopied}
+            t={t}
+            locale={locale}
           />
         )}
       </div>
@@ -203,7 +221,7 @@ export default function MemeAgeTestClient() {
   );
 }
 
-function IntroScreen({ onStart }: { onStart: () => void }) {
+function IntroScreen({ onStart, t }: { onStart: () => void; t: (ko: string, en: string) => string }) {
   return (
     <section className="meme-intro">
       <div className="retro-window" aria-hidden>
@@ -222,22 +240,22 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
         </div>
       </div>
 
-      <div className="meme-chip">12문항 · 저작권 안전 텍스트 퀴즈</div>
-      <h1>당신의 밈 나이는 몇 살?</h1>
+      <div className="meme-chip">{t("12문항 · 저작권 안전 텍스트 퀴즈", "12 questions · copyright-safe text quiz")}</div>
+      <h1>{t("당신의 밈 나이는 몇 살?", "How old is your meme age?")}</h1>
       <p>
-        디시, 싸이월드, 급식체, 숏폼 밈까지.
+        {t("디시, 싸이월드, 급식체, 숏폼 밈까지.", "From DC, Cyworld, and schoolkid slang to short-form memes.")}
         <br />
-        당신은 어느 시대 인터넷 사람인지 맞혀보세요.
+        {t("당신은 어느 시대 인터넷 사람인지 맞혀보세요.", "Find out which internet era you belong to.")}
       </p>
-      <p className="meme-note">설문이 아닙니다. 직접 맞히면서 당신의 인터넷 세대를 확인해보세요.</p>
+      <p className="meme-note">{t("설문이 아닙니다. 직접 맞히면서 당신의 인터넷 세대를 확인해보세요.", "It's not a survey. Guess the answers yourself and discover your internet generation.")}</p>
       <button type="button" className="meme-primary btn-press" onClick={onStart}>
-        밈 나이 테스트 시작하기
+        {t("밈 나이 테스트 시작하기", "Start the meme age test")}
       </button>
-      <div className="meme-hints" aria-label="테스트 구성">
-        <span>초기 인터넷</span>
-        <span>2000s 감성</span>
-        <span>2010s 드립</span>
-        <span>숏폼·AI 밈</span>
+      <div className="meme-hints" aria-label={t("테스트 구성", "Test makeup")}>
+        <span>{t("초기 인터넷", "Early internet")}</span>
+        <span>{t("2000s 감성", "2000s vibe")}</span>
+        <span>{t("2010s 드립", "2010s humor")}</span>
+        <span>{t("숏폼·AI 밈", "Short-form · AI memes")}</span>
       </div>
     </section>
   );
@@ -250,6 +268,8 @@ function QuizScreen({
   streak,
   selectedId,
   onChoose,
+  t,
+  locale,
 }: {
   question: (typeof MEME_QUESTIONS)[number];
   index: number;
@@ -257,11 +277,15 @@ function QuizScreen({
   streak: number;
   selectedId: string | null;
   onChoose: (answer: MemeAnswer) => void;
+  t: (ko: string, en: string) => string;
+  locale: SimpleLocale;
 }) {
   const selected = question.answers.find((answer) => answer.id === selectedId);
-  const feedbackText = selected?.feedback
+  const feedbackText = selected?.feedback[locale]
     .replace(/^정답!\s*/, "")
-    .replace(/^아쉽다!\s*/, "");
+    .replace(/^아쉽다!\s*/, "")
+    .replace(/^Correct!\s*/, "")
+    .replace(/^Not quite!\s*/, "");
 
   return (
     <section className="quiz-wrap">
@@ -276,9 +300,9 @@ function QuizScreen({
       </div>
 
       <article className="question-card">
-        <span>{question.mood}</span>
-        <h2>{question.question}</h2>
-        <p className="meme-clue">{question.clue}</p>
+        <span>{question.mood[locale]}</span>
+        <h2>{question.question[locale]}</h2>
+        <p className="meme-clue">{question.clue[locale]}</p>
         <div className="streak-line">
           <b>ROUND {index + 1}</b>
           <b>STREAK {streak}</b>
@@ -296,14 +320,14 @@ function QuizScreen({
               onClick={() => onChoose(answer)}
               disabled={Boolean(selectedId)}
             >
-              <strong>{answer.text}</strong>
-              <small>{answer.caption}</small>
+              <strong>{answer.text[locale]}</strong>
+              <small>{answer.caption[locale]}</small>
             </button>
           ))}
         </div>
         {selected ? (
           <div className={selected.correct ? "feedback correct" : "feedback wrong"} role="status">
-            <strong>{selected.correct ? "정답!" : "아쉽다!"}</strong>
+            <strong>{selected.correct ? t("정답!", "Correct!") : t("아쉽다!", "Not quite!")}</strong>
             <span>{feedbackText}</span>
           </div>
         ) : null}
@@ -323,6 +347,8 @@ function ResultScreen({
   onReplay,
   onShare,
   shareCopied,
+  t,
+  locale,
 }: {
   result: MemeAgeResult;
   scores: Record<Exclude<MemeEraId, "omnivore">, number>;
@@ -334,12 +360,15 @@ function ResultScreen({
   onReplay: () => void;
   onShare: () => void;
   shareCopied: boolean;
+  t: (ko: string, en: string) => string;
+  locale: SimpleLocale;
 }) {
   return (
     <section className="result-wrap">
       <ShareCard
         filename={`nolza-meme-age-${result.id}`}
         backgroundColor={C.bg}
+        locale={locale}
         buttonLabel={{ ko: "결과 이미지 저장", en: "Save result image" }}
         buttonClassName="meme-save-button btn-press"
       >
@@ -347,53 +376,53 @@ function ResultScreen({
           <article className="result-card" style={{ "--accent": result.accent } as CSSProperties}>
             <div className="result-badge">MEME AGE RESULT</div>
             <div className="result-emoji">{result.emoji}</div>
-            <h2>{result.name}</h2>
-            <p className="meme-age">{result.memeAge}</p>
-            <p className="description">{result.description}</p>
+            <h2>{result.name[locale]}</h2>
+            <p className="meme-age">{result.memeAge[locale]}</p>
+            <p className="description">{result.description[locale]}</p>
 
             <div className="result-stats">
               <article>
-                <span>정답률</span>
+                <span>{t("정답률", "Accuracy")}</span>
                 <strong>{accuracy}%</strong>
-                <p>{correctCount}/{MEME_QUESTIONS.length}문항 정답</p>
+                <p>{t(`${correctCount}/${MEME_QUESTIONS.length}문항 정답`, `${correctCount}/${MEME_QUESTIONS.length} correct`)}</p>
               </article>
               <article>
-                <span>최고 연속 정답</span>
+                <span>{t("최고 연속 정답", "Best streak")}</span>
                 <strong>{bestStreak}</strong>
-                <p>밈 감각 콤보</p>
+                <p>{t("밈 감각 콤보", "Meme-sense combo")}</p>
               </article>
               <article>
-                <span>가장 강한 시대</span>
-                <strong>{ERA_LABELS[strongestEra]}</strong>
-                <p>가장 잘 알아본 감성</p>
+                <span>{t("가장 강한 시대", "Strongest era")}</span>
+                <strong>{ERA_LABELS[strongestEra][locale]}</strong>
+                <p>{t("가장 잘 알아본 감성", "The vibe you read best")}</p>
               </article>
               <article>
-                <span>약한 시대</span>
-                <strong>{ERA_LABELS[weakestEra]}</strong>
-                <p>다음 복습 구간</p>
+                <span>{t("약한 시대", "Weakest era")}</span>
+                <strong>{ERA_LABELS[weakestEra][locale]}</strong>
+                <p>{t("다음 복습 구간", "Your next review zone")}</p>
               </article>
             </div>
 
             <div className="trait-list">
-              {result.traits.map((trait) => (
+              {result.traits[locale].map((trait) => (
                 <span key={trait}>{trait}</span>
               ))}
             </div>
 
             <div className="split-grid">
               <article>
-                <span>판정</span>
-                <p>{result.verdict}</p>
+                <span>{t("판정", "Verdict")}</span>
+                <p>{result.verdict[locale]}</p>
               </article>
               <article>
-                <span>단톡방 포지션</span>
-                <p>{result.groupChatRole}</p>
+                <span>{t("단톡방 포지션", "Group-chat role")}</span>
+                <p>{result.groupChatRole[locale]}</p>
               </article>
             </div>
 
             <div className="timeline-box">
-              <span>당신의 밈 타임라인</span>
-              {result.timeline.map((item) => (
+              <span>{t("당신의 밈 타임라인", "Your meme timeline")}</span>
+              {result.timeline[locale].map((item) => (
                 <p key={item}>{item}</p>
               ))}
             </div>
@@ -401,38 +430,38 @@ function ResultScreen({
             <div className="score-board">
               {Object.entries(scores).map(([key, value]) => (
                 <div key={key}>
-                  <span>{ERA_LABELS[key as Exclude<MemeEraId, "omnivore">]}</span>
+                  <span>{ERA_LABELS[key as Exclude<MemeEraId, "omnivore">][locale]}</span>
                   <i style={{ width: `${Math.min(100, value * 34)}%` }} />
                 </div>
               ))}
             </div>
 
             <div className="share-line">
-              <span>공유 멘트</span>
-              <strong>{result.shareLine}</strong>
+              <span>{t("공유 멘트", "Share line")}</span>
+              <strong>{result.shareLine[locale]}</strong>
             </div>
 
-            <footer>nolza.fun · 당신의 밈 나이는 몇 살?</footer>
+            <footer>{t("nolza.fun · 당신의 밈 나이는 몇 살?", "nolza.fun · How old is your meme age?")}</footer>
           </article>
         )}
       </ShareCard>
 
       <div className="actions" data-share-card-skip="true">
         <button type="button" className="action primary btn-press" onClick={onShare}>
-          {shareCopied ? "결과 링크가 복사됐어요!" : "친구에게 공유하기"}
+          {shareCopied ? t("결과 링크가 복사됐어요!", "Result link copied!") : t("친구에게 공유하기", "Share with friends")}
         </button>
         <button type="button" className="action btn-press" onClick={onReplay}>
-          다시 하기
+          {t("다시 하기", "Play again")}
         </button>
       </div>
 
-      <nav className="recommended" data-share-card-skip="true" aria-label="추천 테스트">
-        <h3>다음에 해볼 만한 테스트</h3>
+      <nav className="recommended" data-share-card-skip="true" aria-label={t("추천 테스트", "Recommended tests")}>
+        <h3>{t("다음에 해볼 만한 테스트", "Tests to try next")}</h3>
         <div>
           {RECOMMENDED.map((item) => (
             <Link key={item.href} href={item.href}>
-              <strong>{item.title}</strong>
-              <span>{item.sub}</span>
+              <strong>{item.title[locale]}</strong>
+              <span>{item.sub[locale]}</span>
             </Link>
           ))}
         </div>

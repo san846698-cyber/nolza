@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 type Q = { ko: string; en: string; weight: number };
 
@@ -11,7 +12,7 @@ const QUESTIONS: Q[] = [
   { ko: "마라탕 5단계 이상 먹어봤다", en: "I've eaten 마라탕 (mala tang) at level 5+", weight: 2 },
   { ko: "김치 없으면 식사가 허전하다", en: "A meal feels empty without kimchi", weight: 1 },
   { ko: "고추기름을 일부러 음식에 더 넣는다", en: "I add chili oil to spice up dishes", weight: 1 },
-  { ko: "엽기떡볶이 매운맛을 즐긴다", en: "I enjoy spicy 떡볶이 (Yeopgi)", weight: 2 },
+  { ko: "엽기떡볶이 매운맛을 즐긴다", en: "I enjoy spicy 떡볶이 (Tteokbokki)", weight: 2 },
   { ko: "땀이 안 나도록 매운 걸 잘 먹는다", en: "I eat spicy food without breaking a sweat", weight: 3 },
   { ko: "외국 친구가 매운 걸 못 먹어서 답답한 적 있다", en: "I've been frustrated by foreign friends who can't handle spicy", weight: 1 },
   { ko: "신라면이 \"안 매운\" 축에 속한다", en: "I think Shin Ramyun isn't even spicy", weight: 2 },
@@ -53,7 +54,7 @@ function getLevel(score: number, max: number): Level {
 }
 
 export default function KimchiSpicy() {
-  const [lang, setLang] = useState<"en" | "ko">("en");
+  const { t, locale, setLocale } = useLocale();
   const [answers, setAnswers] = useState<Record<number, boolean>>({});
   const [done, setDone] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -72,9 +73,9 @@ export default function KimchiSpicy() {
     if (!level) return;
     const data = LEVELS[level];
     const text =
-      lang === "en"
-        ? `My Korean Spice Level: ${data.emoji} ${data.en} (Lv.${level}/5) → nolza.fun/games/kimchi-spicy`
-        : `내 매운맛 레벨: ${data.emoji} ${data.ko} (Lv.${level}/5) → nolza.fun/games/kimchi-spicy`;
+      locale === "ko"
+        ? `내 매운맛 레벨: ${data.emoji} ${data.ko} (Lv.${level}/5) → nolza.fun/games/kimchi-spicy`
+        : `My Korean Spice Level: ${data.emoji} ${data.en} (Lv.${level}/5) → nolza.fun/games/kimchi-spicy`;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -82,21 +83,19 @@ export default function KimchiSpicy() {
     } catch {}
   };
 
-  const t = (en: string, ko: string) => (lang === "en" ? en : ko);
-
   return (
     <main className="min-h-screen bg-bg pb-32">
       <div className="border-b border-border" style={{ backgroundColor: "rgba(255, 59, 48, 0.06)" }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza")}
           </Link>
           <button
             type="button"
-            onClick={() => setLang((l) => (l === "en" ? "ko" : "en"))}
+            onClick={() => setLocale(locale === "ko" ? "en" : "ko")}
             className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium hover:border-accent"
           >
-            {lang === "en" ? "🌐 한국어" : "🌐 EN"}
+            {locale === "ko" ? "🌐 EN" : "🌐 한국어"}
           </button>
         </div>
       </div>
@@ -104,12 +103,12 @@ export default function KimchiSpicy() {
       <div className="mx-auto max-w-3xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-8">
           <h1 className="text-3xl font-black md:text-5xl">
-            {t("Korean Spice Level", "김치 매운맛 레벨")} 🌶️
+            {t("김치 매운맛 레벨", "Korean Spice Level")} 🌶️
           </h1>
           <p className="mt-3 text-sm text-gray-400 md:text-base">
             {t(
-              "Test your tolerance against the heat of Korean cuisine.",
               "한국 매운 음식 내성을 테스트해보세요.",
+              "Test your tolerance against the heat of Korean cuisine.",
             )}
           </p>
         </header>
@@ -122,7 +121,7 @@ export default function KimchiSpicy() {
                 return (
                   <div key={i} className="rounded-xl border border-border bg-card p-4">
                     <div className="flex items-baseline justify-between gap-3">
-                      <span className="text-sm md:text-base">{t(q.en, q.ko)}</span>
+                      <span className="text-sm md:text-base">{t(q.ko, q.en)}</span>
                       <div className="flex shrink-0 gap-1">
                         <button
                           type="button"
@@ -131,7 +130,7 @@ export default function KimchiSpicy() {
                             v === true ? "bg-accent text-white" : "border border-border text-gray-400 hover:text-accent"
                           }`}
                         >
-                          ✓ {t("YES", "YES")}
+                          ✓ YES
                         </button>
                         <button
                           type="button"
@@ -154,7 +153,7 @@ export default function KimchiSpicy() {
               disabled={totalAnswered < QUESTIONS.length}
               className="mt-6 w-full rounded-full bg-accent py-3 text-base font-bold text-white hover:opacity-90 disabled:opacity-30"
             >
-              {t("Show Results", "결과 보기")} ({totalAnswered}/{QUESTIONS.length})
+              {t("결과 보기", "Show Results")} ({totalAnswered}/{QUESTIONS.length})
             </button>
           </>
         ) : (
@@ -163,25 +162,25 @@ export default function KimchiSpicy() {
               <div className="rounded-2xl border border-accent/40 bg-card p-8 text-center md:p-12">
                 <div className="text-7xl">{LEVELS[level].emoji}</div>
                 <div className="mt-4 text-xs text-accent">
-                  {t("Your Spice Level", "당신의 레벨")}
+                  {t("당신의 레벨", "Your Spice Level")}
                 </div>
                 <div className="mt-1 text-3xl font-black md:text-5xl">
-                  Lv.{level}/5 — {t(LEVELS[level].en, LEVELS[level].ko)}
+                  Lv.{level}/5 — {t(LEVELS[level].ko, LEVELS[level].en)}
                 </div>
                 <p className="mt-4 text-base text-gray-300 md:text-lg">
-                  {t(LEVELS[level].desc.en, LEVELS[level].desc.ko)}
+                  {t(LEVELS[level].desc.ko, LEVELS[level].desc.en)}
                 </p>
               </div>
               <section className="mt-6 rounded-2xl border border-border bg-card p-6">
                 <div className="text-xs text-gray-500">
-                  {t("Korean Spicy Tier List", "한국 매운맛 음식 티어")}
+                  {t("한국 매운맛 음식 티어", "Korean Spicy Tier List")}
                 </div>
                 <ul className="mt-3 space-y-1 text-sm">
-                  <li>🌶️ Lv.1 — {t("Mild kimchi soup", "순한 김치찌개")}</li>
-                  <li>🌶️🌶️ Lv.2 — {t("Shin Ramyun", "신라면")}</li>
-                  <li>🌶️🌶️🌶️ Lv.3 — {t("Yeopgi 떡볶이", "엽기떡볶이")}</li>
-                  <li>🌶️🌶️🌶️🌶️ Lv.4 — {t("Buldak 2x", "불닭볶음면 2배")}</li>
-                  <li>🌶️🌶️🌶️🌶️🌶️ Lv.5 — {t("Raw 청양고추", "청양고추 생식")}</li>
+                  <li>🌶️ Lv.1 — {t("순한 김치찌개", "Mild kimchi soup")}</li>
+                  <li>🌶️🌶️ Lv.2 — {t("신라면", "Shin Ramyun")}</li>
+                  <li>🌶️🌶️🌶️ Lv.3 — {t("엽기떡볶이", "Yeopgi Tteokbokki")}</li>
+                  <li>🌶️🌶️🌶️🌶️ Lv.4 — {t("불닭볶음면 2배", "Buldak 2x")}</li>
+                  <li>🌶️🌶️🌶️🌶️🌶️ Lv.5 — {t("청양고추 생식", "Raw cheongyang pepper")}</li>
                 </ul>
               </section>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -190,14 +189,14 @@ export default function KimchiSpicy() {
                   onClick={() => { setAnswers({}); setDone(false); }}
                   className="rounded-full border border-border bg-bg px-6 py-3 text-sm font-medium text-white hover:border-accent hover:text-accent"
                 >
-                  ↻ {t("Try Again", "다시")}
+                  ↻ {t("다시", "Try Again")}
                 </button>
                 <button
                   type="button"
                   onClick={handleShare}
                   className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90"
                 >
-                  {copied ? "✓" : "📋"} {t("Share Result", "공유")}
+                  {copied ? "✓" : "📋"} {t("공유", "Share Result")}
                 </button>
               </div>
             </>
@@ -206,7 +205,7 @@ export default function KimchiSpicy() {
 
         <div className="mt-12 flex justify-center">
           <Link href="/" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza")}
           </Link>
         </div>
       </div>

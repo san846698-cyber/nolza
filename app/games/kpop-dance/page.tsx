@@ -168,7 +168,7 @@ export default function KpopDanceGame() {
       <div className="border-b border-border" style={{ backgroundColor: "rgba(255, 111, 181, 0.04)" }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← Nolza home", "← 놀자 홈으로")}
           </Link>
           <button
             type="button"
@@ -196,13 +196,13 @@ export default function KpopDanceGame() {
 
         <div className="grid grid-cols-3 gap-3">
           <div className="rounded-xl border border-border bg-card p-4 text-center">
-            <div className="text-xs text-gray-500">SCORE</div>
+            <div className="text-xs text-gray-500">{t("SCORE", "점수")}</div>
             <div className="mt-1 text-2xl font-black tabular-nums" style={{ color: "#FF6FB5" }}>
               {score}
             </div>
           </div>
           <div className="rounded-xl border border-border bg-card p-4 text-center">
-            <div className="text-xs text-gray-500">COMBO</div>
+            <div className="text-xs text-gray-500">{t("COMBO", "콤보")}</div>
             <div className="mt-1 text-2xl font-black tabular-nums">{combo}x</div>
           </div>
           <div className="rounded-xl border border-border bg-card p-4 text-center">
@@ -287,7 +287,7 @@ export default function KpopDanceGame() {
                   {t(tier.en, tier.ko)}
                 </div>
                 <div className="mt-2 text-xs text-gray-400">
-                  Max Combo: {maxCombo}
+                  {t("Max Combo: ", "최대 콤보: ")}{maxCombo}
                 </div>
               </div>
             </div>
@@ -334,7 +334,7 @@ export default function KpopDanceGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            ← 놀자 홈으로
+            {t("← Nolza home", "← 놀자 홈으로")}
           </Link>
         </div>
       </div>

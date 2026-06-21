@@ -2,31 +2,36 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
-const SENTENCES = [
-  "안녕하세요",
-  "사랑합니다",
-  "감사합니다",
-  "행복하세요",
-  "오늘도 화이팅",
+const SENTENCES: { ko: string; en: string }[] = [
+  { ko: "안녕하세요", en: "Hello" },
+  { ko: "사랑합니다", en: "I love you" },
+  { ko: "감사합니다", en: "Thank you" },
+  { ko: "행복하세요", en: "Be happy" },
+  { ko: "오늘도 화이팅", en: "You got this today" },
 ];
 
 type Point = { x: number; y: number };
 
-function getGrade(score: number) {
-  if (score >= 85) return { label: "🖋️ 달필! 명필가급", tone: "text-emerald-400" };
-  if (score >= 65) return { label: "✍️ 보통 글씨", tone: "text-yellow-300" };
-  if (score >= 40) return { label: "✏️ 살짝 악필", tone: "text-orange-400" };
-  return { label: "💀 판독 불가", tone: "text-accent" };
+function getGrade(score: number, t: (ko: string, en: string) => string) {
+  if (score >= 85)
+    return { label: t("🖋️ 달필! 명필가급", "🖋️ Master calligrapher!"), tone: "text-emerald-400" };
+  if (score >= 65)
+    return { label: t("✍️ 보통 글씨", "✍️ Average handwriting"), tone: "text-yellow-300" };
+  if (score >= 40)
+    return { label: t("✏️ 살짝 악필", "✏️ A little messy"), tone: "text-orange-400" };
+  return { label: t("💀 판독 불가", "💀 Illegible"), tone: "text-accent" };
 }
 
-const FAMOUS_BAD = [
-  { name: "김연아", note: "의외로 단정한 글씨" },
-  { name: "유재석", note: "악필로 유명함" },
-  { name: "이영자", note: "달필" },
+const FAMOUS_BAD: { name: string; note: { ko: string; en: string } }[] = [
+  { name: "김연아", note: { ko: "의외로 단정한 글씨", en: "Surprisingly neat handwriting" } },
+  { name: "유재석", note: { ko: "악필로 유명함", en: "Famously messy handwriting" } },
+  { name: "이영자", note: { ko: "달필", en: "Elegant handwriting" } },
 ];
 
 export default function HandwritingGame() {
+  const { t, locale } = useLocale();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointsRef = useRef<Point[][]>([]);
   const drawingRef = useRef(false);
@@ -51,9 +56,9 @@ export default function HandwritingGame() {
       ctx.fillStyle = "#222";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(target, rect.width / 2, rect.height / 2);
+      ctx.fillText(locale === "ko" ? target.ko : target.en, rect.width / 2, rect.height / 2);
     }
-  }, [target]);
+  }, [target, locale]);
 
   useEffect(() => {
     setupCanvas();
@@ -148,8 +153,11 @@ export default function HandwritingGame() {
 
   const handleShare = async () => {
     if (score === null) return;
-    const grade = getGrade(score);
-    const text = `내 악필 점수 ${score}점 (${grade.label}) → nolza.fun/games/handwriting`;
+    const grade = getGrade(score, t);
+    const text = t(
+      `내 악필 점수 ${score}점 (${grade.label}) → nolza.fun/games/handwriting`,
+      `My handwriting score is ${score} (${grade.label}) → nolza.fun/games/handwriting`,
+    );
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -162,7 +170,7 @@ export default function HandwritingGame() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>
@@ -170,10 +178,15 @@ export default function HandwritingGame() {
       <div className="mx-auto max-w-3xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-8">
           <h1 className="text-3xl font-black md:text-5xl">
-            내 <span className="text-accent">악필 점수</span>는?
+            {t("내 ", "How bad is my ")}
+            <span className="text-accent">{t("악필 점수", "handwriting")}</span>
+            {t("는?", "?")}
           </h1>
           <p className="mt-3 text-sm text-gray-400 md:text-base">
-            아래 글자를 따라 써보세요. 점수는 재미용 추정치입니다.
+            {t(
+              "아래 글자를 따라 써보세요. 점수는 재미용 추정치입니다.",
+              "Trace the text below. The score is just a fun estimate.",
+            )}
           </p>
         </header>
 
@@ -181,7 +194,7 @@ export default function HandwritingGame() {
           <div className="mb-3 flex flex-wrap gap-2">
             {SENTENCES.map((s) => (
               <button
-                key={s}
+                key={s.ko}
                 type="button"
                 onClick={() => {
                   setTarget(s);
@@ -193,7 +206,7 @@ export default function HandwritingGame() {
                     : "border-border bg-bg text-gray-400 hover:border-accent"
                 }`}
               >
-                {s}
+                {locale === "ko" ? s.ko : s.en}
               </button>
             ))}
           </div>
@@ -212,10 +225,10 @@ export default function HandwritingGame() {
 
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             <button type="button" onClick={reset} className="flex-1 rounded-full border border-border bg-bg px-6 py-3 text-sm font-medium text-white hover:border-accent hover:text-accent">
-              ↻ 지우기
+              {t("↻ 지우기", "↻ Clear")}
             </button>
             <button type="button" onClick={compute} className="flex-1 rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90">
-              📝 채점하기
+              {t("📝 채점하기", "📝 Grade it")}
             </button>
           </div>
         </div>
@@ -223,28 +236,32 @@ export default function HandwritingGame() {
         {score !== null && (
           <>
             <div className="mt-6 rounded-2xl border border-accent/40 bg-card p-6 md:p-8">
-              <div className="text-xs text-accent">결과</div>
+              <div className="text-xs text-accent">{t("결과", "Result")}</div>
               <div className="mt-2 text-6xl font-black tabular-nums md:text-7xl">
-                {score}<span className="text-3xl text-gray-500">점</span>
+                {score}<span className="text-3xl text-gray-500">{t("점", "pts")}</span>
               </div>
-              <div className={`mt-2 text-xl font-bold md:text-2xl ${getGrade(score).tone}`}>
-                {getGrade(score).label}
+              <div className={`mt-2 text-xl font-bold md:text-2xl ${getGrade(score, t).tone}`}>
+                {getGrade(score, t).label}
               </div>
             </div>
             <section className="mt-6 rounded-2xl border border-border bg-card p-6">
-              <div className="text-xs text-gray-500">유명인 악필 비교</div>
+              <div className="text-xs text-gray-500">
+                {t("유명인 악필 비교", "Celebrity handwriting comparison")}
+              </div>
               <ul className="mt-3 space-y-1 text-sm">
                 {FAMOUS_BAD.map((f) => (
                   <li key={f.name}>
                     <span className="font-bold">{f.name}</span>{" "}
-                    <span className="text-gray-400">— {f.note}</span>
+                    <span className="text-gray-400">— {locale === "ko" ? f.note.ko : f.note.en}</span>
                   </li>
                 ))}
               </ul>
             </section>
             <div className="mt-8 flex justify-center">
               <button type="button" onClick={handleShare} className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90">
-                {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
+                {copied
+                  ? t("✓ 복사됐어요", "✓ Copied")
+                  : t("📋 친구에게 공유하기", "📋 Share with friends")}
               </button>
             </div>
           </>
@@ -252,7 +269,7 @@ export default function HandwritingGame() {
 
         <div className="mt-12 flex justify-center">
           <Link href="/" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

@@ -2,28 +2,32 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+
+type LocalizedText = { ko: string; en: string };
 
 type Section = {
   depth: number;
   bg: string;
-  title: string;
+  title: LocalizedText;
   emoji: string;
-  description: string;
+  description: LocalizedText;
 };
 
 const SECTIONS: Section[] = [
-  { depth: 0, bg: "#7DC4E0", title: "한강 수면", emoji: "🦆", description: "오리배가 둥둥 떠다닙니다." },
-  { depth: 1, bg: "#3D8FBF", title: "수영하는 사람", emoji: "🏊", description: "여름엔 가끔 수영하는 사람이 보입니다." },
-  { depth: 3, bg: "#1E5C8E", title: "물고기들", emoji: "🐟", description: "잉어와 붕어가 무리지어 헤엄칩니다." },
-  { depth: 5, bg: "#173E68", title: "버려진 자전거", emoji: "🚲", description: "왜 한강에 자전거가 있을까요." },
-  { depth: 8, bg: "#0F2A50", title: "한강철교 기둥", emoji: "🏗️", description: "거대한 콘크리트가 어둠 속에." },
-  { depth: 12, bg: "#091B3A", title: "메기", emoji: "🐡", description: "1m가 넘는 메기가 지나갑니다." },
-  { depth: 15, bg: "#040E25", title: "어둠 시작", emoji: "🌑", description: "햇빛이 거의 닿지 않는 영역." },
-  { depth: 20, bg: "#000000", title: "한강 최대 수심", emoji: "🌊", description: "당신은 한강 바닥을 봤습니다." },
+  { depth: 0, bg: "#7DC4E0", title: { ko: "한강 수면", en: "Surface of the Han" }, emoji: "🦆", description: { ko: "오리배가 둥둥 떠다닙니다.", en: "Duck-shaped paddle boats drift along." } },
+  { depth: 1, bg: "#3D8FBF", title: { ko: "수영하는 사람", en: "A Swimmer" }, emoji: "🏊", description: { ko: "여름엔 가끔 수영하는 사람이 보입니다.", en: "In summer you can sometimes spot a swimmer." } },
+  { depth: 3, bg: "#1E5C8E", title: { ko: "물고기들", en: "Fish" }, emoji: "🐟", description: { ko: "잉어와 붕어가 무리지어 헤엄칩니다.", en: "Carp and crucian carp swim in schools." } },
+  { depth: 5, bg: "#173E68", title: { ko: "버려진 자전거", en: "An Abandoned Bicycle" }, emoji: "🚲", description: { ko: "왜 한강에 자전거가 있을까요.", en: "Why is there a bicycle in the Han River?" } },
+  { depth: 8, bg: "#0F2A50", title: { ko: "한강철교 기둥", en: "Han River Bridge Pillar" }, emoji: "🏗️", description: { ko: "거대한 콘크리트가 어둠 속에.", en: "Massive concrete looms in the darkness." } },
+  { depth: 12, bg: "#091B3A", title: { ko: "메기", en: "A Catfish" }, emoji: "🐡", description: { ko: "1m가 넘는 메기가 지나갑니다.", en: "A catfish over a meter long swims past." } },
+  { depth: 15, bg: "#040E25", title: { ko: "어둠 시작", en: "Where Darkness Begins" }, emoji: "🌑", description: { ko: "햇빛이 거의 닿지 않는 영역.", en: "A zone where sunlight barely reaches." } },
+  { depth: 20, bg: "#000000", title: { ko: "한강 최대 수심", en: "Deepest Point of the Han" }, emoji: "🌊", description: { ko: "당신은 한강 바닥을 봤습니다.", en: "You have seen the bottom of the Han River." } },
 ];
 
 export default function DeepGame() {
+  const { t } = useLocale();
   const [scrollY, setScrollY] = useState(0);
   const [docHeight, setDocHeight] = useState(1);
 
@@ -51,7 +55,7 @@ export default function DeepGame() {
       <Link
         href="/"
         className="back-arrow dark"
-        aria-label="home"
+        aria-label={t("홈", "home")}
         style={{ position: "fixed", color: "rgba(255,255,255,0.85)" }}
       >
         ←
@@ -131,7 +135,7 @@ export default function DeepGame() {
                   lineHeight: 1.1,
                 }}
               >
-                {s.title}
+                {t(s.title.ko, s.title.en)}
               </h2>
               <p
                 style={{
@@ -141,7 +145,7 @@ export default function DeepGame() {
                   opacity: 0.85,
                 }}
               >
-                {s.description}
+                {t(s.description.ko, s.description.en)}
               </p>
             </div>
           </div>

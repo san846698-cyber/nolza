@@ -175,7 +175,7 @@ export default function ResonanceGame() {
         fontFamily: "var(--font-noto-sans-kr)",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home">
+      <Link href="/" className="back-arrow dark" aria-label={t("홈", "home")}>
         ←
       </Link>
       {/* Stats */}
@@ -263,7 +263,11 @@ export default function ResonanceGame() {
               letterSpacing: "-0.02em",
             }}
           >
-            {feedback}
+            {feedback === "PERFECT"
+              ? t("완벽", "PERFECT")
+              : feedback === "GOOD"
+              ? t("좋음", "GOOD")
+              : t("빗나감", "MISS")}
           </div>
         )}
       </div>
@@ -304,7 +308,7 @@ export default function ResonanceGame() {
             letterSpacing: "0.15em",
           }}
         >
-          {copied ? "✓ COPIED" : t("공유", "SHARE")}
+          {copied ? `✓ ${t("복사됨", "COPIED")}` : t("공유", "SHARE")}
         </button>
       </div>
 

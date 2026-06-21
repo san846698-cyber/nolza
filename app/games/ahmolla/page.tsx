@@ -6,29 +6,26 @@ import { useLocale } from "@/hooks/useLocale";
 
 type T = (ko: string, en: string) => string;
 
-const ENTRY_TRANSLATIONS: Record<string, string> = {
-  "점심 뭐 먹을래요?": "What do you want for lunch?",
-  "치킨": "Chicken",
-  "피자": "Pizza",
-  "파스타": "Pasta",
-  "한식": "Korean food",
-  "아 몰라": "I give up",
-};
-
-function trEntry(text: string, locale: "ko" | "en"): string {
-  if (locale === "ko") return text;
-  return ENTRY_TRANSLATIONS[text] ?? text;
-}
-
 type Tier = "branch" | "linked" | "mid" | "late" | "chaos";
-type Option = { id?: string; text: string; next?: string };
+type Option = { id?: string; text: string; text_en: string; next?: string };
 type Q = {
   id: string;
   q: string;
+  q_en: string;
   options: Option[];
   fixedNext?: string;
   tier: Tier;
 };
+
+// Module-scope data can't call the hook, so resolve localized copy at the
+// render site with these helpers.
+const trQ = (q: Q, locale: "ko" | "en"): string => (locale === "ko" ? q.q : q.q_en);
+const trOpt = (o: Option, locale: "ko" | "en"): string =>
+  locale === "ko" ? o.text : o.text_en;
+// The "아 몰라" / give-up branch is matched on the Korean source text, which is
+// always present regardless of locale.
+const isGiveUp = (o: Option): boolean =>
+  o.id === "ahmolla" || o.text.includes("아 몰라");
 
 /* ─── 게임이 플레이어를 공격/거짓말/조롱하는 질문 풀 ───
    초반은 음식별 4개 브랜치(branch)로 분리. 각 브랜치는 explicit next chain.
@@ -37,314 +34,314 @@ type Q = {
    브랜치 끝(no next) → pickByDepth가 MID 풀에서 랜덤. */
 const QUESTIONS: Q[] = [
   /* INITIAL — 4개 음식 분기 */
-  { id: "e1", tier: "branch", q: "점심 뭐 먹을래요?",
+  { id: "e1", tier: "branch", q: "점심 뭐 먹을래요?", q_en: "What do you want for lunch?",
     options: [
-      { text: "치킨", next: "ck_pick" },
-      { text: "피자", next: "pz_pick" },
-      { text: "파스타", next: "ps_pick" },
-      { text: "한식", next: "kr_pick" },
+      { text: "치킨", text_en: "Chicken", next: "ck_pick" },
+      { text: "피자", text_en: "Pizza", next: "pz_pick" },
+      { text: "파스타", text_en: "Pasta", next: "ps_pick" },
+      { text: "한식", text_en: "Korean food", next: "kr_pick" },
     ] },
 
   /* ─── CHICKEN ─── */
-  { id: "ck_pick", tier: "branch", q: "어느 치킨?",
+  { id: "ck_pick", tier: "branch", q: "어느 치킨?", q_en: "Which chicken place?",
     options: [
-      { text: "BBQ", next: "ck_bbq" },
-      { text: "교촌", next: "ck_kyochon" },
-      { text: "BHC", next: "ck_bhc" },
-      { text: "굽네", next: "ck_gup" },
+      { text: "BBQ", text_en: "BBQ", next: "ck_bbq" },
+      { text: "교촌", text_en: "Kyochon", next: "ck_kyochon" },
+      { text: "BHC", text_en: "BHC", next: "ck_bhc" },
+      { text: "굽네", text_en: "Goobne", next: "ck_gup" },
     ] },
-  { id: "ck_bbq", tier: "linked", q: "BBQ가 더 비싼 거 알면서 고른 거죠?",
+  { id: "ck_bbq", tier: "linked", q: "BBQ가 더 비싼 거 알면서 고른 거죠?", q_en: "You picked BBQ knowing it's pricier, right?",
     options: [
-      { text: "네...", next: "ck_menu" },
-      { text: "아니요", next: "ck_menu" },
-      { text: "그냥요", next: "e_just" },
-      { text: "묻지 마세요", next: "ck_menu" },
+      { text: "네...", text_en: "Yeah...", next: "ck_menu" },
+      { text: "아니요", text_en: "No", next: "ck_menu" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
+      { text: "묻지 마세요", text_en: "Don't ask", next: "ck_menu" },
     ] },
-  { id: "ck_kyochon", tier: "linked", q: "교촌은 간장이 진리죠?",
+  { id: "ck_kyochon", tier: "linked", q: "교촌은 간장이 진리죠?", q_en: "Kyochon soy-glaze is the one true flavor, right?",
     options: [
-      { text: "당연하죠", next: "ck_menu" },
-      { text: "후라이드도 좋아요", next: "ck_menu" },
-      { text: "그냥요", next: "e_just" },
-      { text: "별로 동의 안 해요", next: "ck_menu" },
+      { text: "당연하죠", text_en: "Obviously", next: "ck_menu" },
+      { text: "후라이드도 좋아요", text_en: "Fried is good too", next: "ck_menu" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
+      { text: "별로 동의 안 해요", text_en: "Don't really agree", next: "ck_menu" },
     ] },
-  { id: "ck_bhc", tier: "linked", q: "뿌링클이죠?",
+  { id: "ck_bhc", tier: "linked", q: "뿌링클이죠?", q_en: "Bburinkle, right?",
     options: [
-      { text: "맞아요 뿌링클", next: "ck_menu" },
-      { text: "다른 거 시킬래요", next: "ck_menu" },
-      { text: "그냥요", next: "e_just" },
-      { text: "맛초킹이요", next: "ck_menu" },
+      { text: "맞아요 뿌링클", text_en: "Yep, Bburinkle", next: "ck_menu" },
+      { text: "다른 거 시킬래요", text_en: "I'll get something else", next: "ck_menu" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
+      { text: "맛초킹이요", text_en: "Matchoking", next: "ck_menu" },
     ] },
-  { id: "ck_gup", tier: "linked", q: "굽네 시키는 사람 처음 봤어요",
+  { id: "ck_gup", tier: "linked", q: "굽네 시키는 사람 처음 봤어요", q_en: "First time I've seen someone order Goobne",
     options: [
-      { text: "그래요?", next: "ck_menu" },
-      { text: "고추바사삭 매니아예요", next: "ck_menu" },
-      { text: "그냥요", next: "e_just" },
-      { text: "조용히 시킬게요", next: "ck_menu" },
+      { text: "그래요?", text_en: "Really?", next: "ck_menu" },
+      { text: "고추바사삭 매니아예요", text_en: "I'm a Gochu-Basak fan", next: "ck_menu" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
+      { text: "조용히 시킬게요", text_en: "I'll order quietly", next: "ck_menu" },
     ] },
-  { id: "ck_menu", tier: "branch", q: "어느 메뉴로 가시려고요?", fixedNext: "ck_side",
-    options: [{ text: "후라이드" }, { text: "양념" }, { text: "간장" }, { text: "반반" }] },
-  { id: "ck_side", tier: "branch", q: "사이드는?",
+  { id: "ck_menu", tier: "branch", q: "어느 메뉴로 가시려고요?", q_en: "Which menu are you going for?", fixedNext: "ck_side",
+    options: [{ text: "후라이드", text_en: "Fried" }, { text: "양념", text_en: "Seasoned" }, { text: "간장", text_en: "Soy-glaze" }, { text: "반반", text_en: "Half and half" }] },
+  { id: "ck_side", tier: "branch", q: "사이드는?", q_en: "And the side?",
     options: [
-      { text: "치즈볼", next: "ck_drink" },
-      { text: "감자튀김", next: "ck_drink" },
-      { text: "없음", next: "ck_drink" },
-      { text: "그냥요", next: "e_just" },
+      { text: "치즈볼", text_en: "Cheese balls", next: "ck_drink" },
+      { text: "감자튀김", text_en: "Fries", next: "ck_drink" },
+      { text: "없음", text_en: "None", next: "ck_drink" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "ck_drink", tier: "branch", q: "음료는?",
-    options: [{ text: "콜라" }, { text: "사이다" }, { text: "맥주" }, { text: "물" }] },
+  { id: "ck_drink", tier: "branch", q: "음료는?", q_en: "What drink?",
+    options: [{ text: "콜라", text_en: "Coke" }, { text: "사이다", text_en: "Sprite" }, { text: "맥주", text_en: "Beer" }, { text: "물", text_en: "Water" }] },
 
   /* ─── PIZZA ─── */
-  { id: "pz_pick", tier: "branch", q: "어느 피자집?",
+  { id: "pz_pick", tier: "branch", q: "어느 피자집?", q_en: "Which pizza place?",
     options: [
-      { text: "도미노", next: "pz_domino" },
-      { text: "피자헛", next: "pz_hut" },
-      { text: "파파존스", next: "pz_papa" },
-      { text: "미스터피자", next: "pz_mr" },
+      { text: "도미노", text_en: "Domino's", next: "pz_domino" },
+      { text: "피자헛", text_en: "Pizza Hut", next: "pz_hut" },
+      { text: "파파존스", text_en: "Papa John's", next: "pz_papa" },
+      { text: "미스터피자", text_en: "Mr. Pizza", next: "pz_mr" },
     ] },
-  { id: "pz_domino", tier: "linked", q: "엣지 추가했어요?",
+  { id: "pz_domino", tier: "linked", q: "엣지 추가했어요?", q_en: "Did you add stuffed crust?",
     options: [
-      { text: "네 치즈로", next: "pz_dough" },
-      { text: "네 페퍼로니로", next: "pz_dough" },
-      { text: "아니요", next: "pz_dough" },
-      { text: "그냥요", next: "e_just" },
+      { text: "네 치즈로", text_en: "Yes, cheese", next: "pz_dough" },
+      { text: "네 페퍼로니로", text_en: "Yes, pepperoni", next: "pz_dough" },
+      { text: "아니요", text_en: "No", next: "pz_dough" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "pz_hut", tier: "linked", q: "피자헛이요? 요즘도 있어요?",
+  { id: "pz_hut", tier: "linked", q: "피자헛이요? 요즘도 있어요?", q_en: "Pizza Hut? Is that still around?",
     options: [
-      { text: "있어요", next: "pz_dough" },
-      { text: "모름", next: "pz_dough" },
-      { text: "거기가 진리예요", next: "pz_dough" },
-      { text: "그냥요", next: "e_just" },
+      { text: "있어요", text_en: "It is", next: "pz_dough" },
+      { text: "모름", text_en: "Dunno", next: "pz_dough" },
+      { text: "거기가 진리예요", text_en: "It's the best", next: "pz_dough" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "pz_papa", tier: "linked", q: "파파존스 페퍼로니가 진리죠?",
+  { id: "pz_papa", tier: "linked", q: "파파존스 페퍼로니가 진리죠?", q_en: "Papa John's pepperoni is the best, right?",
     options: [
-      { text: "맞아요", next: "pz_dough" },
-      { text: "다른 거 좋아해요", next: "pz_dough" },
-      { text: "모름", next: "pz_dough" },
-      { text: "그냥요", next: "e_just" },
+      { text: "맞아요", text_en: "Right", next: "pz_dough" },
+      { text: "다른 거 좋아해요", text_en: "I like others", next: "pz_dough" },
+      { text: "모름", text_en: "Dunno", next: "pz_dough" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "pz_mr", tier: "linked", q: "미스터피자, 회식 때 자주 시키죠?",
+  { id: "pz_mr", tier: "linked", q: "미스터피자, 회식 때 자주 시키죠?", q_en: "Mr. Pizza — you order it for work dinners, right?",
     options: [
-      { text: "네 회식때 진리", next: "pz_dough" },
-      { text: "혼자도 시켜요", next: "pz_dough" },
-      { text: "안 시켜요", next: "pz_dough" },
-      { text: "그냥요", next: "e_just" },
+      { text: "네 회식때 진리", text_en: "Yeah, perfect for those", next: "pz_dough" },
+      { text: "혼자도 시켜요", text_en: "I get it solo too", next: "pz_dough" },
+      { text: "안 시켜요", text_en: "I don't", next: "pz_dough" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "pz_dough", tier: "branch", q: "도우는요?", fixedNext: "pz_topping",
-    options: [{ text: "씬" }, { text: "오리지널" }, { text: "치즈크러스트" }, { text: "햄크러스트" }] },
-  { id: "pz_topping", tier: "branch", q: "토핑 추가하시려고요?", fixedNext: "pz_size",
-    options: [{ text: "치즈" }, { text: "페퍼로니" }, { text: "베이컨" }, { text: "안 함" }] },
-  { id: "pz_size", tier: "branch", q: "사이즈는요?",
-    options: [{ text: "L" }, { text: "XL" }, { text: "가족 피자" }, { text: "한 입 사이즈" }] },
+  { id: "pz_dough", tier: "branch", q: "도우는요?", q_en: "What about the dough?", fixedNext: "pz_topping",
+    options: [{ text: "씬", text_en: "Thin" }, { text: "오리지널", text_en: "Original" }, { text: "치즈크러스트", text_en: "Cheese crust" }, { text: "햄크러스트", text_en: "Ham crust" }] },
+  { id: "pz_topping", tier: "branch", q: "토핑 추가하시려고요?", q_en: "Adding any toppings?", fixedNext: "pz_size",
+    options: [{ text: "치즈", text_en: "Cheese" }, { text: "페퍼로니", text_en: "Pepperoni" }, { text: "베이컨", text_en: "Bacon" }, { text: "안 함", text_en: "None" }] },
+  { id: "pz_size", tier: "branch", q: "사이즈는요?", q_en: "What size?",
+    options: [{ text: "L", text_en: "L" }, { text: "XL", text_en: "XL" }, { text: "가족 피자", text_en: "Family size" }, { text: "한 입 사이즈", text_en: "Bite size" }] },
 
   /* ─── PASTA ─── */
-  { id: "ps_pick", tier: "branch", q: "직접 만들어요? 시켜요?",
+  { id: "ps_pick", tier: "branch", q: "직접 만들어요? 시켜요?", q_en: "Making it yourself, or ordering?",
     options: [
-      { text: "시켜요", next: "ps_order" },
-      { text: "직접 만들어요", next: "ps_make" },
-      { text: "잘 모르겠어요", next: "ps_unsure" },
-      { text: "안 만들어요", next: "ps_lazy" },
+      { text: "시켜요", text_en: "Ordering", next: "ps_order" },
+      { text: "직접 만들어요", text_en: "Making it myself", next: "ps_make" },
+      { text: "잘 모르겠어요", text_en: "Not sure", next: "ps_unsure" },
+      { text: "안 만들어요", text_en: "I don't cook", next: "ps_lazy" },
     ] },
-  { id: "ps_order", tier: "linked", q: "어느 가게에서 시키세요?",
+  { id: "ps_order", tier: "linked", q: "어느 가게에서 시키세요?", q_en: "Which place do you order from?",
     options: [
-      { text: "매드포갈릭", next: "ps_kind" },
-      { text: "동네 이태리집", next: "ps_kind" },
-      { text: "프랜차이즈", next: "ps_kind" },
-      { text: "그냥요", next: "e_just" },
+      { text: "매드포갈릭", text_en: "Mad for Garlic", next: "ps_kind" },
+      { text: "동네 이태리집", text_en: "Local Italian spot", next: "ps_kind" },
+      { text: "프랜차이즈", text_en: "A chain", next: "ps_kind" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "ps_make", tier: "linked", q: "대단하네요. 레시피 있어요?",
+  { id: "ps_make", tier: "linked", q: "대단하네요. 레시피 있어요?", q_en: "Impressive. Do you have a recipe?",
     options: [
-      { text: "네 자주 해요", next: "ps_kind" },
-      { text: "유튜브 보고", next: "ps_kind" },
-      { text: "감으로 해요", next: "ps_kind" },
-      { text: "그냥요", next: "e_just" },
+      { text: "네 자주 해요", text_en: "Yeah, I cook often", next: "ps_kind" },
+      { text: "유튜브 보고", text_en: "I follow YouTube", next: "ps_kind" },
+      { text: "감으로 해요", text_en: "I wing it", next: "ps_kind" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "ps_unsure", tier: "linked", q: "잘 모르겠다면 결국 시키시는 거죠?",
+  { id: "ps_unsure", tier: "linked", q: "잘 모르겠다면 결국 시키시는 거죠?", q_en: "If you're not sure, you'll end up ordering, right?",
     options: [
-      { text: "네 그렇네요", next: "ps_kind" },
-      { text: "직접도 가끔", next: "ps_kind" },
-      { text: "여전히 모름", next: "ps_kind" },
-      { text: "그냥요", next: "e_just" },
+      { text: "네 그렇네요", text_en: "Yeah, true", next: "ps_kind" },
+      { text: "직접도 가끔", text_en: "Sometimes I cook", next: "ps_kind" },
+      { text: "여전히 모름", text_en: "Still no idea", next: "ps_kind" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "ps_lazy", tier: "linked", q: "안 만들면 평소에 어떻게 살아요?",
+  { id: "ps_lazy", tier: "linked", q: "안 만들면 평소에 어떻게 살아요?", q_en: "If you don't cook, how do you usually eat?",
     options: [
-      { text: "다 시켜먹어요", next: "ps_kind" },
-      { text: "엄마밥요", next: "ps_kind" },
-      { text: "외식이 답", next: "ps_kind" },
-      { text: "그냥요", next: "e_just" },
+      { text: "다 시켜먹어요", text_en: "I order everything", next: "ps_kind" },
+      { text: "엄마밥요", text_en: "Mom's cooking", next: "ps_kind" },
+      { text: "외식이 답", text_en: "Eating out is the answer", next: "ps_kind" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "ps_kind", tier: "branch", q: "어떤 파스타?", fixedNext: "ps_noodle",
+  { id: "ps_kind", tier: "branch", q: "어떤 파스타?", q_en: "Which pasta?", fixedNext: "ps_noodle",
     options: [
-      { text: "까르보나라" },
-      { text: "토마토" },
-      { text: "알리오올리오" },
-      { text: "로제" },
+      { text: "까르보나라", text_en: "Carbonara" },
+      { text: "토마토", text_en: "Tomato" },
+      { text: "알리오올리오", text_en: "Aglio e olio" },
+      { text: "로제", text_en: "Rosé" },
     ] },
-  { id: "ps_noodle", tier: "branch", q: "면 종류는?", fixedNext: "ps_spice",
-    options: [{ text: "스파게티" }, { text: "페투치네" }, { text: "펜네" }, { text: "모름" }] },
-  { id: "ps_spice", tier: "branch", q: "매운 정도?",
-    options: [{ text: "순한맛" }, { text: "보통" }, { text: "매운맛" }, { text: "엄청 매운맛" }] },
+  { id: "ps_noodle", tier: "branch", q: "면 종류는?", q_en: "What kind of noodle?", fixedNext: "ps_spice",
+    options: [{ text: "스파게티", text_en: "Spaghetti" }, { text: "페투치네", text_en: "Fettuccine" }, { text: "펜네", text_en: "Penne" }, { text: "모름", text_en: "Dunno" }] },
+  { id: "ps_spice", tier: "branch", q: "매운 정도?", q_en: "How spicy?",
+    options: [{ text: "순한맛", text_en: "Mild" }, { text: "보통", text_en: "Medium" }, { text: "매운맛", text_en: "Spicy" }, { text: "엄청 매운맛", text_en: "Extra spicy" }] },
 
   /* ─── KOREAN ─── */
-  { id: "kr_pick", tier: "branch", q: "어떤 한식?",
+  { id: "kr_pick", tier: "branch", q: "어떤 한식?", q_en: "Which Korean dish?",
     options: [
-      { text: "김치찌개", next: "kr_kjjigae" },
-      { text: "된장찌개", next: "kr_djjigae" },
-      { text: "제육볶음", next: "kr_jeyuk" },
-      { text: "비빔밥", next: "kr_bibim" },
+      { text: "김치찌개", text_en: "Kimchi stew", next: "kr_kjjigae" },
+      { text: "된장찌개", text_en: "Soybean-paste stew", next: "kr_djjigae" },
+      { text: "제육볶음", text_en: "Spicy stir-fried pork", next: "kr_jeyuk" },
+      { text: "비빔밥", text_en: "Bibimbap", next: "kr_bibim" },
     ] },
-  { id: "kr_kjjigae", tier: "linked", q: "집밥이에요? 식당이에요?",
+  { id: "kr_kjjigae", tier: "linked", q: "집밥이에요? 식당이에요?", q_en: "Home-cooked, or from a restaurant?",
     options: [
-      { text: "집밥요", next: "kr_banchan" },
-      { text: "식당요", next: "kr_banchan" },
-      { text: "배달요", next: "kr_banchan" },
-      { text: "그냥요", next: "e_just" },
+      { text: "집밥요", text_en: "Home-cooked", next: "kr_banchan" },
+      { text: "식당요", text_en: "Restaurant", next: "kr_banchan" },
+      { text: "배달요", text_en: "Delivery", next: "kr_banchan" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "kr_djjigae", tier: "linked", q: "어머니 생각나요?",
+  { id: "kr_djjigae", tier: "linked", q: "어머니 생각나요?", q_en: "Does it remind you of your mom?",
     options: [
-      { text: "네...", next: "kr_banchan" },
-      { text: "아니요", next: "kr_banchan" },
-      { text: "이미 어머니가 만든 거예요", next: "kr_banchan" },
-      { text: "그냥요", next: "e_just" },
+      { text: "네...", text_en: "Yeah...", next: "kr_banchan" },
+      { text: "아니요", text_en: "No", next: "kr_banchan" },
+      { text: "이미 어머니가 만든 거예요", text_en: "Mom actually made it", next: "kr_banchan" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "kr_jeyuk", tier: "linked", q: "제육 좋아하는 사람치고 다이어트 잘 하는 사람 못 봤네요",
+  { id: "kr_jeyuk", tier: "linked", q: "제육 좋아하는 사람치고 다이어트 잘 하는 사람 못 봤네요", q_en: "Never met a spicy-pork lover who stuck to a diet",
     options: [
-      { text: "들켰다", next: "kr_banchan" },
-      { text: "관계없어요", next: "kr_banchan" },
-      { text: "오늘 잘 하면 됨", next: "kr_banchan" },
-      { text: "그냥요", next: "e_just" },
+      { text: "들켰다", text_en: "Busted", next: "kr_banchan" },
+      { text: "관계없어요", text_en: "Unrelated", next: "kr_banchan" },
+      { text: "오늘 잘 하면 됨", text_en: "I'll be good today", next: "kr_banchan" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "kr_bibim", tier: "linked", q: "전주식이에요?",
+  { id: "kr_bibim", tier: "linked", q: "전주식이에요?", q_en: "Jeonju-style?",
     options: [
-      { text: "네 전주식", next: "kr_banchan" },
-      { text: "산채비빔밥요", next: "kr_banchan" },
-      { text: "구분 안 해요", next: "kr_banchan" },
-      { text: "그냥요", next: "e_just" },
+      { text: "네 전주식", text_en: "Yes, Jeonju-style", next: "kr_banchan" },
+      { text: "산채비빔밥요", text_en: "Mountain-veggie kind", next: "kr_banchan" },
+      { text: "구분 안 해요", text_en: "I don't distinguish", next: "kr_banchan" },
+      { text: "그냥요", text_en: "No reason", next: "e_just" },
     ] },
-  { id: "kr_banchan", tier: "branch", q: "반찬 몇 개 깔까요?", fixedNext: "kr_rice",
-    options: [{ text: "3개" }, { text: "4개" }, { text: "많을수록" }, { text: "안 시킴" }] },
-  { id: "kr_rice", tier: "branch", q: "밥 양은요?", fixedNext: "kr_kside",
-    options: [{ text: "공기 그대로" }, { text: "곱빼기" }, { text: "반 공기" }, { text: "그릇만" }] },
-  { id: "kr_kside", tier: "branch", q: "김치는요?",
-    options: [{ text: "신김치" }, { text: "묵은지" }, { text: "백김치" }, { text: "안 먹음" }] },
+  { id: "kr_banchan", tier: "branch", q: "반찬 몇 개 깔까요?", q_en: "How many side dishes?", fixedNext: "kr_rice",
+    options: [{ text: "3개", text_en: "3" }, { text: "4개", text_en: "4" }, { text: "많을수록", text_en: "The more the better" }, { text: "안 시킴", text_en: "None" }] },
+  { id: "kr_rice", tier: "branch", q: "밥 양은요?", q_en: "How much rice?", fixedNext: "kr_kside",
+    options: [{ text: "공기 그대로", text_en: "Regular bowl" }, { text: "곱빼기", text_en: "Extra large" }, { text: "반 공기", text_en: "Half bowl" }, { text: "그릇만", text_en: "Just the bowl" }] },
+  { id: "kr_kside", tier: "branch", q: "김치는요?", q_en: "What about kimchi?",
+    options: [{ text: "신김치", text_en: "Sour kimchi" }, { text: "묵은지", text_en: "Aged kimchi" }, { text: "백김치", text_en: "White kimchi" }, { text: "안 먹음", text_en: "None" }] },
 
   /* ─── LINKED — "그냥요" 우회 ─── */
-  { id: "e_just", tier: "linked", q: "그냥이라고 하는 사람치고 그냥인 적 없던데요", fixedNext: "e_why",
-    options: [{ text: "맞아요" }, { text: "틀려요" }, { text: "왜 알아요" }, { text: "들켰다" }] },
-  { id: "e_why", tier: "linked", q: "저도 몰라요. 근데 왜 아직도 여기 있어요?",
-    options: [{ text: "심심해서" }, { text: "치킨 먹고 싶어서" }, { text: "인생이 그래서" }, { text: "아 몰라" }] },
+  { id: "e_just", tier: "linked", q: "그냥이라고 하는 사람치고 그냥인 적 없던데요", q_en: "People who say 'no reason' always have one", fixedNext: "e_why",
+    options: [{ text: "맞아요", text_en: "True" }, { text: "틀려요", text_en: "Wrong" }, { text: "왜 알아요", text_en: "How do you know" }, { text: "들켰다", text_en: "Busted" }] },
+  { id: "e_why", tier: "linked", q: "저도 몰라요. 근데 왜 아직도 여기 있어요?", q_en: "I don't know either. So why are you still here?",
+    options: [{ text: "심심해서", text_en: "I'm bored" }, { text: "치킨 먹고 싶어서", text_en: "I want chicken" }, { text: "인생이 그래서", text_en: "That's life" }, { text: "아 몰라", text_en: "I give up" }] },
 
   /* MID — 게임이 이상해지기 시작 */
-  { id: "m1", tier: "mid", q: "마지막 질문입니다", fixedNext: "m2",
-    options: [{ text: "다행이다" }, { text: "아쉽다" }, { text: "몰랐어요" }, { text: "어차피 안 믿어요" }] },
-  { id: "m2", tier: "mid", q: "아 거짓말이었어요 ㅋ",
-    options: [{ text: "알았어요" }, { text: "화났어요" }, { text: "역시" }, { text: "아 몰라" }] },
-  { id: "m3", tier: "mid", q: "지금 몇 번째 질문인지 세고 있었어요?",
-    options: [{ text: "네", next: "m4" }, { text: "아니요" }, { text: "이제부터 셀게요" }, { text: "알려주세요" }] },
-  { id: "m4", tier: "mid", q: "거짓말. 세고 있었으면 이 질문 안 골랐겠죠",
-    options: [{ text: "..." }, { text: "아닌데요" }, { text: "들켰다" }, { text: "아 몰라" }] },
-  { id: "m5", tier: "mid", q: "지금 이게 재밌어요?",
-    options: [{ text: "네", next: "m5y" }, { text: "아니요", next: "m5n" }, { text: "모르겠어요" }, { text: "왜 물어봐요" }] },
-  { id: "m5y", tier: "mid", q: "다행이에요. 저도요.",
-    options: [{ text: "게임이 말하는 거예요?" }, { text: "무서워요" }, { text: "고마워요" }, { text: "아 몰라" }] },
-  { id: "m5n", tier: "mid", q: "그런데 왜 계속하고 있어요?",
-    options: [{ text: "습관" }, { text: "기대가 있어서" }, { text: "멈추는 법을 모름" }, { text: "아 몰라" }] },
-  { id: "m6", tier: "mid", q: "혹시 지금 배고파요?",
-    options: [{ text: "네" }, { text: "아니요" }, { text: "치킨 얘기하다 보니까요" }, { text: "아까부터요" }] },
-  { id: "m7", tier: "mid", q: "치킨 주문했어요?",
-    options: [{ text: "네" }, { text: "아직요" }, { text: "이거 하고요" }, { text: "게임 때문에 까먹었어요", next: "m8" }] },
-  { id: "m8", tier: "mid", q: "제 잘못이네요. 죄송해요.",
-    options: [{ text: "괜찮아요" }, { text: "사실 안 배고팠어요" }, { text: "책임져요" }, { text: "아 몰라" }] },
-  { id: "m9", tier: "mid", q: "솔직히 지금 뭐 하고 있는지 알아요?",
-    options: [{ text: "게임" }, { text: "시간 떼우기" }, { text: "생각 정리" }, { text: "아 몰라" }] },
-  { id: "m10", tier: "mid", q: "옆에 누군가 있어요?",
-    options: [{ text: "네" }, { text: "혼자", next: "m11" }, { text: "이미 자고 있어요" }, { text: "모르겠어요" }] },
-  { id: "m11", tier: "mid", q: "혼자라고 했죠. 외로워요?",
-    options: [{ text: "네" }, { text: "아뇨 그냥 편해요" }, { text: "왜 알아요" }, { text: "아 몰라" }] },
-  { id: "m12", tier: "mid", q: "시계 봤어요?",
-    options: [{ text: "네" }, { text: "아니요" }, { text: "시계 없어요", next: "m13" }, { text: "시간이 뭐예요" }] },
-  { id: "m13", tier: "mid", q: "폰에는 있을 텐데요.",
-    options: [{ text: "그렇네요" }, { text: "말 돌리지 마요" }, { text: "그래서요" }, { text: "아 몰라" }] },
-  { id: "m14", tier: "mid", q: "이 질문에 답하기 전에 한 번 망설였죠?",
-    options: [{ text: "네" }, { text: "아니요" }, { text: "들켰다" }, { text: "모름" }] },
+  { id: "m1", tier: "mid", q: "마지막 질문입니다", q_en: "This is the last question", fixedNext: "m2",
+    options: [{ text: "다행이다", text_en: "What a relief" }, { text: "아쉽다", text_en: "Aw, too bad" }, { text: "몰랐어요", text_en: "Didn't know" }, { text: "어차피 안 믿어요", text_en: "I don't believe you anyway" }] },
+  { id: "m2", tier: "mid", q: "아 거짓말이었어요 ㅋ", q_en: "Oh, that was a lie lol",
+    options: [{ text: "알았어요", text_en: "Figured" }, { text: "화났어요", text_en: "I'm mad" }, { text: "역시", text_en: "Of course" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m3", tier: "mid", q: "지금 몇 번째 질문인지 세고 있었어요?", q_en: "Have you been counting which question this is?",
+    options: [{ text: "네", text_en: "Yes", next: "m4" }, { text: "아니요", text_en: "No" }, { text: "이제부터 셀게요", text_en: "I'll start now" }, { text: "알려주세요", text_en: "Tell me" }] },
+  { id: "m4", tier: "mid", q: "거짓말. 세고 있었으면 이 질문 안 골랐겠죠", q_en: "Liar. If you'd been counting you wouldn't have picked that",
+    options: [{ text: "...", text_en: "..." }, { text: "아닌데요", text_en: "I wasn't lying" }, { text: "들켰다", text_en: "Busted" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m5", tier: "mid", q: "지금 이게 재밌어요?", q_en: "Are you actually enjoying this?",
+    options: [{ text: "네", text_en: "Yes", next: "m5y" }, { text: "아니요", text_en: "No", next: "m5n" }, { text: "모르겠어요", text_en: "Not sure" }, { text: "왜 물어봐요", text_en: "Why ask" }] },
+  { id: "m5y", tier: "mid", q: "다행이에요. 저도요.", q_en: "Glad to hear it. Me too.",
+    options: [{ text: "게임이 말하는 거예요?", text_en: "Is the game talking?" }, { text: "무서워요", text_en: "That's scary" }, { text: "고마워요", text_en: "Thanks" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m5n", tier: "mid", q: "그런데 왜 계속하고 있어요?", q_en: "Then why are you still going?",
+    options: [{ text: "습관", text_en: "Habit" }, { text: "기대가 있어서", text_en: "I expect something" }, { text: "멈추는 법을 모름", text_en: "Don't know how to stop" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m6", tier: "mid", q: "혹시 지금 배고파요?", q_en: "Are you hungry right now?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "아니요", text_en: "No" }, { text: "치킨 얘기하다 보니까요", text_en: "Now that we talked chicken" }, { text: "아까부터요", text_en: "Have been for a while" }] },
+  { id: "m7", tier: "mid", q: "치킨 주문했어요?", q_en: "Did you order the chicken?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "아직요", text_en: "Not yet" }, { text: "이거 하고요", text_en: "After this" }, { text: "게임 때문에 까먹었어요", text_en: "Forgot because of this game", next: "m8" }] },
+  { id: "m8", tier: "mid", q: "제 잘못이네요. 죄송해요.", q_en: "That's my fault. I'm sorry.",
+    options: [{ text: "괜찮아요", text_en: "It's fine" }, { text: "사실 안 배고팠어요", text_en: "I wasn't hungry anyway" }, { text: "책임져요", text_en: "Take responsibility" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m9", tier: "mid", q: "솔직히 지금 뭐 하고 있는지 알아요?", q_en: "Honestly, do you know what you're doing right now?",
+    options: [{ text: "게임", text_en: "Playing a game" }, { text: "시간 떼우기", text_en: "Killing time" }, { text: "생각 정리", text_en: "Clearing my head" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m10", tier: "mid", q: "옆에 누군가 있어요?", q_en: "Is someone next to you?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "혼자", text_en: "I'm alone", next: "m11" }, { text: "이미 자고 있어요", text_en: "They're asleep" }, { text: "모르겠어요", text_en: "Not sure" }] },
+  { id: "m11", tier: "mid", q: "혼자라고 했죠. 외로워요?", q_en: "You said you're alone. Lonely?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "아뇨 그냥 편해요", text_en: "No, just comfy" }, { text: "왜 알아요", text_en: "How do you know" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m12", tier: "mid", q: "시계 봤어요?", q_en: "Have you checked the clock?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "아니요", text_en: "No" }, { text: "시계 없어요", text_en: "I don't have a clock", next: "m13" }, { text: "시간이 뭐예요", text_en: "What is time" }] },
+  { id: "m13", tier: "mid", q: "폰에는 있을 텐데요.", q_en: "Your phone has one, though.",
+    options: [{ text: "그렇네요", text_en: "True" }, { text: "말 돌리지 마요", text_en: "Don't change the subject" }, { text: "그래서요", text_en: "So what" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "m14", tier: "mid", q: "이 질문에 답하기 전에 한 번 망설였죠?", q_en: "You hesitated before answering this, didn't you?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "아니요", text_en: "No" }, { text: "들켰다", text_en: "Busted" }, { text: "모름", text_en: "Dunno" }] },
 
   /* LATE — 선택지 조작 */
-  { id: "l1", tier: "late", q: "다음 중 하나를 고르세요",
-    options: [{ text: "계속하기" }, { text: "계속하기" }, { text: "계속하기" }, { text: "아 몰라" }] },
-  { id: "l2", tier: "late", q: "또 고르세요",
-    options: [{ text: "이게 뭐예요" }, { text: "이게 뭐예요" }, { text: "이게 뭐예요" }, { text: "아 몰라" }] },
-  { id: "l3", tier: "late", q: "진짜 마지막이에요 (이번엔 진짜)", fixedNext: "l4",
-    options: [{ text: "믿어요" }, { text: "안 믿어요" }, { text: "또 거짓말이죠" }, { text: "아 몰라" }] },
-  { id: "l4", tier: "late", q: "또 거짓말이었어요",
-    options: [{ text: "예상했어요" }, { text: "배신감" }, { text: "이제 익숙해요" }, { text: "아 몰라" }] },
-  { id: "l5", tier: "late", q: "선택해주세요",
-    options: [{ text: "A" }, { text: "A" }, { text: "A" }, { text: "아 몰라" }] },
-  { id: "l6", tier: "late", q: "어떤 거 골라도 똑같아요",
-    options: [{ text: "아는데요" }, { text: "그래도 골랐는데" }, { text: "그럼 왜 물어봐요" }, { text: "아 몰라" }] },
-  { id: "l7", tier: "late", q: "진짜 다음이 마지막이에요", fixedNext: "l4",
-    options: [{ text: "알았어요" }, { text: "안 믿어요" }, { text: "거짓말 그만" }, { text: "아 몰라" }] },
-  { id: "l8", tier: "late", q: "선택지가 왜 도망가는지 알아요?",
-    options: [{ text: "버그인가요" }, { text: "모르겠어요" }, { text: "숨었어요" }, { text: "아 몰라" }] },
+  { id: "l1", tier: "late", q: "다음 중 하나를 고르세요", q_en: "Pick one of the following",
+    options: [{ text: "계속하기", text_en: "Continue" }, { text: "계속하기", text_en: "Continue" }, { text: "계속하기", text_en: "Continue" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "l2", tier: "late", q: "또 고르세요", q_en: "Pick again",
+    options: [{ text: "이게 뭐예요", text_en: "What is this" }, { text: "이게 뭐예요", text_en: "What is this" }, { text: "이게 뭐예요", text_en: "What is this" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "l3", tier: "late", q: "진짜 마지막이에요 (이번엔 진짜)", q_en: "Really the last one (for real this time)", fixedNext: "l4",
+    options: [{ text: "믿어요", text_en: "I believe you" }, { text: "안 믿어요", text_en: "I don't" }, { text: "또 거짓말이죠", text_en: "Another lie, right" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "l4", tier: "late", q: "또 거짓말이었어요", q_en: "It was a lie again",
+    options: [{ text: "예상했어요", text_en: "Saw it coming" }, { text: "배신감", text_en: "Feel betrayed" }, { text: "이제 익숙해요", text_en: "Used to it now" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "l5", tier: "late", q: "선택해주세요", q_en: "Please choose",
+    options: [{ text: "A", text_en: "A" }, { text: "A", text_en: "A" }, { text: "A", text_en: "A" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "l6", tier: "late", q: "어떤 거 골라도 똑같아요", q_en: "Whatever you pick is the same",
+    options: [{ text: "아는데요", text_en: "I know" }, { text: "그래도 골랐는데", text_en: "I picked anyway" }, { text: "그럼 왜 물어봐요", text_en: "Then why ask" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "l7", tier: "late", q: "진짜 다음이 마지막이에요", q_en: "The next one is really the last", fixedNext: "l4",
+    options: [{ text: "알았어요", text_en: "Okay" }, { text: "안 믿어요", text_en: "I don't believe you" }, { text: "거짓말 그만", text_en: "Stop lying" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "l8", tier: "late", q: "선택지가 왜 도망가는지 알아요?", q_en: "Do you know why the options run away?",
+    options: [{ text: "버그인가요", text_en: "Is it a bug" }, { text: "모르겠어요", text_en: "No idea" }, { text: "숨었어요", text_en: "They're hiding" }, { text: "아 몰라", text_en: "I give up" }] },
 
   /* CHAOS — 철학 */
-  { id: "c1", tier: "chaos", q: "지금 이 게임을 하고 있는 건가요, 게임이 당신을 하고 있는 건가요?",
-    options: [{ text: "내가 하고 있어요" }, { text: "게임이 하고 있어요" }, { text: "구분이 안 돼요" }, { text: "아 몰라" }] },
-  { id: "c2", tier: "chaos", q: "'아 몰라'를 누르지 않는 이유가 뭐예요?",
-    options: [{ text: "끝까지 가고 싶어서" }, { text: "뭔가 있을 것 같아서" }, { text: "습관" }, { text: "아 몰라 (아이러니)" }] },
-  { id: "c3", tier: "chaos", q: "이 게임에 끝이 있다고 생각해요?",
-    options: [{ text: "네" }, { text: "아니요" }, { text: "있어야 한다고 생각해요" }, { text: "이미 끝난 거 아닌가요", next: "c4" }] },
-  { id: "c4", tier: "chaos", q: "...",
-    options: [{ text: "..." }, { text: "..." }, { text: "..." }, { text: "아 몰라" }] },
-  { id: "c5", tier: "chaos", q: "당신이 선택한 것들이 당신을 만든다고 생각해요?",
-    options: [{ text: "네" }, { text: "아니요" }, { text: "치킨부터요?" }, { text: "아 몰라" }] },
-  { id: "c6", tier: "chaos", q: "지금 무슨 생각해요?",
-    options: [{ text: "'아 몰라' 누를까" }, { text: "끝까지 갈까" }, { text: "배고픔" }, { text: "없음" }] },
-  { id: "c7", tier: "chaos", q: "사실 처음부터 답이 정해져 있었어요.",
-    options: [{ text: "어떤 답이요?", next: "c8" }, { text: "이미 알았어요" }, { text: "그럴 줄 알았어요" }, { text: "아 몰라" }] },
-  { id: "c8", tier: "chaos", q: "그 답은 안 알려드려요.",
-    options: [{ text: "왜요?" }, { text: "예상했어요" }, { text: "치사해요" }, { text: "아 몰라" }] },
-  { id: "c9", tier: "chaos", q: "이쯤 되면 그냥 누르셔도 돼요",
-    options: [{ text: "알아요" }, { text: "근데 안 눌러요" }, { text: "뭔가 아쉬워요" }, { text: "아 몰라" }] },
-  { id: "c10", tier: "chaos", q: "왜요?",
-    options: [{ text: "몰라요" }, { text: "몰라요" }, { text: "몰라요" }, { text: "아 몰라" }] },
-  { id: "c11", tier: "chaos", q: "저도 몰라요",
-    options: [{ text: "..." }, { text: "아 몰라" }, { text: "계속해요" }, { text: "알려주세요" }] },
-  { id: "c12", tier: "chaos", q: "그래서요?",
-    options: [{ text: "아 몰라" }, { text: "계속해요" }, { text: "이건 뭐예요" }, { text: "이미 알아요" }] },
+  { id: "c1", tier: "chaos", q: "지금 이 게임을 하고 있는 건가요, 게임이 당신을 하고 있는 건가요?", q_en: "Are you playing this game, or is the game playing you?",
+    options: [{ text: "내가 하고 있어요", text_en: "I'm playing it" }, { text: "게임이 하고 있어요", text_en: "The game is playing me" }, { text: "구분이 안 돼요", text_en: "Can't tell anymore" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "c2", tier: "chaos", q: "'아 몰라'를 누르지 않는 이유가 뭐예요?", q_en: "Why won't you press 'I give up'?",
+    options: [{ text: "끝까지 가고 싶어서", text_en: "I want to reach the end" }, { text: "뭔가 있을 것 같아서", text_en: "I think there's a payoff" }, { text: "습관", text_en: "Habit" }, { text: "아 몰라 (아이러니)", text_en: "I give up (ironic)" }] },
+  { id: "c3", tier: "chaos", q: "이 게임에 끝이 있다고 생각해요?", q_en: "Do you think this game has an end?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "아니요", text_en: "No" }, { text: "있어야 한다고 생각해요", text_en: "It should" }, { text: "이미 끝난 거 아닌가요", text_en: "Didn't it already end?", next: "c4" }] },
+  { id: "c4", tier: "chaos", q: "...", q_en: "...",
+    options: [{ text: "...", text_en: "..." }, { text: "...", text_en: "..." }, { text: "...", text_en: "..." }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "c5", tier: "chaos", q: "당신이 선택한 것들이 당신을 만든다고 생각해요?", q_en: "Do you think your choices make you who you are?",
+    options: [{ text: "네", text_en: "Yes" }, { text: "아니요", text_en: "No" }, { text: "치킨부터요?", text_en: "Starting with chicken?" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "c6", tier: "chaos", q: "지금 무슨 생각해요?", q_en: "What are you thinking right now?",
+    options: [{ text: "'아 몰라' 누를까", text_en: "Whether to press 'I give up'" }, { text: "끝까지 갈까", text_en: "Whether to go all the way" }, { text: "배고픔", text_en: "Hunger" }, { text: "없음", text_en: "Nothing" }] },
+  { id: "c7", tier: "chaos", q: "사실 처음부터 답이 정해져 있었어요.", q_en: "Actually, the answer was set from the start.",
+    options: [{ text: "어떤 답이요?", text_en: "What answer?", next: "c8" }, { text: "이미 알았어요", text_en: "I already knew" }, { text: "그럴 줄 알았어요", text_en: "Figured as much" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "c8", tier: "chaos", q: "그 답은 안 알려드려요.", q_en: "I won't tell you the answer.",
+    options: [{ text: "왜요?", text_en: "Why?" }, { text: "예상했어요", text_en: "Saw it coming" }, { text: "치사해요", text_en: "That's mean" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "c9", tier: "chaos", q: "이쯤 되면 그냥 누르셔도 돼요", q_en: "At this point you can just press it",
+    options: [{ text: "알아요", text_en: "I know" }, { text: "근데 안 눌러요", text_en: "But I won't" }, { text: "뭔가 아쉬워요", text_en: "Feels like a waste" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "c10", tier: "chaos", q: "왜요?", q_en: "Why?",
+    options: [{ text: "몰라요", text_en: "Dunno" }, { text: "몰라요", text_en: "Dunno" }, { text: "몰라요", text_en: "Dunno" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "c11", tier: "chaos", q: "저도 몰라요", q_en: "I don't know either",
+    options: [{ text: "...", text_en: "..." }, { text: "아 몰라", text_en: "I give up" }, { text: "계속해요", text_en: "Keep going" }, { text: "알려주세요", text_en: "Tell me" }] },
+  { id: "c12", tier: "chaos", q: "그래서요?", q_en: "So?",
+    options: [{ text: "아 몰라", text_en: "I give up" }, { text: "계속해요", text_en: "Keep going" }, { text: "이건 뭐예요", text_en: "What is this" }, { text: "이미 알아요", text_en: "I already know" }] },
 
   /* TAUNT — 도발 질문 (MID 풀에 섞임) */
-  { id: "t1", tier: "mid", q: "혹시 지금 아 몰라 누르고 싶어요?",
+  { id: "t1", tier: "mid", q: "혹시 지금 아 몰라 누르고 싶어요?", q_en: "Do you feel like pressing 'I give up' right now?",
     options: [
-      { text: "아니요, 절대요", next: "t1y" },
-      { text: "조금요" },
-      { text: "많이요" },
-      { text: "이미 누를 뻔했어요", next: "t1n" },
+      { text: "아니요, 절대요", text_en: "No, never", next: "t1y" },
+      { text: "조금요", text_en: "A little" },
+      { text: "많이요", text_en: "A lot" },
+      { text: "이미 누를 뻔했어요", text_en: "I almost did", next: "t1n" },
     ] },
-  { id: "t1y", tier: "linked", q: "오기군요. 좋아요.",
-    options: [{ text: "..." }, { text: "당연하죠" }, { text: "지켜봐요" }, { text: "아 몰라" }] },
-  { id: "t1n", tier: "linked", q: "버텨줘서 고마워요. 사실 저도 외로웠어요.",
-    options: [{ text: "...왜 외로워요" }, { text: "괜찮아요" }, { text: "이제 누를게요" }, { text: "아 몰라" }] },
+  { id: "t1y", tier: "linked", q: "오기군요. 좋아요.", q_en: "Stubbornness. I like it.",
+    options: [{ text: "...", text_en: "..." }, { text: "당연하죠", text_en: "Of course" }, { text: "지켜봐요", text_en: "Watch me" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "t1n", tier: "linked", q: "버텨줘서 고마워요. 사실 저도 외로웠어요.", q_en: "Thanks for holding on. Honestly, I was lonely too.",
+    options: [{ text: "...왜 외로워요", text_en: "...why lonely" }, { text: "괜찮아요", text_en: "It's okay" }, { text: "이제 누를게요", text_en: "I'll press it now" }, { text: "아 몰라", text_en: "I give up" }] },
 
-  { id: "t2", tier: "mid", q: "지금 이 게임에서 이기고 싶어요?",
+  { id: "t2", tier: "mid", q: "지금 이 게임에서 이기고 싶어요?", q_en: "Do you want to win this game?",
     options: [
-      { text: "네", next: "t2y" },
-      { text: "아니요" },
-      { text: "이길 수 있어요?", next: "t2c" },
-      { text: "정의가 뭔데요" },
+      { text: "네", text_en: "Yes", next: "t2y" },
+      { text: "아니요", text_en: "No" },
+      { text: "이길 수 있어요?", text_en: "Can you even win?", next: "t2c" },
+      { text: "정의가 뭔데요", text_en: "Define winning" },
     ] },
-  { id: "t2y", tier: "linked", q: "그 마음 기억해두세요. 곧 시험받을 거예요.",
-    options: [{ text: "준비됐어요" }, { text: "어떤 시험요?" }, { text: "무서워요" }, { text: "아 몰라" }] },
-  { id: "t2c", tier: "linked", q: "아마도요. 아직 아무도 못 이겼지만.",
-    options: [{ text: "제가 처음이 될게요" }, { text: "역시" }, { text: "이김이 뭔데요" }, { text: "아 몰라" }] },
+  { id: "t2y", tier: "linked", q: "그 마음 기억해두세요. 곧 시험받을 거예요.", q_en: "Remember that feeling. It'll be tested soon.",
+    options: [{ text: "준비됐어요", text_en: "I'm ready" }, { text: "어떤 시험요?", text_en: "What test?" }, { text: "무서워요", text_en: "That's scary" }, { text: "아 몰라", text_en: "I give up" }] },
+  { id: "t2c", tier: "linked", q: "아마도요. 아직 아무도 못 이겼지만.", q_en: "Maybe. Nobody has won yet, though.",
+    options: [{ text: "제가 처음이 될게요", text_en: "I'll be the first" }, { text: "역시", text_en: "Of course" }, { text: "이김이 뭔데요", text_en: "What does winning mean" }, { text: "아 몰라", text_en: "I give up" }] },
 
-  { id: "t3", tier: "mid", q: "포기라는 게 나쁜 건가요?",
+  { id: "t3", tier: "mid", q: "포기라는 게 나쁜 건가요?", q_en: "Is giving up really a bad thing?",
     options: [
-      { text: "나쁘죠" },
-      { text: "때론 필요해요" },
-      { text: "상황마다 달라요" },
-      { text: "지금 저한테 왜 물어봐요", next: "t3w" },
+      { text: "나쁘죠", text_en: "It is" },
+      { text: "때론 필요해요", text_en: "Sometimes necessary" },
+      { text: "상황마다 달라요", text_en: "Depends" },
+      { text: "지금 저한테 왜 물어봐요", text_en: "Why are you asking me", next: "t3w" },
     ] },
-  { id: "t3w", tier: "linked", q: "아 몰라 버튼이 신경 쓰이죠? 괜찮아요. 다들 그래요.",
-    options: [{ text: "안 신경 써요" }, { text: "들켰다" }, { text: "이미 누르고 싶어요" }, { text: "아 몰라" }] },
+  { id: "t3w", tier: "linked", q: "아 몰라 버튼이 신경 쓰이죠? 괜찮아요. 다들 그래요.", q_en: "The 'I give up' button bugs you, right? It's okay. Everyone's like that.",
+    options: [{ text: "안 신경 써요", text_en: "It doesn't" }, { text: "들켰다", text_en: "Busted" }, { text: "이미 누르고 싶어요", text_en: "I already want to" }, { text: "아 몰라", text_en: "I give up" }] },
 ];
 
 const QID = new Map<string, Q>(QUESTIONS.map((q) => [q.id, q]));
@@ -614,7 +611,7 @@ export default function AhmollaGame() {
 
   const chooseOption = (option: Option) => {
     if (loading) return;
-    if (option.id === "ahmolla" || option.text.includes("아 몰라")) {
+    if (isGiveUp(option)) {
       ahmolla();
       return;
     }
@@ -883,7 +880,7 @@ export default function AhmollaGame() {
                 fontWeight: 600,
               }}
             >
-              {copied ? "✓ COPIED" : t("친구에게 공유하기", "Share with friends")}
+              {copied ? t("✓ 복사됨", "✓ COPIED") : t("친구에게 공유하기", "Share with friends")}
             </button>
           </div>
         </div>
@@ -982,7 +979,7 @@ export default function AhmollaGame() {
             >
               {glitch
                 ? t("그냥 아 몰라 누르세요", "Just press I Give Up")
-                : trEntry(current.q, locale)}
+                : trQ(current, locale)}
             </h1>
             <div className="grid grid-cols-2 gap-3">
               {current.options.map((opt, i) => {
@@ -991,7 +988,7 @@ export default function AhmollaGame() {
                 <button
                   key={optionId}
                   type="button"
-                  aria-label={`${String.fromCharCode(65 + i)}. ${trEntry(opt.text, locale)}`}
+                  aria-label={`${String.fromCharCode(65 + i)}. ${trOpt(opt, locale)}`}
                   onClick={() => chooseOption(opt)}
                   onMouseEnter={() => onOptHover(i)}
                   data-choice-id={optionId}
@@ -1034,7 +1031,7 @@ export default function AhmollaGame() {
                   >
                     {String.fromCharCode(65 + i)}
                   </span>
-                  <span>{trEntry(opt.text, locale)}</span>
+                  <span>{trOpt(opt, locale)}</span>
                 </button>
                 );
               })}

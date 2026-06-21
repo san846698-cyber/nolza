@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 const WORDS = [
   "가방","가족","가을","가위","가수","가지","간식","감자","개구리","개미","거리","거울","건강","건물","게임","결과","경기","경험","계단","계절",
@@ -27,6 +28,7 @@ for (const w of WORDS) {
 type Turn = { word: string; by: "me" | "ai" };
 
 export default function WordChain() {
+  const { t } = useLocale();
   const [chain, setChain] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
   const [strikes, setStrikes] = useState(0);
@@ -59,17 +61,17 @@ export default function WordChain() {
     const word = input.trim();
     if (!word) return;
     if (word.length < 2) {
-      setError("두 글자 이상이어야 해요");
+      setError(t("두 글자 이상이어야 해요", "Word must be at least 2 letters"));
       onStrike();
       return;
     }
     if (lastChar && word[0] !== lastChar) {
-      setError(`"${lastChar}"로 시작해야 해요`);
+      setError(t(`"${lastChar}"로 시작해야 해요`, `Must start with "${lastChar}"`));
       onStrike();
       return;
     }
     if (used.has(word)) {
-      setError("이미 사용한 단어예요");
+      setError(t("이미 사용한 단어예요", "That word has already been used"));
       onStrike();
       return;
     }
@@ -103,8 +105,14 @@ export default function WordChain() {
   const handleShare = async () => {
     const text =
       done === "win"
-        ? `AI 끝말잇기 이겼다! 총 ${chain.length}턴 🏆 → nolza.fun/games/wordchain`
-        : `AI 끝말잇기 ${chain.length}턴 만에 졌다 🥲 → nolza.fun/games/wordchain`;
+        ? t(
+            `AI 끝말잇기 이겼다! 총 ${chain.length}턴 🏆 → nolza.fun/games/wordchain`,
+            `Beat the AI at word chain! ${chain.length} turns total 🏆 → nolza.fun/games/wordchain`,
+          )
+        : t(
+            `AI 끝말잇기 ${chain.length}턴 만에 졌다 🥲 → nolza.fun/games/wordchain`,
+            `Lost to the AI in word chain after ${chain.length} turns 🥲 → nolza.fun/games/wordchain`,
+          );
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -117,10 +125,10 @@ export default function WordChain() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
           <div className="text-xs text-gray-500">
-            오답 <span className="font-bold text-accent">{strikes}/3</span>
+            {t("오답", "Wrong")} <span className="font-bold text-accent">{strikes}/3</span>
           </div>
         </div>
       </div>
@@ -128,33 +136,36 @@ export default function WordChain() {
       <div className="mx-auto max-w-3xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-8">
           <h1 className="text-3xl font-black md:text-5xl">
-            끝말잇기 <span className="text-accent">vs AI</span>
+            {t("끝말잇기", "Word Chain")} <span className="text-accent">vs AI</span>
           </h1>
           <p className="mt-3 text-sm text-gray-400 md:text-base">
-            AI와 끝말잇기 대결. 3번 틀리면 패배합니다. (단어 사전: {WORDS.length}개)
+            {t(
+              `AI와 끝말잇기 대결. 3번 틀리면 패배합니다. (단어 사전: ${WORDS.length}개)`,
+              `Play word chain against the AI. Three wrong answers and you lose. (Dictionary: ${WORDS.length} words)`,
+            )}
           </p>
         </header>
 
         <div className="rounded-2xl border border-border bg-card p-5 md:p-7">
           {chain.length === 0 ? (
             <div className="text-center text-sm text-gray-500">
-              아무 단어로 시작해보세요
+              {t("아무 단어로 시작해보세요", "Start with any word")}
             </div>
           ) : (
             <ul className="flex flex-col gap-2">
-              {chain.map((t, i) => (
+              {chain.map((turn, i) => (
                 <li
                   key={i}
                   className={`rounded-xl border px-4 py-3 ${
-                    t.by === "me"
+                    turn.by === "me"
                       ? "border-accent/30 bg-accent/5 text-right"
                       : "border-border bg-bg"
                   }`}
                 >
                   <span className="text-xs text-gray-500">
-                    {t.by === "me" ? "나" : "AI"}
+                    {turn.by === "me" ? t("나", "Me") : "AI"}
                   </span>
-                  <span className="ml-2 text-base font-bold">{t.word}</span>
+                  <span className="ml-2 text-base font-bold">{turn.word}</span>
                 </li>
               ))}
             </ul>
@@ -169,7 +180,11 @@ export default function WordChain() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={aiThinking}
-              placeholder={lastChar ? `"${lastChar}"로 시작...` : "첫 단어 입력"}
+              placeholder={
+                lastChar
+                  ? t(`"${lastChar}"로 시작...`, `Start with "${lastChar}"...`)
+                  : t("첫 단어 입력", "Enter the first word")
+              }
               className="flex-1 rounded-lg border border-border bg-card px-4 py-3 text-base text-white outline-none focus:border-accent disabled:opacity-50"
               maxLength={10}
               autoFocus
@@ -179,7 +194,7 @@ export default function WordChain() {
               disabled={aiThinking || !input.trim()}
               className="rounded-lg bg-accent px-5 py-3 text-sm font-bold text-white hover:opacity-90 disabled:opacity-30"
             >
-              {aiThinking ? "AI 생각중..." : "제출"}
+              {aiThinking ? t("AI 생각중...", "AI thinking...") : t("제출", "Submit")}
             </button>
           </form>
         )}
@@ -188,19 +203,22 @@ export default function WordChain() {
         {done && (
           <div className="mt-6 rounded-2xl border border-accent/40 bg-card p-6 md:p-8">
             <div className="text-xs text-accent">
-              {done === "win" ? "🏆 승리!" : "😅 패배"}
+              {done === "win" ? t("🏆 승리!", "🏆 You win!") : t("😅 패배", "😅 You lose")}
             </div>
             <div className="mt-2 text-3xl font-black md:text-4xl">
               {done === "win"
-                ? "AI가 단어를 못 찾았어요!"
-                : `오답 3번 누적. 총 ${chain.length}턴`}
+                ? t("AI가 단어를 못 찾았어요!", "The AI couldn't find a word!")
+                : t(
+                    `오답 3번 누적. 총 ${chain.length}턴`,
+                    `3 wrong answers. ${chain.length} turns total`,
+                  )}
             </div>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <button onClick={restart} type="button" className="rounded-full border border-border bg-bg px-6 py-3 text-sm font-medium text-white hover:border-accent hover:text-accent">
-                ↻ 다시 도전
+                {t("↻ 다시 도전", "↻ Try again")}
               </button>
               <button onClick={handleShare} type="button" className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90">
-                {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
+                {copied ? t("✓ 복사됐어요", "✓ Copied") : t("📋 친구에게 공유하기", "📋 Share with friends")}
               </button>
             </div>
           </div>
@@ -208,7 +226,7 @@ export default function WordChain() {
 
         <div className="mt-12 flex justify-center">
           <Link href="/" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

@@ -376,7 +376,7 @@ export default function HighNotePage(): ReactElement {
   const requestMic = useCallback(async () => {
     if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
       setErrorKind("unsupported");
-      setErrorMsg("이 브라우저는 마이크를 지원하지 않아요");
+      setErrorMsg(t("이 브라우저는 마이크를 지원하지 않아요", "This browser does not support microphone access"));
       setPhase("denied");
       return;
     }
@@ -434,7 +434,7 @@ export default function HighNotePage(): ReactElement {
       setChecking(false);
       setPhase("denied");
     }
-  }, [startRecording]);
+  }, [startRecording, t]);
 
   const finishRecording = useCallback(() => {
     stopRequestedRef.current = true;
@@ -525,7 +525,7 @@ export default function HighNotePage(): ReactElement {
     >
       <Link
         href="/"
-        aria-label="home"
+        aria-label={t("홈으로", "Home")}
         style={{
           position: "fixed",
           left: 20,
@@ -661,9 +661,9 @@ export default function HighNotePage(): ReactElement {
                   fontFamily: "var(--font-noto-sans-kr), sans-serif",
                 }}
               >
-                <li>· 좋은날 고음 부분</li>
+                <li>· {t("좋은날 고음 부분", "The high-note part of “Good Day”")}</li>
                 <li>· Oh Happy Day</li>
-                <li>· 본인이 좋아하는 노래 고음 부분</li>
+                <li>· {t("본인이 좋아하는 노래 고음 부분", "The high-note part of any song you love")}</li>
               </ul>
             </div>
             <button
@@ -1244,7 +1244,7 @@ function ResultView({
                     letterSpacing: "0.15em",
                   }}
                 >
-                  YOU · {noteName}
+                  {t("나", "YOU")} · {noteName}
                 </div>
               </div>
             </div>

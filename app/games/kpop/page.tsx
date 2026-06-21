@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 type Q = {
   lyric: string;
@@ -10,6 +11,9 @@ type Q = {
   artist: string;
 };
 
+// Lyric hooks are Korean-only by design; English-prefer players see the same
+// (often romanizable / iconic) hook because that IS the song's signature line.
+// Options and artists are proper nouns / song titles and stay as-is.
 const SONGS: Q[] = [
   { lyric: "오빤 강남스타일", options: ["강남스타일", "행오버", "젠틀맨", "대디"], answer: 0, artist: "PSY" },
   { lyric: "거짓말 거짓말 거짓말", options: ["뱅뱅뱅", "Lies (거짓말)", "FXXK IT", "FANTASTIC BABY"], answer: 1, artist: "BIGBANG" },
@@ -37,15 +41,16 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function getGrade(score: number): string {
-  if (score === 10) return "🎤 K팝 마스터";
-  if (score >= 8) return "💯 덕후 인증";
-  if (score >= 6) return "👍 평범한 K팝 팬";
-  if (score >= 4) return "📚 좀 더 들어봐요";
-  return "😅 라디오 켜세요";
+function getGrade(score: number): { ko: string; en: string } {
+  if (score === 10) return { ko: "🎤 K팝 마스터", en: "🎤 K-pop Master" };
+  if (score >= 8) return { ko: "💯 덕후 인증", en: "💯 Certified Stan" };
+  if (score >= 6) return { ko: "👍 평범한 K팝 팬", en: "👍 Casual K-pop Fan" };
+  if (score >= 4) return { ko: "📚 좀 더 들어봐요", en: "📚 Keep Listening" };
+  return { ko: "😅 라디오 켜세요", en: "😅 Turn On the Radio" };
 }
 
 export default function KpopGame() {
+  const { t, locale } = useLocale();
   const [list, setList] = useState<Q[]>([]);
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -90,7 +95,11 @@ export default function KpopGame() {
   };
 
   const handleShare = async () => {
-    const text = `K팝 노래 맞추기 ${score}/${PICKS}점 (${getGrade(score)}) → nolza.fun/games/kpop`;
+    const grade = getGrade(score);
+    const text = t(
+      `K팝 노래 맞추기 ${score}/${PICKS}점 (${grade.ko}) → nolza.fun/games/kpop`,
+      `K-pop Lyric Quiz ${score}/${PICKS} (${grade.en}) → nolza.fun/games/kpop`,
+    );
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -106,23 +115,23 @@ export default function KpopGame() {
         <div className="border-b border-border">
           <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
             <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-              ← 놀자 홈으로
+              {t("← 놀자 홈으로", "← Back to nolza home")}
             </Link>
           </div>
         </div>
         <div className="mx-auto max-w-3xl px-5 pt-16 md:px-8">
           <div className="rounded-2xl border border-accent/40 bg-card p-8 text-center md:p-12">
-            <div className="text-sm text-accent">결과</div>
+            <div className="text-sm text-accent">{t("결과", "Result")}</div>
             <div className="mt-3 text-7xl font-black tabular-nums md:text-8xl">
               {score}<span className="text-3xl text-gray-500">/{PICKS}</span>
             </div>
-            <div className="mt-3 text-2xl font-bold md:text-3xl">{getGrade(score)}</div>
+            <div className="mt-3 text-2xl font-bold md:text-3xl">{t(getGrade(score).ko, getGrade(score).en)}</div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <button onClick={restart} type="button" className="rounded-full border border-border bg-bg px-6 py-3 text-sm font-medium text-white hover:border-accent hover:text-accent">
-                ↻ 다시 도전
+                {t("↻ 다시 도전", "↻ Try Again")}
               </button>
               <button onClick={handleShare} type="button" className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90">
-                {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
+                {copied ? t("✓ 복사됐어요", "✓ Copied") : t("📋 친구에게 공유하기", "📋 Share with Friends")}
               </button>
             </div>
           </div>
@@ -139,7 +148,7 @@ export default function KpopGame() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
           <div className="text-xs text-gray-500">
             <span className="font-medium text-white">{idx + 1}</span> / {PICKS}
@@ -150,7 +159,11 @@ export default function KpopGame() {
       <div className="mx-auto max-w-3xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-6">
           <h1 className="text-3xl font-black md:text-5xl">
-            <span className="text-accent">K팝</span> 가사 맞추기 🎤
+            {locale === "ko" ? (
+              <><span className="text-accent">K팝</span> 가사 맞추기 🎤</>
+            ) : (
+              <><span className="text-accent">K-pop</span> Lyric Quiz 🎤</>
+            )}
           </h1>
         </header>
 
@@ -159,7 +172,7 @@ export default function KpopGame() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
-          <div className="text-xs text-gray-500">Q{idx + 1} · 이 가사는 어느 노래?</div>
+          <div className="text-xs text-gray-500">{t(`Q${idx + 1} · 이 가사는 어느 노래?`, `Q${idx + 1} · Which song is this lyric from?`)}</div>
           <div className="mt-3 rounded-xl bg-bg p-5 text-center text-xl font-bold leading-relaxed md:text-2xl">
             ♬ {current.lyric}
           </div>
@@ -182,19 +195,19 @@ export default function KpopGame() {
           {showFeedback && (
             <div className={`mt-6 rounded-xl p-4 text-sm md:text-base ${isCorrect ? "bg-emerald-500/10 text-emerald-300" : "bg-accent/10 text-accent"}`}>
               <div className="font-bold">
-                {selected === -1 ? "⏰ 시간 초과" : isCorrect ? "✓ 정답!" : "✕ 오답"}
+                {selected === -1 ? t("⏰ 시간 초과", "⏰ Time's Up") : isCorrect ? t("✓ 정답!", "✓ Correct!") : t("✕ 오답", "✕ Wrong")}
               </div>
-              <div className="mt-1 text-gray-300">정답: {current.options[current.answer]} — {current.artist}</div>
+              <div className="mt-1 text-gray-300">{t("정답", "Answer")}: {current.options[current.answer]} — {current.artist}</div>
             </div>
           )}
         </div>
 
         {showFeedback && (
           <button type="button" onClick={next} className="mt-6 w-full rounded-full bg-accent py-3 text-base font-bold text-white hover:opacity-90">
-            {idx + 1 >= PICKS ? "결과 보기 →" : "다음 →"}
+            {idx + 1 >= PICKS ? t("결과 보기 →", "See Result →") : t("다음 →", "Next →")}
           </button>
         )}
-        <div className="mt-3 text-center text-xs text-gray-500">현재 점수: {score}점</div>
+        <div className="mt-3 text-center text-xs text-gray-500">{t(`현재 점수: ${score}점`, `Current score: ${score}`)}</div>
       </div>
     </main>
   );

@@ -242,7 +242,7 @@ export default function ButterflyGame() {
         fontFamily: "var(--font-noto-sans-kr)",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home">
+      <Link href="/" className="back-arrow dark" aria-label={t("홈으로", "Home")}>
         ←
       </Link>
       {/* Timeline indicator (right side) */}
@@ -408,7 +408,7 @@ export default function ButterflyGame() {
                 letterSpacing: "0.15em",
               }}
             >
-              {copied ? "✓ COPIED" : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
+              {copied ? t("✓ 복사됨", "✓ COPIED") : t("친구에게 공유하기", "SHARE WITH FRIENDS")}
             </button>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState, type ReactElement } from "react";
 import { AdMobileSticky } from "../../components/Ads";
+import { useLocale } from "@/hooks/useLocale";
 
 // ============================================================
 // Types
@@ -58,61 +59,123 @@ const TOTAL_MAX = QUESTIONS.reduce((s, q) => s + q.weight, 0); // 55
 // Result tiers
 // ============================================================
 
+type LocaleText = { ko: string; en: string };
+
 type Tier = {
   range: [number, number];
   emojiTitle: string;
-  ko: string;
-  enTagline: string;
-  scoville: string;
-  recommend: string;
-  desc: string;
+  title: LocaleText;
+  tagline: LocaleText;
+  scoville: LocaleText;
+  recommend: LocaleText;
+  desc: LocaleText;
 };
 
 const TIERS: Tier[] = [
   {
     range: [0, 10],
     emojiTitle: "🥛",
-    ko: "순한맛 영혼",
-    enTagline: "Mild Soul — you prefer milk over spice",
-    scoville: "0 — 500 SHU (bell pepper level)",
-    recommend: "Try mild kimbap or jajangmyeon. Avoid the red sauces.",
-    desc: "Spicy food and you have an agreement: stay apart. No shame — many great cuisines need zero capsaicin.",
+    title: { ko: "순한맛 영혼", en: "Mild Soul" },
+    tagline: {
+      ko: "순한맛 영혼 — 매운맛보다 우유가 좋아요",
+      en: "Mild Soul — you prefer milk over spice",
+    },
+    scoville: {
+      ko: "0 — 500 SHU (피망 수준)",
+      en: "0 — 500 SHU (bell pepper level)",
+    },
+    recommend: {
+      ko: "순한 김밥이나 짜장면을 드세요. 빨간 양념은 피하는 게 좋아요.",
+      en: "Try mild kimbap or jajangmyeon. Avoid the red sauces.",
+    },
+    desc: {
+      ko: "매운 음식과 당신은 서로 멀리하기로 약속한 사이예요. 부끄러울 것 없어요 — 캡사이신이 전혀 필요 없는 훌륭한 요리도 많으니까요.",
+      en: "Spicy food and you have an agreement: stay apart. No shame — many great cuisines need zero capsaicin.",
+    },
   },
   {
     range: [11, 20],
     emojiTitle: "🌶",
-    ko: "보통맛 입문자",
-    enTagline: "Beginner — getting there! Keep practicing",
-    scoville: "500 — 5,000 SHU (jalapeño territory)",
-    recommend: "Start with original Shin Ramyun or mild tteokbokki.",
-    desc: "You can handle a little heat. Korean food is opening up to you. Next stop: kimchi-jjigae.",
+    title: { ko: "보통맛 입문자", en: "Beginner" },
+    tagline: {
+      ko: "입문자 — 거의 다 왔어요! 계속 연습해요",
+      en: "Beginner — getting there! Keep practicing",
+    },
+    scoville: {
+      ko: "500 — 5,000 SHU (할라피뇨 영역)",
+      en: "500 — 5,000 SHU (jalapeño territory)",
+    },
+    recommend: {
+      ko: "오리지널 신라면이나 순한 떡볶이부터 시작해 보세요.",
+      en: "Start with original Shin Ramyun or mild tteokbokki.",
+    },
+    desc: {
+      ko: "약간의 매운맛은 견딜 수 있어요. 한국 음식이 당신에게 조금씩 열리고 있네요. 다음 목표는 김치찌개!",
+      en: "You can handle a little heat. Korean food is opening up to you. Next stop: kimchi-jjigae.",
+    },
   },
   {
     range: [21, 30],
     emojiTitle: "🌶🌶",
-    ko: "매운맛 중급자",
-    enTagline: "Intermediate — you can handle Korean spice!",
-    scoville: "5,000 — 30,000 SHU (Cheongyang range)",
-    recommend: "Buldak Bokkeummyeon original, mala-tang level 3.",
-    desc: "Most Koreans would nod respectfully. You eat spicy on purpose, not by accident.",
+    title: { ko: "매운맛 중급자", en: "Intermediate" },
+    tagline: {
+      ko: "중급자 — 한국식 매운맛을 소화할 수 있어요!",
+      en: "Intermediate — you can handle Korean spice!",
+    },
+    scoville: {
+      ko: "5,000 — 30,000 SHU (청양고추 범위)",
+      en: "5,000 — 30,000 SHU (Cheongyang range)",
+    },
+    recommend: {
+      ko: "불닭볶음면 오리지널, 마라탕 3단계.",
+      en: "Buldak Bokkeummyeon original, mala-tang level 3.",
+    },
+    desc: {
+      ko: "대부분의 한국인이 존경의 눈빛으로 고개를 끄덕일 거예요. 당신은 실수가 아니라 일부러 매운 걸 먹는 사람이에요.",
+      en: "Most Koreans would nod respectfully. You eat spicy on purpose, not by accident.",
+    },
   },
   {
     range: [31, 40],
     emojiTitle: "🌶🌶🌶",
-    ko: "불닭 마스터",
-    enTagline: "Buldak Master — Koreans would be impressed",
-    scoville: "30,000 — 100,000 SHU (habanero zone)",
-    recommend: "2x Buldak, Yeopgi Tteokbokki, mala xiangguo.",
-    desc: "You don't sweat — you sweat strategically. Restaurants warn you and you laugh.",
+    title: { ko: "불닭 마스터", en: "Buldak Master" },
+    tagline: {
+      ko: "불닭 마스터 — 한국인도 감탄할 실력",
+      en: "Buldak Master — Koreans would be impressed",
+    },
+    scoville: {
+      ko: "30,000 — 100,000 SHU (하바네로 구간)",
+      en: "30,000 — 100,000 SHU (habanero zone)",
+    },
+    recommend: {
+      ko: "불닭 2배매운맛, 엽기떡볶이, 마라샹궈.",
+      en: "2x Buldak, Yeopgi Tteokbokki, mala xiangguo.",
+    },
+    desc: {
+      ko: "당신은 그냥 땀을 흘리는 게 아니라 전략적으로 땀을 흘려요. 식당이 경고해도 당신은 웃어넘기죠.",
+      en: "You don't sweat — you sweat strategically. Restaurants warn you and you laugh.",
+    },
   },
   {
     range: [41, 999],
     emojiTitle: "🌶🌶🌶🌶🌶",
-    ko: "김치의 신",
-    enTagline: "God of Kimchi — you ARE Korean at heart",
-    scoville: "1,000,000+ SHU (ghost pepper +)",
-    recommend: "Nuclear Buldak. Ghost pepper noodles. Whatever's hottest on the shelf.",
-    desc: "You probably drink gochujang as a beverage. Your sweat could season food. Respect.",
+    title: { ko: "김치의 신", en: "God of Kimchi" },
+    tagline: {
+      ko: "김치의 신 — 마음만은 진짜 한국인",
+      en: "God of Kimchi — you ARE Korean at heart",
+    },
+    scoville: {
+      ko: "1,000,000+ SHU (귀신고추 이상)",
+      en: "1,000,000+ SHU (ghost pepper +)",
+    },
+    recommend: {
+      ko: "핵불닭. 귀신고추 라면. 진열대에서 가장 매운 거라면 뭐든지.",
+      en: "Nuclear Buldak. Ghost pepper noodles. Whatever's hottest on the shelf.",
+    },
+    desc: {
+      ko: "아마 고추장을 음료수처럼 마실 거예요. 당신의 땀으로 음식 간을 맞출 수도 있겠네요. 존경합니다.",
+      en: "You probably drink gochujang as a beverage. Your sweat could season food. Respect.",
+    },
   },
 ];
 
@@ -125,6 +188,7 @@ function tierFor(score: number): Tier {
 // ============================================================
 
 export default function SpicyPage(): ReactElement {
+  const { t, locale } = useLocale();
   const [started, setStarted] = useState(false);
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -161,7 +225,11 @@ export default function SpicyPage(): ReactElement {
   const tier = useMemo(() => tierFor(score), [score]);
 
   const onShare = () => {
-    const text = `My Korean spice level: ${tier.emojiTitle} ${tier.ko}\nCan you beat me? → nolza.fun/games/spicy`;
+    const title = locale === "ko" ? tier.title.ko : tier.title.en;
+    const text = t(
+      `내 한국 매운맛 레벨: ${tier.emojiTitle} ${title}\n나 이길 수 있어? → nolza.fun/games/spicy`,
+      `My Korean spice level: ${tier.emojiTitle} ${title}\nCan you beat me? → nolza.fun/games/spicy`,
+    );
     if (typeof navigator !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(text)
         .then(() => { setCopied(true); window.setTimeout(() => setCopied(false), 2000); })
@@ -188,7 +256,7 @@ export default function SpicyPage(): ReactElement {
     >
       <Link
         href="/"
-        aria-label="home"
+        aria-label={t("홈", "home")}
         style={{
           position: "fixed",
           left: 20,
@@ -213,7 +281,7 @@ export default function SpicyPage(): ReactElement {
           <div className="text-center pt-12">
             <div style={{ fontSize: 64, marginBottom: 12, lineHeight: 1 }}>🌶️🌶️🌶️</div>
             <p style={{ color: ACCENT, fontSize: 14, letterSpacing: "0.3em", marginBottom: 16 }}>
-              KOREAN SPICE TOLERANCE TEST
+              {t("한국 매운맛 내성 테스트", "KOREAN SPICE TOLERANCE TEST")}
             </p>
             <h1
               style={{
@@ -225,11 +293,18 @@ export default function SpicyPage(): ReactElement {
                 color: "#fff",
               }}
             >
-              How spicy can <br /> you really handle?
+              {locale === "ko" ? (
+                <>당신은 정말 <br /> 얼마나 매운 걸 견딜 수 있나요?</>
+              ) : (
+                <>How spicy can <br /> you really handle?</>
+              )}
             </h1>
             <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 15, lineHeight: 1.6, marginBottom: 40 }}>
-              20 yes/no questions about Korean spicy food.
-              <br />Find out where your spice level really sits.
+              {locale === "ko" ? (
+                <>한국 매운 음식에 관한 20개의 예/아니오 질문.<br />당신의 매운맛 레벨이 진짜 어디쯤인지 알아보세요.</>
+              ) : (
+                <>20 yes/no questions about Korean spicy food.<br />Find out where your spice level really sits.</>
+              )}
             </p>
             <button
               type="button"
@@ -247,7 +322,7 @@ export default function SpicyPage(): ReactElement {
                 boxShadow: "0 8px 24px rgba(255,59,48,0.35)",
               }}
             >
-              START
+              {t("시작", "START")}
             </button>
           </div>
         )}
@@ -257,7 +332,7 @@ export default function SpicyPage(): ReactElement {
             {/* Progress + counter */}
             <div className="flex justify-between" style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", marginBottom: 8, letterSpacing: "0.1em" }}>
               <span>{idx + 1} / {QUESTIONS.length}</span>
-              <span style={{ color: ACCENT, fontWeight: 700 }}>+{current.weight} pts if YES</span>
+              <span style={{ color: ACCENT, fontWeight: 700 }}>{t(`YES면 +${current.weight}점`, `+${current.weight} pts if YES`)}</span>
             </div>
             <div style={{ width: "100%", height: 4, background: "rgba(255,255,255,0.1)", borderRadius: 2, marginBottom: 40 }}>
               <div
@@ -320,7 +395,7 @@ export default function SpicyPage(): ReactElement {
                 onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
               >
-                YES
+                {t("네", "YES")}
               </button>
               <button
                 type="button"
@@ -341,7 +416,7 @@ export default function SpicyPage(): ReactElement {
                 onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1)")}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
               >
-                NO
+                {t("아니오", "NO")}
               </button>
             </div>
           </div>
@@ -350,7 +425,7 @@ export default function SpicyPage(): ReactElement {
         {started && done && (
           <div className="text-center pt-8">
             <p style={{ color: ACCENT, fontSize: 14, letterSpacing: "0.3em", marginBottom: 16 }}>
-              YOUR SPICE LEVEL
+              {t("당신의 매운맛 레벨", "YOUR SPICE LEVEL")}
             </p>
             <div
               style={{
@@ -370,10 +445,10 @@ export default function SpicyPage(): ReactElement {
                 fontFamily: "var(--font-noto-sans-kr)",
               }}
             >
-              {tier.ko}
+              {t(tier.title.ko, tier.title.en)}
             </h1>
             <p style={{ fontSize: 15, color: ACCENT, marginBottom: 28, fontWeight: 600 }}>
-              {tier.enTagline}
+              {t(tier.tagline.ko, tier.tagline.en)}
             </p>
 
             <div
@@ -388,11 +463,11 @@ export default function SpicyPage(): ReactElement {
                 marginBottom: 32,
               }}
             >
-              {score} / {TOTAL_MAX} points
+              {t(`${score} / ${TOTAL_MAX}점`, `${score} / ${TOTAL_MAX} points`)}
             </div>
 
             <p style={{ fontSize: 16, lineHeight: 1.7, color: "rgba(255,255,255,0.85)", marginBottom: 28, padding: "0 8px" }}>
-              {tier.desc}
+              {t(tier.desc.ko, tier.desc.en)}
             </p>
 
             <div
@@ -406,13 +481,13 @@ export default function SpicyPage(): ReactElement {
               }}
             >
               <div style={{ fontSize: 13, letterSpacing: "0.2em", color: ACCENT, marginBottom: 6, fontWeight: 700 }}>
-                SCOVILLE EQUIVALENT
+                {t("스코빌 환산", "SCOVILLE EQUIVALENT")}
               </div>
-              <div style={{ fontSize: 16, color: "#fff", marginBottom: 18 }}>{tier.scoville}</div>
+              <div style={{ fontSize: 16, color: "#fff", marginBottom: 18 }}>{t(tier.scoville.ko, tier.scoville.en)}</div>
               <div style={{ fontSize: 13, letterSpacing: "0.2em", color: ACCENT, marginBottom: 6, fontWeight: 700 }}>
-                TRY NEXT
+                {t("다음 도전", "TRY NEXT")}
               </div>
-              <div style={{ fontSize: 16, color: "#fff", lineHeight: 1.5 }}>{tier.recommend}</div>
+              <div style={{ fontSize: 16, color: "#fff", lineHeight: 1.5 }}>{t(tier.recommend.ko, tier.recommend.en)}</div>
             </div>
 
             <div className="flex gap-3 justify-center flex-wrap">
@@ -431,7 +506,7 @@ export default function SpicyPage(): ReactElement {
                   cursor: "pointer",
                 }}
               >
-                {copied ? "COPIED" : "SHARE RESULT"}
+                {copied ? t("복사됨", "COPIED") : t("결과 공유", "SHARE RESULT")}
               </button>
               <button
                 type="button"
@@ -448,7 +523,7 @@ export default function SpicyPage(): ReactElement {
                   cursor: "pointer",
                 }}
               >
-                AGAIN
+                {t("다시 하기", "AGAIN")}
               </button>
             </div>
           </div>

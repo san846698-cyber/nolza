@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { AdTop, AdBottom, AdMobileSticky } from "../../components/Ads";
+import { useLocale } from "@/hooks/useLocale";
 
 export default function Stimulation() {
+  const { t } = useLocale();
   return (
     <main
       className="min-h-screen page-in"
       style={{ backgroundColor: "#0a0a0a", color: "#fff" }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home">
+      <Link href="/" className="back-arrow dark" aria-label={t("홈으로", "Home")}>
         ←
       </Link>
 
@@ -23,7 +25,7 @@ export default function Stimulation() {
               marginBottom: 16,
             }}
           >
-            COMING SOON
+            {t("출시 예정", "COMING SOON")}
           </div>
           <h1
             style={{
@@ -59,7 +61,7 @@ export default function Stimulation() {
             className="mt-12"
             style={{ fontSize: 15, color: "#666", letterSpacing: "0.05em" }}
           >
-            지금은 잠시, 곧 새로 만나요
+            {t("지금은 잠시, 곧 새로 만나요", "Away for now — see you again soon")}
           </p>
         </div>
       </div>

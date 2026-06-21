@@ -303,7 +303,7 @@ function getSpendingType({
 }
 
 // ── Item thumbnail (image w/ emoji fallback) ───────────────────────────
-function ItemThumb({ item }: { item: Item }) {
+function ItemThumb({ item, locale }: { item: Item; locale: "ko" | "en" }) {
   const [errored, setErrored] = useState(false);
   const imageSrc = !errored ? item.image : undefined;
   return (
@@ -324,7 +324,7 @@ function ItemThumb({ item }: { item: Item }) {
       {imageSrc ? (
         <Image
           src={imageSrc}
-          alt={item.ko}
+          alt={item[locale]}
           fill
           sizes="80px"
           loading="lazy"
@@ -806,7 +806,7 @@ export default function IjyGame() {
                   position: "relative",
                 }}
               >
-                <ItemThumb item={item} />
+                <ItemThumb item={item} locale={locale} />
 
                 <div
                   className="flex flex-1 flex-col min-w-0"

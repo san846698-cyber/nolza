@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocale } from "@/hooks/useLocale";
 
 const SENTENCES = [
   "동해 물과 백두산이 마르고 닳도록 하느님이 보우하사 우리나라 만세.",
@@ -32,12 +33,16 @@ function strokeCount(s: string): number {
   return count;
 }
 
-function getGrade(kpm: number): { tier: string; tone: string } {
-  if (kpm >= 500) return { tier: "프로 타이피스트 ⌨️", tone: "text-accent" };
-  if (kpm >= 400) return { tier: "빠름! 👏", tone: "text-emerald-400" };
-  if (kpm >= 300) return { tier: "평균 이상 👍", tone: "text-yellow-300" };
-  if (kpm >= 200) return { tier: "보통 🙂", tone: "text-gray-300" };
-  return { tier: "조금 더 연습! 📚", tone: "text-orange-400" };
+function getGrade(kpm: number): { tier_ko: string; tier_en: string; tone: string } {
+  if (kpm >= 500)
+    return { tier_ko: "프로 타이피스트 ⌨️", tier_en: "Pro typist ⌨️", tone: "text-accent" };
+  if (kpm >= 400)
+    return { tier_ko: "빠름! 👏", tier_en: "Fast! 👏", tone: "text-emerald-400" };
+  if (kpm >= 300)
+    return { tier_ko: "평균 이상 👍", tier_en: "Above average 👍", tone: "text-yellow-300" };
+  if (kpm >= 200)
+    return { tier_ko: "보통 🙂", tier_en: "Average 🙂", tone: "text-gray-300" };
+  return { tier_ko: "조금 더 연습! 📚", tier_en: "Keep practicing! 📚", tone: "text-orange-400" };
 }
 
 function buildTarget(): string {
@@ -49,6 +54,7 @@ function buildTarget(): string {
 }
 
 export default function TypingGame() {
+  const { t } = useLocale();
   const [mode, setMode] = useState<30 | 60>(60);
   const [target, setTarget] = useState<string>("");
   const [typed, setTyped] = useState("");
@@ -111,7 +117,10 @@ export default function TypingGame() {
   };
 
   const handleShare = async () => {
-    const text = `내 타자속도 ${kpm}타 (정확도 ${accuracy.toFixed(1)}%) → nolza.fun/games/typing`;
+    const text = t(
+      `내 타자속도 ${kpm}타 (정확도 ${accuracy.toFixed(1)}%) → nolza.fun/games/typing`,
+      `My typing speed: ${kpm} KPM (${accuracy.toFixed(1)}% accuracy) → nolza.fun/games/typing`,
+    );
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -128,11 +137,11 @@ export default function TypingGame() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
           <div className="text-xs tabular-nums text-gray-500">
             <span className="font-medium text-white">{Math.ceil(timeLeft)}</span>
-            <span className="ml-1">초</span>
+            <span className="ml-1">{t("초", "s")}</span>
           </div>
         </div>
       </div>
@@ -140,10 +149,14 @@ export default function TypingGame() {
       <div className="mx-auto max-w-3xl px-5 pt-10 md:px-8 md:pt-14">
         <header className="mb-6">
           <h1 className="text-3xl font-black md:text-5xl">
-            한국어 <span className="text-accent">타자속도</span>
+            {t("한국어 ", "Korean ")}
+            <span className="text-accent">{t("타자속도", "typing speed")}</span>
           </h1>
           <p className="mt-3 text-sm text-gray-400 md:text-base">
-            아래 문장을 빠르고 정확하게 따라 쳐보세요.
+            {t(
+              "아래 문장을 빠르고 정확하게 따라 쳐보세요.",
+              "Type the sentence below as fast and accurately as you can.",
+            )}
           </p>
         </header>
 
@@ -157,7 +170,7 @@ export default function TypingGame() {
                 mode === m ? "bg-accent text-white" : "text-gray-400 hover:text-white"
               }`}
             >
-              {m}초
+              {t(`${m}초`, `${m}s`)}
             </button>
           ))}
         </div>
@@ -191,25 +204,25 @@ export default function TypingGame() {
             autoFocus
             spellCheck={false}
             autoComplete="off"
-            placeholder="여기에 따라 입력하세요..."
+            placeholder={t("여기에 따라 입력하세요...", "Type here to follow along...")}
             className="mt-6 w-full rounded-lg border border-border bg-bg px-4 py-3 font-mono text-base text-white outline-none transition-colors focus:border-accent disabled:opacity-50"
           />
 
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">
             <div>
-              <div className="text-xs text-gray-500">타수 (KPM)</div>
+              <div className="text-xs text-gray-500">{t("타수 (KPM)", "Speed (KPM)")}</div>
               <div className="mt-1 text-2xl font-black tabular-nums text-accent">
                 {kpm}
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500">정확도</div>
+              <div className="text-xs text-gray-500">{t("정확도", "Accuracy")}</div>
               <div className="mt-1 text-2xl font-black tabular-nums">
                 {accuracy.toFixed(0)}%
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500">남은 시간</div>
+              <div className="text-xs text-gray-500">{t("남은 시간", "Time left")}</div>
               <div className="mt-1 text-2xl font-black tabular-nums">
                 {Math.ceil(timeLeft)}s
               </div>
@@ -219,16 +232,19 @@ export default function TypingGame() {
 
         {done && (
           <div className="mt-6 rounded-2xl border border-accent/40 bg-accent/5 p-6 md:p-8">
-            <div className="text-xs text-accent">결과</div>
+            <div className="text-xs text-accent">{t("결과", "Result")}</div>
             <div className="mt-2 flex items-baseline gap-3">
               <span className="text-5xl font-black tabular-nums md:text-6xl">{kpm}</span>
-              <span className="text-2xl text-gray-500">타</span>
+              <span className="text-2xl text-gray-500">{t("타", "KPM")}</span>
             </div>
             <div className={`mt-2 text-lg font-bold md:text-2xl ${getGrade(kpm).tone}`}>
-              {getGrade(kpm).tier}
+              {t(getGrade(kpm).tier_ko, getGrade(kpm).tier_en)}
             </div>
             <div className="mt-2 text-sm text-gray-400">
-              한국인 평균 {KOREAN_AVERAGE}타 / 정확도 {accuracy.toFixed(1)}%
+              {t(
+                `한국인 평균 ${KOREAN_AVERAGE}타 / 정확도 ${accuracy.toFixed(1)}%`,
+                `Korean average ${KOREAN_AVERAGE} KPM / ${accuracy.toFixed(1)}% accuracy`,
+              )}
             </div>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -237,14 +253,16 @@ export default function TypingGame() {
                 onClick={() => reset()}
                 className="rounded-full border border-border bg-bg px-6 py-3 text-sm font-medium text-white hover:border-accent hover:text-accent"
               >
-                ↻ 다시 도전
+                {t("↻ 다시 도전", "↻ Try again")}
               </button>
               <button
                 type="button"
                 onClick={handleShare}
                 className="rounded-full bg-accent px-6 py-3 text-sm font-bold text-white hover:opacity-90"
               >
-                {copied ? "✓ 복사됐어요" : "📋 친구에게 공유하기"}
+                {copied
+                  ? t("✓ 복사됐어요", "✓ Copied")
+                  : t("📋 친구에게 공유하기", "📋 Share with friends")}
               </button>
             </div>
           </div>
@@ -255,7 +273,7 @@ export default function TypingGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            ← 놀자 홈으로
+            {t("← 놀자 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

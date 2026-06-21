@@ -11,6 +11,7 @@ import {
 } from "react";
 import { AdBottom } from "@/app/components/Ads";
 import { ShareCard } from "@/app/components/ShareCard";
+import { useLocale } from "@/hooks/useLocale";
 
 type Role = "GK" | "DF" | "MF" | "FW";
 
@@ -133,11 +134,11 @@ const FORMATIONS: Formation[] = [
   },
 ];
 
-const ROLE_LABEL: Record<Role, string> = {
-  GK: "골키퍼",
-  DF: "수비",
-  MF: "미드필더",
-  FW: "공격",
+const ROLE_LABEL: Record<Role, { ko: string; en: string }> = {
+  GK: { ko: "골키퍼", en: "Goalkeeper" },
+  DF: { ko: "수비", en: "Defenders" },
+  MF: { ko: "미드필더", en: "Midfielders" },
+  FW: { ko: "공격", en: "Forwards" },
 };
 
 const ROLE_COLOR: Record<Role, string> = {
@@ -170,6 +171,7 @@ function initialLineup(formation: Formation) {
 }
 
 export default function FootballLineupClient() {
+  const { t, locale } = useLocale();
   const pitchRef = useRef<HTMLDivElement | null>(null);
   const suppressClickRef = useRef(false);
   const [formationId, setFormationId] = useState(FORMATIONS[0].id);
@@ -319,6 +321,7 @@ export default function FootballLineupClient() {
 
   const reset = () => {
     setLineups((current) => ({ ...current, [formation.id]: initialLineup(formation) }));
+    setPlayers(PLAYERS);
     setSelectedPlayerId(null);
     setSelectedSlotId(null);
   };
@@ -330,16 +333,16 @@ export default function FootballLineupClient() {
         return player ? `${slotItem.label} ${player.no}. ${player.name}` : `${slotItem.label} -`;
       })
       .join("\n");
-    return `나의 대한민국 대표팀 ${formation.name}\n${list}`;
+    return `${t("나의 대한민국 대표팀", "My Korea National Team")} ${formation.name}\n${list}`;
   };
 
   const copyLineup = async () => {
     try {
       await navigator.clipboard.writeText(shareText());
-      setCopyStatus("라인업이 복사됐어요");
+      setCopyStatus(t("라인업이 복사됐어요", "Lineup copied"));
       window.setTimeout(() => setCopyStatus(""), 1800);
     } catch {
-      setCopyStatus("복사에 실패했어요");
+      setCopyStatus(t("복사에 실패했어요", "Copy failed"));
     }
   };
 
@@ -349,18 +352,28 @@ export default function FootballLineupClient() {
         <Link href="/" className="lineup-brand">
           nolza.fun
         </Link>
-        <span>World Cup Manager Mode</span>
+        <span>{t("월드컵 감독모드", "World Cup Manager Mode")}</span>
       </header>
 
       <section className="lineup-shell">
         <div className="lineup-head">
-          <p>대한민국 대표팀 전술판</p>
-          <h1>등번호와 이름만 올려서 나만의 베스트11 만들기</h1>
-          <span>선수를 고르고 포지션을 누르세요. 데스크톱에서는 끌어다 놓을 수도 있어요.</span>
+          <p>{t("대한민국 대표팀 전술판", "Korea National Team Tactics Board")}</p>
+          <h1>
+            {t(
+              "등번호와 이름만 올려서 나만의 베스트11 만들기",
+              "Build your own Best XI with just numbers and names",
+            )}
+          </h1>
+          <span>
+            {t(
+              "선수를 고르고 포지션을 누르세요. 데스크톱에서는 끌어다 놓을 수도 있어요.",
+              "Pick a player and tap a position. On desktop you can also drag and drop.",
+            )}
+          </span>
         </div>
 
         <div className="lineup-layout">
-          <section className="field-panel" aria-label="축구 전술판">
+          <section className="field-panel" aria-label={t("축구 전술판", "Football tactics board")}>
             <div className="formation-tabs" data-share-card-skip="true">
               {FORMATIONS.map((item) => (
                 <button
@@ -379,7 +392,7 @@ export default function FootballLineupClient() {
 
             <ShareCard
               filename={`korea-lineup-${formation.name}`}
-              locale="ko"
+              locale={locale}
               backgroundColor="#17380f"
             >
               {({ cardRef }) => (
@@ -414,9 +427,20 @@ export default function FootballLineupClient() {
                           onPointerDown={(event) => {
                             if (player) startDrag(player.id, slotItem.id, event);
                           }}
-                          aria-label={`${slotItem.label} ${player ? `${player.no}번 ${player.name}` : "비어 있음"}`}
+                          aria-label={`${slotItem.label} ${
+                            player
+                              ? t(
+                                  `${player.no}번 ${player.name}`,
+                                  `No. ${player.no} ${player.name}`,
+                                )
+                              : t("비어 있음", "Empty")
+                          }`}
                         >
-                          <Jersey player={player} label={slotItem.label} />
+                          <Jersey
+                            player={player}
+                            label={slotItem.label}
+                            emptyLabel={t("배치", "Place")}
+                          />
                         </button>
                       );
                     })}
@@ -427,31 +451,35 @@ export default function FootballLineupClient() {
 
             <div className="field-actions" data-share-card-skip="true">
               <button type="button" onClick={copyLineup}>
-                친구에게 공유하기
+                {t("친구에게 공유하기", "Share with friends")}
               </button>
               <button type="button" onClick={reset}>
-                초기화
+                {t("초기화", "Reset")}
               </button>
               {copyStatus ? <span>{copyStatus}</span> : null}
             </div>
           </section>
 
-          <aside className="coach-panel" aria-label="선수 선택과 편집">
+          <aside className="coach-panel" aria-label={t("선수 선택과 편집", "Select and edit players")}>
             <div className="selection-box">
-              <p>현재 선택</p>
+              <p>{t("현재 선택", "Now selecting")}</p>
               <strong>
                 {selectedPlayer
                   ? `${selectedPlayer.no}. ${selectedPlayer.name}`
                   : selectedSlotPlayer
                     ? `${selectedSlotPlayer.no}. ${selectedSlotPlayer.name}`
-                    : "선수를 선택하세요"}
+                    : t("선수를 선택하세요", "Select a player")}
               </strong>
-              <span>{selectedSlot ? `${selectedSlot.label} 포지션` : "후보 명단이나 필드에서 선택"}</span>
+              <span>
+                {selectedSlot
+                  ? t(`${selectedSlot.label} 포지션`, `${selectedSlot.label} position`)
+                  : t("후보 명단이나 필드에서 선택", "Pick from the bench or the pitch")}
+              </span>
             </div>
 
             <div className="editor-box">
               <label>
-                등번호
+                {t("등번호", "Number")}
                 <input
                   inputMode="numeric"
                   value={selectedPlayer?.no ?? ""}
@@ -460,7 +488,7 @@ export default function FootballLineupClient() {
                 />
               </label>
               <label>
-                이름
+                {t("이름", "Name")}
                 <input
                   value={selectedPlayer?.name ?? ""}
                   onChange={(event) => updatePlayer("name", event.target.value)}
@@ -469,7 +497,7 @@ export default function FootballLineupClient() {
               </label>
               {selectedSlot ? (
                 <button type="button" onClick={() => clearSlot(selectedSlot.id)}>
-                  이 자리 비우기
+                  {t("이 자리 비우기", "Clear this spot")}
                 </button>
               ) : null}
             </div>
@@ -480,7 +508,7 @@ export default function FootballLineupClient() {
                 if (rolePlayers.length === 0) return null;
                 return (
                   <section key={role}>
-                    <h2>{ROLE_LABEL[role]}</h2>
+                    <h2>{t(ROLE_LABEL[role].ko, ROLE_LABEL[role].en)}</h2>
                     <div>
                       {rolePlayers.map((player) => (
                         <button
@@ -522,7 +550,15 @@ export default function FootballLineupClient() {
   );
 }
 
-function Jersey({ player, label }: { player?: Player | null; label?: string }) {
+function Jersey({
+  player,
+  label,
+  emptyLabel = "배치",
+}: {
+  player?: Player | null;
+  label?: string;
+  emptyLabel?: string;
+}) {
   return (
     <span className={`jersey ${player ? "" : "jersey--empty"}`}>
       <span className="jersey-neck" aria-hidden />
@@ -533,7 +569,7 @@ function Jersey({ player, label }: { player?: Player | null; label?: string }) {
           <span className="jersey-name">{player.name}</span>
         </>
       ) : (
-        <span className="jersey-name">배치</span>
+        <span className="jersey-name">{emptyLabel}</span>
       )}
     </span>
   );

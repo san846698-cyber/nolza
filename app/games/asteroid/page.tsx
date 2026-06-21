@@ -15,10 +15,18 @@ import {
 } from "./physics";
 import s from "./asteroid.module.css";
 
+// Locale-aware loading fallback. The dynamic() call below is module-scope and
+// cannot use the useLocale hook directly, so route the text through this small
+// client component instead.
+function MapLoading() {
+  const { t } = useLocale();
+  return <div className={s.mapLoading}>{t("지도 불러오는 중…", "LOADING MAP…")}</div>;
+}
+
 // Leaflet must not run during SSR.
 const MapView = dynamic(() => import("./MapView"), {
   ssr: false,
-  loading: () => <div className={s.mapLoading}>LOADING MAP…</div>,
+  loading: () => <MapLoading />,
 });
 
 type LatLng = { lat: number; lng: number };
@@ -657,6 +665,7 @@ function ResultNarrative({
 // ─────────────── Asteroid Visual (real Wikimedia photo, per composition) ───────────────
 
 function AsteroidVisual({ composition }: { composition: Composition }) {
+  const { locale } = useLocale();
   const info = COMPOSITIONS[composition];
   return (
     <div className={`${s.asteroidScene} ${s[`comp--${composition}`]}`}>
@@ -666,7 +675,7 @@ function AsteroidVisual({ composition }: { composition: Composition }) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={info.image}
-          alt={info.body.en}
+          alt={info.body[locale]}
           loading="eager"
           decoding="async"
         />

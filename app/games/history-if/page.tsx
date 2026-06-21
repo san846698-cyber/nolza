@@ -72,6 +72,14 @@ const METRIC_LABEL: Record<MetricKey, LocalText> = {
   inequality: { ko: "경제 불평등", en: "Economic inequality" },
 };
 
+const STAGE_LABEL: Record<StageKey, LocalText> = {
+  "1년 후": { ko: "1년 후", en: "1 year later" },
+  "10년 후": { ko: "10년 후", en: "10 years later" },
+  "50년 후": { ko: "50년 후", en: "50 years later" },
+  "100년 후": { ko: "100년 후", en: "100 years later" },
+  "현재": { ko: "현재", en: "Present day" },
+};
+
 const FOCUSES: Focus[] = [
   {
     id: "power",
@@ -348,7 +356,7 @@ export default function HistoryIfPage() {
         overflowX: "clip",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label="home">←</Link>
+      <Link href="/" className="back-arrow dark" aria-label={t("놀자 홈으로", "Back to nolza home")}>←</Link>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "84px 20px 88px" }}>
         <header style={{ marginBottom: 24 }}>
           <p style={eyebrowStyle}>{t("대체 타임라인 시뮬레이터", "Alternate timeline simulator")}</p>
@@ -369,7 +377,7 @@ export default function HistoryIfPage() {
           </p>
         </header>
 
-  <TimelineProgress progress={progress} label={step === "result" ? t("현재 도착", "Arrived at present") : currentStage ? currentStage.key : t("분기 선택", "Choose branch")} />
+  <TimelineProgress progress={progress} t={t} label={step === "result" ? t("현재 도착", "Arrived at present") : currentStage ? pick(STAGE_LABEL[currentStage.key], locale) : t("분기 선택", "Choose branch")} />
 
         <section className="history-if-shell">
           <aside className="scenario-rail">
@@ -639,7 +647,7 @@ function SimulationPanel({
                 fontFamily: "var(--font-noto-sans-kr), sans-serif",
               }}
             >
-              {item.key}
+              {pick(STAGE_LABEL[item.key], locale)}
             </span>
           ))}
         </div>
@@ -647,7 +655,7 @@ function SimulationPanel({
       <div style={{ padding: "clamp(24px, 5vw, 42px)" }}>
         <div className="stage-card">
           <div style={{ color: ACCENT, fontSize: 14, fontWeight: 900, fontFamily: "var(--font-noto-sans-kr), sans-serif" }}>
-            {stage.key}
+            {pick(STAGE_LABEL[stage.key], locale)}
           </div>
           <h2 style={{ margin: "10px 0 0", fontSize: "clamp(28px, 7vw, 48px)", lineHeight: 1.1 }}>{pick(stage.title, locale)}</h2>
           <p style={{ ...leadStyle, marginTop: 14 }}>{pick(stage.cause, locale)}</p>
@@ -719,7 +727,7 @@ function ResultPanel({
         </div>
 
         <div style={{ marginTop: 18, padding: "20px", border: `1.5px solid ${INK}`, borderRadius: 8, background: PAPER, boxShadow: "inset 0 0 0 4px rgba(255,248,231,0.9)" }}>
-          <p style={{ ...paperEyebrowStyle, marginBottom: 8 }}>RESULT CARD</p>
+          <p style={{ ...paperEyebrowStyle, marginBottom: 8 }}>{t("결과 카드", "Result card")}</p>
           <h3 style={{ margin: 0, fontSize: "clamp(26px, 7vw, 42px)", lineHeight: 1.12 }}>{pick(focus.title, locale)}</h3>
           <p style={{ margin: "12px 0 0", color: MUTED, fontSize: 16, lineHeight: 1.7, fontFamily: "var(--font-noto-sans-kr), sans-serif" }}>
             {t("한국의 위치", "Korea's position")}: <strong style={{ color: INK }}>{pick(scenario.koreaPosition, locale)}</strong>
@@ -766,11 +774,11 @@ function Dashboard({ metrics, locale, t }: { metrics: Record<MetricKey, number>;
   );
 }
 
-function TimelineProgress({ progress, label }: { progress: number; label: string }) {
+function TimelineProgress({ progress, label, t }: { progress: number; label: string; t: (ko: string, en: string) => string }) {
   return (
     <div style={{ margin: "0 0 18px", padding: "14px 16px", border: "1px solid rgba(244,236,216,0.14)", borderRadius: 10, background: PANEL }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, color: "rgba(244,236,216,0.72)", fontSize: 13, fontWeight: 800, fontFamily: "var(--font-noto-sans-kr), sans-serif" }}>
-        <span>SIMULATION</span>
+        <span>{t("시뮬레이션", "Simulation")}</span>
         <span>{label}</span>
       </div>
       <div style={{ marginTop: 10, height: 8, borderRadius: 999, background: "rgba(244,236,216,0.12)", overflow: "hidden" }}>

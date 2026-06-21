@@ -832,7 +832,7 @@ export default function JoseonLifePage(): ReactElement {
             ))}
           </article>
           <div className="final-line">
-            <span>{t("마지막 기록", "Final Line")}</span>
+            <span>{t("마지막 문장", "Final Line")}</span>
             <strong>{locale === "ko" ? result.archetype.finalLine.ko : result.archetype.finalLine.en}</strong>
           </div>
           <div className="actions">
