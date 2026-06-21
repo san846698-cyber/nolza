@@ -97,7 +97,8 @@ export default function PoliticalTypeTestClient(): ReactElement {
     }, 0);
 
     return () => window.clearTimeout(restoreId);
-  }, [setLocale]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const currentQuestion = POLITICAL_QUESTIONS[questionIndex];
   const calculated = useMemo(() => calculatePoliticalResult(answers), [answers]);

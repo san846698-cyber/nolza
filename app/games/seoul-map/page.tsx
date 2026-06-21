@@ -14,7 +14,6 @@ const DISTRICTS: District[] = [
   { name: "노원구", en: "Nowon", row: 0, col: 4, famous: "롯데백화점, 학원가" },
   { name: "은평구", en: "Eunpyeong", row: 1, col: 1, famous: "은평한옥마을" },
   { name: "성북구", en: "Seongbuk", row: 1, col: 2, famous: "길음역" },
-  { name: "도봉·중랑", en: "Jungnang", row: 1, col: 3, famous: "면목·상봉" },
   { name: "중랑구", en: "Jungnang", row: 1, col: 4, famous: "면목·상봉" },
   { name: "서대문구", en: "Seodaemun", row: 2, col: 1, famous: "연세대, 신촌" },
   { name: "종로구", en: "Jongno", row: 2, col: 2, famous: "경복궁, 인사동" },
@@ -201,7 +200,7 @@ export default function SeoulMap() {
                     cursor: "pointer",
                   }}
                 >
-                  {d.name.replace(/[·구중랑]/g, "").slice(0, 2)}
+                  {d.name.replace(/·.*$/, "").replace(/구$/, "").slice(0, 3)}
                 </button>
               );
             })}

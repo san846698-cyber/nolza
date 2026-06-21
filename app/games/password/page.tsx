@@ -328,6 +328,7 @@ export default function PasswordGame() {
   useEffect(() => { pwRef.current = pw; }, [pw]);
   const revealedRef = useRef(revealed);
   useEffect(() => { revealedRef.current = revealed; }, [revealed]);
+  const wonRef = useRef(false);
 
   const currentMonth = useMemo(() => new Date().getMonth() + 1, []);
   const weekdayKo = useMemo(() => WEEKDAYS_KO[new Date().getDay()], []);
@@ -357,6 +358,7 @@ export default function PasswordGame() {
   // 🔥 fire eats the leftmost non-fire char every 8 seconds, once rule 30 is unlocked.
   useEffect(() => {
     const id = setInterval(() => {
+      if (wonRef.current) return;
       if (revealedRef.current < 30) return;
       const cur = pwRef.current;
       if (!cur.includes("🔥")) return;
@@ -375,6 +377,7 @@ export default function PasswordGame() {
   // 🍗 chicken walks one position to the right every 5 seconds, once rule 22 is unlocked.
   useEffect(() => {
     const id = setInterval(() => {
+      if (wonRef.current) return;
       if (revealedRef.current < 22) return;
       const cur = pwRef.current;
       const arr = Array.from(cur);
@@ -392,6 +395,7 @@ export default function PasswordGame() {
   // Min length grows by +1 every 60s once rule 23 is unlocked.
   useEffect(() => {
     const id = setInterval(() => {
+      if (wonRef.current) return;
       if (revealedRef.current < 23) return;
       setMinLengthBoost((b) => b + 1);
       setDemonLog("📏 min length +1");
@@ -440,6 +444,7 @@ export default function PasswordGame() {
   const blockingRule = visible.find((r) => !r.test(pw, ctx)) ?? null;
   const nextRule = revealed < activeRuleCount ? activeRules[revealed] : null;
   const won = revealed === activeRuleCount && passed === visible.length;
+  useEffect(() => { wonRef.current = won; }, [won]);
   const progressPct = Math.round((passed / activeRuleCount) * 100);
   const modeLabel = mode === "light" ? t("라이트 모드", "Light Mode") : t("하드 모드", "Hard Mode");
   const mood = passwordMood({ passed, revealed, total: activeRuleCount, won, t });

@@ -83,7 +83,6 @@ export default function WordChain() {
       const newUsed = new Set([...used, word]);
       const aiWord = aiPlay(word.slice(-1), newUsed);
       if (!aiWord) {
-        setChain((c) => [...c, meTurn]);
         setDone("win");
       } else {
         setChain((c) => [...c, { word: aiWord, by: "ai" }]);

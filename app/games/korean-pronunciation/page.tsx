@@ -29,7 +29,7 @@ const POOL: Word[] = [
   { hangul: "행복해", options: ["haengbokhae", "haengbokhe", "hengbokhae", "haengbokhai"] },
   { hangul: "노래해", options: ["noraehae", "nolahae", "noraehai", "nolaehai"] },
   { hangul: "예쁘다", options: ["yeppeuda", "yeppuda", "yepeuda", "yeppueda"] },
-  { hangul: "멋있어", options: ["meositsseo", "mossisseo", "meositseo", "meosisseo"] },
+  { hangul: "멋있어", options: ["meosisseo", "mossisseo", "meositseo", "meositsseo"] },
   { hangul: "파이팅", options: ["paiting", "fighting", "faiting", "phaiting"] },
   { hangul: "어떻게", options: ["eotteoke", "otoke", "eottoke", "otokeyo"] },
   { hangul: "할수있어", options: ["halsu isseo", "halsu isso", "halsseu isseo", "halseu isso"] },

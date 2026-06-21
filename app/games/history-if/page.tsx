@@ -639,7 +639,7 @@ function SimulationPanel({
                 fontFamily: "var(--font-noto-sans-kr), sans-serif",
               }}
             >
-              {stage.key}
+              {item.key}
             </span>
           ))}
         </div>

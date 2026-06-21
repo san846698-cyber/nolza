@@ -79,6 +79,7 @@ export default function AuctionGame() {
   const [guessText, setGuessText] = useState("");
   const [results, setResults] = useState<RoundResult[]>([]);
   const [best, setBest] = useState(0);
+  const [isNewBest, setIsNewBest] = useState(false);
   const [imgFailed, setImgFailed] = useState(false);
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -118,12 +119,14 @@ export default function AuctionGame() {
   const nextRound = () => {
     if (roundIdx + 1 >= rounds.length) {
       const total = results.reduce((sum, r) => sum + r.score, 0);
-      if (total > best) {
+      const isNew = total > best && total > 0;
+      if (isNew) {
         setBest(total);
         try {
           localStorage.setItem(BEST_KEY, String(total));
         } catch {}
       }
+      setIsNewBest(isNew);
       setPhase("summary");
     } else {
       setRoundIdx((i) => i + 1);
@@ -238,7 +241,7 @@ export default function AuctionGame() {
             locale={locale}
             results={results}
             totalScore={totalScore}
-            best={best}
+            isNewBest={isNewBest}
             onRestart={start}
             onShare={handleShare}
             copied={copied}
@@ -552,7 +555,7 @@ function SummaryView({
   locale,
   results,
   totalScore,
-  best,
+  isNewBest,
   onRestart,
   onShare,
   copied,
@@ -561,13 +564,13 @@ function SummaryView({
   locale: "ko" | "en";
   results: RoundResult[];
   totalScore: number;
-  best: number;
+  isNewBest: boolean;
   onRestart: () => void;
   onShare: () => void;
   copied: boolean;
 }) {
   const grade = gradeFor(totalScore, t);
-  const newBest = totalScore >= best && totalScore > 0;
+  const newBest = isNewBest;
   return (
     <section className={s.fadeIn} style={{ paddingTop: 24 }}>
       <div className={s.kicker} style={{ textAlign: "center" }}>

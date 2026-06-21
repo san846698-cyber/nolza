@@ -433,6 +433,9 @@ function ExperimentModal({ exp, tally, onClose, onUpdate, t, locale }: {
   const autoRef = useRef<number | null>(null);
   const sAttemptsRef = useRef(sAttempts);
   sAttemptsRef.current = sAttempts;
+  const sHitsRef = useRef(sHits);
+  sHitsRef.current = sHits;
+  const autoBaselineHitsRef = useRef(0);
 
   useEffect(() => () => { if (autoRef.current) window.clearInterval(autoRef.current); }, []);
 
@@ -460,6 +463,7 @@ function ExperimentModal({ exp, tally, onClose, onUpdate, t, locale }: {
     if (mode === "single") { trial(1); return; }
     if (mode === "100")   { trial(100); return; }
     if (mode === "1000")  { trial(1000); return; }
+    autoBaselineHitsRef.current = sHitsRef.current;
     setAutoRunning(true);
     autoRef.current = window.setInterval(() => trial(5000), 16);
   }, [trial]);
@@ -469,7 +473,7 @@ function ExperimentModal({ exp, tally, onClose, onUpdate, t, locale }: {
     setAutoRunning(false);
   }, []);
 
-  useEffect(() => { if (autoRunning && sHits > 0) stopAuto(); }, [autoRunning, sHits, stopAuto]);
+  useEffect(() => { if (autoRunning && sHits > autoBaselineHitsRef.current) stopAuto(); }, [autoRunning, sHits, stopAuto]);
 
   const totalAttempts = (tally?.attempts ?? 0) + sAttempts;
   const totalHits     = (tally?.hits ?? 0) + sHits;

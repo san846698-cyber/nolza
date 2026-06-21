@@ -105,6 +105,10 @@ export default function BalanceGame() {
   };
 
   const restart = () => {
+    setChoices({});
+    try {
+      localStorage.removeItem(CHOICES_KEY);
+    } catch {}
     setIdx(0);
     setDone(false);
   };

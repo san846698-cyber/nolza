@@ -773,7 +773,7 @@ export const TYPES: KbtiType[] = [
       closing:
         "Resting is a skill.\nBut every day is just lying down.",
     },
-    match: [eff("action", "L"), eff("avoid", "H"), eff("justify", "H")],
+    match: [eff("avoid", "H"), eff("action", "L"), eff("obsession", "H")],
   },
   {
     id: "iksip",

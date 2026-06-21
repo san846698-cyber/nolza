@@ -187,6 +187,7 @@ function RhythmTest({
   const startedAt = useRef(0);
   const rafRef = useRef<number | null>(null);
   const flashRef = useRef<HTMLDivElement | null>(null);
+  const startedRef = useRef(false);
 
   // Pulse visualizer at every beat using requestAnimationFrame
   useEffect(() => {
@@ -217,10 +218,13 @@ function RhythmTest({
     };
   }, [running]);
 
-  // Finalize when running flips off and we have collected enough
+  // Finalize once the run ends — pad any missed beats so the game always advances.
   useEffect(() => {
-    if (!running && errors.length >= RHYTHM_BEATS) {
-      const avg = errors.reduce((a, b) => a + b, 0) / errors.length;
+    if (!running && startedRef.current) {
+      startedRef.current = false;
+      const padded = [...errors];
+      while (padded.length < RHYTHM_BEATS) padded.push(200);
+      const avg = padded.reduce((a, b) => a + b, 0) / padded.length;
       onDone(rhythmScoreFromAvg(avg));
     }
   }, [running, errors, onDone]);
@@ -229,6 +233,7 @@ function RhythmTest({
     setErrors([]);
     setBeat(-4);
     startedAt.current = performance.now();
+    startedRef.current = true;
     setRunning(true);
   };
 

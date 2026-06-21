@@ -658,20 +658,6 @@ export default function AquaFishingGame() {
           window.dispatchEvent(new CustomEvent('toggle-enc'));
           playSound('shop_open');
       }
-      if (e.code === 'KeyW' || e.key === 'w' || e.key === 'W') {
-          // Force spawn a blue whale nearby for testing
-          const def = FISH_DATABASE['blue_whale'];
-          if (def) {
-              const speed = def.speedBase * 0.9;
-              const y = 300; // Shallow enough to see with a small sonar upgrade
-              fishes.push({
-                  zone: 1, w: def.w, h: def.h, score: def.score, color: def.iconColor, speed, type: 'blue_whale', shape: def.shape,
-                  y, baseY: y, baseX: boat.x + window.innerWidth * 0.2, // slightly to the right
-                  x: 0, vx: 0, timeOffset: Math.random() * 100, amplitude: 50,
-                  escapeSpeed: Math.max(speed * 2.5, 120), state: 'patrol', exclamationTimer: 0, hasShownExclamation: false, noticeDist: def.noticeDist
-              });
-          }
-      }
       if (shopOpen) {
           if (e.key === '1') attemptUpgrade('drop');
           if (e.key === '2') attemptUpgrade('depth');
