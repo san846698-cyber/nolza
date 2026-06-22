@@ -9,6 +9,8 @@ import {
   Fraunces,
   Press_Start_2P,
 } from "next/font/google";
+import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import { AdSenseScript, AdSideRails } from "./components/Ads";
 import Analytics from "./components/Analytics";
@@ -71,6 +73,14 @@ const pressStart = Press_Start_2P({
   weight: ["400"],
   variable: "--font-press-start",
   display: "swap",
+});
+
+// 게임 성향 테스트 UI 전용 — self-host Pretendard 가변 폰트.
+const pretendard = localFont({
+  src: "./fonts/PretendardVariable.woff2",
+  variable: "--font-pretendard",
+  display: "swap",
+  weight: "100 900",
 });
 
 const siteDescription =
@@ -144,7 +154,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${notoSans.variable} ${notoSerif.variable} ${jetBrains.variable} ${inter.variable} ${caveat.variable} ${gaegu.variable} ${fraunces.variable} ${pressStart.variable}`}
+      className={`${notoSans.variable} ${notoSerif.variable} ${jetBrains.variable} ${inter.variable} ${caveat.variable} ${gaegu.variable} ${fraunces.variable} ${pressStart.variable} ${pretendard.variable}`}
     >
       <head>
         <meta
@@ -162,10 +172,22 @@ export default function RootLayout({
             data-feedback-display="modal"
             data-feedback-mode="smart"
             data-feedback-cooldown-days="7"
+            data-respect-dnt="true"
           />
         ) : null}
+        {/* Google Tag Manager */}
+        <Script id="gtm" strategy="afterInteractive">{`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PK7W8D9V');`}</Script>
       </head>
       <body className="font-sans antialiased">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-PK7W8D9V"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <Analytics />
         <ServiceWorkerCleanup />
         <AdSenseScript />

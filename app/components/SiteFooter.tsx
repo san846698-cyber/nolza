@@ -141,6 +141,9 @@ export default function SiteFooter() {
         <p className="site-footer__copy">
           &copy; 2026 nolza.fun / Studio4Any. All rights reserved.
         </p>
+        <p className="site-footer__copy">
+          All game names, characters, and artwork are trademarks or property of their respective owners.
+        </p>
       </div>
     </footer>
   );

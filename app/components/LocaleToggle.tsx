@@ -12,6 +12,10 @@ export default function LocaleToggle() {
     pathname.startsWith("/games") ||
     pathname.startsWith("/tests/political-type") ||
     pathname === "/tests/kr-jp-signal" ||
+    pathname === "/tests/lol-playstyle" ||
+    pathname === "/tests/valorant-playstyle" ||
+    pathname === "/tests/pubg-playstyle" ||
+    pathname === "/tests/overwatch-playstyle" ||
     pathname === "/about" ||
     pathname === "/contact" ||
     pathname === "/privacy" ||

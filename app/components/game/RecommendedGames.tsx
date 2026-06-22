@@ -11,6 +11,7 @@ type RecommendedGamesProps = {
   ids?: string[];
   title?: { ko: string; en: string };
   limit?: number;
+  locale?: Lang;
 };
 
 const DEFAULT_IDS = ["kbti", "circle", "react", "password", "timesense", "average"];
@@ -24,9 +25,13 @@ function ctaFor(type: ContentType | undefined, locale: Lang) {
 export default function RecommendedGames({
   currentId,
   ids,
+  title,
   limit = 3,
+  locale: localeProp,
 }: RecommendedGamesProps) {
-  const { locale, t } = useLocale();
+  const hook = useLocale();
+  const locale = localeProp ?? hook.locale;
+  const t = (ko: string, en: string) => (locale === "ko" ? ko : en);
   const chosenIds = ids?.length ? ids : DEFAULT_IDS;
   const games = chosenIds
     .filter((id) => id !== currentId && !HOMEPAGE_HIDDEN_GAME_IDS.has(id))
@@ -40,7 +45,7 @@ export default function RecommendedGames({
     <section className="recommended-games" aria-label={t("이 테스트도 해보세요", "Try These Next")}>
       <div className="recommended-games__head">
         <small>{t("추천", "RECOMMENDED")}</small>
-        <span>{t("이 테스트도 해보세요", "Try These Next")}</span>
+        <span>{title ? (locale === "ko" ? title.ko : title.en) : t("이 테스트도 해보세요", "Try These Next")}</span>
       </div>
       <div className="recommended-games__grid">
         {games.map((game) => {
