@@ -21,9 +21,9 @@ LCK 프로게이머 성향 테스트 (역대 올타임 25인) — 선수 사진 
 전부 내리기(통보 시): lib/playstyle/lck.ts 에서  export const LCK_USE_PHOTOS = false;  로 바꾸면
 모든 사진이 즉시 꺼지고 챔프 아트 → 텍스트 카드로 폴백됩니다. (재배포 필요)
 
-사진 교체 시(같은 파일명 overwrite): lib/playstyle/lck.ts 의  LCK_PHOTO_VER  값을 +1 하세요.
-이미지 src 의 ?v=N 이 바뀌며 next/image · 브라우저 · CDN 캐시가 한 번에 무효화됩니다.
-(안 바꾸면 같은 URL이라 옛 사진이 캐시로 그대로 남습니다 — 쵸비 케이스.)
+사진 교체(같은 파일명 overwrite) 시: 프로덕션은 배포마다 새 빌드라 이미지 캐시가 자동 재생성됩니다(쿼리 캐시버스터 불필요).
+로컬에서 옛 사진이 보이면  .next/cache/images  폴더 삭제 + 하드리프레시(Ctrl+Shift+R).
+(주의: next/image 로컬 이미지에 ?v= 쿼리를 붙이면 next.config 의 images.localPatterns 설정 없이는 런타임 에러가 납니다.)
 
 표지/저작권: 공식 LCK 로고 미사용(자체 폰트 텍스트 "LCK" + 블루/골드 오리지널 그래픽).
 고지문: "비공식 팬 콘텐츠이며, 해당 선수·구단·리그와 무관합니다."

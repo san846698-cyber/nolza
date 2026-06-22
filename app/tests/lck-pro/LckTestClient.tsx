@@ -29,7 +29,6 @@ import {
   LCK_NOTICE,
   LCK_PATH,
   LCK_PHOTO_BASE,
-  LCK_PHOTO_VER,
   LCK_POSITIONS,
   LCK_PLAYERS,
   LCK_QUESTIONS,
@@ -274,8 +273,7 @@ function PlayerMedia({ player }: { player: LckPlayer }): ReactElement {
     );
   }
 
-  const base = stage === "photo" ? `${LCK_PHOTO_BASE}/${player.key}.jpg` : `${LCK_CHAMP_BASE}/${player.key}.jpg`;
-  const src = `${base}?v=${LCK_PHOTO_VER}`;
+  const src = stage === "photo" ? `${LCK_PHOTO_BASE}/${player.key}.jpg` : `${LCK_CHAMP_BASE}/${player.key}.jpg`;
   return (
     <Image
       key={stage}

@@ -161,8 +161,6 @@ export function posKo(pos: LckPosKey): string {
 export const LCK_USE_PHOTOS = true;
 export const LCK_PHOTO_BASE = "/images/tests/lck/players"; // {playerKey}.jpg — 사장님이 직접 소싱해 업로드
 export const LCK_CHAMP_BASE = "/images/tests/lck/champ"; // 보험 폴백: {playerKey}.jpg (시그니처 챔프 아트)
-// 사진을 교체(같은 파일명 overwrite)할 때마다 이 값을 +1 하면 next/image·브라우저·CDN 캐시가 한 번에 무효화됨(?v=N 캐시버스팅).
-export const LCK_PHOTO_VER = "2";
 
 export const LCK_NOTICE =
   "비공식 팬 콘텐츠이며, 해당 선수·구단·리그와 무관합니다. 모든 권리는 각 권리자에게 있습니다.";
