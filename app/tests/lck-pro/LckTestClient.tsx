@@ -194,13 +194,6 @@ export default function LckTestClient(): ReactElement {
                     {p.ko}
                   </button>
                 ))}
-                <button
-                  type="button"
-                  className="lck-pos__btn lck-pos__btn--random"
-                  onClick={() => startWithPosition(LCK_POSITIONS[Math.floor(Math.random() * LCK_POSITIONS.length)].key)}
-                >
-                  랜덤
-                </button>
               </div>
               <p className="lck-notice">{LCK_NOTICE}</p>
             </div>
@@ -404,7 +397,6 @@ const styles = `
     transform: translateY(-2px); border-color: var(--ps-accent); background: rgba(140,170,215,0.12);
     box-shadow: 0 14px 28px rgba(2, 6, 18, 0.4);
   }
-  .lck-test .lck-pos__btn--random { color: var(--ps-accent); font-weight: 900; }
 
   .lck-test .lck-notice { margin: 18px 0 0; max-width: 640px; color: #8696b0; font-size: 13px; line-height: 1.6; }
 
