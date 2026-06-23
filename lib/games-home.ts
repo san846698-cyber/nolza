@@ -615,6 +615,22 @@ export const GAMES: Game[] = [
     skin: "sticker", tone: 3, labels: ["new", "quick", "share"], duration: { ko: "약 3분", en: "3 min" },
   },
   {
+    id: "football-kr", href: "/tests/football-kr", cat: "self", no: "FBK",
+    ko: { title: "나랑 닮은 한국 축구선수는?", sub: "포지션 고르고 5문항. 손흥민·김민재·이강인 등 국가대표 25인 중 나의 분신", kicker: "월드컵 시즌 테스트" },
+    en: { title: "Your Korean Footballer Match", sub: "Pick a position, answer 5 — your twin among 25 national-team players", kicker: "World Cup season test" },
+    type: "test", category: "tests",
+    palette: P.judgment, font: "sans",
+    skin: "block", tone: 3, labels: ["new", "quick", "share"], duration: { ko: "포지션 + 5문항 · 약 1분", en: "Position + 5 questions" },
+  },
+  {
+    id: "football-global", href: "/tests/football-global", cat: "self", no: "FBG",
+    ko: { title: "나랑 닮은 월드클래스 선수는?", sub: "포지션 고르고 5문항. 메시·호날두·음바페 등 글로벌 스타 25인 중 나의 분신", kicker: "월드컵 시즌 테스트" },
+    en: { title: "Your World-Class Footballer Match", sub: "Pick a position, answer 5 — your twin among 25 global stars", kicker: "World Cup season test" },
+    type: "test", category: "tests",
+    palette: P.forest, font: "sans",
+    skin: "block", tone: 3, labels: ["new", "quick", "share"], duration: { ko: "포지션 + 5문항 · 약 1분", en: "Position + 5 questions" },
+  },
+  {
     id: "lol-playstyle", href: "/tests/lol-playstyle", cat: "self", no: "LOL",
     ko: { title: "롤 플레이 성향 테스트", sub: "티어로는 안 보이는 너의 진짜 롤 스타일. 9문항으로 캐리형·운영형·트롤형까지", kicker: "게임 성향 테스트" },
     en: { title: "LoL Playstyle Test", sub: "Your real League style that rank can't show — carry, strategist, or troll, in 9 questions", kicker: "Game playstyle test" },
@@ -829,6 +845,8 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
     "crush-type",
   ],
   tests: [
+    "football-kr",
+    "football-global",
     "lol-playstyle",
     "valorant-playstyle",
     "overwatch-playstyle",
