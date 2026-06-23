@@ -9,16 +9,21 @@ export type PlaystyleType = {
   ko: string;
   en: string;
   desc: string;
+  descEn?: string; // 영어 결과 설명 (없으면 desc 로 폴백)
   tags: string[];
+  tagsEn?: string[]; // 영어 해시태그 (없으면 tags 로 폴백)
   pair: string; // "닮은 요원/영웅" 값 또는 "주무기" 값
+  pairEn?: string; // 짝(요원/챔피언/무기) 영문 표기
   img?: string; // media "art": public 경로 파일 베이스명
   emoji?: string; // media "emoji"
   role?: string; // media "role": 탱/딜/힐
+  roleEn?: string; // media "role" 영어 역할 라벨
 };
 
 export type PlaystyleQuestion = {
   q: string;
-  answers: { label: string; types: string[] }[];
+  qEn?: string; // 영어 질문 (없으면 q 로 폴백)
+  answers: { label: string; labelEn?: string; types: string[] }[];
 };
 
 // 전 화면 다크 네이비 카드는 공통 고정. 게임별로는 악센트 색만 분기한다.
@@ -39,6 +44,13 @@ export type PlaystyleConfig = {
   introDesc: string;
   introTypeLine: string; // "엔트리·작전·클러치…" 6종 요약
   pairLabel: string; // "닮은 요원" / "주무기" / "닮은 영웅"
+  // ── 영어(en) 선택 필드: gameLabelEn 이 채워진 게임만 영어로 렌더(없으면 한국어 폴백) ──
+  gameLabelEn?: string; // "LoL" / "Valorant" — 존재 여부로 영어 활성화를 판정
+  introSubEn?: string;
+  introDescEn?: string;
+  introTypeLineEn?: string;
+  pairLabelEn?: string; // "Your champion" / "Your agent"
+  noticeEn?: string;
   media: PlaystyleMedia;
   artBase?: string; // "/images/tests/valorant/art"
   artExt?: string; // 아트 확장자 (롤=jpg / 발로=png), 기본 png

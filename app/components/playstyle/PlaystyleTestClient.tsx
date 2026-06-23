@@ -28,6 +28,7 @@ import {
   type PlaystyleSharePayload,
   type PlaystyleType,
 } from "@/lib/playstyle/core";
+import { useLocale } from "@/hooks/useLocale";
 
 type Phase = "intro" | "quiz" | "result";
 
@@ -44,6 +45,15 @@ export default function PlaystyleTestClient({
   const [picks, setPicks] = useState<string[][]>([]);
   const [sharedKey, setSharedKey] = useState<string | null>(null);
   const [shareStatus, setShareStatus] = useState("");
+
+  // 영어는 config 에 영어 콘텐츠(gameLabelEn)가 있는 게임만 활성화 — 없으면 한국어 고정(폴백).
+  const { locale } = useLocale();
+  const localized = locale === "en" && Boolean(config.gameLabelEn);
+  const uiLocale: "ko" | "en" = localized ? "en" : "ko";
+  const pick = useCallback(
+    (ko: string, en?: string) => (localized ? en ?? ko : ko),
+    [localized],
+  );
 
   useEffect(() => {
     const payload = decodeSharePayload<PlaystyleSharePayload>(
@@ -119,25 +129,38 @@ export default function PlaystyleTestClient({
       v: 1,
       resultId: resultKey,
     } satisfies PlaystyleSharePayload);
-    const title = `${config.gameLabel} 플레이 성향 테스트 결과`;
-    const body = `나의 ${config.gameLabel} 성향은 [${type.ko}]! (${config.pairLabel}: ${type.pair}) 너도 해봐 👉 ${url}`;
+    const gameLabel = pick(config.gameLabel, config.gameLabelEn);
+    const name = pick(type.ko, type.en);
+    const pairLabel = pick(config.pairLabel, config.pairLabelEn);
+    const pairVal = pick(type.pair, type.pairEn);
+    const title = localized
+      ? `${gameLabel} Playstyle Test result`
+      : `${gameLabel} 플레이 성향 테스트 결과`;
+    const body = localized
+      ? `My ${gameLabel} playstyle is [${name}]! (${pairLabel}: ${pairVal}) Try it 👉 ${url}`
+      : `나의 ${gameLabel} 성향은 [${name}]! (${pairLabel}: ${pairVal}) 너도 해봐 👉 ${url}`;
     try {
       if (navigator.share) {
         await navigator.share({ title, text: body });
-        setShareStatus("공유 창을 열었습니다.");
+        setShareStatus(pick("공유 창을 열었습니다.", "Share dialog opened."));
         return;
       }
       await navigator.clipboard.writeText(body);
-      setShareStatus("결과 링크를 복사했습니다.");
+      setShareStatus(pick("결과 링크를 복사했습니다.", "Result link copied."));
     } catch {
       try {
         await navigator.clipboard.writeText(body);
-        setShareStatus("결과 링크를 복사했습니다.");
+        setShareStatus(pick("결과 링크를 복사했습니다.", "Result link copied."));
       } catch {
-        setShareStatus("링크 복사에 실패했습니다. 주소창의 링크를 복사해주세요.");
+        setShareStatus(
+          pick(
+            "링크 복사에 실패했습니다. 주소창의 링크를 복사해주세요.",
+            "Couldn't copy the link — please copy it from the address bar.",
+          ),
+        );
       }
     }
-  }, [resultKey, config]);
+  }, [resultKey, config, localized, pick]);
 
   const rootStyle = {
     "--ps-accent": config.theme.accent,
@@ -148,7 +171,7 @@ export default function PlaystyleTestClient({
     <main className="ps-test" style={rootStyle}>
       <section className="psx-shell">
         <nav className="psx-back">
-          <Link href="/">{homeBackLabel("ko")}</Link>
+          <Link href="/">{homeBackLabel(uiLocale)}</Link>
         </nav>
 
         {phase === "intro" ? (
@@ -156,28 +179,33 @@ export default function PlaystyleTestClient({
             <div className="psx-hero-copy">
               <span className="psx-pill">{config.eyebrowPill}</span>
               <h1 className="psx-title">
-                <span className="psx-title__top">{config.gameLabel} 플레이</span>
-                <span className="psx-title__accent">성향 테스트</span>
+                <span className="psx-title__top">
+                  {localized ? config.gameLabelEn : `${config.gameLabel} 플레이`}
+                </span>
+                <span className="psx-title__accent">{localized ? "Playstyle Test" : "성향 테스트"}</span>
               </h1>
-              <p className="psx-sub">{config.introSub}</p>
-              <p className="psx-desc">{config.introDesc}</p>
-              <div className="psx-chips" aria-label="테스트 정보">
-                <span>9문항</span>
-                <span>약 2분</span>
-                <span>{config.introTypeLine}</span>
+              <p className="psx-sub">{pick(config.introSub, config.introSubEn)}</p>
+              <p className="psx-desc">{pick(config.introDesc, config.introDescEn)}</p>
+              <div className="psx-chips" aria-label={localized ? "Test info" : "테스트 정보"}>
+                <span>{pick("9문항", "9 questions")}</span>
+                <span>{pick("약 2분", "~2 min")}</span>
+                <span>{pick(config.introTypeLine, config.introTypeLineEn)}</span>
               </div>
               <button type="button" onClick={start} className="psx-cta psx-cta--block">
-                테스트 시작하기
+                {pick("테스트 시작하기", "Start the test")}
               </button>
               <p className="psx-notice">
-                이 테스트는 전문적인 진단이 아닌, 게임 속 플레이 성향을 바탕으로 만든 재미용 콘텐츠입니다.
+                {pick(
+                  "이 테스트는 전문적인 진단이 아닌, 게임 속 플레이 성향을 바탕으로 만든 재미용 콘텐츠입니다.",
+                  "This is a fun quiz based on in-game playstyles, not a professional assessment.",
+                )}
               </p>
             </div>
           </section>
         ) : (
           <section className="psx-card">
             <div className="psx-prog">
-              <span>{phase === "result" ? "결과" : "질문"}</span>
+              <span>{phase === "result" ? pick("결과", "Result") : pick("질문", "Question")}</span>
               <strong>
                 {phase === "result"
                   ? `${config.questions.length}/${config.questions.length}`
@@ -190,7 +218,7 @@ export default function PlaystyleTestClient({
 
             {phase === "quiz" ? (
               <>
-                <h2 className="psx-q">{currentQuestion.q}</h2>
+                <h2 className="psx-q">{pick(currentQuestion.q, currentQuestion.qEn)}</h2>
                 <div className="psx-opts">
                   {currentQuestion.answers.map((answer, index) => (
                     <button
@@ -200,7 +228,7 @@ export default function PlaystyleTestClient({
                       className="psx-opt"
                     >
                       <span className="psx-opt__badge">{String.fromCharCode(65 + index)}</span>
-                      <strong>{answer.label}</strong>
+                      <strong>{pick(answer.label, answer.labelEn)}</strong>
                     </button>
                   ))}
                 </div>
@@ -210,6 +238,7 @@ export default function PlaystyleTestClient({
                 config={config}
                 resultKey={resultKey}
                 shared={Boolean(sharedKey)}
+                localized={localized}
                 onRetry={start}
                 onShare={share}
                 shareStatus={shareStatus}
@@ -228,7 +257,7 @@ export default function PlaystyleTestClient({
             currentId={config.id}
             ids={config.recommendIds}
             title={{ ko: "다음에 해볼 테스트", en: "Try These Next" }}
-            locale="ko"
+            locale={uiLocale}
           />
         </div>
       )}
@@ -241,9 +270,11 @@ export default function PlaystyleTestClient({
 function HeroMedia({
   config,
   type,
+  localized = false,
 }: {
   config: PlaystyleConfig;
   type: PlaystyleType;
+  localized?: boolean;
 }): ReactElement {
   const [failed, setFailed] = useState(false);
 
@@ -251,7 +282,7 @@ function HeroMedia({
     return (
       <Image
         src={`${config.artBase}/${type.img}.${config.artExt ?? "png"}`}
-        alt={`${type.pair} 일러스트`}
+        alt={localized ? `${type.pairEn ?? type.pair} illustration` : `${type.pair} 일러스트`}
         fill
         sizes="(max-width: 520px) 90vw, 440px"
         style={{ objectFit: "cover", objectPosition: "center top" }}
@@ -300,6 +331,7 @@ function ResultView({
   config,
   resultKey,
   shared,
+  localized,
   onRetry,
   onShare,
   shareStatus,
@@ -307,39 +339,46 @@ function ResultView({
   config: PlaystyleConfig;
   resultKey: string;
   shared: boolean;
+  localized: boolean;
   onRetry: () => void;
   onShare: () => void;
   shareStatus: string;
 }): ReactElement {
   const type = config.types[resultKey];
+  const pick = (ko: string, en?: string) => (localized ? en ?? ko : ko);
+  const name = localized ? type.en : type.ko;
+  const sub = localized ? type.ko : type.en;
+  const tags = localized ? type.tagsEn ?? type.tags : type.tags;
   return (
     <section className="psx-result">
-      {shared ? <span className="psx-shared">공유된 결과</span> : null}
+      {shared ? <span className="psx-shared">{pick("공유된 결과", "Shared result")}</span> : null}
 
-      <p className="psx-result__eyebrow">나의 {config.gameLabel} 성향</p>
+      <p className="psx-result__eyebrow">
+        {localized ? `My ${config.gameLabelEn} playstyle` : `나의 ${config.gameLabel} 성향`}
+      </p>
 
       <div className="psx-poster">
-        <HeroMedia config={config} type={type} />
+        <HeroMedia config={config} type={type} localized={localized} />
         <div className="psx-poster__veil" aria-hidden />
         <div className="psx-poster__body">
           <span className="psx-poster__kicker">
-            {config.pairLabel} · {type.pair}
+            {pick(config.pairLabel, config.pairLabelEn)} · {pick(type.pair, type.pairEn)}
           </span>
-          <h2 className="psx-poster__name">{type.ko}</h2>
-          <p className="psx-poster__en">{type.en}</p>
-          <div className="psx-poster__tags" aria-label="성향 태그">
-            {type.tags.map((tag) => (
+          <h2 className="psx-poster__name">{name}</h2>
+          <p className="psx-poster__en">{sub}</p>
+          <div className="psx-poster__tags" aria-label={localized ? "Playstyle tags" : "성향 태그"}>
+            {tags.map((tag) => (
               <span key={tag}>{tag}</span>
             ))}
           </div>
         </div>
       </div>
 
-      <p className="psx-result__desc">{type.desc}</p>
+      <p className="psx-result__desc">{pick(type.desc, type.descEn)}</p>
 
       <div className="psx-actions">
         <button type="button" className="psx-cta" onClick={onShare}>
-          친구에게 공유하기
+          {pick("친구에게 공유하기", "Share with friends")}
         </button>
         <button
           type="button"
@@ -349,7 +388,7 @@ function ResultView({
             onRetry();
           }}
         >
-          {shared ? "나도 해보기" : "다시 하기"}
+          {shared ? pick("나도 해보기", "Try it too") : pick("다시 하기", "Retry")}
         </button>
         <p className="psx-status" role="status" aria-live="polite">{shareStatus}</p>
       </div>
