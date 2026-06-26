@@ -489,7 +489,7 @@ export default function StoicControlTestClient(): ReactElement {
         .stoic-hero,
         .stoic-card {
           border: 1px solid rgba(71, 56, 35, 0.18);
-          border-radius: 32px;
+          border-radius: 14px;
           background:
             linear-gradient(135deg, rgba(255, 253, 247, 0.91), rgba(235, 222, 199, 0.75)),
             #f8efdf;
@@ -515,21 +515,21 @@ export default function StoicControlTestClient(): ReactElement {
           margin: 0 0 12px;
           color: #896538;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
           letter-spacing: 0.08em;
           text-transform: uppercase;
         }
         h1,
         h2 {
           margin: 0;
-          letter-spacing: 0;
+          letter-spacing: -0.02em;
           line-height: 1.12;
-          font-family: var(--font-noto-serif-kr), "Noto Serif KR", serif;
+          font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
         }
         h1 {
           max-width: 680px;
           margin-inline: auto;
-          font-size: clamp(38px, 6.4vw, 70px);
+          font-size: clamp(32px, 6vw, 56px);
           word-break: keep-all;
           overflow-wrap: normal;
         }
@@ -562,10 +562,10 @@ export default function StoicControlTestClient(): ReactElement {
           border: 0;
           cursor: pointer;
           min-height: 52px;
-          border-radius: 999px;
+          border-radius: 10px;
           padding: 0 24px;
           font-size: 16px;
-          font-weight: 900;
+          font-weight: 800;
           transition: transform 160ms ease, box-shadow 160ms ease;
         }
         .primary {
@@ -655,7 +655,7 @@ export default function StoicControlTestClient(): ReactElement {
           color: rgba(137, 101, 56, 0.78);
           font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
           letter-spacing: 0.08em;
           text-transform: uppercase;
         }
@@ -666,7 +666,7 @@ export default function StoicControlTestClient(): ReactElement {
           color: #24231f;
           font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
           font-size: clamp(24px, 3.2vw, 34px);
-          font-weight: 820;
+          font-weight: 800;
           line-height: 1.42;
           text-align: center;
           word-break: keep-all;
@@ -820,7 +820,7 @@ export default function StoicControlTestClient(): ReactElement {
           border: 1px solid rgba(71, 56, 35, 0.12);
           text-decoration: none;
           font-size: 19px;
-          font-weight: 900;
+          font-weight: 800;
           line-height: 1;
         }
         .progress-head span {
@@ -882,7 +882,7 @@ export default function StoicControlTestClient(): ReactElement {
           margin: 8px auto 0;
           color: rgba(36, 35, 31, 0.64);
           font-size: 13px;
-          font-weight: 850;
+          font-weight: 800;
           line-height: 1.4;
         }
         .stoic-single-likert__labels span:nth-child(1) {
@@ -906,12 +906,12 @@ export default function StoicControlTestClient(): ReactElement {
           aspect-ratio: 1;
           min-width: 0;
           border: 1px solid rgba(71, 56, 35, 0.18);
-          border-radius: 999px;
+          border-radius: 10px;
           background: rgba(255, 255, 255, 0.7);
           color: #493827;
           cursor: pointer;
           font-size: clamp(15px, 3.6vw, 18px);
-          font-weight: 950;
+          font-weight: 800;
           transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
         }
         .stoic-single-likert__scale button:hover,
@@ -945,7 +945,7 @@ export default function StoicControlTestClient(): ReactElement {
           color: #73512d;
           padding: 8px 12px;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-title {
           display: grid;
@@ -953,13 +953,13 @@ export default function StoicControlTestClient(): ReactElement {
         }
         .result-title h2 {
           margin: 0;
-          font-size: clamp(32px, 5.6vw, 58px);
+          font-size: clamp(32px, 5.6vw, 54px);
         }
         .one-liner {
           margin: 0;
           color: #73512d;
           font-size: clamp(18px, 2vw, 22px);
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-description {
           margin: 0;
@@ -974,7 +974,7 @@ export default function StoicControlTestClient(): ReactElement {
         }
         .result-box {
           border: 1px solid rgba(71, 56, 35, 0.15);
-          border-radius: 18px;
+          border-radius: 14px;
           background: rgba(255, 255, 255, 0.62);
           padding: 16px;
         }
@@ -983,7 +983,7 @@ export default function StoicControlTestClient(): ReactElement {
           margin-bottom: 8px;
           color: #73512d;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-box p {
           margin: 0;
@@ -1068,7 +1068,7 @@ export default function StoicControlTestClient(): ReactElement {
           }
           .stoic-hero,
           .stoic-card {
-            border-radius: 24px;
+            border-radius: 14px;
           }
           .stoic-hero {
             min-height: auto;

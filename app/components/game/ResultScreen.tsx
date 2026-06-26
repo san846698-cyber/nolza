@@ -1,10 +1,11 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { SimpleLocale } from "@/hooks/useLocale";
 import { ShareCard } from "../ShareCard";
 import RecommendedGames from "./RecommendedGames";
 import ResultActions from "./ResultActions";
+import { m, revealVariants, useReducedMotion } from "../motion/Motion";
 
 /** Card gradient theme per game family. */
 export type ResultTone =
@@ -46,6 +47,12 @@ type ResultScreenProps = {
   kakaoLabel?: string;
   recommendedIds?: string[];
   tone?: ResultTone;
+  /** Per-result accent color (hex) — tints the card. Used by anime tests. */
+  accentColor?: string;
+  /** Large hero visual at the top of the card (replaces emoji). Used by anime tests. */
+  heroMedia?: ReactNode;
+  /** Result-reveal animation (card scale/fade + stagger). Off for mini-games. */
+  reveal?: boolean;
 };
 
 /** Background colour passed to html-to-image so the saved PNG isn't transparent. */
@@ -82,19 +89,35 @@ export default function ResultScreen({
   kakaoLabel,
   recommendedIds,
   tone = "light",
+  accentColor,
+  heroMedia,
+  reveal = true,
 }: ResultScreenProps) {
   const isLight = tone === "light" || tone === "paper";
-  const brandLabel = locale === "ko" ? "놀자.fun" : "nolza.fun";
+  const brandLabel = locale === "ko" ? "nolza.fun" : "nolza.fun";
+  const reduce = useReducedMotion();
+  const { container, item } = revealVariants(reveal && !reduce);
 
   return (
-    <section className={`result-screen result-screen--${tone}`} aria-live="polite">
+    <section
+      className={`result-screen result-screen--${tone}${accentColor ? " result-screen--accent" : ""}`}
+      aria-live="polite"
+    >
       <ShareCard
         filename={`nolza-${currentGameId}-result`}
         locale={locale}
         backgroundColor={TONE_CAPTURE_BG[tone]}
       >
         {({ cardRef }) => (
-          <div ref={cardRef} className="result-screen__card" id="result-card">
+          <m.div
+            ref={cardRef}
+            className="result-screen__card"
+            id="result-card"
+            style={accentColor ? ({ "--rs-accent": accentColor } as CSSProperties) : undefined}
+            initial="initial"
+            animate="animate"
+            variants={container}
+          >
             {/* Header: brand + game name */}
             <div className="result-screen__header">
               <span className="result-screen__brandmark">{brandLabel}</span>
@@ -103,32 +126,38 @@ export default function ResultScreen({
               )}
             </div>
 
-            {emoji && (
-              <div className="result-screen__emoji" aria-hidden>
-                {emoji}
-              </div>
+            {heroMedia ? (
+              <m.div className="result-screen__hero" variants={item}>
+                {heroMedia}
+              </m.div>
+            ) : (
+              emoji && (
+                <m.div className="result-screen__emoji" aria-hidden variants={item}>
+                  {emoji}
+                </m.div>
+              )
             )}
 
-            {eyebrow && <div className="result-screen__eyebrow">{eyebrow}</div>}
-            <h2 className="result-screen__title">{title}</h2>
+            {eyebrow && <m.div className="result-screen__eyebrow" variants={item}>{eyebrow}</m.div>}
+            <m.h2 className="result-screen__title" variants={item}>{title}</m.h2>
 
             {score && (
-              <div className="result-screen__score">
+              <m.div className="result-screen__score" variants={item}>
                 <span>{score}</span>
                 {scoreLabel && <small>{scoreLabel}</small>}
-              </div>
+              </m.div>
             )}
 
             <div className="result-screen__divider" aria-hidden />
 
-            <p className="result-screen__desc">{description}</p>
+            <m.p className="result-screen__desc" variants={item}>{description}</m.p>
 
             {details.length > 0 && (
-              <ul className="result-screen__details">
-                {details.map((item) => (
-                  <li key={item}>{item}</li>
+              <m.ul className="result-screen__details" variants={item}>
+                {details.map((detail) => (
+                  <li key={detail}>{detail}</li>
                 ))}
-              </ul>
+              </m.ul>
             )}
 
             {children}
@@ -136,7 +165,7 @@ export default function ResultScreen({
             <div className="result-screen__brand">
               {isLight ? "nolza.fun" : "nolza.fun · 결과 카드"}
             </div>
-          </div>
+          </m.div>
         )}
       </ShareCard>
 

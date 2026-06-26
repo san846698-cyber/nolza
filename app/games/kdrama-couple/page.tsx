@@ -1208,7 +1208,16 @@ function IntroForm({
         </p>
       </div>
 
-      <form onSubmit={onSubmit} style={panelStyle}>
+      <form
+        onSubmit={onSubmit}
+        style={{
+          ...panelStyle,
+          background: "transparent",
+          border: "none",
+          boxShadow: "none",
+          padding: "clamp(0px, 1vw, 4px) 0",
+        }}
+      >
         <div className="kdc-form-grid">
           <PersonEditor
             label={t("첫 번째 주인공", "First protagonist")}

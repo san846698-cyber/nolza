@@ -41,6 +41,7 @@ import {
   type LckPosKey,
   type LckStyleKey,
 } from "@/lib/playstyle/lck";
+import { m, QuestionTransition, useReducedMotion } from "@/app/components/motion/Motion";
 
 type Phase = "intro" | "quiz" | "result";
 type LckSharePayload = { v: 1; resultId: string };
@@ -215,7 +216,7 @@ export default function LckTestClient(): ReactElement {
             </div>
 
             {phase === "quiz" ? (
-              <>
+              <QuestionTransition motionKey={questionIndex}>
                 <h2 className="lck-q">{currentQuestion.q}</h2>
                 <div className="lck-opts">
                   {currentQuestion.answers.map((answer, index) => (
@@ -225,7 +226,7 @@ export default function LckTestClient(): ReactElement {
                     </button>
                   ))}
                 </div>
-              </>
+              </QuestionTransition>
             ) : result ? (
               <ResultView player={result} shared={Boolean(sharedKey)} onRetry={restart} onShare={share} shareStatus={shareStatus} />
             ) : null}
@@ -294,8 +295,14 @@ function ResultView({
   onShare: () => void;
   shareStatus: string;
 }): ReactElement {
+  const reduce = useReducedMotion();
   return (
-    <section className="lck-result">
+    <m.section
+      className="lck-result"
+      initial={{ opacity: 0, scale: reduce ? 1 : 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: reduce ? 0.15 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+    >
       {shared ? <span className="lck-shared">공유된 결과</span> : null}
       <p className="lck-result__eyebrow">나랑 닮은 LCK 프로</p>
 
@@ -333,7 +340,7 @@ function ResultView({
         </button>
         <p className="lck-status" role="status" aria-live="polite">{shareStatus}</p>
       </div>
-    </section>
+    </m.section>
   );
 }
 
@@ -363,17 +370,17 @@ const styles = `
 
   .lck-test .lck-hero,
   .lck-test .lck-card {
-    border: 1px solid var(--ps-border); border-radius: 24px; background: var(--ps-card-bg);
+    border: 1px solid var(--ps-border); border-radius: 14px; background: var(--ps-card-bg);
     box-shadow: 0 30px 80px rgba(2, 6, 18, 0.55);
   }
-  .lck-test .lck-hero { display: block; width: min(100%, 840px); margin: 0 auto; padding: clamp(28px, 5vw, 60px); overflow: hidden; }
+  .lck-test .lck-hero { display: block; width: min(100%, 840px); margin: 0 auto; padding: clamp(28px, 5vw, 60px) 0; overflow: hidden; background: transparent; border: 0; box-shadow: none; }
   .lck-test .lck-hero-copy { width: min(100%, 760px); }
 
   .lck-test .lck-pill {
     display: inline-block; border: 1px solid var(--ps-accent); border-radius: 999px; padding: 7px 16px;
     color: var(--ps-accent); font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
   }
-  .lck-test .lck-title { margin: 22px 0 0; line-height: 1.1; letter-spacing: -0.01em; font-weight: 800; font-size: clamp(34px, 7.5vw, 58px); }
+  .lck-test .lck-title { margin: 22px 0 0; line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; font-size: clamp(32px, 6.4vw, 54px); }
   .lck-test .lck-title__top { display: block; color: #f3f7ff; }
   .lck-test .lck-title__accent { display: block; color: var(--ps-accent); }
   .lck-test .lck-sub { margin: 20px 0 0; color: var(--ps-cyan); font-size: clamp(17px, 2.4vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
@@ -388,7 +395,7 @@ const styles = `
   .lck-test .lck-poslabel { margin: 0 0 12px; color: var(--ps-accent); font-size: 14px; font-weight: 800; letter-spacing: 0.04em; }
   .lck-test .lck-pos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   .lck-test .lck-pos__btn {
-    min-height: 64px; border: 1px solid var(--ps-border); border-radius: 16px;
+    min-height: 64px; border: 1px solid var(--ps-border); border-radius: 10px;
     background: rgba(140,170,215,0.06); color: #eef3fb; cursor: pointer;
     font-size: 18px; font-weight: 800;
     transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
@@ -412,11 +419,11 @@ const styles = `
   .lck-test .lck-opts { display: grid; grid-template-columns: 1fr; gap: 12px; }
   .lck-test .lck-opt {
     display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center;
-    border: 1px solid var(--ps-border); border-radius: 16px; background: rgba(140,170,215,0.05);
+    border: 1px solid var(--ps-border); border-radius: 10px; background: rgba(140,170,215,0.05);
     color: #e9f0fa; cursor: pointer; padding: 16px 18px; text-align: left;
     transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
   }
-  .lck-test .lck-opt__badge { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 11px; background: var(--ps-accent); color: var(--ps-accent-ink); font-size: 14px; font-weight: 900; }
+  .lck-test .lck-opt__badge { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: var(--ps-accent); color: var(--ps-accent-ink); font-size: 14px; font-weight: 800; }
   .lck-test .lck-opt strong { font-size: 16px; line-height: 1.45; font-weight: 600; }
   .lck-test .lck-opt:hover { transform: translateY(-2px); border-color: var(--ps-accent); background: rgba(140,170,215,0.10); box-shadow: 0 16px 30px rgba(2, 6, 18, 0.4); }
 
@@ -426,10 +433,10 @@ const styles = `
 
   .lck-test .lck-poster {
     position: relative; width: 100%; max-width: 440px; margin: 0 auto; aspect-ratio: 4 / 5; overflow: hidden;
-    border-radius: 22px; border: 1px solid var(--ps-accent); box-shadow: 0 26px 64px rgba(2, 6, 18, 0.62); background: #0d1830;
+    border-radius: 14px; border: 1px solid var(--ps-accent); box-shadow: 0 26px 64px rgba(2, 6, 18, 0.62); background: #0d1830;
   }
   .lck-test .lck-media { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #0d1830; }
-  .lck-test .lck-media--text .lck-media__name { color: #fff; font-size: clamp(40px, 11vw, 64px); font-weight: 900; letter-spacing: -0.02em; }
+  .lck-test .lck-media--text .lck-media__name { color: #fff; font-size: clamp(32px, 8vw, 52px); font-weight: 800; letter-spacing: -0.02em; }
   .lck-test .lck-media--text .lck-media__role { color: var(--ps-accent); font-size: clamp(15px, 3.5vw, 20px); font-weight: 800; }
 
   .lck-test .lck-poster__veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,10,20,0) 0%, rgba(5,10,20,0.12) 38%, rgba(5,10,20,0.82) 76%, rgba(5,10,20,0.97) 100%); }
@@ -443,7 +450,7 @@ const styles = `
 
   .lck-test .lck-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .lck-test .lck-cta, .lck-test .lck-ghost {
-    border: 0; cursor: pointer; min-height: 52px; border-radius: 16px; padding: 0 24px; font-size: 16px; font-weight: 800;
+    border: 0; cursor: pointer; min-height: 52px; border-radius: 10px; padding: 0 24px; font-size: 16px; font-weight: 800;
     transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease, background 160ms ease;
   }
   .lck-test .lck-cta { color: var(--ps-accent-ink); background-color: var(--ps-accent); background-image: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.06)); box-shadow: 0 16px 34px rgba(2, 6, 18, 0.45); }
@@ -456,7 +463,7 @@ const styles = `
 
   @media (max-width: 520px) {
     .lck-test { padding-inline: 14px; }
-    .lck-test .lck-hero, .lck-test .lck-card { border-radius: 20px; }
+    .lck-test .lck-hero, .lck-test .lck-card { border-radius: 14px; }
     .lck-test .lck-actions .lck-cta, .lck-test .lck-actions .lck-ghost { flex: 1 1 100%; width: 100%; }
   }
 `;

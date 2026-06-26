@@ -7,11 +7,11 @@ type BrandMarkProps = {
 };
 
 export function brandText(locale: SimpleLocale = "ko") {
-  return locale === "ko" ? "놀자.fun" : "nolza.fun";
+  return locale === "ko" ? "nolza.fun" : "nolza.fun";
 }
 
 export function homeBackLabel(locale: SimpleLocale = "ko") {
-  return locale === "ko" ? "← 놀자 홈으로" : "← Back to nolza.fun";
+  return locale === "ko" ? "← nolza 홈으로" : "← Back to nolza.fun";
 }
 
 export default function BrandMark({
@@ -20,14 +20,13 @@ export default function BrandMark({
   className,
 }: BrandMarkProps) {
   const text = domain ? "nolza.fun" : brandText(locale);
-  const [name, suffix] =
-    !domain && locale === "ko" ? ["놀자", ".fun"] : [text, ""];
+  const [name, suffix] = [text, ""];
 
   return (
     <span
       className={[
         domain ? "brand-mark brand-mark--domain" : "brand-mark",
-        !domain && locale === "ko" ? "brand-mark--ko" : "brand-mark--en",
+        "brand-mark--en",
         className,
       ]
         .filter(Boolean)

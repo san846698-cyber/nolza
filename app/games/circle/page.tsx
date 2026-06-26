@@ -372,6 +372,7 @@ export default function CircleGame() {
           <ResultScreen
             locale={locale}
             currentGameId="circle"
+            reveal={false}
             eyebrow={t("원형 검사 결과", "Circle report")}
             title={verdict.title}
             score={result.accuracy.toFixed(1)}

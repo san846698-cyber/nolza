@@ -111,7 +111,7 @@ export default function SubwayQuiz() {
         <div className="border-b border-border">
           <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
             <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-              ← 놀자 홈으로
+              ← nolza 홈으로
             </Link>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function SubwayQuiz() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            ← 놀자 홈으로
+            ← nolza 홈으로
           </Link>
           <div className="text-xs text-gray-500">
             <span className="font-medium text-white">{idx + 1}</span> / {TOTAL_PICKS}

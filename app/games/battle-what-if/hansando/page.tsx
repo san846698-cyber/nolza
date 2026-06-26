@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   if (!picks) {
     return {
-      title: "이순신이라면 — 한산도의 다섯 갈림길 | 놀자.fun",
+      title: "이순신이라면 — 한산도의 다섯 갈림길 | nolza.fun",
       description:
         "일본 수군 73척 앞에서, 이순신의 다섯 갈림길. 당신의 지휘 유형은?",
       openGraph: {
@@ -47,7 +47,7 @@ export async function generateMetadata({
   const sharedUrl = `${ROUTE}?p=${code}`;
 
   return {
-    title: `${title} | 놀자.fun`,
+    title: `${title} | nolza.fun`,
     description: desc,
     openGraph: {
       title,

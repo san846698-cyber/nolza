@@ -139,7 +139,7 @@ body {
 }
 
 .game-intro {
-  border-radius: 28px !important;
+  border-radius: 14px !important;
   border-color: rgba(41, 33, 24, 0.1) !important;
   background:
     radial-gradient(circle at 18% 0%, rgba(211, 93, 69, 0.12), transparent 20rem),
@@ -168,10 +168,10 @@ body {
 .primary,
 .actions .share,
 .result-actions__btn--primary {
-  border-radius: 999px !important;
-  background: linear-gradient(135deg, #d8664e 0%, #a84a38 52%, #8b642f 100%) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #d8664e, #a84a38) !important;
   color: #fffaf0 !important;
-  box-shadow: 0 16px 38px rgba(164, 74, 50, 0.24), inset 0 1px 0 rgba(255,255,255,0.24) !important;
+  box-shadow: 0 12px 30px rgba(164, 74, 50, 0.2), inset 0 1px 0 rgba(255,255,255,0.2) !important;
 }
 
 .game-intro__start:hover,
@@ -185,7 +185,7 @@ body {
 .secondary,
 .actions .retry,
 .result-actions__btn--secondary {
-  border-radius: 999px !important;
+  border-radius: 10px !important;
   border-color: rgba(41, 33, 24, 0.18) !important;
   background: rgba(255, 255, 255, 0.66) !important;
   color: #221a14 !important;
@@ -204,7 +204,7 @@ body {
 .insight-grid > *,
 .score-section,
 .test-basis {
-  border-radius: 24px !important;
+  border-radius: 12px !important;
   border-color: rgba(41, 33, 24, 0.1) !important;
   background-color: rgba(255, 253, 248, 0.84) !important;
   box-shadow: 0 18px 48px rgba(42, 30, 18, 0.08), inset 0 1px 0 rgba(255,255,255,0.82) !important;
@@ -214,7 +214,7 @@ body {
 .answers button,
 .choice,
 .option-button {
-  border-radius: 18px !important;
+  border-radius: 10px !important;
   border-color: rgba(41, 33, 24, 0.12) !important;
   background: rgba(255, 255, 255, 0.72) !important;
   color: #211812 !important;
@@ -258,7 +258,7 @@ a:focus-visible {
 }
 
 .result-screen__card {
-  border-radius: 28px !important;
+  border-radius: 14px !important;
   border-color: rgba(41, 33, 24, 0.1) !important;
   background:
     radial-gradient(circle at 12% 0%, rgba(211, 93, 69, 0.12), transparent 20rem),
@@ -275,7 +275,7 @@ a:focus-visible {
 }
 
 .recommended-games {
-  border-radius: 28px !important;
+  border-radius: 14px !important;
   background:
     radial-gradient(circle at 16% 0%, rgba(211, 93, 69, 0.12), transparent 22rem),
     linear-gradient(145deg, rgba(255, 253, 248, 0.94), rgba(255, 244, 226, 0.9)) !important;
@@ -2376,6 +2376,55 @@ img {
   background: linear-gradient(135deg, #ffe0a8, #f1865d) !important;
 }
 
+/* 애니 테스트(다크 테마) — '이 테스트도 해보세요' 블록도 다크 글래스로.
+   tone이 midnight/burgundy 등이라 .result-screen--dark 다크 변형이 안 먹어서
+   .anime-test 스코프로 직접 오버라이드(흰 카드가 다크 배경 위에 박히는 문제 해결). */
+.anime-test .recommended-games {
+  border-color: rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.05), transparent 24rem),
+    linear-gradient(135deg, rgba(14, 16, 20, 0.74), rgba(8, 9, 12, 0.68)) !important;
+  color: #f2f5f8 !important;
+  box-shadow: 0 28px 76px rgba(0, 0, 0, 0.42);
+}
+.anime-test .recommended-games__head {
+  color: #f4f7fa !important;
+}
+.anime-test .recommended-games__head small {
+  color: #ffce8a !important;
+}
+.anime-test .recommended-games__item {
+  border-color: rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.04)) !important;
+  color: #f2f5f8 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 16px 38px rgba(0, 0, 0, 0.24);
+}
+.anime-test .recommended-games__item:hover {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.07)) !important;
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34);
+}
+.anime-test .recommended-games__kicker {
+  color: #ffce8a !important;
+}
+.anime-test .recommended-games__item strong {
+  color: #ffffff !important;
+}
+.anime-test .recommended-games__desc {
+  color: rgba(242, 245, 248, 0.8) !important;
+}
+.anime-test .recommended-games__cta {
+  border-color: rgba(255, 201, 135, 0.35);
+  color: #1f1510 !important;
+  background: linear-gradient(135deg, #ffd08a, #e6764f) !important;
+  box-shadow: 0 14px 30px rgba(230, 118, 79, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.anime-test .recommended-games__item:hover .recommended-games__cta {
+  background: linear-gradient(135deg, #ffe0a8, #f1865d) !important;
+}
+
 @media (max-width: 640px) {
   .game-intro {
     padding: 24px 18px;
@@ -3126,10 +3175,11 @@ img {
 .trust-hero h1 {
   max-width: 760px;
   margin: 0;
-  font-family: var(--font-fraunces), var(--font-noto-serif-kr), serif;
-  font-size: clamp(2.35rem, 7vw, 4.4rem);
-  line-height: 1;
-  letter-spacing: 0;
+  font-family: var(--font-noto-sans-kr), "Inter", system-ui, -apple-system, sans-serif;
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 800;
 }
 .trust-hero span {
   display: block;
@@ -3336,7 +3386,7 @@ body {
 }
 
 .game-intro {
-  border-radius: 28px !important;
+  border-radius: 14px !important;
   border-color: rgba(41, 33, 24, 0.1) !important;
   background:
     radial-gradient(circle at 18% 0%, rgba(211, 93, 69, 0.12), transparent 20rem),
@@ -3365,10 +3415,10 @@ body {
 .primary,
 .actions .share,
 .result-actions__btn--primary {
-  border-radius: 999px !important;
-  background: linear-gradient(135deg, #d8664e 0%, #a84a38 52%, #8b642f 100%) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #d8664e, #a84a38) !important;
   color: #fffaf0 !important;
-  box-shadow: 0 16px 38px rgba(164, 74, 50, 0.24), inset 0 1px 0 rgba(255,255,255,0.24) !important;
+  box-shadow: 0 12px 30px rgba(164, 74, 50, 0.2), inset 0 1px 0 rgba(255,255,255,0.2) !important;
 }
 
 .game-intro__start:hover,
@@ -3382,7 +3432,7 @@ body {
 .secondary,
 .actions .retry,
 .result-actions__btn--secondary {
-  border-radius: 999px !important;
+  border-radius: 10px !important;
   border-color: rgba(41, 33, 24, 0.18) !important;
   background: rgba(255, 255, 255, 0.66) !important;
   color: #221a14 !important;
@@ -3401,7 +3451,7 @@ body {
 .insight-grid > *,
 .score-section,
 .test-basis {
-  border-radius: 24px !important;
+  border-radius: 12px !important;
   border-color: rgba(41, 33, 24, 0.1) !important;
   background-color: rgba(255, 253, 248, 0.84) !important;
   box-shadow: 0 18px 48px rgba(42, 30, 18, 0.08), inset 0 1px 0 rgba(255,255,255,0.82) !important;
@@ -3411,7 +3461,7 @@ body {
 .answers button,
 .choice,
 .option-button {
-  border-radius: 18px !important;
+  border-radius: 10px !important;
   border-color: rgba(41, 33, 24, 0.12) !important;
   background: rgba(255, 255, 255, 0.72) !important;
   color: #211812 !important;
@@ -3455,7 +3505,7 @@ a:focus-visible {
 }
 
 .result-screen__card {
-  border-radius: 28px !important;
+  border-radius: 14px !important;
   border-color: rgba(41, 33, 24, 0.1) !important;
   background:
     radial-gradient(circle at 12% 0%, rgba(211, 93, 69, 0.12), transparent 20rem),
@@ -3472,7 +3522,7 @@ a:focus-visible {
 }
 
 .recommended-games {
-  border-radius: 28px !important;
+  border-radius: 14px !important;
   background:
     radial-gradient(circle at 16% 0%, rgba(211, 93, 69, 0.12), transparent 22rem),
     linear-gradient(145deg, rgba(255, 253, 248, 0.94), rgba(255, 244, 226, 0.9)) !important;
@@ -8489,7 +8539,7 @@ body {
 .secondary,
 .actions .retry,
 .result-actions__btn--secondary {
-  border-radius: 999px !important;
+  border-radius: 10px !important;
   border: 1px solid var(--border) !important;
   background: #FFFFFF !important;
   color: var(--text-primary) !important;
@@ -8668,15 +8718,10 @@ body {
 .readable-question__prompt span {
   color: var(--accent) !important;
 }
-/* ↓ connector between situation and question */
+/* connector between situation and question — removed in QUESTION CRAFT PASS
+   (flow now reads via spacing/typography, not a literal arrow) */
 .readable-question__situation::after {
-  content: "↓";
-  display: block;
-  margin: 12px auto -4px;
-  width: max-content;
-  color: var(--text-secondary);
-  font-size: 18px;
-  opacity: 0.6;
+  content: none;
 }
 
 /* ── Form inputs ──────────────────────────────────────────────────────── */
@@ -9250,4 +9295,418 @@ a:focus-visible {
     font-size: 12px !important;
     padding: 5px 12px !important;
   }
+}
+
+/* === 애니 테스트 결과 카드 — per-character 색 강조 (result-screen--accent) === */
+.result-screen--accent .result-screen__card {
+  border-color: color-mix(in srgb, var(--rs-accent) 34%, rgba(255, 255, 255, 0.1)) !important;
+  background:
+    radial-gradient(circle at 16% 0%, color-mix(in srgb, var(--rs-accent) 30%, transparent), transparent 22rem),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(12, 12, 16, 0.66) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px color-mix(in srgb, var(--rs-accent) 24%, transparent),
+    0 26px 64px -34px rgba(0, 0, 0, 0.85) !important;
+}
+.result-screen--accent .result-screen__eyebrow {
+  color: var(--rs-accent) !important;
+  border-color: color-mix(in srgb, var(--rs-accent) 55%, transparent) !important;
+}
+.result-screen--accent .result-screen__title {
+  color: #ffffff !important;
+}
+.result-screen--accent .result-screen__emoji {
+  filter: drop-shadow(0 6px 22px color-mix(in srgb, var(--rs-accent) 55%, transparent)) !important;
+}
+.result-screen--accent .result-screen__divider {
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--rs-accent) 60%, transparent), transparent) !important;
+  height: 1px !important;
+  border: 0 !important;
+}
+.result-screen--accent .result-screen__details li {
+  border-color: color-mix(in srgb, var(--rs-accent) 34%, rgba(255, 255, 255, 0.12)) !important;
+  background: color-mix(in srgb, var(--rs-accent) 8%, rgba(255, 255, 255, 0.03)) !important;
+  color: #eef0f2 !important;
+}
+.result-screen--accent .result-screen__desc {
+  color: #d6d9dd !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CRAFT UNIFICATION PASS (appended last → wins over the layered 2026 passes)
+   Goal: every shared-CSS test matches the anime gold-standard *craft*:
+   clean sans titles, normalized weight hierarchy (no 900/950), crisp corners
+   (cards 14px, answers/CTA 10px), square CTAs (no pills).
+   COLORS / BACKGROUNDS ARE LEFT UNTOUCHED — per-test themes stay intact.
+   Only border-radius / font-family / font-weight are normalized here.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* — Titles: clean sans, serif removed, weight 800 (was serif/900) — */
+.game-intro__title,
+.result-screen__title,
+.result-title h2,
+.result-card h2,
+.defense-page .hero h1,
+.thinking-hero h1,
+.value-hero h1,
+.stoic-hero h1,
+.crush-test .hero-card h1,
+.breaking-page .intro h1,
+.scene-page .intro h1,
+.value-test .result-title h2,
+.stoic-test .result-title h2,
+.thinking-test .result-title h2,
+.breaking-page .result-title h2,
+.scene-page .result-title h2 {
+  font-family: var(--font-noto-sans-kr), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* cap oversized intro title (was up to 42–56px+) */
+.game-intro__title {
+  font-size: clamp(28px, 5.6vw, 44px) !important;
+}
+
+/* — Eyebrows / labels / display numerals: 800, not 900 — */
+.game-intro__eyebrow,
+.result-screen__eyebrow,
+.result-screen__score span,
+.result-screen__score small,
+.likert-question__head span,
+.likert-question__head strong,
+.likert-question__labels span,
+.likert-item p span,
+.likert-scale button,
+.readable-question__situation span,
+.readable-question__prompt span {
+  font-weight: 800 !important;
+}
+
+/* — Question prompt heading: emphasis 800 (was 850) — */
+.readable-question__prompt h2,
+.question-card .readable-question h2,
+.thinking-card .readable-question h2,
+.value-card .readable-question h2,
+.stoic-card .readable-question h2,
+.crush-card .readable-question h2,
+.scene-card .readable-question h2,
+.breaking-card .readable-question h2,
+.test-card .readable-question h2 {
+  font-weight: 800 !important;
+}
+
+/* — Answer / choice body text: 700 (was 760) — */
+.question-card .answers strong,
+.thinking-card .answer strong,
+.value-card .answer strong,
+.stoic-card .answer strong,
+.crush-card .answer strong,
+.scene-card .choices strong,
+.breaking-card .choices strong,
+.test-card .choices strong,
+.test-card .answer strong,
+.likert-item p {
+  font-weight: 700 !important;
+}
+
+/* — Crisp corners: surfaces/cards 14px (was 20–22px) — */
+.question-card,
+.thinking-card,
+.value-card,
+.stoic-card,
+.crush-card,
+.scene-card,
+.breaking-card,
+.result-card,
+.result-box,
+.deep-section,
+.insight-grid > *,
+.score-section,
+.test-basis,
+.result-screen__card,
+.recommended-games,
+.recommended-games__item,
+.related a,
+.game-intro {
+  border-radius: 14px !important;
+}
+
+/* — Answer / choice buttons: 10px (was 14–16px) — */
+.answer,
+.answers button,
+.choice,
+.option-button,
+.question-card .answers button,
+.thinking-card .answer,
+.value-card .answer,
+.stoic-card .answer,
+.crush-card .answer,
+.scene-card .choices button,
+.breaking-card .choices button,
+.test-card .choices button,
+.test-card .answer {
+  border-radius: 10px !important;
+}
+
+/* — Primary + secondary CTA: square 10px, no pills (was 999px) — */
+.game-intro__start,
+.primary,
+.actions .share,
+.result-actions__btn--primary,
+.secondary,
+.actions .retry,
+.result-actions__btn--secondary,
+.likert-submit {
+  border-radius: 10px !important;
+}
+
+/* — Mobile: keep corners crisp (override 20–22px re-rounding) — */
+@media (max-width: 640px) {
+  .game-intro,
+  .result-screen__card,
+  .recommended-games,
+  .question-card,
+  .thinking-card,
+  .value-card,
+  .stoic-card,
+  .crush-card,
+  .scene-card,
+  .breaking-card,
+  .result-card,
+  .test-card {
+    border-radius: 12px !important;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   INTRO BOX REMOVAL (appended last → wins)
+   Intro/start screens lose their card box → content sits directly on the page
+   background for an open, immersive feel (intro screen itself is kept).
+   Image-bg / retro tests (anime3, deep-fear, meme-age) keep their box for scrim.
+   For the dark tests the intro title is forced back to LIGHT (earlier layers
+   pinned it dark for the old white card) so copy stays legible on the dark page.
+   Light tests (thinking/value/stoic) keep dark copy on their light page.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ---- de-box every shared-hero intro (clean gradient/solid backgrounds) ---- */
+.scene-page .intro,
+.breaking-page .intro,
+.defense-page .hero,
+.defense-page .hero-content,
+.thinking-hero,
+.value-hero,
+.stoic-hero {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* dark-page intros: title back to light + sans (was pinned dark for the old card) */
+.scene-page .intro h1 {
+  color: #fff3df !important;
+  font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif !important;
+}
+.breaking-page .intro h1 {
+  color: #fff2e2 !important;
+  font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif !important;
+}
+.defense-page .hero h1 {
+  color: #f8efe2 !important;
+  font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif !important;
+}
+
+/* ---- kr-jp-signal — intro (.hero) is already box-less; keep quiz/result + the
+   perspective .panel widget on their dark surfaces (not the intro box) ---- */
+.signal-page .panel,
+.signal-page .question-card,
+.signal-page .explanation,
+.signal-page .result-card {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 14px !important;
+}
+.signal-page .result-card h2,
+.signal-page .question-card h2 {
+  color: #f7f3ea !important;
+  font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   QUESTION CRAFT PASS  (appended last → wins the cascade)
+   ─────────────────────────────────────────────────────────────────────────
+   Premium overhaul of the SHARED in-test question screen rendered by
+   app/components/game/ReadableQuestion.tsx (.readable-question*). Replaces the
+   old flat gray "상황" box + literal ↓ arrow + heavy 850/900 serif-ish title.
+
+   Affects the legacy shared tests: crush-type, value-conflict, thinking-pattern,
+   stoic-control, defense-mechanism, scene-choice, breaking-point, kr-jp-signal,
+   plus other app/games psych tests using ReadableQuestion.
+
+   NOT affected: anime tests (demon-slayer / jujutsu-kaisen / chainsaw-man) —
+   they scope their own craft styles under `.anime-card :global(...)` and are
+   the reference this pass matches. Result/intro screens untouched.
+
+   Craft formula:
+   • Situation → de-boxed quote block with a 3px LEFT accent bar (var(--accent)),
+     no gray fill, no border, no arrow.
+   • Labels (상황/질문 eyebrows) → calm uppercase caps, weight 700, accent color.
+   • Question h2 → clean sans (noto-sans-kr), weight 720, tight tracking, lh 1.4.
+
+   Contrast: we DO NOT set a `color` on the situation paragraph OR the h2 — each
+   test's own rules keep them light (dark-themed: scene/breaking/defense/kr-jp
+   navy) or dark (light-themed: thinking/value/stoic/crush). Only the accent bar
+   + label use var(--accent), which is theme-correct on both light and dark
+   surfaces. This pass only restyles structure + typography, never text color.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* one calm column: situation → question → answers, consistent rhythm */
+.readable-question {
+  display: grid !important;
+  gap: clamp(16px, 2.2vw, 22px) !important;
+  margin: 12px 0 clamp(22px, 3.4vw, 34px) !important;
+}
+.readable-question__situation,
+.readable-question__prompt {
+  display: grid !important;
+  gap: 8px !important;
+}
+
+/* situation: de-boxed quote block with a left accent bar (no gray box, no arrow) */
+.readable-question__situation {
+  margin: 0 auto !important;
+  max-width: 600px !important;
+  text-align: left !important;
+  padding: 2px 0 4px 16px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-left: 3px solid color-mix(in srgb, var(--accent) 78%, transparent) !important;
+  border-radius: 0 !important;
+}
+.readable-question__situation p {
+  font-style: normal !important; /* drop the old italic */
+  line-height: 1.55 !important;
+  /* NOTE: color intentionally left to each test's own rule for correct
+     dark-vs-light contrast — do not pin a color here */
+}
+/* kill the old ↓ connector everywhere */
+.readable-question__situation::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* neutralize the older per-test situation borders (higher specificity) so the
+   quote bar is the only edge — keeps the de-boxed look on every test */
+.defense-page .question-card .readable-question__situation,
+.thinking-test .thinking-card:not(:has(.result)) .readable-question__situation,
+.value-test .value-card:not(:has(.result)) .readable-question__situation,
+.stoic-test .stoic-card:not(:has(.result)) .readable-question__situation,
+.crush-test .quiz-card:not(:has(.result)) .readable-question__situation,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__situation,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__situation {
+  margin: 0 auto !important;
+  max-width: 600px !important;
+  text-align: left !important;
+  padding: 2px 0 4px 16px !important;
+  border: 0 !important;
+  border-left: 3px solid color-mix(in srgb, var(--accent) 78%, transparent) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* labels (상황 / 질문 eyebrows): calmer caps, weight 700, accent — not shouty */
+.readable-question__situation span,
+.readable-question__prompt span {
+  color: var(--accent) !important;
+  font-family: var(--font-noto-sans-kr), var(--font-inter), system-ui, sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+/* question title: clean sans, 720 weight, tight tracking, lh ~1.4 — never serif */
+.readable-question__prompt h2,
+.question-card .readable-question h2,
+.thinking-card .readable-question h2,
+.value-card .readable-question h2,
+.stoic-card .readable-question h2,
+.crush-card .readable-question h2,
+.scene-card .readable-question h2,
+.breaking-card .readable-question h2,
+.test-card .readable-question h2,
+.defense-page .question-card .readable-question__prompt h2,
+.thinking-test .thinking-card:not(:has(.result)) .readable-question__prompt h2,
+.value-test .value-card:not(:has(.result)) .readable-question__prompt h2,
+.stoic-test .stoic-card:not(:has(.result)) .readable-question__prompt h2,
+.crush-test .quiz-card:not(:has(.result)) .readable-question__prompt h2,
+.breaking-page .test-card:not(:has(.result-view)) .readable-question__prompt h2,
+.scene-page .scene-card:not(:has(.result-view)) .readable-question__prompt h2 {
+  font-family: var(--font-noto-sans-kr), var(--font-inter), system-ui, sans-serif !important;
+  font-weight: 720 !important;
+  font-size: clamp(1.5rem, 3vw, 2.1rem) !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.4 !important;
+  /* color intentionally NOT set here — each test's own h2 color rule wins,
+     preserving light text on dark themes and dark text on light themes */
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   RECOMMENDED-GAMES CTA — craft pass (last-wins)
+   "테스트하기/플레이하기" 버튼: 3색 그라데이션·알약 제거 → 평평한 솔리드 + 각진 모서리.
+   라이트 추천 패널(애니/일반 테스트 결과) = 잉크블랙 버튼 / 다크 셸 = 크림 버튼.
+   ════════════════════════════════════════════════════════════════════════ */
+.recommended-games__cta,
+.result-screen--midnight .recommended-games__cta,
+.result-screen--paper .recommended-games__cta,
+.result-screen--light .recommended-games__cta {
+  border-radius: 10px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: #18181b !important;
+  color: #fbfbfa !important;
+  font-style: normal !important;
+  font-weight: 650 !important;
+  padding: 11px 18px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16) !important;
+}
+.recommended-games__item:hover .recommended-games__cta,
+.result-screen--midnight .recommended-games__item:hover .recommended-games__cta {
+  background: #2b2b31 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22) !important;
+}
+.result-screen--dark .recommended-games__cta,
+[data-game-shell="dark"] .recommended-games__cta,
+.mbti-depth-result .recommended-games__cta,
+.kbti-page .recommended-games__cta {
+  background: #f4f1ea !important;
+  color: #18150f !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+}
+.result-screen--dark .recommended-games__item:hover .recommended-games__cta,
+[data-game-shell="dark"] .recommended-games__item:hover .recommended-games__cta,
+.mbti-depth-result .recommended-games__item:hover .recommended-games__cta,
+.kbti-page .recommended-games__item:hover .recommended-games__cta {
+  background: #ffffff !important;
+}
+
+/* 추천 카드 테두리 — 흰 패널에 묻히지 않게 옅은 다크 헤어라인(라이트) / 라이트 헤어라인(다크 셸) */
+.recommended-games__item,
+.result-screen--midnight .recommended-games__item,
+.result-screen--paper .recommended-games__item,
+.result-screen--light .recommended-games__item {
+  border: 1px solid rgba(17, 17, 20, 0.11) !important;
+}
+.recommended-games__item:hover,
+.result-screen--midnight .recommended-games__item:hover,
+.result-screen--paper .recommended-games__item:hover,
+.result-screen--light .recommended-games__item:hover {
+  border-color: rgba(17, 17, 20, 0.2) !important;
+}
+.result-screen--dark .recommended-games__item,
+[data-game-shell="dark"] .recommended-games__item,
+.mbti-depth-result .recommended-games__item,
+.kbti-page .recommended-games__item {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }

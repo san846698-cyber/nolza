@@ -29,6 +29,7 @@ import {
   type PlaystyleType,
 } from "@/lib/playstyle/core";
 import { useLocale } from "@/hooks/useLocale";
+import { m, QuestionTransition, useReducedMotion } from "@/app/components/motion/Motion";
 
 type Phase = "intro" | "quiz" | "result";
 
@@ -217,7 +218,7 @@ export default function PlaystyleTestClient({
             </div>
 
             {phase === "quiz" ? (
-              <>
+              <QuestionTransition motionKey={questionIndex}>
                 <h2 className="psx-q">{pick(currentQuestion.q, currentQuestion.qEn)}</h2>
                 <div className="psx-opts">
                   {currentQuestion.answers.map((answer, index) => (
@@ -232,7 +233,7 @@ export default function PlaystyleTestClient({
                     </button>
                   ))}
                 </div>
-              </>
+              </QuestionTransition>
             ) : (
               <ResultView
                 config={config}
@@ -349,8 +350,14 @@ function ResultView({
   const name = localized ? type.en : type.ko;
   const sub = localized ? type.ko : type.en;
   const tags = localized ? type.tagsEn ?? type.tags : type.tags;
+  const reduce = useReducedMotion();
   return (
-    <section className="psx-result">
+    <m.section
+      className="psx-result"
+      initial={{ opacity: 0, scale: reduce ? 1 : 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: reduce ? 0.15 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+    >
       {shared ? <span className="psx-shared">{pick("공유된 결과", "Shared result")}</span> : null}
 
       <p className="psx-result__eyebrow">
@@ -392,7 +399,7 @@ function ResultView({
         </button>
         <p className="psx-status" role="status" aria-live="polite">{shareStatus}</p>
       </div>
-    </section>
+    </m.section>
   );
 }
 
@@ -428,7 +435,7 @@ const styles = `
   .ps-test .psx-hero,
   .ps-test .psx-card {
     border: 1px solid var(--ps-border);
-    border-radius: 24px;
+    border-radius: 14px;
     background: var(--ps-card-bg);
     box-shadow: 0 30px 80px rgba(2, 6, 18, 0.55);
   }
@@ -437,8 +444,11 @@ const styles = `
     display: block;
     width: min(100%, 840px);
     margin: 0 auto;
-    padding: clamp(28px, 5vw, 60px);
+    padding: clamp(28px, 5vw, 60px) 0;
     overflow: hidden;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
   }
   .ps-test .psx-hero-copy { width: min(100%, 720px); }
 
@@ -457,9 +467,9 @@ const styles = `
   .ps-test .psx-title {
     margin: 22px 0 0;
     line-height: 1.1;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     font-weight: 800;
-    font-size: clamp(38px, 8vw, 60px);
+    font-size: clamp(32px, 6.4vw, 54px);
   }
   .ps-test .psx-title__top { display: block; color: #f3f7ff; }
   .ps-test .psx-title__accent { display: block; color: var(--ps-accent); }
@@ -495,7 +505,7 @@ const styles = `
     border: 0;
     cursor: pointer;
     min-height: 56px;
-    border-radius: 16px;
+    border-radius: 10px;
     padding: 0 26px;
     font-size: 17px;
     font-weight: 800;
@@ -549,14 +559,14 @@ const styles = `
   .ps-test .psx-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
   .ps-test .psx-opt {
     display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center;
-    border: 1px solid var(--ps-border); border-radius: 16px;
+    border: 1px solid var(--ps-border); border-radius: 10px;
     background: rgba(140,170,215,0.05); color: #e9f0fa; cursor: pointer;
     padding: 17px 18px; text-align: left;
     transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
   }
   .ps-test .psx-opt__badge {
-    display: grid; place-items: center; width: 32px; height: 32px; border-radius: 11px;
-    background: var(--ps-accent); color: var(--ps-accent-ink); font-size: 14px; font-weight: 900;
+    display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px;
+    background: var(--ps-accent); color: var(--ps-accent-ink); font-size: 14px; font-weight: 800;
   }
   .ps-test .psx-opt strong { font-size: 16px; line-height: 1.45; font-weight: 600; }
   .ps-test .psx-opt:hover {
@@ -577,7 +587,7 @@ const styles = `
 
   .ps-test .psx-poster {
     position: relative; width: 100%; max-width: 440px; margin: 0 auto;
-    aspect-ratio: 4 / 5; overflow: hidden; border-radius: 22px;
+    aspect-ratio: 4 / 5; overflow: hidden; border-radius: 14px;
     border: 1px solid var(--ps-accent); box-shadow: 0 26px 64px rgba(2, 6, 18, 0.62);
     background: #0d1830;
   }
@@ -589,9 +599,9 @@ const styles = `
     font-size: clamp(96px, 26vw, 150px); line-height: 1; margin-top: -10%;
     filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.5));
   }
-  .ps-test .psx-media__role { font-size: clamp(28px, 7vw, 40px); font-weight: 900; letter-spacing: 0.04em; }
+  .ps-test .psx-media__role { font-size: clamp(28px, 7vw, 40px); font-weight: 800; letter-spacing: 0.04em; }
   .ps-test .psx-media--fallback span {
-    color: var(--ps-accent); font-size: clamp(30px, 7vw, 46px); font-weight: 900; text-align: center; padding: 16px;
+    color: var(--ps-accent); font-size: clamp(30px, 7vw, 46px); font-weight: 800; text-align: center; padding: 16px;
   }
 
   .ps-test .psx-poster__veil {
@@ -631,7 +641,7 @@ const styles = `
   @media (max-width: 520px) {
     .ps-test { padding-inline: 14px; }
     .ps-test .psx-hero,
-    .ps-test .psx-card { border-radius: 20px; }
+    .ps-test .psx-card { border-radius: 14px; }
     .ps-test .psx-actions .psx-cta,
     .ps-test .psx-actions .psx-ghost { flex: 1 1 100%; width: 100%; }
   }

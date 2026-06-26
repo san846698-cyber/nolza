@@ -356,7 +356,7 @@ export default function HistoryIfPage() {
         overflowX: "clip",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label={t("놀자 홈으로", "Back to nolza home")}>←</Link>
+      <Link href="/" className="back-arrow dark" aria-label={t("nolza 홈으로", "Back to nolza home")}>←</Link>
       <div style={{ maxWidth: 1180, margin: "0 auto", padding: "84px 20px 88px" }}>
         <header style={{ marginBottom: 24 }}>
           <p style={eyebrowStyle}>{t("대체 타임라인 시뮬레이터", "Alternate timeline simulator")}</p>

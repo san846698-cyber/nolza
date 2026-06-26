@@ -276,6 +276,7 @@ export default function PpalliGame() {
         <ResultScreen
           locale={locale}
           currentGameId="ppalli"
+          reveal={false}
           eyebrow={t("빨리빨리 압박 테스트", "Ppalli pressure test")}
           title={tier.title}
           score={`${totalScore}`}

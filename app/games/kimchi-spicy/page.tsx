@@ -88,7 +88,7 @@ export default function KimchiSpicy() {
       <div className="border-b border-border" style={{ backgroundColor: "rgba(255, 59, 48, 0.06)" }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            {t("← 놀자 홈으로", "← Back to nolza")}
+            {t("← nolza 홈으로", "← Back to nolza")}
           </Link>
           <button
             type="button"
@@ -205,7 +205,7 @@ export default function KimchiSpicy() {
 
         <div className="mt-12 flex justify-center">
           <Link href="/" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent">
-            {t("← 놀자 홈으로", "← Back to nolza")}
+            {t("← nolza 홈으로", "← Back to nolza")}
           </Link>
         </div>
       </div>

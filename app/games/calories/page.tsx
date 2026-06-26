@@ -110,7 +110,7 @@ export default function CaloriesGame() {
         <div className="mx-auto max-w-5xl px-5 py-4 md:px-8">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-              {t("← 놀자 홈으로", "← Back to nolza")}
+              {t("← nolza 홈으로", "← Back to nolza")}
             </Link>
             <div className="text-right">
               <div className="text-xs text-gray-500">{t("총 칼로리", "Total calories")}</div>
@@ -236,7 +236,7 @@ export default function CaloriesGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            {t("← 놀자 홈으로", "← Back to nolza")}
+            {t("← nolza 홈으로", "← Back to nolza")}
           </Link>
         </div>
       </div>

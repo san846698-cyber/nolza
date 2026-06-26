@@ -257,7 +257,7 @@ export default function CrushTypeTestClient(): ReactElement {
         .hero-card,
         .quiz-card {
           border: 1px solid rgba(92, 48, 49, 0.18);
-          border-radius: 32px;
+          border-radius: 14px;
           background:
             linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 239, 219, 0.62)),
             #fff7eb;
@@ -283,9 +283,16 @@ export default function CrushTypeTestClient(): ReactElement {
           margin: 0 0 12px;
           color: #ba3a58;
           font-size: 13px;
-          font-weight: 900;
-          letter-spacing: 0.08em;
+          font-weight: 800;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
+        }
+
+        .eyebrow {
+          display: inline-block;
+          padding: 7px 14px;
+          border: 1px solid rgba(186, 58, 88, 0.5);
+          border-radius: 999px;
         }
 
         h1,
@@ -293,12 +300,12 @@ export default function CrushTypeTestClient(): ReactElement {
           margin: 0;
           letter-spacing: 0;
           line-height: 1.12;
-          font-family: var(--font-noto-serif-kr), "Noto Serif KR", serif;
+          font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
         }
 
         h1 {
           max-width: 720px;
-          font-size: clamp(38px, 6.5vw, 72px);
+          font-size: clamp(30px, 5vw, 50px);
         }
 
         h2 {
@@ -336,7 +343,7 @@ export default function CrushTypeTestClient(): ReactElement {
           margin: 18px 0 0;
           color: #a62d4e;
           font-size: 14px;
-          font-weight: 900;
+          font-weight: 750;
         }
 
         .primary,
@@ -344,10 +351,10 @@ export default function CrushTypeTestClient(): ReactElement {
           border: 0;
           cursor: pointer;
           min-height: 52px;
-          border-radius: 999px;
+          border-radius: 10px;
           padding: 0 24px;
           font-size: 16px;
-          font-weight: 900;
+          font-weight: 750;
           transition: transform 160ms ease, box-shadow 160ms ease;
         }
 
@@ -355,6 +362,11 @@ export default function CrushTypeTestClient(): ReactElement {
           color: #fffaf4;
           background: linear-gradient(135deg, #d84462, #9e2547);
           box-shadow: 0 18px 36px rgba(158, 37, 71, 0.28);
+        }
+
+        .hero-copy .primary {
+          display: block;
+          width: 100%;
         }
 
         .secondary {
@@ -393,7 +405,7 @@ export default function CrushTypeTestClient(): ReactElement {
         .progress-bar {
           height: 9px;
           overflow: hidden;
-          border-radius: 999px;
+          border-radius: 10px;
           background: rgba(92, 48, 49, 0.12);
         }
 
@@ -417,7 +429,7 @@ export default function CrushTypeTestClient(): ReactElement {
           gap: 12px;
           align-items: start;
           border: 1px solid rgba(92, 48, 49, 0.16);
-          border-radius: 20px;
+          border-radius: 10px;
           background: rgba(255, 255, 255, 0.58);
           color: #301922;
           cursor: pointer;
@@ -436,7 +448,7 @@ export default function CrushTypeTestClient(): ReactElement {
           background: #321a25;
           color: #fff4eb;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 750;
         }
 
         .answer strong {
@@ -457,12 +469,12 @@ export default function CrushTypeTestClient(): ReactElement {
         .shared-label {
           width: max-content;
           border: 1px solid rgba(216, 68, 98, 0.24);
-          border-radius: 999px;
+          border-radius: 10px;
           background: rgba(216, 68, 98, 0.08);
           color: #9e2547;
           padding: 8px 12px;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 750;
         }
 
         .result-title {
@@ -472,14 +484,14 @@ export default function CrushTypeTestClient(): ReactElement {
 
         .result-title h2 {
           margin: 0;
-          font-size: clamp(34px, 6vw, 64px);
+          font-size: clamp(28px, 5vw, 48px);
         }
 
         .one-liner {
           margin: 0;
           color: #ba3a58;
           font-size: clamp(18px, 2vw, 22px);
-          font-weight: 900;
+          font-weight: 750;
         }
 
         .result-description {
@@ -497,7 +509,7 @@ export default function CrushTypeTestClient(): ReactElement {
 
         .result-box {
           border: 1px solid rgba(92, 48, 49, 0.15);
-          border-radius: 18px;
+          border-radius: 12px;
           background: rgba(255, 255, 255, 0.58);
           padding: 16px;
         }
@@ -507,7 +519,7 @@ export default function CrushTypeTestClient(): ReactElement {
           margin-bottom: 8px;
           color: #ba3a58;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 750;
         }
 
         .result-box p {
@@ -549,7 +561,7 @@ export default function CrushTypeTestClient(): ReactElement {
 
           .hero-card,
           .quiz-card {
-            border-radius: 24px;
+            border-radius: 14px;
           }
 
           .primary,

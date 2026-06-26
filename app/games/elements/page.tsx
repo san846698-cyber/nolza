@@ -201,7 +201,7 @@ export default function ElementsGame() {
 
   const handleShare = async () => {
     const text = t(
-      `나 놀자.fun에서 한국 원소 ${discovered.length}개 조합 발견했다 (${progress.toFixed(0)}%) → nolza.fun/games/elements`,
+      `나 nolza.fun에서 한국 원소 ${discovered.length}개 조합 발견했다 (${progress.toFixed(0)}%) → nolza.fun/games/elements`,
       `I discovered ${discovered.length} Korean element combos on nolza.fun (${progress.toFixed(0)}%) → nolza.fun/games/elements`,
     );
     try {
@@ -216,7 +216,7 @@ export default function ElementsGame() {
       <div className="border-b border-border">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            {t("← 놀자 홈으로", "← Back to nolza home")}
+            {t("← nolza 홈으로", "← Back to nolza home")}
           </Link>
           <div className="text-xs text-gray-500">
             <span className="font-medium text-white">{discovered.length}</span>
@@ -358,7 +358,7 @@ export default function ElementsGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            {t("← 놀자 홈으로", "← Back to nolza home")}
+            {t("← nolza 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

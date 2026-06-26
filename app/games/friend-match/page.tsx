@@ -525,7 +525,7 @@ function FriendMatchInner() {
           href="/"
           style={{ color: "rgba(245,241,230,0.55)", textDecoration: "none", fontSize: 13 }}
         >
-          ← {t("놀자 홈", "Home")}
+          ← {t("nolza 홈", "Home")}
         </Link>
       </div>
 
@@ -601,8 +601,8 @@ function InputView({
         </div>
         <h1
           style={{
-            fontFamily: FONT_SERIF,
-            fontWeight: 900,
+            fontFamily: FONT_SANS,
+            fontWeight: 800,
             fontSize: "clamp(28px, 7vw, 42px)",
             lineHeight: 1.28,
             margin: 0,
@@ -641,13 +641,13 @@ function InputView({
           marginTop: 30,
           width: "100%",
           padding: "17px 24px",
-          borderRadius: 16,
+          borderRadius: 10,
           border: "none",
           background: canSubmit
             ? `linear-gradient(180deg, ${C.goldSoft} 0%, ${C.gold} 100%)`
             : "rgba(201,168,76,0.18)",
           color: canSubmit ? "#1a1408" : "rgba(245,241,230,0.4)",
-          fontFamily: FONT_SERIF,
+          fontFamily: FONT_SANS,
           fontWeight: 800,
           fontSize: 18,
           letterSpacing: "0.04em",
@@ -730,7 +730,7 @@ function PersonCard({
       style={{
         background: C.card,
         border: `1px solid ${C.cardBorder}`,
-        borderRadius: 20,
+        borderRadius: 14,
         padding: "22px 20px 24px",
         backdropFilter: "blur(6px)",
         WebkitBackdropFilter: "blur(6px)",
@@ -1277,8 +1277,8 @@ function ResultView({
       <header style={{ textAlign: "center", margin: "30px 0 6px" }}>
         <h1
           style={{
-            fontFamily: FONT_SERIF,
-            fontWeight: 900,
+            fontFamily: FONT_SANS,
+            fontWeight: 800,
             fontSize: "clamp(26px, 6.4vw, 40px)",
             lineHeight: 1.25,
             margin: 0,
@@ -1294,9 +1294,9 @@ function ResultView({
       <div style={{ textAlign: "center", marginTop: 6 }}>
         <div
           style={{
-            fontFamily: FONT_SERIF,
-            fontWeight: 900,
-            fontSize: 80,
+            fontFamily: FONT_SANS,
+            fontWeight: 800,
+            fontSize: 56,
             lineHeight: 1,
             color: C.gold,
             textShadow: "0 8px 40px rgba(201,168,76,0.35)",
@@ -1314,7 +1314,7 @@ function ResultView({
       <div style={{ textAlign: "center", marginTop: 22 }}>
         <div
           style={{
-            fontFamily: FONT_SERIF,
+            fontFamily: FONT_SANS,
             fontSize: "clamp(19px, 4vw, 24px)",
             fontWeight: 700,
             color: C.ink,
@@ -1392,12 +1392,12 @@ function ResultView({
           style={{
             marginTop: 18,
             padding: 22,
-            borderRadius: 20,
+            borderRadius: 14,
             background: C.card,
             border: `1px solid ${C.cardBorder}`,
           }}
         >
-          <div style={{ fontFamily: FONT_SERIF, color: C.goldSoft, fontSize: 17, fontWeight: 800 }}>
+          <div style={{ fontFamily: FONT_SANS, color: C.goldSoft, fontSize: 17, fontWeight: 800 }}>
             {t("둘의 관계 서사", "Your story")}
           </div>
           <p
@@ -1440,7 +1440,7 @@ function ResultView({
               style={{
                 marginTop: 28,
                 padding: "34px 28px 30px",
-                borderRadius: 24,
+                borderRadius: 14,
                 background: `radial-gradient(120% 90% at 50% 0%, #1b2440 0%, #111935 45%, ${C.bgDeep} 100%)`,
                 border: "1px solid rgba(201,168,76,0.28)",
                 textAlign: "center",
@@ -1461,8 +1461,8 @@ function ResultView({
               <div
                 style={{
                   marginTop: 18,
-                  fontFamily: FONT_SERIF,
-                  fontWeight: 900,
+                  fontFamily: FONT_SANS,
+                  fontWeight: 800,
                   fontSize: "clamp(22px, 5.4vw, 30px)",
                   lineHeight: 1.3,
                 }}
@@ -1490,9 +1490,9 @@ function ResultView({
               <div
                 style={{
                   marginTop: 14,
-                  fontFamily: FONT_SERIF,
-                  fontWeight: 900,
-                  fontSize: 64,
+                  fontFamily: FONT_SANS,
+                  fontWeight: 800,
+                  fontSize: 56,
                   lineHeight: 1,
                   color: C.gold,
                   textShadow: "0 6px 28px rgba(201,168,76,0.4)",
@@ -1505,7 +1505,7 @@ function ResultView({
               <div
                 style={{
                   marginTop: 16,
-                  fontFamily: FONT_SERIF,
+                  fontFamily: FONT_SANS,
                   fontSize: 17,
                   fontWeight: 700,
                   color: C.ink,
@@ -1730,23 +1730,23 @@ function CategoryCard({
       style={{
         background: C.card,
         border: `1px solid ${C.cardBorder}`,
-        borderRadius: 18,
+        borderRadius: 14,
         padding: 20,
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span style={{ fontSize: 20 }}>{icon}</span>
         <div style={{ flex: 1 }}>
-          <div style={{ fontFamily: FONT_SERIF, fontSize: 16, fontWeight: 700, color: C.ink }}>
+          <div style={{ fontFamily: FONT_SANS, fontSize: 16, fontWeight: 700, color: C.ink }}>
             {name}
           </div>
           <div style={{ fontSize: 11.5, color: C.sub, marginTop: 1 }}>{sub}</div>
         </div>
         <div
           style={{
-            fontFamily: FONT_SERIF,
+            fontFamily: FONT_SANS,
             fontSize: 24,
-            fontWeight: 900,
+            fontWeight: 800,
             color: accent,
             fontVariantNumeric: "tabular-nums",
           }}
@@ -1795,12 +1795,12 @@ function MiniInsight({ title, body }: { title: string; body: string }) {
     <article
       style={{
         padding: 16,
-        borderRadius: 16,
+        borderRadius: 14,
         background: C.card,
         border: `1px solid ${C.cardBorder}`,
       }}
     >
-      <div style={{ fontFamily: FONT_SERIF, color: C.goldSoft, fontWeight: 800, fontSize: 14 }}>
+      <div style={{ fontFamily: FONT_SANS, color: C.goldSoft, fontWeight: 800, fontSize: 14 }}>
         {title}
       </div>
       <p style={{ margin: "8px 0 0", color: "rgba(245,241,230,0.8)", fontSize: 13, lineHeight: 1.7 }}>

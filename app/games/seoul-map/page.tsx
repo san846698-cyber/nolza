@@ -93,7 +93,7 @@ export default function SeoulMap() {
       className="min-h-screen page-in"
       style={{ backgroundColor: "#f5f5f0", color: "#1a1a1a" }}
     >
-      <Link href="/" className="back-arrow" aria-label={t("놀자 홈으로", "Back to home")} style={{ color: "#5a5040" }}>
+      <Link href="/" className="back-arrow" aria-label={t("nolza 홈으로", "Back to home")} style={{ color: "#5a5040" }}>
         ←
       </Link>
 

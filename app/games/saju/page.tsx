@@ -1224,7 +1224,7 @@ function LanguageStep({
           zIndex: 2,
           width: "100%",
           overflow: "hidden",
-          borderRadius: 32,
+          borderRadius: 14,
           border: "1px solid rgba(232,211,154,0.26)",
           background:
             "linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.035))",
@@ -1450,7 +1450,7 @@ function LanguageStep({
         .saju-entry__choice {
           min-height: 74px;
           border: 1px solid rgba(232, 211, 154, 0.25);
-          border-radius: 22px;
+          border-radius: 10px;
           background:
             linear-gradient(135deg, rgba(232, 211, 154, 0.12), rgba(255,255,255,0.045)),
             rgba(8, 9, 22, 0.62);
@@ -1553,12 +1553,12 @@ function LanguageStep({
           }
 
           .saju-entry__card {
-            border-radius: 26px;
+            border-radius: 14px;
           }
 
           .saju-entry__choice {
             min-height: 74px;
-            border-radius: 18px;
+            border-radius: 10px;
             padding: 14px 15px;
           }
 
@@ -1709,7 +1709,7 @@ function BridgeStep({
         style={{
           background: PAPER,
           border: `1px solid ${ACCENT}`,
-          borderRadius: 24,
+          borderRadius: 14,
           padding: "44px 24px 36px",
           boxShadow: "0 18px 60px rgba(255,215,0,0.12)",
           marginBottom: 24,
@@ -1718,7 +1718,7 @@ function BridgeStep({
         <div
           style={{
             fontFamily: "var(--font-noto-serif-kr), serif",
-            fontSize: "clamp(48px, 13vw, 80px)",
+            fontSize: "clamp(32px, 6vw, 54px)",
             fontWeight: 700,
             lineHeight: 1.05,
             color: ACCENT,
@@ -2006,7 +2006,7 @@ function HourPicker({
             overflowY: "auto",
             padding: 6,
             border: `1px solid ${RULE}`,
-            borderRadius: 16,
+            borderRadius: 14,
             background: "#111321",
             boxShadow: "0 18px 42px rgba(0,0,0,0.38)",
           }}
@@ -2223,7 +2223,7 @@ function ResultView({
         style={{
           background: PAPER,
           border: `1px solid ${ACCENT}`,
-          borderRadius: 22,
+          borderRadius: 14,
           padding: "26px 16px 22px",
           boxShadow: "0 18px 50px rgba(255,215,0,0.1)",
           marginBottom: 18,
@@ -2749,7 +2749,7 @@ function Section({
       style={{
         background: PAPER,
         border: `1px solid ${RULE}`,
-        borderRadius: 18,
+        borderRadius: 14,
         padding: "20px 18px",
         marginBottom: 14,
       }}
@@ -2884,7 +2884,7 @@ const primaryButtonStyle: React.CSSProperties = {
   color: "#080914",
   border: "1px solid rgba(255,255,255,0.24)",
   padding: "18px 32px",
-  borderRadius: 999,
+  borderRadius: 10,
   fontSize: 18,
   fontWeight: 700,
   letterSpacing: "0.16em",

@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   if (!picks) {
     return {
-      title: "한니발이라면 — 당신의 지휘 성향 | 놀자.fun",
+      title: "한니발이라면 — 당신의 지휘 성향 | nolza.fun",
       description:
         "알프스부터 칸나에까지 — 한니발의 다섯 갈림길에서 당신은 어떻게 했을까. 사료 기반 지휘 성향 진단.",
       openGraph: {
@@ -47,7 +47,7 @@ export async function generateMetadata({
   const sharedUrl = `${ROUTE}?p=${code}`;
 
   return {
-    title: `${title} | 놀자.fun`,
+    title: `${title} | nolza.fun`,
     description: desc,
     openGraph: {
       title,

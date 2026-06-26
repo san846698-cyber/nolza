@@ -878,15 +878,20 @@ export default function JoseonLifePage(): ReactElement {
         .result-card {
           width: min(920px, 100%);
           margin: 0 auto 28px;
+        }
+        .result-card {
           border: 1px solid rgba(96, 52, 33, 0.24);
-          border-radius: 28px;
+          border-radius: 14px;
           background:
             linear-gradient(180deg, rgba(255, 250, 234, 0.96), rgba(241, 220, 181, 0.94)),
             #f4dfb5;
           box-shadow: 0 30px 80px rgba(48, 23, 17, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.72);
         }
         .hero-card {
-          padding: clamp(32px, 6vw, 64px);
+          background: transparent;
+          border: 0;
+          box-shadow: none;
+          padding: clamp(32px, 6vw, 64px) clamp(8px, 2vw, 16px);
           text-align: center;
         }
         .result-card {
@@ -901,7 +906,7 @@ export default function JoseonLifePage(): ReactElement {
         }
         h1 {
           margin: 0;
-          font-size: clamp(36px, 7vw, 68px);
+          font-size: clamp(32px, 6vw, 56px);
           line-height: 1.05;
           color: #3b2117;
         }
@@ -928,7 +933,7 @@ export default function JoseonLifePage(): ReactElement {
           width: 100%;
           min-height: 58px;
           border: 1px solid rgba(116, 62, 35, 0.24);
-          border-radius: 18px;
+          border-radius: 14px;
           padding: 0 18px;
           background: rgba(255, 252, 241, 0.84);
           color: #3b2117;
@@ -953,12 +958,12 @@ export default function JoseonLifePage(): ReactElement {
           border: 0;
           cursor: pointer;
           font-family: "Noto Sans KR", system-ui, sans-serif;
-          font-weight: 900;
+          font-weight: 800;
         }
         .primary {
           min-height: 54px;
           margin-top: 24px;
-          border-radius: 999px;
+          border-radius: 10px;
           padding: 0 28px;
           background: linear-gradient(135deg, #8f3425, #c8693c);
           color: #fff7e9;
@@ -967,7 +972,7 @@ export default function JoseonLifePage(): ReactElement {
         .secondary {
           min-height: 54px;
           margin-top: 24px;
-          border-radius: 999px;
+          border-radius: 10px;
           padding: 0 24px;
           background: rgba(63, 36, 25, 0.08);
           color: #4d3023;
@@ -982,7 +987,7 @@ export default function JoseonLifePage(): ReactElement {
           display: grid;
           gap: 8px;
           min-height: 104px;
-          border-radius: 18px;
+          border-radius: 14px;
           padding: 16px;
           background: rgba(94, 54, 31, 0.08);
           color: rgba(58, 36, 25, 0.62);
@@ -1016,7 +1021,7 @@ export default function JoseonLifePage(): ReactElement {
           display: block;
           margin-bottom: 8px;
           color: #9b472d;
-          font: 900 13px/1.2 "Noto Sans KR", system-ui, sans-serif;
+          font: 800 13px/1.2 "Noto Sans KR", system-ui, sans-serif;
         }
         .final-line strong {
           color: #321f16;

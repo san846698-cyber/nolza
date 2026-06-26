@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   if (!picks) {
     return {
-      title: "나폴레옹이라면 — 워털루의 다섯 갈림길 | 놀자.fun",
+      title: "나폴레옹이라면 — 워털루의 다섯 갈림길 | nolza.fun",
       description:
         "100일 천하의 마지막 날, 나폴레옹의 다섯 갈림길. 당신의 지휘 유형은? / Five forks on the last day of the Hundred Days. What's your command type?",
       openGraph: {
@@ -47,7 +47,7 @@ export async function generateMetadata({
   const sharedUrl = `${ROUTE}?p=${code}`;
 
   return {
-    title: `${title} | 놀자.fun`,
+    title: `${title} | nolza.fun`,
     description: desc,
     openGraph: {
       title,

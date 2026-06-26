@@ -82,7 +82,7 @@ export default function SpendPresident() {
         <div className="mx-auto max-w-3xl px-5 py-4 md:px-8">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-              {t("← 놀자 홈으로", "← Back to nolza home")}
+              {t("← nolza 홈으로", "← Back to nolza home")}
             </Link>
             <div className="text-right">
               <div className="text-xs text-gray-500">{t("남은 예산", "Remaining budget")}</div>
@@ -180,7 +180,7 @@ export default function SpendPresident() {
 
         <div className="mt-12 flex justify-center">
           <Link href="/" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent">
-            {t("← 놀자 홈으로", "← Back to nolza home")}
+            {t("← nolza 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

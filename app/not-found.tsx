@@ -14,7 +14,7 @@ export default function NotFound() {
           <h1>페이지를 찾을 수 없어요</h1>
           <span>
             요청한 주소가 바뀌었거나 더 이상 제공되지 않는 페이지일 수 있습니다.
-            놀자.fun의 테스트와 미니게임은 아래 링크에서 다시 찾아볼 수 있습니다.
+            nolza.fun의 테스트와 미니게임은 아래 링크에서 다시 찾아볼 수 있습니다.
           </span>
         </header>
 
@@ -26,7 +26,7 @@ export default function NotFound() {
                 <Link href="/">홈에서 인기 테스트 보기</Link>
               </li>
               <li>
-                <Link href="/about">놀자.fun 소개 읽기</Link>
+                <Link href="/about">nolza.fun 소개 읽기</Link>
               </li>
               <li>
                 <Link href="/contact">오류나 깨진 링크 제보하기</Link>

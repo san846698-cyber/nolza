@@ -3,6 +3,7 @@
 import { useMemo, useState, type ReactElement } from "react";
 import type { SimpleLocale } from "@/hooks/useLocale";
 import ReadableQuestion from "./ReadableQuestion";
+import { m, T_QUESTION, useReducedMotion } from "@/app/components/motion/Motion";
 
 export type LikertChoice<T extends string> = {
   id: string;
@@ -40,6 +41,7 @@ export default function LikertScaleQuestion<T extends string>({
   prompt,
 }: LikertScaleQuestionProps<T>): ReactElement {
   const [ratings, setRatings] = useState<Record<string, number>>({});
+  const reduce = useReducedMotion();
   const complete = choices.every((choice) => typeof ratings[choice.id] === "number");
 
   const selectedCount = useMemo(
@@ -50,7 +52,14 @@ export default function LikertScaleQuestion<T extends string>({
   return (
     <>
       <ReadableQuestion prompt={prompt} locale={locale} />
-      <div className="likert-question" aria-label={copy(locale, "7점 척도 응답", "7-point scale")}>
+      <m.div
+        className="likert-question"
+        aria-label={copy(locale, "7점 척도 응답", "7-point scale")}
+        key={prompt}
+        initial={{ opacity: 0, x: reduce ? 0 : 22 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={reduce ? { duration: 0.18 } : T_QUESTION}
+      >
         <div className="likert-question__head">
           <span>{copy(locale, "1–7 동의 척도", "1-7 agreement scale")}</span>
           <strong>
@@ -109,7 +118,7 @@ export default function LikertScaleQuestion<T extends string>({
         >
           {copy(locale, "다음 문항", "Next question")}
         </button>
-      </div>
+      </m.div>
     </>
   );
 }

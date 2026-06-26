@@ -245,7 +245,7 @@ export default function InertiaGame() {
         fontFamily: "var(--font-noto-sans-kr)",
       }}
     >
-      <Link href="/" className="back-arrow dark" aria-label={t("놀자 홈으로", "Home")}>
+      <Link href="/" className="back-arrow dark" aria-label={t("nolza 홈으로", "Home")}>
         ←
       </Link>
       {/* Stats */}

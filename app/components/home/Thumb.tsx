@@ -69,7 +69,8 @@ export default function Thumb({ game, skin }: { game: Game; skin: Skin }) {
         src={game.thumb}
         alt=""
         fill
-        sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 220px"
+        quality={90}
+        sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 360px"
         style={{ objectFit: "cover" }}
       />
     );

@@ -621,16 +621,18 @@ const styles = `
     margin: 0;
     color: #ff5668;
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 800;
   }
 
   .lineup-head h1 {
     max-width: 760px;
     margin: 0;
     color: #fffef7;
-    font-size: clamp(32px, 5vw, 62px);
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
     line-height: 1.02;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
   }
 
   .lineup-head span {
@@ -672,7 +674,7 @@ const styles = `
     border: 1px solid rgba(255, 255, 255, 0.22);
     background: rgba(255, 255, 255, 0.08);
     color: #ffffff;
-    font-weight: 900;
+    font-weight: 800;
     cursor: pointer;
   }
 
@@ -689,7 +691,7 @@ const styles = `
     border: 0;
     background: #ffffff;
     color: #132414;
-    font-weight: 950;
+    font-weight: 800;
     cursor: pointer;
   }
 
@@ -709,7 +711,7 @@ const styles = `
 
   .field-title span {
     font-size: 13px;
-    font-weight: 950;
+    font-weight: 800;
     color: rgba(255, 255, 255, 0.7);
   }
 
@@ -852,7 +854,7 @@ const styles = `
   .jersey-label {
     align-self: start;
     font-size: 10px;
-    font-weight: 950;
+    font-weight: 800;
     line-height: 1;
     opacity: 0.86;
   }
@@ -860,7 +862,7 @@ const styles = `
   .jersey-number {
     margin-top: -2px;
     font-size: clamp(22px, 4.2vw, 34px);
-    font-weight: 1000;
+    font-weight: 800;
     line-height: 0.9;
   }
 
@@ -868,7 +870,7 @@ const styles = `
     width: 100%;
     overflow-wrap: anywhere;
     font-size: clamp(10px, 2vw, 13px);
-    font-weight: 950;
+    font-weight: 800;
     line-height: 1.05;
     letter-spacing: 0;
   }
@@ -921,7 +923,7 @@ const styles = `
     margin: 0 0 8px;
     color: #ffdc60;
     font-size: 12px;
-    font-weight: 950;
+    font-weight: 800;
     text-transform: uppercase;
   }
 
@@ -949,7 +951,7 @@ const styles = `
     gap: 6px;
     color: rgba(248, 250, 240, 0.7);
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 800;
   }
 
   .editor-box input {
@@ -960,7 +962,7 @@ const styles = `
     color: #10210f;
     padding: 0 10px;
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 800;
   }
 
   .editor-box button {

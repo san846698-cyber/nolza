@@ -142,7 +142,7 @@ export default function SilenceGame() {
 
   const handleShare = async () => {
     const text = t(
-      `나 놀자.fun에서 ${best.toFixed(1)}초 버텼다 → nolza.fun/games/silence`,
+      `나 nolza.fun에서 ${best.toFixed(1)}초 버텼다 → nolza.fun/games/silence`,
       `I lasted ${best.toFixed(1)}s on nolza.fun → nolza.fun/games/silence`,
     );
     try {

@@ -33,6 +33,7 @@ import {
 } from "@/lib/football/engine";
 import JerseyMark from "@/app/components/football/JerseyMark";
 import { useLocale } from "@/hooks/useLocale";
+import { m, QuestionTransition, useReducedMotion } from "@/app/components/motion/Motion";
 
 type Phase = "intro" | "quiz" | "result";
 type StatsResponse = { enabled: boolean; counts: Record<string, number>; total: number };
@@ -250,7 +251,7 @@ export default function FootballGridClient({
             </div>
 
             {phase === "quiz" ? (
-              <>
+              <QuestionTransition motionKey={questionIndex}>
                 <h2 className="fb-q">{en ? currentQuestion.qEn ?? currentQuestion.q : currentQuestion.q}</h2>
                 <div className="fb-opts">
                   {currentQuestion.answers.map((answer, index) => (
@@ -260,7 +261,7 @@ export default function FootballGridClient({
                     </button>
                   ))}
                 </div>
-              </>
+              </QuestionTransition>
             ) : result ? (
               <ResultView
                 config={config}
@@ -320,8 +321,14 @@ function ResultView({
 }): ReactElement {
   const name = playerName(player, en);
   const tags = en ? player.tagsEn ?? player.tags : player.tags;
+  const reduce = useReducedMotion();
   return (
-    <section className="fb-result">
+    <m.section
+      className="fb-result"
+      initial={{ opacity: 0, scale: reduce ? 1 : 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: reduce ? 0.15 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+    >
       {shared ? <span className="fb-shared">{en ? "Shared result" : "공유된 결과"}</span> : null}
       <p className="fb-result__eyebrow">{en ? "You play like" : "나랑 닮은 축구선수"}</p>
 
@@ -363,7 +370,7 @@ function ResultView({
         </button>
         <p className="fb-status" role="status" aria-live="polite">{shareStatus}</p>
       </div>
-    </section>
+    </m.section>
   );
 }
 
@@ -471,10 +478,10 @@ const styles = `
 
   .fb-test .fb-hero,
   .fb-test .fb-card {
-    border: 1px solid var(--ps-border); border-radius: 24px; background: var(--ps-card-bg);
+    border: 1px solid var(--ps-border); border-radius: 14px; background: var(--ps-card-bg);
     box-shadow: 0 30px 80px rgba(2, 6, 18, 0.55);
   }
-  .fb-test .fb-hero { display: block; width: min(100%, 840px); margin: 0 auto; padding: clamp(28px, 5vw, 60px); overflow: hidden; }
+  .fb-test .fb-hero { display: block; width: min(100%, 840px); margin: 0 auto; padding: clamp(28px, 5vw, 60px) 0; overflow: hidden; background: transparent; border: 0; box-shadow: none; }
   .fb-test .fb-hero-copy { width: min(100%, 760px); }
 
   .fb-test .fb-pill {
@@ -495,7 +502,7 @@ const styles = `
   .fb-test .fb-poslabel { margin: 0 0 12px; color: var(--ps-accent); font-size: 14px; font-weight: 800; letter-spacing: 0.04em; }
   .fb-test .fb-pos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   .fb-test .fb-pos__btn {
-    min-height: 64px; border: 1px solid var(--ps-border); border-radius: 16px;
+    min-height: 64px; border: 1px solid var(--ps-border); border-radius: 10px;
     background: rgba(140,170,215,0.06); color: #eef3fb; cursor: pointer;
     font-size: 17px; font-weight: 800; padding: 8px;
     transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
@@ -519,11 +526,11 @@ const styles = `
   .fb-test .fb-opts { display: grid; grid-template-columns: 1fr; gap: 12px; }
   .fb-test .fb-opt {
     display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center;
-    border: 1px solid var(--ps-border); border-radius: 16px; background: rgba(140,170,215,0.05);
+    border: 1px solid var(--ps-border); border-radius: 10px; background: rgba(140,170,215,0.05);
     color: #e9f0fa; cursor: pointer; padding: 16px 18px; text-align: left;
     transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
   }
-  .fb-test .fb-opt__badge { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 11px; background: var(--ps-accent); color: var(--ps-accent-ink); font-size: 14px; font-weight: 900; }
+  .fb-test .fb-opt__badge { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: var(--ps-accent); color: var(--ps-accent-ink); font-size: 14px; font-weight: 800; }
   .fb-test .fb-opt strong { font-size: 16px; line-height: 1.45; font-weight: 600; }
   .fb-test .fb-opt:hover { transform: translateY(-2px); border-color: var(--ps-accent); background: rgba(140,170,215,0.10); box-shadow: 0 16px 30px rgba(2, 6, 18, 0.4); }
 
@@ -533,7 +540,7 @@ const styles = `
 
   .fb-test .fb-poster {
     position: relative; width: 100%; max-width: 440px; margin: 0 auto; aspect-ratio: 4 / 5; overflow: hidden;
-    border-radius: 22px; border: 1px solid var(--ps-accent); box-shadow: 0 26px 64px rgba(2, 6, 18, 0.62); background: #0d1830;
+    border-radius: 14px; border: 1px solid var(--ps-accent); box-shadow: 0 26px 64px rgba(2, 6, 18, 0.62); background: #0d1830;
   }
   .fb-test .fb-poster__media {
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -551,14 +558,14 @@ const styles = `
 
   .fb-test .fb-result__desc { margin: 0; color: #aebdd4; font-size: 17px; line-height: 1.82; }
 
-  .fb-test .fb-rank { border: 1px solid var(--ps-border); border-radius: 18px; background: rgba(140,170,215,0.05); padding: 18px clamp(16px, 3vw, 22px); }
+  .fb-test .fb-rank { border: 1px solid var(--ps-border); border-radius: 12px; background: rgba(140,170,215,0.05); padding: 18px clamp(16px, 3vw, 22px); }
   .fb-test .fb-rank--empty { color: #9fb0c8; font-size: 14.5px; line-height: 1.6; text-align: center; }
   .fb-test .fb-rank__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-  .fb-test .fb-rank__title { color: #f3f7ff; font-size: 16px; font-weight: 900; }
+  .fb-test .fb-rank__title { color: #f3f7ff; font-size: 16px; font-weight: 800; }
   .fb-test .fb-rank__total { color: var(--ps-accent); font-size: 13px; font-weight: 800; }
   .fb-test .fb-rank__list { display: grid; gap: 11px; margin: 0; padding: 0; list-style: none; }
   .fb-test .fb-rank__list li { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
-  .fb-test .fb-rank__pos { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: rgba(140,170,215,0.12); color: #c3d2e6; font-size: 13px; font-weight: 900; }
+  .fb-test .fb-rank__pos { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: rgba(140,170,215,0.12); color: #c3d2e6; font-size: 13px; font-weight: 800; }
   .fb-test .fb-rank__list li.is-me .fb-rank__pos { background: var(--ps-accent); color: var(--ps-accent-ink); }
   .fb-test .fb-rank__body { display: grid; gap: 6px; min-width: 0; }
   .fb-test .fb-rank__top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
@@ -573,7 +580,7 @@ const styles = `
 
   .fb-test .fb-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .fb-test .fb-cta, .fb-test .fb-ghost {
-    border: 0; cursor: pointer; min-height: 52px; border-radius: 16px; padding: 0 24px; font-size: 16px; font-weight: 800;
+    border: 0; cursor: pointer; min-height: 52px; border-radius: 10px; padding: 0 24px; font-size: 16px; font-weight: 800;
     transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease, background 160ms ease;
   }
   .fb-test .fb-cta { color: var(--ps-accent-ink); background-color: var(--ps-accent); background-image: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.06)); box-shadow: 0 16px 34px rgba(2, 6, 18, 0.45); }
@@ -586,7 +593,7 @@ const styles = `
 
   @media (max-width: 520px) {
     .fb-test { padding-inline: 14px; }
-    .fb-test .fb-hero, .fb-test .fb-card { border-radius: 20px; }
+    .fb-test .fb-hero, .fb-test .fb-card { border-radius: 14px; }
     .fb-test .fb-actions .fb-cta, .fb-test .fb-actions .fb-ghost { flex: 1 1 100%; width: 100%; }
   }
 `;

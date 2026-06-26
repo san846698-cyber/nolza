@@ -1,6 +1,6 @@
 export type Lang = "ko" | "en";
 export type CatId = "play" | "self" | "sim" | "world";
-export type HomeCatId = "featured" | "tests" | "compatibility" | "mini-games";
+export type HomeCatId = "featured" | "anime" | "tests" | "compatibility" | "mini-games";
 export type ContentType = "test" | "compatibility" | "fortune" | "game";
 export type FontKind = "serif" | "sans" | "mono";
 
@@ -67,8 +67,15 @@ export const PUBLIC_CATEGORIES: HomeCategory[] = [
     id: "featured",
     labelKo: "처음이라면 이 테스트부터",
     labelEn: "Start With These Tests",
-    subKo: "놀자.fun을 처음 만난 사람에게 가장 먼저 보여주고 싶은 대표 테스트.",
+    subKo: "nolza.fun을 처음 만난 사람에게 가장 먼저 보여주고 싶은 대표 테스트.",
     subEn: "Three representative entry points for your first visit to nolza.fun.",
+  },
+  {
+    id: "anime",
+    labelKo: "애니 캐릭터 테스트",
+    labelEn: "Anime Character Tests",
+    subKo: "귀멸의 칼날·주술회전·체인소맨 — 너랑 가장 닮은 캐릭터는?",
+    subEn: "Demon Slayer, Jujutsu Kaisen, Chainsaw Man — which character are you?",
   },
   {
     id: "tests",
@@ -173,7 +180,7 @@ export const T: Record<Lang, {
     play: "시작하기",
     today: "오늘",
     todays_pick_label: "오늘의 추천",
-    footer_made: "Studio4Any가 만드는 놀자.fun",
+    footer_made: "Studio4Any가 만드는 nolza.fun",
     hero_count: "VIRAL TESTS · SHAREABLE RESULTS",
     count_unit: "개",
   },
@@ -671,6 +678,42 @@ export const GAMES: Game[] = [
     skin: "block", tone: 3, labels: ["new", "quick", "share"], duration: { ko: "약 1분", en: "1 min" },
   },
   {
+    id: "demon-slayer", href: "/tests/demon-slayer", cat: "world", no: "36",
+    thumb: "/images/tests/demon-slayer/cover-card-v4.webp",
+    ko: { title: "귀멸의 칼날 캐릭터 테스트", sub: "16문항으로 찾는 나의 귀살대원. 탄지로·렌고쿠·시노부·사네미·오바나이·교메이·겐야 등 17명 + 히든 2명 중 나는?", kicker: "애니 캐릭터 테스트" },
+    en: { title: "Demon Slayer Character Test", sub: "Which slayer are you? Tanjiro, Rengoku, Shinobu, Sanemi, Obanai, Gyomei, Genya & more — 17 characters + 2 hidden, in 16 questions", kicker: "Anime character test" },
+    type: "test", category: "tests",
+    palette: P.ink, font: "sans",
+    skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "16문항 · 약 3분", en: "16 questions · ~3 min" },
+  },
+  {
+    id: "jujutsu-kaisen", href: "/tests/jujutsu-kaisen", cat: "world", no: "37",
+    thumb: "/images/tests/jujutsu-kaisen/cover-card.webp",
+    ko: { title: "주술회전 캐릭터 테스트", sub: "18문항으로 찾는 나의 주술사. 유지·고죠·메구미·토도·하카리·히구루마 등 21명 + 히든 2명 중 나는?", kicker: "애니 캐릭터 테스트" },
+    en: { title: "Jujutsu Kaisen Character Test", sub: "Which sorcerer are you? Yuji, Gojo, Megumi, Todo, Hakari, Higuruma & more — 21 characters + 2 hidden, in 18 questions", kicker: "Anime character test" },
+    type: "test", category: "tests",
+    palette: P.cosmos, font: "sans",
+    skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "18문항 · 약 3분", en: "18 questions · ~3 min" },
+  },
+  {
+    id: "chainsaw-man", href: "/tests/chainsaw-man", cat: "world", no: "38",
+    thumb: "/images/tests/chainsaw-man/cover-card.webp",
+    ko: { title: "체인소맨 캐릭터 테스트", sub: "16문항으로 찾는 나의 캐릭터. 덴지·파워·마키마·아키·레제·히메노 등 13명 + 히든 1명 중 나는?", kicker: "애니 캐릭터 테스트" },
+    en: { title: "Chainsaw Man Character Test", sub: "Which character are you? Denji, Power, Makima, Aki, Reze, Himeno & more — 13 characters + a hidden one, in 16 questions", kicker: "Anime character test" },
+    type: "test", category: "tests",
+    palette: P.judgment, font: "sans",
+    skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "16문항 · 약 3분", en: "16 questions · ~3 min" },
+  },
+  {
+    id: "cyberpunk", href: "/tests/cyberpunk", cat: "world", no: "39",
+    thumb: "/images/tests/cyberpunk/cover-card-v2.webp",
+    ko: { title: "사이버펑크: 엣지러너 캐릭터 테스트", sub: "16문항으로 찾는 나의 엣지러너. 데이비드·루시·레베카·메인·키위·파라데이 등 9명 + 히든 1명 중 나는?", kicker: "애니 캐릭터 테스트" },
+    en: { title: "Cyberpunk: Edgerunners Character Test", sub: "Which Edgerunner are you? David, Lucy, Rebecca, Maine, Kiwi, Faraday & more — 9 characters + a hidden one, in 16 questions", kicker: "Anime character test" },
+    type: "test", category: "tests",
+    palette: P.cosmos, font: "sans",
+    skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "16문항 · 약 3분", en: "16 questions · ~3 min" },
+  },
+  {
     id: "battle-what-if", href: "/games/battle-what-if", cat: "self", no: "24",
     ko: { title: "전쟁의 갈림길", sub: "전장의 결정을 직접 내려보세요", kicker: "지휘 성향 진단" },
     en: { title: "Crossroads of War", sub: "What would Hannibal have done?", kicker: "Command-style assessment" },
@@ -838,12 +881,15 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   featured: [
+    "demon-slayer",
+    "jujutsu-kaisen",
+    "chainsaw-man",
+    "cyberpunk",
     "political-type",
     "deep-fear",
-    "mbti-depth",
-    "defense-mechanism",
     "crush-type",
   ],
+  anime: ["demon-slayer", "jujutsu-kaisen", "chainsaw-man", "cyberpunk"],
   tests: [
     "football-kr",
     "football-global",
@@ -893,3 +939,4 @@ export function gamesByIds(ids: string[]): Game[] {
     .map((id) => GAMES.find((game) => game.id === id))
     .filter((game): game is Game => Boolean(game));
 }
+  

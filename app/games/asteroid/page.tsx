@@ -192,7 +192,7 @@ export default function AsteroidGame() {
     if (!result) return;
     const text =
       locale === "ko"
-        ? `놀자.fun · 소행성 충돌 · ${formatYield(result.yieldKtTNT, "ko")} · 화구 ${formatDistance(result.fireballRadiusM, "ko")}`
+        ? `nolza.fun · 소행성 충돌 · ${formatYield(result.yieldKtTNT, "ko")} · 화구 ${formatDistance(result.fireballRadiusM, "ko")}`
         : `nolza.fun · Asteroid Strike · ${formatYield(result.yieldKtTNT, "en")} · fireball ${formatDistance(result.fireballRadiusM, "en")}`;
     try {
       await navigator.clipboard.writeText(text + "  → nolza.fun/games/asteroid");
@@ -208,7 +208,7 @@ export default function AsteroidGame() {
       <header className={s.topbar}>
         <div className={s.topbar__inner}>
           <Link href="/" className={s.topbar__back}>
-            ← {t("놀자.fun", "nolza.fun")}
+            ← {t("nolza.fun", "nolza.fun")}
           </Link>
           <div className={s.topbar__brand}>
             <small>{t("소행성 발사대", "Asteroid Launcher")}</small>

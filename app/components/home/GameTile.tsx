@@ -10,6 +10,7 @@ import type { ContentType, Game, HomeCatId, Skin } from "@/lib/games-home";
 /* ── Category accent colours (pill + CTA text) ─────────────────────── */
 const CAT_ACCENT: Record<HomeCatId | "default", string> = {
   featured:     "#2D5BE3",
+  anime:        "#E11D48",
   tests:        "#7C3AED",
   compatibility: "#DB2777",
   "mini-games": "#0891B2",

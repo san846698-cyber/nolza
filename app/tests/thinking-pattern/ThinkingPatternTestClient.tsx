@@ -355,12 +355,12 @@ export default function ThinkingPatternTestClient(): ReactElement {
         .thinking-back a {
           color: rgba(36, 35, 42, 0.68);
           text-decoration: none;
-          font-weight: 800;
+          font-weight: 700;
         }
         .thinking-hero,
         .thinking-card {
           border: 1px solid rgba(68, 53, 35, 0.18);
-          border-radius: 32px;
+          border-radius: 14px;
           background:
             linear-gradient(135deg, rgba(255, 253, 247, 0.91), rgba(239, 225, 202, 0.75)),
             #f8f0e2;
@@ -383,20 +383,21 @@ export default function ThinkingPatternTestClient(): ReactElement {
           margin: 0 0 12px;
           color: #6f5aa6;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
           letter-spacing: 0.08em;
           text-transform: uppercase;
         }
         h1,
         h2 {
           margin: 0;
-          letter-spacing: 0;
+          letter-spacing: -0.02em;
           line-height: 1.12;
-          font-family: var(--font-noto-serif-kr), "Noto Serif KR", serif;
+          font-weight: 800;
+          font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
         }
         h1 {
           max-width: 720px;
-          font-size: clamp(38px, 6.4vw, 70px);
+          font-size: clamp(32px, 6vw, 56px);
         }
         h2 {
           margin: 28px 0 22px;
@@ -414,7 +415,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
         .subtitle {
           margin: 18px 0 0;
           font-size: clamp(18px, 2.3vw, 23px);
-          font-weight: 800;
+          font-weight: 700;
         }
         .description {
           margin: 14px 0 28px;
@@ -424,7 +425,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           margin: 13px 0 0;
           color: #6f5aa6;
           font-size: 14px;
-          font-weight: 900;
+          font-weight: 800;
           letter-spacing: 0.04em;
         }
         .notice {
@@ -437,10 +438,10 @@ export default function ThinkingPatternTestClient(): ReactElement {
           border: 0;
           cursor: pointer;
           min-height: 52px;
-          border-radius: 999px;
+          border-radius: 10px;
           padding: 0 24px;
           font-size: 16px;
-          font-weight: 900;
+          font-weight: 800;
           transition: transform 160ms ease, box-shadow 160ms ease;
         }
         .primary {
@@ -534,7 +535,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           color: rgba(111, 90, 166, 0.78);
           font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
           letter-spacing: 0.08em;
           text-transform: uppercase;
         }
@@ -561,7 +562,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           color: #24232a;
           font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
           font-size: clamp(24px, 3.2vw, 34px);
-          font-weight: 820;
+          font-weight: 800;
           line-height: 1.42;
           letter-spacing: 0;
           text-align: center;
@@ -716,7 +717,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           border: 1px solid rgba(68, 53, 35, 0.12);
           text-decoration: none;
           font-size: 19px;
-          font-weight: 900;
+          font-weight: 800;
           line-height: 1;
         }
         .progress-head span {
@@ -750,7 +751,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           gap: 12px;
           align-items: start;
           border: 1px solid rgba(68, 53, 35, 0.16);
-          border-radius: 20px;
+          border-radius: 10px;
           background: rgba(255, 255, 255, 0.62);
           color: #211d18;
           cursor: pointer;
@@ -768,7 +769,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           background: #24211c;
           color: #fff4e3;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .answer strong {
           font-size: 16px;
@@ -790,7 +791,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           color: #81522a;
           padding: 8px 12px;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-title {
           display: grid;
@@ -798,13 +799,13 @@ export default function ThinkingPatternTestClient(): ReactElement {
         }
         .result-title h2 {
           margin: 0;
-          font-size: clamp(34px, 6vw, 64px);
+          font-size: clamp(32px, 6vw, 54px);
         }
         .one-liner {
           margin: 0;
           color: #81522a;
           font-size: clamp(18px, 2vw, 22px);
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-description {
           margin: 0;
@@ -819,7 +820,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
         }
         .result-box {
           border: 1px solid rgba(68, 53, 35, 0.15);
-          border-radius: 18px;
+          border-radius: 14px;
           background: rgba(255, 255, 255, 0.62);
           padding: 16px;
         }
@@ -828,7 +829,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           margin-bottom: 8px;
           color: #81522a;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-box p {
           margin: 0;
@@ -881,7 +882,7 @@ export default function ThinkingPatternTestClient(): ReactElement {
           }
           .thinking-hero,
           .thinking-card {
-            border-radius: 24px;
+            border-radius: 14px;
           }
           .thinking-hero {
             min-height: auto;

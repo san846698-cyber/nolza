@@ -98,7 +98,7 @@ export default function RewindGame() {
     <div className={styles.shell} data-game-shell="light">
       <header className={styles.topbar}>
         <Link href="/" className={styles.back}>
-          ← {t("놀자.fun", "nolza.fun")}
+          ← {t("nolza.fun", "nolza.fun")}
         </Link>
         <div className={styles.title}>
           {t("한국말 되감기", "Korean Rewind")}

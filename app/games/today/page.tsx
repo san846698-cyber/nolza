@@ -37,7 +37,7 @@ const QUESTIONS: Q[] = [
   { id: 27, q: { ko: "오늘 카페 갔어요?", en: "Did you go to a café today?" }, options: [{ label: { ko: "갔어요", en: "Yes" }, emoji: "☕" }, { label: { ko: "테이크아웃", en: "Takeout" }, emoji: "🥤" }, { label: { ko: "안 갔어요", en: "No" }, emoji: "🚫" }] },
   { id: 28, q: { ko: "다음 휴가 계획?", en: "Plans for your next vacation?" }, options: [{ label: { ko: "국내 여행", en: "Domestic trip" }, emoji: "🇰🇷" }, { label: { ko: "해외 여행", en: "Trip abroad" }, emoji: "✈️" }, { label: { ko: "집콕", en: "Staying home" }, emoji: "🏠" }, { label: { ko: "계획 없음", en: "No plans" }, emoji: "❓" }] },
   { id: 29, q: { ko: "오늘 웃었어요?", en: "Did you laugh today?" }, options: [{ label: { ko: "많이", en: "A lot" }, emoji: "😄" }, { label: { ko: "조금", en: "A little" }, emoji: "🙂" }, { label: { ko: "거의 못 웃음", en: "Barely" }, emoji: "😞" }] },
-  { id: 30, q: { ko: "내일도 놀자.fun 올 거예요?", en: "Coming back to nolza.fun tomorrow?" }, options: [{ label: { ko: "당연히!", en: "Of course!" }, emoji: "🤝" }, { label: { ko: "글쎄...", en: "Maybe..." }, emoji: "🤔" }, { label: { ko: "안 옴", en: "Nope" }, emoji: "👋" }] },
+  { id: 30, q: { ko: "내일도 nolza.fun 올 거예요?", en: "Coming back to nolza.fun tomorrow?" }, options: [{ label: { ko: "당연히!", en: "Of course!" }, emoji: "🤝" }, { label: { ko: "글쎄...", en: "Maybe..." }, emoji: "🤔" }, { label: { ko: "안 옴", en: "Nope" }, emoji: "👋" }] },
 ];
 
 function hashStr(s: string): number {
@@ -137,7 +137,7 @@ export default function TodayGame() {
       <div className="border-b border-border" style={{ backgroundColor: "rgba(52, 199, 89, 0.04)" }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            {t("← 놀자 홈으로", "← Back to nolza home")}
+            {t("← nolza 홈으로", "← Back to nolza home")}
           </Link>
           <div className="text-xs text-gray-500">
             {t("🟢 지금 ", "🟢 ")}
@@ -255,7 +255,7 @@ export default function TodayGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            {t("← 놀자 홈으로", "← Back to nolza home")}
+            {t("← nolza 홈으로", "← Back to nolza home")}
           </Link>
         </div>
       </div>

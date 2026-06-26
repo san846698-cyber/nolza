@@ -605,7 +605,7 @@ const styles = `
   .home-link {
     color: #f8efe2;
     text-decoration: none;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.04em;
   }
   .locale-switch {
@@ -658,7 +658,7 @@ const styles = `
     width: min(760px, 100%);
     padding: clamp(32px, 6vw, 64px);
     border: 1px solid rgba(248, 239, 226, 0.14);
-    border-radius: 28px;
+    border-radius: 14px;
     background:
       linear-gradient(180deg, rgba(248, 239, 226, 0.105), rgba(248, 239, 226, 0.045)),
       rgba(8, 12, 18, 0.54);
@@ -676,7 +676,7 @@ const styles = `
     gap: 10px;
     color: #ffd995;
     font-size: 0.78rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
@@ -689,10 +689,11 @@ const styles = `
   h1 {
     max-width: 780px;
     margin: 18px auto 14px;
-    font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
-    font-size: clamp(2.45rem, 8.4vw, 5.4rem);
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 6vw, 3.5rem);
     line-height: 1.06;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
   }
   .hero-content > p {
     max-width: 690px;
@@ -718,9 +719,9 @@ const styles = `
   .actions button {
     min-height: 52px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 10px;
     padding: 0 22px;
-    font-weight: 950;
+    font-weight: 800;
     cursor: pointer;
     color: #17130f;
     background: linear-gradient(135deg, #f2c879, #a8b8e8);
@@ -742,7 +743,7 @@ const styles = `
     min-height: 62px;
     padding: 0 34px;
     margin-top: 30px;
-    border-radius: 999px;
+    border-radius: 10px;
     font-size: 1.02rem;
     background: linear-gradient(135deg, #ffe5ab 0%, #f2c879 42%, #ff9876 100%);
     box-shadow:
@@ -776,7 +777,7 @@ const styles = `
     margin-top: 12px;
     color: rgba(255, 217, 149, 0.76);
     font-size: 0.86rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.04em;
   }
   .hero-actions {
@@ -797,7 +798,7 @@ const styles = `
     justify-content: space-between;
     min-height: 28px;
     color: rgba(248, 239, 226, 0.78);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 1.35;
   }
   .progress span {
@@ -818,13 +819,13 @@ const styles = `
   .related {
     border: 1px solid rgba(248, 239, 226, 0.13);
     background: rgba(248, 239, 226, 0.08);
-    border-radius: 30px;
+    border-radius: 14px;
     box-shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(18px);
   }
   .question-card {
     padding: clamp(20px, 3.2vw, 30px);
-    border-radius: 26px;
+    border-radius: 14px;
     background:
       linear-gradient(145deg, rgba(248, 239, 226, 0.105), rgba(12, 17, 28, 0.24)),
       rgba(248, 239, 226, 0.045);
@@ -837,7 +838,7 @@ const styles = `
   .score-list span {
     color: rgba(248, 239, 226, 0.6);
     font-size: 0.78rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -852,10 +853,11 @@ const styles = `
   }
   .question-card h2 {
     margin: 0 0 20px;
-    font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
+    font-weight: 800;
     font-size: clamp(1.42rem, 3.4vw, 2.12rem);
     line-height: 1.32;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
     word-break: keep-all;
   }
   .answers {
@@ -870,7 +872,7 @@ const styles = `
     align-items: center;
     gap: 11px;
     border: 1px solid rgba(248, 239, 226, 0.15);
-    border-radius: 18px;
+    border-radius: 10px;
     background: rgba(12, 17, 28, 0.28);
     color: #f8efe2;
     text-align: left;
@@ -899,7 +901,7 @@ const styles = `
     background: rgba(248, 239, 226, 0.1);
     color: #f2c879;
     font-size: 0.78rem;
-    font-weight: 950;
+    font-weight: 800;
   }
   .answers strong {
     display: block;
@@ -933,7 +935,7 @@ const styles = `
     margin: 0;
     color: rgba(248, 239, 226, 0.78);
     font-size: 1.08rem;
-    font-weight: 850;
+    font-weight: 800;
   }
   .result-wrap {
     padding: 34px 0 84px;
@@ -964,20 +966,21 @@ const styles = `
   .result-top strong {
     color: var(--accent);
     font-size: 0.96rem;
-    font-weight: 950;
+    font-weight: 800;
   }
   .result-card h2 {
     margin: 20px 0 8px;
-    font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
-    font-size: clamp(2.35rem, 9vw, 5rem);
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.1rem, 7vw, 3.375rem);
     line-height: 1.02;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
   }
   .one-liner {
     margin: 0;
     color: var(--accent);
     font-size: clamp(1.04rem, 2.4vw, 1.22rem);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 1.5;
   }
   .description {
@@ -996,7 +999,7 @@ const styles = `
   }
   .insight-grid section {
     padding: 16px;
-    border-radius: 20px;
+    border-radius: 14px;
     background: rgba(0, 0, 0, 0.18);
     border: 1px solid rgba(248, 239, 226, 0.1);
   }
@@ -1016,7 +1019,7 @@ const styles = `
     color: #f8efe2;
     font-size: 1.02rem;
     line-height: 1.35;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: 0;
   }
   .deep-stack {
@@ -1027,7 +1030,7 @@ const styles = `
   .inner-quote {
     margin: 0;
     padding: 17px 18px;
-    border-radius: 20px;
+    border-radius: 14px;
     background: rgba(12, 17, 28, 0.24);
     border: 1px solid rgba(248, 239, 226, 0.1);
   }
@@ -1048,7 +1051,7 @@ const styles = `
   .inner-quote p {
     color: #fff4dd;
     font-size: clamp(1.02rem, 2.4vw, 1.22rem);
-    font-weight: 900;
+    font-weight: 800;
   }
   .practice-card {
     background:
@@ -1084,7 +1087,7 @@ const styles = `
     margin-top: 24px;
     color: rgba(248, 239, 226, 0.46);
     font-size: 0.78rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.1em;
   }
   .actions {
@@ -1130,7 +1133,7 @@ const styles = `
   .related-head small {
     color: #ffc987;
     font-size: 0.72rem;
-    font-weight: 1000;
+    font-weight: 800;
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
@@ -1151,7 +1154,7 @@ const styles = `
     flex-direction: column;
     gap: 11px;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 14px;
     color: #fff8e8;
     text-decoration: none;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.055));
@@ -1172,7 +1175,7 @@ const styles = `
   .related a small {
     color: #ffc987;
     font-size: 0.76rem;
-    font-weight: 1000;
+    font-weight: 800;
     letter-spacing: 0.06em;
     line-height: 1.35;
   }
@@ -1198,12 +1201,12 @@ const styles = `
     margin-top: auto;
     padding: 11px 18px;
     border: 1px solid rgba(255, 201, 135, 0.35);
-    border-radius: 999px;
+    border-radius: 10px;
     background: linear-gradient(135deg, #ffd08a, #e6764f);
     color: #1f1510;
     font-size: 0.88rem;
     font-style: normal;
-    font-weight: 1000;
+    font-weight: 800;
     line-height: 1;
     box-shadow: 0 14px 30px rgba(230, 118, 79, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   }
@@ -1244,7 +1247,7 @@ const styles = `
       justify-content: flex-start;
     }
     h1 {
-      font-size: clamp(2.25rem, 12vw, 3.65rem);
+      font-size: clamp(2rem, 12vw, 3.5rem);
     }
     .answers,
     .insight-grid,
@@ -1256,7 +1259,7 @@ const styles = `
     }
     .answers button {
       min-height: 74px;
-      border-radius: 17px;
+      border-radius: 10px;
       padding: 13px 14px;
     }
     .hero .primary {
@@ -1279,7 +1282,7 @@ const styles = `
     }
     .question-card {
       padding: 18px;
-      border-radius: 22px;
+      border-radius: 14px;
     }
     .question-card h2 {
       margin-bottom: 16px;

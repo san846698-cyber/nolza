@@ -476,11 +476,11 @@ export default function PasswordGame() {
     const url = `${origin}/games/password`;
     const text = won
       ? t(
-          `놀자.fun 비밀번호 게임 ${modeLabel} 클리어! ${activeRuleCount}개 규칙 다 통과 ${Array.from(pw).length}자\n${url}`,
+          `nolza.fun 비밀번호 게임 ${modeLabel} 클리어! ${activeRuleCount}개 규칙 다 통과 ${Array.from(pw).length}자\n${url}`,
           `Beat nolza.fun password game ${modeLabel}! All ${activeRuleCount} rules, ${Array.from(pw).length} chars\n${url}`,
         )
       : t(
-          `놀자.fun 비밀번호 게임 ${modeLabel} 도전 중 — ${passed}/${activeRuleCount} 통과. 너도 해봐\n${url}`,
+          `nolza.fun 비밀번호 게임 ${modeLabel} 도전 중 — ${passed}/${activeRuleCount} 통과. 너도 해봐\n${url}`,
           `Stuck on nolza.fun password game ${modeLabel} — ${passed}/${activeRuleCount} rules. Your turn\n${url}`,
         );
     try {
@@ -493,7 +493,7 @@ export default function PasswordGame() {
             share: (data: { title?: string; text?: string; url?: string }) => Promise<void>;
           }
         ).share({
-          title: t("놀자.fun 비밀번호 게임", "nolza.fun password game"),
+          title: t("nolza.fun 비밀번호 게임", "nolza.fun password game"),
           text: won
             ? t(
                 `${activeRuleCount}개 규칙 다 통과! ${Array.from(pw).length}자`,
@@ -802,6 +802,7 @@ export default function PasswordGame() {
               <ResultScreen
                 locale={locale}
                 currentGameId="password"
+                reveal={false}
                 eyebrow={modeLabel}
                 title={
                   won

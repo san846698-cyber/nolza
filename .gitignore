@@ -50,3 +50,7 @@ next-env.d.ts
 
 # marketing capture artifacts (videos, browser profiles, renders)
 marketing/
+
+# temp / scratch / filesystem cruft
+.tmp-*/
+**/.fuse_hidden*

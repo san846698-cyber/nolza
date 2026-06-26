@@ -560,7 +560,7 @@ const styles = `
     gap: 16px;
     align-items: center;
     padding: 8px 0 18px;
-    font-weight: 900;
+    font-weight: 800;
   }
   .meme-home {
     color: #fff7dc;
@@ -582,7 +582,7 @@ const styles = `
   .retro-window {
     width: min(100%, 480px);
     border: 3px solid #1d1232;
-    border-radius: 18px;
+    border-radius: 14px;
     overflow: hidden;
     background: #fff7dc;
     color: #1d1232;
@@ -629,7 +629,7 @@ const styles = `
     background: #fff;
     padding: 9px 6px;
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 800;
   }
   .meme-chip {
     margin-top: clamp(34px, 7vw, 54px);
@@ -641,7 +641,7 @@ const styles = `
     border-radius: 999px;
     background: rgba(69, 255, 176, 0.14);
     color: #45ffb0;
-    font-weight: 900;
+    font-weight: 800;
   }
   h1 {
     margin: 16px 0 12px;
@@ -668,11 +668,11 @@ const styles = `
   .action {
     min-height: 54px;
     border: 3px solid #1d1232;
-    border-radius: 18px;
+    border-radius: 10px;
     background: #45ffb0;
     color: #1d1232;
     padding: 0 22px;
-    font-weight: 950;
+    font-weight: 800;
     box-shadow: 6px 6px 0 #000;
     cursor: pointer;
   }
@@ -704,7 +704,7 @@ const styles = `
   .result-card,
   .recommended {
     border: 3px solid #1d1232;
-    border-radius: 24px;
+    border-radius: 14px;
     background: #fff7dc;
     color: #1d1232;
     box-shadow: 10px 10px 0 #000;
@@ -716,7 +716,7 @@ const styles = `
   .progress-card div {
     display: flex;
     justify-content: space-between;
-    font-weight: 900;
+    font-weight: 800;
   }
   .progress-card span {
     color: rgba(29,18,50,0.62);
@@ -735,7 +735,7 @@ const styles = `
   .question-card > span {
     color: #ff5fa8;
     font-size: 0.84rem;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: 0.08em;
   }
   .question-card h2 {
@@ -747,7 +747,7 @@ const styles = `
   .meme-clue {
     margin: -8px 0 18px;
     border: 2px dashed rgba(29,18,50,0.24);
-    border-radius: 18px;
+    border-radius: 14px;
     background: rgba(69,255,176,0.12);
     padding: 14px 16px;
     color: rgba(29,18,50,0.74);
@@ -772,7 +772,7 @@ const styles = `
   .answers button {
     min-height: 102px;
     border: 2px solid #1d1232;
-    border-radius: 18px;
+    border-radius: 10px;
     background: white;
     color: #1d1232;
     text-align: left;
@@ -814,10 +814,10 @@ const styles = `
     display: grid;
     gap: 4px;
     border: 2px solid #1d1232;
-    border-radius: 18px;
+    border-radius: 14px;
     padding: 14px 16px;
     color: #1d1232;
-    font-weight: 900;
+    font-weight: 800;
     animation: feedback-pop 180ms ease-out;
   }
   .feedback.correct {
@@ -856,13 +856,13 @@ const styles = `
     background: #1d1232;
     color: #45ffb0;
     font-size: 0.75rem;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: 0.12em;
   }
   .result-emoji {
     margin-top: 24px;
     font-size: 3.6rem;
-    font-weight: 950;
+    font-weight: 800;
   }
   .result-card h2 {
     margin: 10px 0 6px;
@@ -874,7 +874,7 @@ const styles = `
     margin: 0 0 14px;
     color: var(--accent);
     font-size: 1.24rem;
-    font-weight: 950;
+    font-weight: 800;
   }
   .description {
     max-width: 720px;
@@ -896,7 +896,7 @@ const styles = `
   }
   .result-stats article {
     border: 2px solid rgba(29,18,50,0.16);
-    border-radius: 18px;
+    border-radius: 14px;
     background: rgba(255,255,255,0.66);
     padding: 14px;
   }
@@ -904,7 +904,7 @@ const styles = `
     display: block;
     color: rgba(29,18,50,0.54);
     font-size: 0.72rem;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: 0.08em;
   }
   .result-stats strong {
@@ -926,7 +926,7 @@ const styles = `
     background: white;
     padding: 8px 12px;
     font-size: 0.88rem;
-    font-weight: 900;
+    font-weight: 800;
   }
   .split-grid {
     display: grid;
@@ -938,7 +938,7 @@ const styles = `
   .score-board,
   .share-line {
     border: 2px solid rgba(29,18,50,0.16);
-    border-radius: 18px;
+    border-radius: 14px;
     background: rgba(255,255,255,0.58);
     padding: 16px;
   }
@@ -947,7 +947,7 @@ const styles = `
   .share-line span {
     color: rgba(29,18,50,0.58);
     font-size: 0.78rem;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: 0.08em;
   }
   .split-grid p,
@@ -973,7 +973,7 @@ const styles = `
   .score-board span {
     color: rgba(29,18,50,0.58);
     font-size: 0.76rem;
-    font-weight: 950;
+    font-weight: 800;
     text-transform: uppercase;
   }
   .score-board i {
@@ -991,7 +991,7 @@ const styles = `
     margin-top: 24px;
     color: rgba(29,18,50,0.52);
     font-size: 0.82rem;
-    font-weight: 900;
+    font-weight: 800;
   }
   .actions {
     display: flex;
@@ -1022,7 +1022,7 @@ const styles = `
     color: #1d1232;
     text-decoration: none;
     border: 2px solid #1d1232;
-    border-radius: 16px;
+    border-radius: 14px;
     background: white;
     padding: 14px;
   }

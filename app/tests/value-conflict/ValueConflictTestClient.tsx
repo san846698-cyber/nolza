@@ -486,7 +486,7 @@ export default function ValueConflictTestClient(): ReactElement {
         .value-hero,
         .value-card {
           border: 1px solid rgba(68, 53, 35, 0.18);
-          border-radius: 32px;
+          border-radius: 14px;
           background:
             linear-gradient(135deg, rgba(255, 253, 247, 0.9), rgba(238, 224, 198, 0.72)),
             #f7efe1;
@@ -510,20 +510,20 @@ export default function ValueConflictTestClient(): ReactElement {
           margin: 0 0 12px;
           color: #9b6a23;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
           letter-spacing: 0.08em;
           text-transform: uppercase;
         }
         h1,
         h2 {
           margin: 0;
-          letter-spacing: 0;
+          letter-spacing: -0.02em;
           line-height: 1.12;
-          font-family: var(--font-noto-serif-kr), "Noto Serif KR", serif;
+          font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
         }
         h1 {
           max-width: 720px;
-          font-size: clamp(38px, 6.5vw, 72px);
+          font-size: clamp(32px, 6vw, 56px);
           word-break: keep-all;
         }
         .subtitle,
@@ -553,10 +553,10 @@ export default function ValueConflictTestClient(): ReactElement {
           border: 0;
           cursor: pointer;
           min-height: 52px;
-          border-radius: 999px;
+          border-radius: 10px;
           padding: 0 24px;
           font-size: 16px;
-          font-weight: 900;
+          font-weight: 800;
           transition: transform 160ms ease, box-shadow 160ms ease;
         }
         .primary {
@@ -646,7 +646,7 @@ export default function ValueConflictTestClient(): ReactElement {
           color: rgba(155, 106, 35, 0.8);
           font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
           letter-spacing: 0.08em;
           text-transform: uppercase;
         }
@@ -657,7 +657,7 @@ export default function ValueConflictTestClient(): ReactElement {
           color: #211d18;
           font-family: var(--font-inter), var(--font-noto-sans-kr), system-ui, sans-serif;
           font-size: clamp(24px, 3.2vw, 34px);
-          font-weight: 820;
+          font-weight: 800;
           line-height: 1.42;
           text-align: center;
           word-break: keep-all;
@@ -811,7 +811,7 @@ export default function ValueConflictTestClient(): ReactElement {
           border: 1px solid rgba(68, 53, 35, 0.12);
           text-decoration: none;
           font-size: 19px;
-          font-weight: 900;
+          font-weight: 800;
           line-height: 1;
         }
         .progress-head span {
@@ -873,7 +873,7 @@ export default function ValueConflictTestClient(): ReactElement {
           margin: 8px auto 0;
           color: rgba(33, 29, 24, 0.64);
           font-size: 13px;
-          font-weight: 850;
+          font-weight: 800;
           line-height: 1.4;
         }
         .value-single-likert__labels span:nth-child(1) {
@@ -897,12 +897,12 @@ export default function ValueConflictTestClient(): ReactElement {
           aspect-ratio: 1;
           min-width: 0;
           border: 1px solid rgba(68, 53, 35, 0.18);
-          border-radius: 999px;
+          border-radius: 10px;
           background: rgba(255, 255, 255, 0.7);
           color: #4b3420;
           cursor: pointer;
           font-size: clamp(15px, 3.6vw, 18px);
-          font-weight: 950;
+          font-weight: 800;
           transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
         }
         .value-single-likert__scale button:hover,
@@ -936,7 +936,7 @@ export default function ValueConflictTestClient(): ReactElement {
           color: #815516;
           padding: 8px 12px;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-title {
           display: grid;
@@ -944,13 +944,13 @@ export default function ValueConflictTestClient(): ReactElement {
         }
         .result-title h2 {
           margin: 0;
-          font-size: clamp(34px, 6vw, 64px);
+          font-size: clamp(32px, 6vw, 54px);
         }
         .one-liner {
           margin: 0;
           color: #815516;
           font-size: clamp(18px, 2vw, 22px);
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-description {
           margin: 0;
@@ -964,7 +964,7 @@ export default function ValueConflictTestClient(): ReactElement {
         }
         .result-feature {
           border: 1px solid rgba(159, 106, 37, 0.18);
-          border-radius: 20px;
+          border-radius: 14px;
           background:
             linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(252, 240, 219, 0.62));
           padding: 18px;
@@ -976,7 +976,7 @@ export default function ValueConflictTestClient(): ReactElement {
           margin-bottom: 8px;
           color: #815516;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-feature p {
           margin: 0;
@@ -992,7 +992,7 @@ export default function ValueConflictTestClient(): ReactElement {
         }
         .result-quote {
           border: 1px solid rgba(68, 53, 35, 0.14);
-          border-radius: 18px;
+          border-radius: 14px;
           background: rgba(36, 33, 28, 0.045);
           padding: 16px;
         }
@@ -1001,7 +1001,7 @@ export default function ValueConflictTestClient(): ReactElement {
           color: #211d18;
           font-size: 16px;
           line-height: 1.62;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-quote--friend {
           background: rgba(159, 106, 37, 0.08);
@@ -1017,7 +1017,7 @@ export default function ValueConflictTestClient(): ReactElement {
         }
         .result-box {
           border: 1px solid rgba(68, 53, 35, 0.15);
-          border-radius: 18px;
+          border-radius: 14px;
           background: rgba(255, 255, 255, 0.62);
           padding: 16px;
         }
@@ -1026,7 +1026,7 @@ export default function ValueConflictTestClient(): ReactElement {
           margin-bottom: 8px;
           color: #815516;
           font-size: 13px;
-          font-weight: 900;
+          font-weight: 800;
         }
         .result-box p {
           margin: 0;
@@ -1112,7 +1112,7 @@ export default function ValueConflictTestClient(): ReactElement {
           }
           .value-hero,
           .value-card {
-            border-radius: 24px;
+            border-radius: 14px;
           }
           .value-hero {
             min-height: auto;

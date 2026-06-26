@@ -636,7 +636,7 @@ export default function KbtiPage(): ReactElement {
         body:has(.kbti-stage[data-phase="quiz"]) .game-shell-floating-back::before {
           content: "←";
           font-size: 19px;
-          font-weight: 950;
+          font-weight: 800;
           line-height: 1;
         }
         .kbti-reveal {
@@ -735,8 +735,8 @@ function Intro({
         className="kbti-reveal"
         style={{
           ["--i" as string]: "1",
-          fontSize: "clamp(38px, 8vw, 64px)",
-          fontWeight: 900,
+          fontSize: "clamp(38px, 8vw, 56px)",
+          fontWeight: 800,
           letterSpacing: 0,
           lineHeight: 1.08,
           marginBottom: 16,
@@ -811,7 +811,7 @@ function Intro({
           color: "#fff",
           border: "none",
           padding: "16px 42px",
-          borderRadius: 999,
+          borderRadius: 10,
           fontSize: 15,
           fontWeight: 800,
           cursor: "pointer",
@@ -1187,7 +1187,7 @@ function Callout({
         marginTop: 18,
         border: `1px solid rgba(198,12,48,0.48)`,
         background: "rgba(198,12,48,0.1)",
-        borderRadius: 16,
+        borderRadius: 14,
         padding: "18px 20px",
         textAlign: "center",
       }}
@@ -1197,7 +1197,7 @@ function Callout({
           color: ACCENT,
           fontSize: 11,
           letterSpacing: "0.22em",
-          fontWeight: 900,
+          fontWeight: 800,
           marginBottom: 8,
           fontFamily: "var(--font-inter), sans-serif",
         }}
@@ -1238,7 +1238,7 @@ function ResultSection({
         ...style,
         background: PAPER_2,
         border: `1px solid ${RULE}`,
-        borderRadius: 16,
+        borderRadius: 14,
         padding: "20px 22px",
       }}
     >
@@ -1349,7 +1349,7 @@ function ListSection({
         ...style,
         background: PAPER_2,
         border: `1px solid ${RULE}`,
-        borderRadius: 16,
+        borderRadius: 14,
         padding: "18px 20px",
       }}
     >
@@ -1399,7 +1399,7 @@ function SectionLabel({
         color: accent,
         fontSize: compact ? 10 : 11,
         letterSpacing: "0.2em",
-        fontWeight: 900,
+        fontWeight: 800,
         fontFamily: "var(--font-inter), sans-serif",
         textTransform: "uppercase",
         lineHeight: 1.35,

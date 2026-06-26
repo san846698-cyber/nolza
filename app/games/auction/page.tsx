@@ -157,7 +157,7 @@ export default function AuctionGame() {
   const handleShare = async () => {
     const grade = gradeFor(totalScore, t);
     const text = t(
-      `놀자.fun · 유물 감정사: ${totalScore}/500 — ${grade} → nolza.fun/games/auction`,
+      `nolza.fun · 유물 감정사: ${totalScore}/500 — ${grade} → nolza.fun/games/auction`,
       `nolza.fun · The Appraiser: ${totalScore}/500 — ${grade} → nolza.fun/games/auction`,
     );
     try {
@@ -172,7 +172,7 @@ export default function AuctionGame() {
       <div className={s.topbar}>
         <div className={s.topbar__inner}>
           <Link href="/" className={s.topbar__back}>
-            ← {t("놀자.fun", "nolza.fun")}
+            ← {t("nolza.fun", "nolza.fun")}
           </Link>
           <div className={s.topbar__title}>
             {t("경매장", "The Auction House")}
@@ -276,7 +276,7 @@ function IntroView({
 }) {
   return (
     <section className={s.fadeIn} style={{ paddingTop: 28 }}>
-      <div className={s.kicker}>{t("놀자 도록 N°27", "Nolza Catalog N°27")}</div>
+      <div className={s.kicker}>{t("nolza 도록 N°27", "Nolza Catalog N°27")}</div>
       <h1
         className={`${s.display} ${s.displayItalic}`}
         style={{ fontSize: "clamp(48px, 9vw, 96px)", marginTop: 14 }}

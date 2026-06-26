@@ -345,7 +345,7 @@ const styles = `
   .home-link {
     color: #f7ead4;
     text-decoration: none;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: 0.04em;
   }
   .locale-switch {
@@ -362,7 +362,7 @@ const styles = `
     color: rgba(247, 234, 212, 0.68);
     cursor: pointer;
     padding: 8px 12px;
-    font-weight: 900;
+    font-weight: 800;
   }
   .locale-switch button.active {
     background: #f7ead4;
@@ -390,7 +390,7 @@ const styles = `
     position: relative;
     margin: clamp(16px, 5vh, 54px) auto 0;
     padding: clamp(32px, 6vw, 64px);
-    border-radius: 28px;
+    border-radius: 14px;
     background:
       linear-gradient(180deg, rgba(247, 234, 212, 0.105), rgba(247, 234, 212, 0.045)),
       rgba(18, 14, 11, 0.62);
@@ -404,7 +404,7 @@ const styles = `
   .shared-label {
     color: #ddb878;
     font-size: 0.78rem;
-    font-weight: 950;
+    font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
@@ -414,13 +414,14 @@ const styles = `
   h1,
   h2 {
     margin: 0;
-    font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
-    letter-spacing: 0;
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
   h1 {
     max-width: 720px;
     color: #fff3df;
-    font-size: clamp(2.35rem, 6.4vw, 5.35rem);
+    font-size: clamp(2rem, 6vw, 3.5rem);
     line-height: 1.06;
     word-break: keep-all;
   }
@@ -456,18 +457,18 @@ const styles = `
     margin: 13px 0 0;
     color: rgba(221, 184, 120, 0.78);
     font-size: 0.86rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.04em;
   }
   .primary,
   .secondary {
     min-height: 52px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 10px;
     padding: 0 24px;
     cursor: pointer;
     font-size: 1rem;
-    font-weight: 950;
+    font-weight: 800;
     transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
   }
   .primary {
@@ -488,7 +489,7 @@ const styles = `
   .scene-card {
     margin-top: clamp(10px, 2vh, 24px);
     padding: clamp(24px, 5vw, 48px);
-    border-radius: 32px;
+    border-radius: 14px;
     background:
       radial-gradient(circle at 84% 8%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 28rem),
       linear-gradient(145deg, rgba(247, 234, 212, 0.12), rgba(255, 255, 255, 0.045)),
@@ -503,7 +504,7 @@ const styles = `
   }
   .progress-head strong {
     color: rgba(247, 234, 212, 0.72);
-    font-weight: 950;
+    font-weight: 800;
   }
   .progress-bar {
     height: 8px;
@@ -553,7 +554,7 @@ const styles = `
     align-items: center;
     gap: 12px;
     border: 1px solid rgba(247, 234, 212, 0.16);
-    border-radius: 20px;
+    border-radius: 10px;
     background:
       linear-gradient(135deg, rgba(247, 234, 212, 0.105), rgba(247, 234, 212, 0.04)),
       rgba(0, 0, 0, 0.16);
@@ -577,7 +578,7 @@ const styles = `
     background: rgba(247, 234, 212, 0.14);
     color: #f5d49b;
     font-size: 0.8rem;
-    font-weight: 950;
+    font-weight: 800;
   }
   .choices strong {
     font-size: 1rem;
@@ -603,7 +604,7 @@ const styles = `
   }
   .result-title h2 {
     color: #fff3df;
-    font-size: clamp(2.35rem, 7vw, 5.3rem);
+    font-size: clamp(2rem, 6vw, 3.35rem);
     line-height: 1.04;
     word-break: keep-all;
   }
@@ -611,7 +612,7 @@ const styles = `
     margin: 0;
     color: #ddb878;
     font-size: clamp(1.08rem, 2.4vw, 1.35rem);
-    font-weight: 950;
+    font-weight: 800;
     line-height: 1.48;
     word-break: keep-all;
   }
@@ -632,7 +633,7 @@ const styles = `
   .result-sections section,
   .friend-question {
     padding: 17px;
-    border-radius: 20px;
+    border-radius: 14px;
     border: 1px solid rgba(247, 234, 212, 0.12);
     background: rgba(0, 0, 0, 0.18);
   }
@@ -653,7 +654,7 @@ const styles = `
   .friend-question p {
     color: #fff3df;
     font-size: clamp(1.05rem, 2.4vw, 1.25rem);
-    font-weight: 950;
+    font-weight: 800;
   }
   .actions {
     display: flex;
@@ -667,7 +668,7 @@ const styles = `
     }
     .intro,
     .scene-card {
-      border-radius: 24px;
+      border-radius: 14px;
     }
     .intro {
       min-height: auto;

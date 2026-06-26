@@ -517,7 +517,7 @@ const styles = `
   .home-link {
     color: #f7f3ea;
     text-decoration: none;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.04em;
   }
   .locale-switch {
@@ -562,7 +562,7 @@ const styles = `
     gap: 10px;
     color: #fbbf24;
     font-size: 0.78rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.14em;
   }
   .kicker i {
@@ -574,9 +574,11 @@ const styles = `
   h1 {
     max-width: 760px;
     margin: 18px 0 14px;
-    font-size: clamp(2.3rem, 8vw, 5.4rem);
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
+    font-size: clamp(32px, 6vw, 56px);
     line-height: 1.02;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
+    font-weight: 800;
   }
   .hero > p {
     max-width: 680px;
@@ -590,7 +592,7 @@ const styles = `
     width: min(100%, 640px);
     margin: 28px 0;
     padding: 18px;
-    border-radius: 28px;
+    border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, 0.11);
     background: rgba(255, 255, 255, 0.06);
     box-shadow: 0 26px 70px rgba(0, 0, 0, 0.2);
@@ -600,7 +602,7 @@ const styles = `
     max-width: 80%;
     padding: 13px 16px;
     border-radius: 18px;
-    font-weight: 900;
+    font-weight: 800;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
     word-break: keep-all;
     overflow-wrap: anywhere;
@@ -651,7 +653,7 @@ const styles = `
   .related {
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(255, 255, 255, 0.08);
-    border-radius: 28px;
+    border-radius: 14px;
     box-shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(18px);
   }
@@ -669,7 +671,7 @@ const styles = `
   .meter span {
     color: rgba(247, 243, 234, 0.62);
     font-size: 0.78rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -683,7 +685,7 @@ const styles = `
   .choices button {
     min-height: 98px;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
+    border-radius: 10px;
     background: rgba(15, 23, 42, 0.44);
     color: #f7f3ea;
     text-align: left;
@@ -722,9 +724,9 @@ const styles = `
   .actions button {
     min-height: 52px;
     border: 0;
-    border-radius: 999px;
+    border-radius: 10px;
     padding: 0 22px;
-    font-weight: 950;
+    font-weight: 800;
     cursor: pointer;
     color: #17151f;
     background: linear-gradient(135deg, #fbbf24, #7dd3fc);
@@ -753,7 +755,7 @@ const styles = `
     display: flex;
     justify-content: space-between;
     color: rgba(247, 243, 234, 0.72);
-    font-weight: 900;
+    font-weight: 800;
   }
   .progress > i {
     display: block;
@@ -776,7 +778,7 @@ const styles = `
   .phrase-card {
     margin: 0 0 20px;
     padding: 16px;
-    border-radius: 22px;
+    border-radius: 14px;
     background: rgba(8, 13, 27, 0.48);
     border: 1px solid rgba(255, 255, 255, 0.12);
   }
@@ -789,7 +791,7 @@ const styles = `
     color: #17151f;
     background: linear-gradient(135deg, #fef3c7, #bae6fd);
     font-size: clamp(1.18rem, 4vw, 1.6rem);
-    font-weight: 950;
+    font-weight: 800;
     line-height: 1.45;
     word-break: keep-all;
     overflow-wrap: anywhere;
@@ -810,13 +812,14 @@ const styles = `
     color: #17151f;
     background: #fbbf24;
     font-size: 0.76rem;
-    font-weight: 950;
+    font-weight: 800;
   }
   .question-card h2 {
     margin: 12px 0 22px;
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
     font-size: clamp(1.34rem, 4vw, 2.1rem);
     line-height: 1.4;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
     word-break: keep-all;
   }
   .choices {
@@ -839,7 +842,7 @@ const styles = `
     padding: 6px 10px;
     font-style: normal;
     font-size: 0.78rem;
-    font-weight: 950;
+    font-weight: 800;
   }
   .explanation {
     margin-top: 16px;
@@ -881,9 +884,11 @@ const styles = `
   }
   .result-card h2 {
     margin: 18px 0 8px;
-    font-size: clamp(2rem, 8vw, 4.4rem);
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
+    font-size: clamp(2rem, 6vw, 54px);
     line-height: 1.08;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
+    font-weight: 800;
   }
   .subtitle,
   .description {
@@ -903,7 +908,7 @@ const styles = `
   .advice,
   .share-line {
     padding: 16px;
-    border-radius: 18px;
+    border-radius: 14px;
     background: rgba(0, 0, 0, 0.18);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
@@ -945,7 +950,7 @@ const styles = `
     margin-top: 24px;
     color: rgba(247, 243, 234, 0.48);
     font-size: 0.82rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 0.12em;
   }
   .actions {
@@ -966,6 +971,7 @@ const styles = `
   }
   .related h2 {
     margin: 0 0 14px;
+    font-family: var(--font-noto-sans-kr), "Inter", system-ui, sans-serif;
     font-size: 1.2rem;
   }
   .related div {
@@ -976,7 +982,7 @@ const styles = `
   .related a {
     min-height: 92px;
     padding: 15px;
-    border-radius: 18px;
+    border-radius: 14px;
     color: #f7f3ea;
     text-decoration: none;
     background: rgba(255, 255, 255, 0.08);

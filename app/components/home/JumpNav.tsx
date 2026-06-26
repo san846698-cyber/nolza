@@ -1,29 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useLocale } from "@/hooks/useLocale";
 import type { HomeCategory } from "@/lib/games-home";
 
-export default function JumpNav({ categories }: { categories: HomeCategory[] }) {
+// 섹션 네비 = 필터 탭. "전체" + 각 카테고리. 누르면 해당 섹션만 표시(스크롤 점프 X).
+export default function JumpNav({
+  categories,
+  active,
+  onSelect,
+}: {
+  categories: HomeCategory[];
+  active: string;
+  onSelect: (id: string) => void;
+}) {
   const { t } = useLocale();
-  const [active, setActive] = useState<string>(categories[0]?.id ?? "");
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(visible.target.id);
-      },
-      { rootMargin: "-30% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
-    );
-    categories.forEach((c) => {
-      const el = document.getElementById(c.id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
-  }, [categories]);
+  const tabs: { id: string; labelKo: string; labelEn: string; num: number | null }[] = [
+    { id: "all", labelKo: "전체", labelEn: "All", num: null },
+    ...categories.map((c, i) => ({
+      id: c.id,
+      labelKo: c.labelKo,
+      labelEn: c.labelEn,
+      num: i + 1,
+    })),
+  ];
 
   return (
     <nav
@@ -34,17 +34,18 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
         WebkitBackdropFilter: "blur(12px)",
         borderBottom: "1px solid var(--border)",
       }}
-      aria-label="Jump to category"
+      aria-label="Filter by category"
     >
       <div className="mx-auto flex max-w-col items-center gap-1.5 overflow-x-auto px-4 py-2.5 sm:gap-2 sm:px-6 lg:px-7 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
-        {categories.map((c, i) => {
-          const isActive = active === c.id;
+        {tabs.map((tb) => {
+          const isActive = active === tb.id;
           return (
-            <a
-              key={c.id}
-              href={`#${c.id}`}
-              aria-current={isActive ? "true" : undefined}
-              className="inline-flex min-h-9 shrink-0 items-center gap-2 rounded-full px-4 py-2 font-inter text-[13px] font-bold tracking-tight whitespace-nowrap no-underline transition-[background,color] duration-200"
+            <button
+              key={tb.id}
+              type="button"
+              onClick={() => onSelect(tb.id)}
+              aria-pressed={isActive}
+              className="inline-flex min-h-9 shrink-0 cursor-pointer items-center gap-2 rounded-full border-0 px-4 py-2 font-inter text-[13px] font-bold tracking-tight whitespace-nowrap transition-[background,color] duration-200"
               style={
                 isActive
                   ? {
@@ -67,16 +68,18 @@ export default function JumpNav({ categories }: { categories: HomeCategory[] }) 
                     "transparent";
               }}
             >
-              <span
-                className="font-mono text-[10px] font-black tracking-[0.12em]"
-                style={{
-                  color: isActive ? "rgba(255,255,255,0.5)" : "var(--accent)",
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {t(c.labelKo, c.labelEn)}
-            </a>
+              {tb.num !== null && (
+                <span
+                  className="font-mono text-[10px] font-black tracking-[0.12em]"
+                  style={{
+                    color: isActive ? "rgba(255,255,255,0.5)" : "var(--accent)",
+                  }}
+                >
+                  {String(tb.num).padStart(2, "0")}
+                </span>
+              )}
+              {t(tb.labelKo, tb.labelEn)}
+            </button>
           );
         })}
       </div>

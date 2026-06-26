@@ -299,6 +299,7 @@ export default function ReactGame() {
                 <ResultScreen
                   locale={locale}
                   currentGameId="react"
+                  reveal={false}
                   eyebrow={t("5라운드 평균", "5-round average")}
                   title={verdict.title}
                   score={`${avg}`}

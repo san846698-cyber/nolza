@@ -20,6 +20,7 @@ const C = {
   line: "rgba(245,240,232,0.16)",
 };
 const FONT = `"Noto Serif KR", "Noto Serif", Georgia, serif`;
+const FONT_SANS = `var(--font-noto-sans-kr), "Noto Sans KR", "Inter", system-ui, sans-serif`;
 
 /* ============================================================
  * 질문 데이터 — D축(1-15) 본성 / C축(16-30) 언행일치
@@ -536,7 +537,7 @@ function HumanTestInner() {
       <div style={{ position: "relative", zIndex: 1, padding: "16px 20px 0" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <Link href="/" style={{ color: C.sub, textDecoration: "none", fontSize: 13 }}>
-            ← {t("놀자 홈", "Home")}
+            ← {t("nolza 홈", "Home")}
           </Link>
         </div>
       </div>
@@ -586,7 +587,8 @@ function IntroView({ onStart, t }: { onStart: () => void; t: (ko: string, en: st
       <h1
         style={{
           margin: 0,
-          fontWeight: 900,
+          fontFamily: FONT_SANS,
+          fontWeight: 800,
           fontSize: "clamp(34px, 9vw, 56px)",
           lineHeight: 1.18,
           letterSpacing: "0.02em",
@@ -830,8 +832,9 @@ function ResultView({
         >
           <span
             style={{
-              fontWeight: 900,
-              fontSize: locale === "ko" ? "clamp(40px, 12vw, 68px)" : "clamp(26px, 8vw, 44px)",
+              fontFamily: FONT_SANS,
+              fontWeight: 800,
+              fontSize: locale === "ko" ? "clamp(40px, 12vw, 56px)" : "clamp(26px, 8vw, 44px)",
               letterSpacing: locale === "ko" ? "0.08em" : "0.02em",
               lineHeight: 1,
               display: "block",
@@ -909,7 +912,7 @@ function ResultView({
         }}
       >
         <div style={{ fontSize: 13, letterSpacing: "0.24em", color: C.sub }}>
-          {t("놀자.fun 심판소", "nolza.fun TRIBUNAL")}
+          {t("nolza.fun 심판소", "nolza.fun TRIBUNAL")}
         </div>
 
         <div style={{ marginTop: 22, fontSize: 11, letterSpacing: "0.3em", color: C.sub }}>
@@ -928,7 +931,8 @@ function ResultView({
         >
           <span
             style={{
-              fontWeight: 900,
+              fontFamily: FONT_SANS,
+              fontWeight: 800,
               fontSize: locale === "ko" ? "clamp(38px, 13vw, 56px)" : "clamp(24px, 9vw, 40px)",
               letterSpacing: locale === "ko" ? "0.08em" : "0.02em",
               lineHeight: 1,

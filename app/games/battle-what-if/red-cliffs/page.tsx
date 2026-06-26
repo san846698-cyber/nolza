@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   if (!picks) {
     return {
-      title: "주유라면 — 적벽의 다섯 갈림길 | 놀자.fun",
+      title: "주유라면 — 적벽의 다섯 갈림길 | nolza.fun",
       description:
         "조조의 80만 대군 앞에서, 주유의 다섯 갈림길. 당신의 지휘 유형은?",
       openGraph: {
@@ -47,7 +47,7 @@ export async function generateMetadata({
   const sharedUrl = `${ROUTE}?p=${code}`;
 
   return {
-    title: `${title} | 놀자.fun`,
+    title: `${title} | nolza.fun`,
     description: desc,
     openGraph: {
       title,

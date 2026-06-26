@@ -148,7 +148,7 @@ export default function MbtiDepthGame() {
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 pt-4 md:px-8 md:pt-6">
           <Link
             href="/"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-card/70 text-lg font-black leading-none text-gray-400 hover:border-accent hover:text-accent"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-card/70 text-lg font-extrabold leading-none text-gray-400 hover:border-accent hover:text-accent"
             aria-label={homeBackLabel(locale)}
           >
             ←
@@ -204,7 +204,7 @@ function IntroView({
 }) {
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center text-center">
-      <h1 className="font-serif text-4xl font-black leading-tight text-white md:text-6xl lg:text-7xl whitespace-pre-line [word-break:keep-all]">
+      <h1 className="font-sans text-4xl font-extrabold leading-tight text-white md:text-5xl whitespace-pre-line [word-break:keep-all]">
         {t(
           "당신의 MBTI,\n진짜로 분석해드립니다",
           "Your MBTI,\nbut make it specific",
@@ -225,7 +225,7 @@ function IntroView({
       <button
         type="button"
         onClick={onStart}
-        className="mt-12 rounded-full bg-accent px-12 py-4 text-base font-bold text-white transition-all hover:opacity-90 hover:scale-[1.02] active:scale-100"
+        className="mt-12 rounded-[10px] bg-accent px-12 py-4 text-base font-bold text-white transition-all hover:opacity-90 hover:scale-[1.02] active:scale-100"
       >
         {t("시작하기", "Start")} →
       </button>
@@ -262,7 +262,7 @@ function TransitionView({
         {intro.ordinal[locale]}
       </div>
 
-      <h2 className="mt-6 font-serif text-4xl font-black text-white md:text-6xl">
+      <h2 className="mt-6 font-sans text-4xl font-extrabold text-white md:text-5xl">
         {intro.title[locale]}
       </h2>
 
@@ -273,7 +273,7 @@ function TransitionView({
       <button
         type="button"
         onClick={onContinue}
-        className="mt-12 rounded-full border border-accent px-10 py-3 text-sm font-medium text-accent transition-all hover:bg-accent hover:text-white"
+        className="mt-12 rounded-[10px] border border-accent px-10 py-3 text-sm font-medium text-accent transition-all hover:bg-accent hover:text-white"
       >
         {t("계속하기", "Continue")} →
       </button>
@@ -346,7 +346,7 @@ function QuizView({
             key={i}
             type="button"
             onClick={() => onSelect(opt.score)}
-            className="group rounded-2xl border border-border bg-card p-4 text-left transition-all hover:border-accent hover:bg-bg md:p-5"
+            className="group rounded-[10px] border border-border bg-card p-4 text-left transition-all hover:border-accent hover:bg-bg md:p-5"
           >
             <div className="flex items-start gap-4">
               <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-xs font-bold text-gray-400 group-hover:border-accent group-hover:text-accent">
@@ -431,8 +431,8 @@ function ResultView({
             {summary}
           </p>
 
-          <section className="rounded-2xl border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
-              <div className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">
+          <section className="rounded-[14px] border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-accent">
                 {t("결과를 읽는 방법", "How to read this result")}
               </div>
               <div className="mt-3 space-y-3 text-sm leading-relaxed text-gray-300 md:text-base">
@@ -465,7 +465,7 @@ function ResultView({
 
             <section className="mt-6">
               <div className="mb-3 flex items-end justify-between gap-3">
-                <h2 className="font-serif text-xl font-bold text-white md:text-2xl">
+                <h2 className="font-sans text-xl font-bold text-white md:text-2xl">
                   {t("당신의 4가지 핵심 축", "Your four core axes")}
                 </h2>
                 <span className="hidden text-xs font-semibold text-gray-500 sm:inline">
@@ -474,16 +474,16 @@ function ResultView({
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 {axisCards.map(({ dim, info, copy }) => (
-                  <section key={dim.dimension} className="rounded-2xl border border-border bg-card p-5">
+                  <section key={dim.dimension} className="rounded-[14px] border border-border bg-card p-5">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="font-mono text-xl font-black text-accent">
+                      <div className="font-mono text-xl font-extrabold text-accent">
                         {dim.side}{dim.level}
                       </div>
                       <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-gray-500">
                         {dimensionLabel(dim.dimension, t)}
                       </div>
                     </div>
-                    <h3 className="mt-2 font-serif text-lg font-bold text-white">
+                    <h3 className="mt-2 font-sans text-lg font-bold text-white">
                       {info.title[locale]}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-gray-300">
@@ -537,10 +537,10 @@ function ResultView({
                 return (
                   <div
                     key={d.dimension}
-                    className="rounded-2xl border border-border bg-card p-5 md:p-7"
+                    className="rounded-[14px] border border-border bg-card p-5 md:p-7"
                   >
                     <div className="flex flex-wrap items-baseline justify-between gap-3">
-                      <span className="font-mono text-2xl font-black text-accent">
+                      <span className="font-mono text-2xl font-extrabold text-accent">
                         {d.side}
                         {d.level}
                       </span>
@@ -548,7 +548,7 @@ function ResultView({
                         {dimensionLabel(d.dimension, t)}
                       </span>
                     </div>
-                    <h3 className="mt-3 font-serif text-xl font-bold text-white md:text-2xl">
+                    <h3 className="mt-3 font-sans text-xl font-bold text-white md:text-2xl">
                       {info.title[locale]}
                     </h3>
 
@@ -579,7 +579,7 @@ function ResultView({
 
             <section className="mt-6">
               <div className="mb-3 flex items-end justify-between gap-3">
-                <h2 className="font-serif text-xl font-bold text-white md:text-2xl">
+                <h2 className="font-sans text-xl font-bold text-white md:text-2xl">
                   {t("방향성 참고값", "Direction reference")}
                 </h2>
                 <span className="text-xs font-semibold text-gray-500">
@@ -593,13 +593,13 @@ function ResultView({
               </div>
             </section>
 
-            <section className="mt-6 rounded-2xl border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
-              <div className="text-[11px] font-black uppercase tracking-[0.2em] text-accent">
+            <section className="mt-6 rounded-[14px] border border-accent/25 bg-accent/[0.08] p-5 md:p-6">
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-accent">
                 {t("친구가 보면 할 말", "What a friend might say")}
               </div>
               <div className="mt-4 grid gap-3">
                 {friendLines.map((line) => (
-                  <p key={line} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm leading-relaxed text-gray-200 md:text-base">
+                  <p key={line} className="rounded-[14px] border border-white/10 bg-white/[0.04] p-4 text-sm leading-relaxed text-gray-200 md:text-base">
                     “{line}”
                   </p>
                 ))}
@@ -805,7 +805,7 @@ function DimensionBar({
   const sideName = sideLabel(dim.side, t);
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
+    <div className="rounded-[14px] border border-border bg-card p-4">
       <div className="flex items-center justify-between gap-3">
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.16em] text-gray-500">
@@ -843,8 +843,8 @@ function DimensionBar({
 
 function InsightCard({ label, body }: { label: string; body: string }) {
   return (
-    <section className="rounded-2xl border border-border bg-card p-5">
-      <div className="text-[11px] font-black uppercase tracking-[0.18em] text-accent">
+    <section className="rounded-[14px] border border-border bg-card p-5">
+      <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-accent">
         {label}
       </div>
       <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-gray-300 md:text-base">

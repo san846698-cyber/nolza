@@ -14,6 +14,7 @@ import Script from "next/script";
 import "./globals.css";
 import { AdSenseScript, AdSideRails } from "./components/Ads";
 import Analytics from "./components/Analytics";
+import { MotionProvider } from "./components/motion/Motion";
 import LocaleToggle from "./components/LocaleToggle";
 import ServiceWorkerCleanup from "./components/ServiceWorkerCleanup";
 import SiteFooter from "./components/SiteFooter";
@@ -192,7 +193,7 @@ export default function RootLayout({
         <ServiceWorkerCleanup />
         <AdSenseScript />
         <LocaleToggle />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         <SiteFooter />
         <AdSideRails />
       </body>

@@ -168,7 +168,7 @@ export default function KpopDanceGame() {
       <div className="border-b border-border" style={{ backgroundColor: "rgba(255, 111, 181, 0.04)" }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5 md:px-8">
           <Link href="/" className="text-xs text-gray-400 hover:text-accent">
-            {t("← Nolza home", "← 놀자 홈으로")}
+            {t("← Nolza home", "← nolza 홈으로")}
           </Link>
           <button
             type="button"
@@ -334,7 +334,7 @@ export default function KpopDanceGame() {
             href="/"
             className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium text-gray-300 hover:border-accent hover:text-accent"
           >
-            {t("← Nolza home", "← 놀자 홈으로")}
+            {t("← Nolza home", "← nolza 홈으로")}
           </Link>
         </div>
       </div>

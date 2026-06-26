@@ -2,6 +2,7 @@
 
 import type { ReactElement } from "react";
 import type { SimpleLocale } from "@/hooks/useLocale";
+import { m, T_QUESTION, useReducedMotion } from "@/app/components/motion/Motion";
 
 type ReadableQuestionProps = {
   prompt: string;
@@ -63,9 +64,16 @@ export default function ReadableQuestion({
   const questionText = split.question;
   const defaultSituationLabel = locale === "ko" ? "상황" : "Situation";
   const defaultPromptLabel = locale === "ko" ? "질문" : "Question";
+  const reduce = useReducedMotion();
 
   return (
-    <div className="readable-question">
+    <m.div
+      className="readable-question"
+      key={prompt}
+      initial={{ opacity: 0, x: reduce ? 0 : 22 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={reduce ? { duration: 0.18 } : T_QUESTION}
+    >
       {situationText && (
         <div className="readable-question__situation">
           <span>{situationLabel ?? defaultSituationLabel}</span>
@@ -76,6 +84,6 @@ export default function ReadableQuestion({
         {situationText && <span>{promptLabel ?? defaultPromptLabel}</span>}
         <h2>{questionText}</h2>
       </div>
-    </div>
+    </m.div>
   );
 }

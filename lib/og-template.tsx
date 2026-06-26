@@ -60,7 +60,7 @@ function findGame(slug: string): {
     return {
       no: "—",
       kicker: T.ko.tagline_top,
-      titleKo: "놀자.fun",
+      titleKo: "nolza.fun",
       titleEn: "nolza.fun",
       sub: T.ko.title_sub,
       palette: HOME_PALETTE,
@@ -256,7 +256,7 @@ export async function gameOgImage(slug: string) {
               fontWeight: 600,
             }}
           >
-            놀자 · A KOREAN INTERNET PLAYGROUND
+            nolza · A KOREAN INTERNET PLAYGROUND
           </div>
           <div
             style={{
