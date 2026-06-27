@@ -107,6 +107,27 @@ export default function ResultScreen({
         filename={`nolza-${currentGameId}-result`}
         locale={locale}
         backgroundColor={TONE_CAPTURE_BG[tone]}
+        showButton
+        buttonLabel={{ ko: "결과 이미지 저장 · 공유", en: "Save / share result card" }}
+        buttonClassName="result-screen__save-img btn-press"
+        buttonStyle={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          width: "fit-content",
+          margin: "18px auto 0",
+          padding: "13px 26px",
+          borderRadius: 999,
+          border: "1.5px solid currentColor",
+          background: "transparent",
+          color: "inherit",
+          fontSize: 14,
+          fontWeight: 700,
+          letterSpacing: "0.03em",
+          cursor: "pointer",
+          minHeight: 46,
+        }}
       >
         {({ cardRef }) => (
           <m.div

@@ -166,8 +166,13 @@ export function buildAnimeMetadata(
   langParam?: string | string[] | undefined,
 ): Metadata {
   // ?lang=en 이면 영어로 강제(외국 공유용). 그 외엔 한국어 기본.
+  // 추가로, 공유 페이로드(?s=)에 기록된 locale 도 확인 — 영어로 테스트한 사람이
+  // 결과를 공유하면 ?lang 이 없어도 카드가 자동으로 영어로 뜨게 한다.
   const rawLang = Array.isArray(langParam) ? langParam[0] : langParam;
-  const lang: "ko" | "en" = rawLang === "en" ? "en" : "ko";
+  const rawS = Array.isArray(sParam) ? sParam[0] : sParam;
+  const sharedPayload = decodeSharePayload<{ v?: number; locale?: "ko" | "en" }>(rawS ?? null);
+  const sharedLocale = sharedPayload?.v === 1 ? sharedPayload.locale : undefined;
+  const lang: "ko" | "en" = rawLang === "en" || sharedLocale === "en" ? "en" : "ko";
   const pick = (t: LocalText) => t[lang];
   const key = resolveSharedResultId(config, sParam);
   const result = key ? getAnimeResult(config, key) : null;
