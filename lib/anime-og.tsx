@@ -4,6 +4,7 @@ import { getAnimeResult, type AnimeTestConfig } from "@/lib/anime-test";
 // 캐릭터 테스트 공유 카드(1200x630) — 텍스트 + 시그니처색 + 이모지(twemoji)만. 저작권 이미지 0개.
 const SIZE = { width: 1200, height: 630 };
 const OPTS = { ...SIZE, emoji: "twemoji" as const };
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nolza.fun";
 
 export function animeDefaultOg(config: AnimeTestConfig, lang: "ko" | "en" = "ko"): ImageResponse {
   const pick = (t: { ko: string; en: string }) => t[lang];
@@ -32,21 +33,27 @@ export function animeResultOg(config: AnimeTestConfig, key: string, lang: "ko" |
   const r = getAnimeResult(config, key);
   const pick = (t: { ko: string; en: string }) => t[lang];
   if (!r) return animeDefaultOg(config, lang);
+  const photo = `${SITE}/images/tests/${config.testId}/${r.key}.jpg`;
   return new ImageResponse(
     (
-      <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", overflow: "hidden", background: config.ogBg, color: "#ffffff", fontFamily: "Noto Sans KR, sans-serif" }}>
-        <div style={{ display: "flex", width: 20, height: "100%", background: r.color }} />
-        <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", flex: 1, padding: "64px 72px" }}>
-          <div style={{ display: "flex", fontSize: 26, fontWeight: 900, letterSpacing: 2, color: config.accent }}>{pick(config.eyebrow)}</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 22, marginTop: 14 }}>
-            <div style={{ display: "flex", fontSize: 120, lineHeight: 1 }}>{r.emoji}</div>
-            <div style={{ display: "flex", fontSize: 96, fontWeight: 900, lineHeight: 1.02, color: r.color }}>{pick(r.name)}</div>
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", background: config.ogBg, color: "#ffffff", fontFamily: "Noto Sans KR, sans-serif", padding: "0 72px" }}>
+        {/* 캐릭터 사진 */}
+        <div style={{ display: "flex", width: 430, height: 430, borderRadius: 30, overflow: "hidden", border: `8px solid ${r.color}`, boxShadow: "0 24px 64px rgba(0,0,0,0.45)", flexShrink: 0 }}>
+          <img src={photo} width={430} height={430} style={{ width: 430, height: 430, objectFit: "cover", borderRadius: 22 }} />
+        </div>
+        {/* 텍스트 */}
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", marginLeft: 58, flex: 1 }}>
+          <div style={{ display: "flex", fontSize: 28, fontWeight: 900, letterSpacing: 2, color: config.accent }}>{pick(config.eyebrow)}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 10 }}>
+            <div style={{ display: "flex", fontSize: 72, lineHeight: 1 }}>{r.emoji}</div>
+            <div style={{ display: "flex", fontSize: 60, fontWeight: 900, lineHeight: 1.04, color: r.color, maxWidth: 470 }}>{pick(r.name)}</div>
           </div>
-          <div style={{ display: "flex", marginTop: 20, fontSize: 32, fontWeight: 700, color: "rgba(255,255,255,0.9)", maxWidth: 940 }}>{pick(r.oneLiner)}</div>
-          <div style={{ position: "absolute", right: 72, bottom: 44, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-            <div style={{ display: "flex", fontSize: 24, fontWeight: 900, letterSpacing: 2, color: "rgba(255,255,255,0.7)" }}>nolza.fun</div>
-            <div style={{ display: "flex", fontSize: 16, fontWeight: 600, color: "rgba(255,255,255,0.5)" }}>{lang === "en" ? "Unofficial fan content" : "비공식 팬 콘텐츠"}</div>
-          </div>
+          <div style={{ display: "flex", marginTop: 20, fontSize: 30, fontWeight: 700, color: "rgba(255,255,255,0.92)", maxWidth: 540 }}>{pick(r.oneLiner)}</div>
+        </div>
+        {/* 워터마크 */}
+        <div style={{ position: "absolute", right: 64, bottom: 38, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+          <div style={{ display: "flex", fontSize: 24, fontWeight: 900, letterSpacing: 2, color: "rgba(255,255,255,0.7)" }}>nolza.fun</div>
+          <div style={{ display: "flex", fontSize: 15, fontWeight: 600, color: "rgba(255,255,255,0.45)" }}>{lang === "en" ? "Unofficial fan content" : "비공식 팬 콘텐츠"}</div>
         </div>
       </div>
     ),
