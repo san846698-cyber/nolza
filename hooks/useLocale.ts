@@ -16,6 +16,13 @@ const LOCALE_CHANGE_EVENT = "nolza:locale-change";
 function detect(): SimpleLocale {
   if (typeof window === "undefined") return "ko";
   try {
+    // 공유 링크의 ?lang= 가 최우선 — 외국 공유 링크(?lang=en)는 영어로 강제.
+    const urlLang = new URLSearchParams(window.location.search).get("lang");
+    if (urlLang === "ko" || urlLang === "en") return urlLang;
+  } catch {
+    /* ignore */
+  }
+  try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === "ko" || stored === "en") return stored;
   } catch {

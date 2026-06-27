@@ -163,22 +163,30 @@ export function resolveSharedResultId(
 export function buildAnimeMetadata(
   config: AnimeTestConfig,
   sParam: string | string[] | undefined,
+  langParam?: string | string[] | undefined,
 ): Metadata {
+  // ?lang=en 이면 영어로 강제(외국 공유용). 그 외엔 한국어 기본.
+  const rawLang = Array.isArray(langParam) ? langParam[0] : langParam;
+  const lang: "ko" | "en" = rawLang === "en" ? "en" : "ko";
+  const pick = (t: LocalText) => t[lang];
   const key = resolveSharedResultId(config, sParam);
   const result = key ? getAnimeResult(config, key) : null;
+  // OG 이미지: 영어면 동적 영어 카드(result-og?lang=en)로, 한국어 기본은 정적 coverImage.
   const ogImage = key
-    ? `${config.path}/result-og?type=${key}`
-    : config.coverImage ?? `${config.path}/opengraph-image`;
+    ? `${config.path}/result-og?type=${key}${lang === "en" ? "&lang=en" : ""}`
+    : lang === "en"
+      ? `${config.path}/result-og?lang=en`
+      : config.coverImage ?? `${config.path}/opengraph-image`;
   const ogTitle = result
-    ? `${config.eyebrow.ko}: ${result.name.ko}`
-    : config.metaTitle.ko;
+    ? `${pick(config.eyebrow)}: ${pick(result.name)}`
+    : pick(config.metaTitle);
   const ogDescription = result
-    ? `${result.oneLiner.ko} | ${config.title.ko}`
-    : config.metaDescription.ko;
+    ? `${pick(result.oneLiner)} | ${pick(config.title)}`
+    : pick(config.metaDescription);
 
   return {
-    title: config.metaTitle.ko,
-    description: config.metaDescription.ko,
+    title: pick(config.metaTitle),
+    description: pick(config.metaDescription),
     alternates: { canonical: config.path },
     openGraph: {
       title: ogTitle,
@@ -186,7 +194,7 @@ export function buildAnimeMetadata(
       url: config.path,
       siteName: "nolza.fun",
       images: [{ url: ogImage, width: 1200, height: 630, alt: ogTitle }],
-      locale: "ko_KR",
+      locale: lang === "en" ? "en_US" : "ko_KR",
       type: "website",
     },
     twitter: {

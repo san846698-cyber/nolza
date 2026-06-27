@@ -1,26 +1,26 @@
 import type { AnimeResult, AnimeQuestion, AnimeTestConfig } from "@/lib/anime-test";
 
-// 일반 13명. 히든(포치타)은 config.hidden 으로 분리 — results[] 에 넣지 않는다. (16문항)
+// 일반 13명. 히든(포치타)은 config.hidden 으로 분리, results[] 에 넣지 않는다. (16문항)
 const RESULTS: AnimeResult[] = [
   {
     key: "denji",
     name: { ko: "덴지", en: "Denji" },
-    oneLiner: { ko: "단순하고 욕망에 솔직한, 의외의 순정파", en: "Simple and honest about what you want — secretly a romantic." },
+    oneLiner: { ko: "단순하고 욕망에 솔직한, 의외의 순정파", en: "Simple and honest about what you want, secretly a romantic." },
     description: {
       ko: "당신은 복잡하게 생각하지 않고 원하는 걸 솔직하게 좇는 사람입니다. 작은 행복(맛있는 거, 좋아하는 사람)에 진심이고, 겉으론 가벼워 보여도 한번 마음 준 상대에겐 의외로 순정적입니다. 그 단순함과 솔직함이 사람을 끌어당겨요.",
-      en: "You don't overthink — you chase what you want honestly. You're sincere about small joys (good food, the person you like), and although you seem easygoing, you're surprisingly devoted once you care. That simple honesty draws people in.",
+      en: "You don't overthink, you chase what you want honestly. You're sincere about small joys (good food, the person you like), and although you seem easygoing, you're surprisingly devoted once you care. That simple honesty draws people in.",
     },
     strength: { ko: "솔직함과 단순한 행복을 아는 힘이 있습니다.", en: "Honest, and you know how to find simple happiness." },
     weakPoint: { ko: "욕망에 솔직해서 즉흥적일 수 있어요.", en: "Being honest about desire can make you impulsive." },
     friendSays: { ko: "넌 단순한데 그게 매력이야.", en: "You're simple, and honestly that's your charm." },
-    shareLine: { ko: "나 체인소맨 테스트에서 덴지 나왔다. 순정파래ㅋ", en: "I got Denji — secretly a romantic, apparently." },
+    shareLine: { ko: "나 체인소맨 테스트에서 덴지 나왔다. 순정파래ㅋ", en: "I got Denji, secretly a romantic, apparently." },
     emoji: "🔗",
     color: "#E8B23A",
   },
   {
     key: "power",
     name: { ko: "파워", en: "Power" },
-    oneLiner: { ko: "제멋대로에 허세 가득, 그런데 은근 정 있는 사람", en: "Selfish and full of bravado — yet secretly caring." },
+    oneLiner: { ko: "제멋대로에 허세 가득, 그런데 은근 정 있는 사람", en: "Selfish and full of bravado, yet secretly caring." },
     description: {
       ko: "당신은 자기중심적이고 허세도 좀 있지만, 그게 미워 보이지 않는 묘한 매력의 소유자입니다. 큰소리치고 제멋대로지만 정작 가까운 사람에겐 은근히 정을 줍니다. 솔직하고 거침없는 에너지로 분위기를 휘어잡아요.",
       en: "You're self-centered with a dash of bravado, but somehow it's endearing, not annoying. You talk big and do as you please, yet you quietly show affection to those close to you. Your bold, unfiltered energy owns the room.",
@@ -43,7 +43,7 @@ const RESULTS: AnimeResult[] = [
     strength: { ko: "냉정한 판단과 사람을 이끄는 카리스마가 있습니다.", en: "Cool judgment and magnetic, guiding charisma." },
     weakPoint: { ko: "속을 안 보여줘 가까워지기 어려워 보일 수 있어요.", en: "Hiding your inner self can make you hard to get close to." },
     friendSays: { ko: "넌 조용한데 다들 너 말을 듣더라.", en: "You're quiet, yet everyone ends up listening to you." },
-    shareLine: { ko: "나 체인소맨 테스트에서 마키마 나왔다. 카리스마형ㄷㄷ", en: "I got Makima — pure calm charisma." },
+    shareLine: { ko: "나 체인소맨 테스트에서 마키마 나왔다. 카리스마형ㄷㄷ", en: "I got Makima, pure calm charisma." },
     emoji: "🌀",
     color: "#7A2E3A",
   },
@@ -53,12 +53,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "책임감으로 버티는, 속정 깊은 어른", en: "A responsible grown-up who endures, warm underneath." },
     description: {
       ko: "당신은 묵묵히 책임을 지고 견디는 어른스러운 사람입니다. 힘들어도 티 안 내고, 자기가 맡은 사람과 일을 끝까지 챙깁니다. 무뚝뚝해 보여도 속정이 깊어 곁에 있으면 안심이 되는 타입이에요. 다만 혼자 너무 많이 짊어집니다.",
-      en: "You quietly shoulder responsibility and endure. You hide your struggles and look after your people and duties to the end. You can seem gruff, but you're deeply warm underneath — the kind of presence that puts others at ease. You just carry too much alone.",
+      en: "You quietly shoulder responsibility and endure. You hide your struggles and look after your people and duties to the end. You can seem gruff, but you're deeply warm underneath, the kind of presence that puts others at ease. You just carry too much alone.",
     },
     strength: { ko: "책임감과 인내, 깊은 속정이 있습니다.", en: "Responsibility, endurance, and deep quiet warmth." },
     weakPoint: { ko: "혼자 다 짊어지다 무너질 수 있어요.", en: "Carrying it all alone can wear you down." },
     friendSays: { ko: "넌 표현은 없는데 진짜 든든해.", en: "You don't say much, but you're truly dependable." },
-    shareLine: { ko: "나 체인소맨 테스트에서 아키 나왔다. 속정 깊은 어른.", en: "I got Aki — the warm, dependable grown-up." },
+    shareLine: { ko: "나 체인소맨 테스트에서 아키 나왔다. 속정 깊은 어른.", en: "I got Aki, the warm, dependable grown-up." },
     emoji: "🦊",
     color: "#3A4048",
   },
@@ -73,7 +73,7 @@ const RESULTS: AnimeResult[] = [
     strength: { ko: "매력과 대담함, 상황 판단이 빠릅니다.", en: "Charm, daring, and a fast read of any situation." },
     weakPoint: { ko: "대담함이 가끔 오해를 부를 수 있어요.", en: "That boldness can sometimes invite misunderstanding." },
     friendSays: { ko: "넌 다정한데 어딘가 예측이 안 돼ㅋㅋ", en: "You're sweet, but somehow impossible to predict, lol." },
-    shareLine: { ko: "나 체인소맨 테스트에서 레제 나왔다. 위험한 매력이래.", en: "I got Reze — dangerous charm, apparently." },
+    shareLine: { ko: "나 체인소맨 테스트에서 레제 나왔다. 위험한 매력이래.", en: "I got Reze, dangerous charm, apparently." },
     emoji: "💣",
     color: "#2E8B8B",
   },
@@ -88,22 +88,22 @@ const RESULTS: AnimeResult[] = [
     strength: { ko: "위기 감지 능력과 끈질긴 생존 본능이 있습니다.", en: "Danger radar and a tenacious survival instinct." },
     weakPoint: { ko: "평소엔 불안과 걱정이 많은 편이에요.", en: "Day to day, you carry a lot of worry and nerves." },
     friendSays: { ko: "넌 맨날 불안해하면서 결국 살아남잖아ㅋㅋ", en: "You panic constantly, yet you always survive, lol." },
-    shareLine: { ko: "나 체인소맨 테스트에서 코베니 나왔다. 은근 생존왕ㅋ", en: "I got Kobeni — secretly a survival champ, lol." },
+    shareLine: { ko: "나 체인소맨 테스트에서 코베니 나왔다. 은근 생존왕ㅋ", en: "I got Kobeni, secretly a survival champ, lol." },
     emoji: "😰",
     color: "#9C7B5A",
   },
   {
     key: "samurai_sword",
     name: { ko: "사무라이 소드", en: "Samurai Sword" },
-    oneLiner: { ko: "자존심 강하고 지는 걸 못 참는 다혈질", en: "Proud and hot-blooded — you can't stand losing." },
+    oneLiner: { ko: "자존심 강하고 지는 걸 못 참는 다혈질", en: "Proud and hot-blooded, you can't stand losing." },
     description: {
       ko: "당신은 자존심이 강하고 한번 마음먹은 건 끝까지 밀어붙이는 다혈질입니다. 무시당하거나 지는 걸 견디지 못하고, 그만큼 승부 앞에서 누구보다 뜨겁게 타오르죠. 솔직하고 거침없는 그 기세가, 함께하는 사람에게는 든든한 추진력이 됩니다.",
-      en: "You're proud and hot-blooded — once you decide, you push it all the way. You can't bear being looked down on or losing, which is exactly why you burn hotter than anyone in a contest. That blunt, unstoppable drive becomes solid momentum for the people beside you.",
+      en: "You're proud and hot-blooded, once you decide, you push it all the way. You can't bear being looked down on or losing, which is exactly why you burn hotter than anyone in a contest. That blunt, unstoppable drive becomes solid momentum for the people beside you.",
     },
     strength: { ko: "강한 자존심과 끝까지 밀어붙이는 승부욕이 있습니다.", en: "Fierce pride and a will to win that pushes to the end." },
     weakPoint: { ko: "다혈질이라 욱하면 앞뒤를 안 볼 때가 있어요.", en: "Your temper can make you charge in without looking." },
-    friendSays: { ko: "넌 지는 거 진짜 못 참더라ㅋㅋ 근데 그게 멋있어.", en: "You really can't stand losing, lol — but that's what's cool." },
-    shareLine: { ko: "나 체인소맨 테스트에서 사무라이 소드 나왔다. 자존심 끝판왕ㄷㄷ", en: "I got Samurai Sword — pride turned all the way up." },
+    friendSays: { ko: "넌 지는 거 진짜 못 참더라ㅋㅋ 근데 그게 멋있어.", en: "You really can't stand losing, lol, but that's what's cool." },
+    shareLine: { ko: "나 체인소맨 테스트에서 사무라이 소드 나왔다. 자존심 끝판왕ㄷㄷ", en: "I got Samurai Sword, pride turned all the way up." },
     emoji: "⚔️",
     color: "#C0392B",
   },
@@ -118,7 +118,7 @@ const RESULTS: AnimeResult[] = [
     strength: { ko: "흔들리지 않는 여유와 담백한 마이페이스가 있습니다.", en: "Unshaken ease and a refreshingly own-pace nature." },
     weakPoint: { ko: "너무 무던해서 의욕이 없어 보일 수 있어요.", en: "Being so easygoing can read as a lack of drive." },
     friendSays: { ko: "넌 뭐든 ‘귀찮아’ 하면서 결국 다 받아주더라ㅋㅋ", en: "You 'can't be bothered' with everything, yet you go along anyway, lol." },
-    shareLine: { ko: "나 체인소맨 테스트에서 천사의 악마 나왔다. 초연한 마이페이스ㅋ", en: "I got Angel Devil — serene and gloriously unbothered." },
+    shareLine: { ko: "나 체인소맨 테스트에서 천사의 악마 나왔다. 초연한 마이페이스ㅋ", en: "I got Angel Devil, serene and gloriously unbothered." },
     emoji: "🪽",
     color: "#A9B6C9",
   },
@@ -128,12 +128,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "쿨하고 자유로운데 의리는 끝까지 가는 선배", en: "Cool and free-spirited, but loyal to the very end." },
     description: {
       ko: "당신은 겉으론 쿨하고 자유분방하지만, 한번 맺은 인연과 의리는 끝까지 지키는 사람입니다. 매사에 가볍게 툭툭 넘기는 것 같아도 정작 중요한 순간엔 제 사람을 위해 망설임 없이 나서죠. 시원시원한 매력과 속 깊은 순정을 함께 가진 멋진 선배 타입이에요.",
-      en: "On the surface you're cool and free-spirited, but you keep your bonds and loyalty to the very end. You seem to brush everything off lightly, yet at the moments that matter you step up for your people without hesitation. You've got breezy charm and a deep, quiet devotion at once — the cool-senpai type.",
+      en: "On the surface you're cool and free-spirited, but you keep your bonds and loyalty to the very end. You seem to brush everything off lightly, yet at the moments that matter you step up for your people without hesitation. You've got breezy charm and a deep, quiet devotion at once, the cool-senpai type.",
     },
     strength: { ko: "쿨한 매력과 끝까지 가는 의리가 있습니다.", en: "Breezy charm and loyalty that goes all the way." },
     weakPoint: { ko: "쿨한 척하다 속마음을 놓칠 수 있어요.", en: "Playing it cool can hide what you really feel." },
     friendSays: { ko: "넌 쿨한 척하는데 결정적일 때 제일 챙겨주더라.", en: "You act all cool, but you show up hardest when it counts." },
-    shareLine: { ko: "나 체인소맨 테스트에서 히메노 나왔다. 쿨한데 의리파ㄷㄷ", en: "I got Himeno — cool, but loyal to the bone." },
+    shareLine: { ko: "나 체인소맨 테스트에서 히메노 나왔다. 쿨한데 의리파ㄷㄷ", en: "I got Himeno, cool, but loyal to the bone." },
     emoji: "🚬",
     color: "#6E5A6E",
   },
@@ -143,12 +143,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "겉멋 뺀 냉소로 끝까지 살아남는 실전파", en: "A no-frills cynic who survives through sheer real-world skill." },
     description: {
       ko: "당신은 화려한 겉멋이나 헛된 기대를 버리고, 철저히 현실과 실전으로 승부하는 사람입니다. 산전수전 다 겪은 듯한 냉소 속에 누구보다 정확한 판단과 노련함이 숨어 있죠. 말은 까칠해도 사람 볼 줄 알고, 결국 살아남는 법을 아는 베테랑 타입이에요.",
-      en: "You drop the flashy posturing and empty hopes and play strictly by reality and hard experience. Behind a been-there-done-that cynicism hides sharper judgment and savvy than anyone. You talk rough, but you read people well — the veteran type who always knows how to survive.",
+      en: "You drop the flashy posturing and empty hopes and play strictly by reality and hard experience. Behind a been-there-done-that cynicism hides sharper judgment and savvy than anyone. You talk rough, but you read people well, the veteran type who always knows how to survive.",
     },
     strength: { ko: "노련한 판단력과 끝까지 살아남는 실전 감각이 있습니다.", en: "Seasoned judgment and a survivor's real-world instinct." },
     weakPoint: { ko: "냉소가 강해 무심하게 비칠 수 있어요.", en: "Your cynicism can come across as indifference." },
     friendSays: { ko: "넌 까칠한데 결국 제일 현실적인 조언을 해주더라.", en: "You're prickly, but you give the most realistic advice in the end." },
-    shareLine: { ko: "나 체인소맨 테스트에서 키시베 나왔다. 냉소 실전파ㄷㄷ", en: "I got Kishibe — the cynical survivor." },
+    shareLine: { ko: "나 체인소맨 테스트에서 키시베 나왔다. 냉소 실전파ㄷㄷ", en: "I got Kishibe, the cynical survivor." },
     emoji: "🥃",
     color: "#5E5A4A",
   },
@@ -158,12 +158,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "좋아하는 사람에게 순수하게 직진하는 충성파", en: "Pure, full-speed devotion to the one you adore." },
     description: {
       ko: "당신은 좋아하는 사람이나 목표가 생기면 순수하게, 그리고 맹렬하게 직진하는 사람입니다. 계산 없이 마음 가는 대로 끝까지 따르고, 그 사람을 위해서라면 물불을 가리지 않죠. 단순해 보여도 그 한결같은 충성과 에너지가 곁에 있는 사람을 든든하게 만들어요.",
-      en: "Once you have someone you adore or a goal in sight, you go straight for it — purely and fiercely. You follow with your whole heart, no calculation, and you'll brave anything for that person. You may look simple, but your steadfast loyalty and energy make whoever's beside you feel secure.",
+      en: "Once you have someone you adore or a goal in sight, you go straight for it, purely and fiercely. You follow with your whole heart, no calculation, and you'll brave anything for that person. You may look simple, but your steadfast loyalty and energy make whoever's beside you feel secure.",
     },
     strength: { ko: "순수한 충성심과 거침없는 추진력이 있습니다.", en: "Pure loyalty and unstoppable forward drive." },
     weakPoint: { ko: "한 방향으로만 달려 주변을 놓칠 수 있어요.", en: "Charging one direction can make you miss what's around you." },
     friendSays: { ko: "넌 한번 좋아하면 진짜 끝까지 가더라ㅋㅋ", en: "Once you like someone, you really go all the way, lol." },
-    shareLine: { ko: "나 체인소맨 테스트에서 빔 나왔다. 순수 직진 충성파ㄷㄷ", en: "I got Beam — pure full-speed loyalty." },
+    shareLine: { ko: "나 체인소맨 테스트에서 빔 나왔다. 순수 직진 충성파ㄷㄷ", en: "I got Beam, pure full-speed loyalty." },
     emoji: "🦈",
     color: "#4FA0C8",
   },
@@ -173,12 +173,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "패닉 속에서도 어떻게든 굴러가는 카오스 그 자체", en: "Pure chaos that somehow keeps rolling through the panic." },
     description: {
       ko: "당신은 계획 따윈 없어도 일단 부딪히면 어떻게든 굴러가게 만드는, 카오스 속 생존형입니다. 머릿속은 패닉이어도 손발은 멈추지 않고, 정신없는 상황을 오히려 추진력으로 바꿔버리죠. 예측 불가하지만 결국 끝까지 살아남는, 전설의 ‘밈’ 같은 존재예요.",
-      en: "Plan? None — but the moment you crash into something, you somehow keep it rolling: the survive-the-chaos type. Your head may be in full panic, but your hands and feet never stop, and you turn the madness into momentum. Unpredictable, yet you make it to the end every time — a legendary 'meme' of a presence.",
+      en: "Plan? None, but the moment you crash into something, you somehow keep it rolling: the survive-the-chaos type. Your head may be in full panic, but your hands and feet never stop, and you turn the madness into momentum. Unpredictable, yet you make it to the end every time, a legendary 'meme' of a presence.",
     },
     strength: { ko: "패닉을 추진력으로 바꾸는 무한 생존력이 있습니다.", en: "Endless survivability that turns panic into momentum." },
     weakPoint: { ko: "계획 없이 폭주하다 사고를 칠 수 있어요.", en: "Flooring it without a plan can cause a crash." },
     friendSays: { ko: "넌 정신없는데 신기하게 끝은 보더라ㅋㅋㅋ", en: "You're a mess, but somehow you always reach the finish, lol." },
-    shareLine: { ko: "나 체인소맨 테스트에서 ‘코베니의 차’ 나왔다ㅋㅋㅋ 카오스 인정", en: "I got 'Kobeni's Car,' lmao — certified chaos." },
+    shareLine: { ko: "나 체인소맨 테스트에서 ‘코베니의 차’ 나왔다ㅋㅋㅋ 카오스 인정", en: "I got 'Kobeni's Car,' lmao, certified chaos." },
     emoji: "🚗",
     color: "#C24B2E",
   },
@@ -188,36 +188,36 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "강한데 의외로 예의 바른 반전 신사", en: "Tough as nails, yet surprisingly a courteous gentleman." },
     description: {
       ko: "당신은 겉보기엔 거칠고 강해 보여도, 알고 보면 누구보다 정중하고 매너 있는 반전 매력의 소유자입니다. 함부로 화내지 않고 상대를 배려하며, 그러면서도 필요할 땐 확실하게 힘을 보여주죠. 강함과 다정함을 둘 다 갖춘, 빈틈없이 멋있는 타입이에요.",
-      en: "You may look rough and powerful, but you're actually more polite and well-mannered than anyone — a charming contradiction. You don't lash out, you're considerate of others, and yet you show your strength clearly when it's needed. You carry both power and gentleness, cool through and through.",
+      en: "You may look rough and powerful, but you're actually more polite and well-mannered than anyone, a charming contradiction. You don't lash out, you're considerate of others, and yet you show your strength clearly when it's needed. You carry both power and gentleness, cool through and through.",
     },
     strength: { ko: "강함과 정중한 매너를 동시에 갖췄습니다.", en: "Power and courteous manners, all at once." },
     weakPoint: { ko: "예의를 차리다 할 말을 못 할 때가 있어요.", en: "Being so polite, you sometimes hold back what you should say." },
     friendSays: { ko: "넌 세 보이는데 알고 보면 제일 매너 좋더라ㅋㅋ", en: "You look tough, but you've got the best manners, lol." },
-    shareLine: { ko: "나 체인소맨 테스트에서 갈갈이(폭력의 악마) 나왔다. 반전 신사래.", en: "I got the Violence Fiend — the surprise gentleman." },
+    shareLine: { ko: "나 체인소맨 테스트에서 갈갈이(폭력의 악마) 나왔다. 반전 신사래.", en: "I got the Violence Fiend, the surprise gentleman." },
     emoji: "🎭",
     color: "#7A5040",
   },
 ];
 
-// 히든(레어) — 극단 선택지(순수한 헌신/끝까지 지킴/조건 없는 충성) hiddenWeight 합이 임계값 이상일 때만 등장.
+// 히든(레어), 극단 선택지(순수한 헌신/끝까지 지킴/조건 없는 충성) hiddenWeight 합이 임계값 이상일 때만 등장.
 const HIDDEN: AnimeResult = {
   key: "pochita",
   name: { ko: "포치타", en: "Pochita" },
   oneLiner: { ko: "순수한 충성으로 모두를 지키는 숨은 최강", en: "The hidden strongest, guarding everyone with pure devotion." },
   description: {
     ko: "당신은 아주 드물게 나오는 ‘진짜 영웅’ 결과입니다. 화려하게 내세우지 않아도, 소중한 사람을 위해서라면 모든 걸 내어주는 순수한 마음의 소유자. 평소엔 작고 조용해 보여도 그 안에 누구도 못 당할 힘과 단단한 의리를 품고 있어요. 가장 낮은 곳에서 가장 크게 빛나는, 격이 다른 유형입니다.",
-    en: "You're an extremely rare 'true hero' result. You don't put on a show, but you'd give everything for the people you love — a heart of pure devotion. You may seem small and quiet day to day, yet inside you carry a strength no one can match and an unbreakable loyalty. The kind that shines brightest from the humblest place — in a class of your own.",
+    en: "You're an extremely rare 'true hero' result. You don't put on a show, but you'd give everything for the people you love, a heart of pure devotion. You may seem small and quiet day to day, yet inside you carry a strength no one can match and an unbreakable loyalty. The kind that shines brightest from the humblest place, in a class of your own.",
   },
   strength: { ko: "조건 없는 충성과 숨은 최강의 저력이 있습니다.", en: "Unconditional loyalty and hidden, unmatched strength." },
   weakPoint: { ko: "남을 위하느라 자신을 다 내어줄 수 있어요.", en: "You may give away all of yourself for others' sake." },
   friendSays: { ko: "넌 작아 보여도 진짜 든든해… 영웅이 따로 없다.", en: "You seem small, but you're so dependable… an actual hero." },
-  shareLine: { ko: "나 체인소맨 테스트에서 ‘포치타’ 나왔다. 숨은 최강 히든이래 ㄷㄷㄷ", en: "I pulled 'Pochita' on the Chainsaw Man test — the hidden strongest result. Insane." },
+  shareLine: { ko: "나 체인소맨 테스트에서 ‘포치타’ 나왔다. 숨은 최강 히든이래 ㄷㄷㄷ", en: "I pulled 'Pochita' on the Chainsaw Man test, the hidden strongest result. Insane." },
   emoji: "🐶",
   color: "#E8662A",
 };
 
 // 문항 재설계 원칙: ① 한 문항의 4답 = 서로 뚜렷이 다른 성향. ② 같은 캐릭터는 매번 다른 상황·다른 면모로.
-// 극단(순수한 헌신/끝까지 지킴/조건 없는 충성) 5선택지에만 hiddenWeight — 서로 다른 문항·다른 표현.
+// 극단(순수한 헌신/끝까지 지킴/조건 없는 충성) 5선택지에만 hiddenWeight, 서로 다른 문항·다른 표현.
 const QUESTIONS: AnimeQuestion[] = [
   {
     id: "q1",
@@ -235,8 +235,8 @@ const QUESTIONS: AnimeQuestion[] = [
     choices: [
       { id: "a", text: { ko: "큰소리부터 치고 허세로 밀어붙인다", en: "I talk big and push through on bravado." }, weights: { power: 2 } },
       { id: "b", text: { ko: "불안하지만 살아남을 방법을 빠르게 찾는다", en: "Nervous, but I quickly find a way to survive." }, weights: { kobeni: 2 } },
-      { id: "c", text: { ko: "무서운 것도 모르고 일단 직진한다", en: "I don't even register the fear — I just charge straight in." }, weights: { beam: 2 } },
-      { id: "d", text: { ko: "산전수전 다 겪어 본 노련함으로 침착하게 본다", en: "Been there, done that — I size it up with veteran calm." }, weights: { kishibe: 2 } },
+      { id: "c", text: { ko: "무서운 것도 모르고 일단 직진한다", en: "I don't even register the fear, I just charge straight in." }, weights: { beam: 2 } },
+      { id: "d", text: { ko: "산전수전 다 겪어 본 노련함으로 침착하게 본다", en: "Been there, done that, I size it up with veteran calm." }, weights: { kishibe: 2 } },
     ],
   },
   {
@@ -256,7 +256,7 @@ const QUESTIONS: AnimeQuestion[] = [
       { id: "a", text: { ko: "솔직하게 속마음을 바로 말한다", en: "I just say what I really think." }, weights: { denji: 2 } },
       { id: "b", text: { ko: "큰소리로 분위기 휘어잡고 내 식대로 밀어붙인다", en: "I own the room with big talk and steamroll it my way." }, weights: { power: 2 } },
       { id: "c", text: { ko: "감정 없이 차분하게 상황을 통제한다", en: "I control the situation calmly, without emotion." }, weights: { makima: 2 } },
-      { id: "d", text: { ko: "지면 못 참아서 바로 받아친다", en: "I can't stand losing — I hit straight back." }, weights: { samurai_sword: 2 } },
+      { id: "d", text: { ko: "지면 못 참아서 바로 받아친다", en: "I can't stand losing, I hit straight back." }, weights: { samurai_sword: 2 } },
     ],
   },
   {
@@ -276,7 +276,7 @@ const QUESTIONS: AnimeQuestion[] = [
       { id: "a", text: { ko: "헛된 기대 빼고 철저히 현실적으로 계산해서", en: "By cutting the wishful thinking and calculating strictly, realistically." }, weights: { kishibe: 2 } },
       { id: "b", text: { ko: "일단 부딪히고 어떻게든 굴러가게 한다ㅋㅋ", en: "Crash into it and somehow keep it rolling, lol." }, weights: { kobeni_car: 2 } },
       { id: "c", text: { ko: "남들 다 포기해도 끈질기게 버텨서", en: "By stubbornly hanging on long after everyone else quits." }, weights: { kobeni: 2 } },
-      { id: "d", text: { ko: "굳이 애쓰진 않는다, 되면 되고…", en: "I don't really try hard — if it happens, it happens…" }, weights: { angel: 2 } },
+      { id: "d", text: { ko: "굳이 애쓰진 않는다, 되면 되고…", en: "I don't really try hard, if it happens, it happens…" }, weights: { angel: 2 } },
     ],
   },
   {
@@ -313,7 +313,7 @@ const QUESTIONS: AnimeQuestion[] = [
     id: "q10",
     prompt: { ko: "새로운 것에 도전할 때 당신은?", en: "Taking on something new, you…" },
     choices: [
-      { id: "a", text: { ko: "일단 밟고 본다, 멈추면 지는 거다ㅋㅋ", en: "Floor it first — stopping means losing, lol." }, weights: { kobeni_car: 2 } },
+      { id: "a", text: { ko: "일단 밟고 본다, 멈추면 지는 거다ㅋㅋ", en: "Floor it first, stopping means losing, lol." }, weights: { kobeni_car: 2 } },
       { id: "b", text: { ko: "전체 그림부터 차분히 읽고 한 수씩 둔다", en: "I read the whole picture first, then place each move calmly." }, weights: { makima: 2 } },
       { id: "c", text: { ko: "위험할수록 오히려 대담하게 즐긴다", en: "The riskier it is, the more boldly I enjoy it." }, weights: { reze: 2 } },
       { id: "d", text: { ko: "내 사람들 챙길 수 있을지부터 묵묵히 따지고 움직인다", en: "I quietly weigh whether I can look after my people, then move." }, weights: { aki: 2 } },
@@ -334,19 +334,19 @@ const QUESTIONS: AnimeQuestion[] = [
     prompt: { ko: "당신의 진짜 속마음은?", en: "What's really going on inside you?" },
     choices: [
       { id: "a", text: { ko: "맹목적이라 해도, 좋아하는 사람 곁은 끝까지 지킨다", en: "Call it blind, but I'll stay by the one I love to the very end." }, weights: { beam: 2 }, hiddenWeight: 1 },
-      { id: "b", text: { ko: "다정하지만, 필요할 땐 누구보다 대담해진다", en: "Sweet — but bolder than anyone when it counts." }, weights: { reze: 2 } },
+      { id: "b", text: { ko: "다정하지만, 필요할 땐 누구보다 대담해진다", en: "Sweet, but bolder than anyone when it counts." }, weights: { reze: 2 } },
       { id: "c", text: { ko: "기대 안 하면 실망도 없다는 냉소", en: "The cynic's calm: expect nothing, lose nothing." }, weights: { kishibe: 2 } },
-      { id: "d", text: { ko: "겉도 속도 패닉인데, 그래도 어떻게든 산다ㅋㅋ", en: "Panic outside, panic inside — but I survive anyway, lol." }, weights: { kobeni_car: 2 } },
+      { id: "d", text: { ko: "겉도 속도 패닉인데, 그래도 어떻게든 산다ㅋㅋ", en: "Panic outside, panic inside, but I survive anyway, lol." }, weights: { kobeni_car: 2 } },
     ],
   },
   {
     id: "q13",
     prompt: { ko: "친구가 곤란에 빠졌습니다.\n당신은?", en: "A friend lands in trouble.\nWhat do you do?" },
     choices: [
-      { id: "a", text: { ko: "내 사람만은 무슨 일이 있어도 끝까지 지킨다", en: "My person — I protect them to the very end, no matter what." }, weights: { power: 2 }, hiddenWeight: 1 },
+      { id: "a", text: { ko: "내 사람만은 무슨 일이 있어도 끝까지 지킨다", en: "My person, I protect them to the very end, no matter what." }, weights: { power: 2 }, hiddenWeight: 1 },
       { id: "b", text: { ko: "그 짐까지 내가 다 짊어지고 끝까지 책임진다", en: "I shoulder their burden too and carry the responsibility to the end." }, weights: { aki: 2 } },
       { id: "c", text: { ko: "무심한 척하지만 결정적일 때 제일 먼저 나선다", en: "I act like I don't care, but I'm first to show up when it counts." }, weights: { himeno: 2 } },
-      { id: "d", text: { ko: "고민 없이 일단 같이 뛰어들어 준다", en: "No second-guessing — I just jump in beside them." }, weights: { denji: 2 } },
+      { id: "d", text: { ko: "고민 없이 일단 같이 뛰어들어 준다", en: "No second-guessing, I just jump in beside them." }, weights: { denji: 2 } },
     ],
   },
   {
@@ -374,7 +374,7 @@ const QUESTIONS: AnimeQuestion[] = [
     prompt: { ko: "사람들이 당신을 한마디로 이렇게 부릅니다.", en: "In one phrase, people call you this." },
     choices: [
       { id: "a", text: { ko: "지는 건 죽어도 못 참고 끝까지 들이받는 자존심 끝판왕", en: "The pride monster who can't stand losing and charges to the very end." }, weights: { samurai_sword: 2 } },
-      { id: "b", text: { ko: "세 보이는데 알고 보면 제일 매너 좋은 반전 신사", en: "The surprise gentleman — tough-looking but the most well-mannered." }, weights: { galgali: 2 } },
+      { id: "b", text: { ko: "세 보이는데 알고 보면 제일 매너 좋은 반전 신사", en: "The surprise gentleman, tough-looking but the most well-mannered." }, weights: { galgali: 2 } },
       { id: "c", text: { ko: "산전수전 다 겪고 결국 살아남는 까칠한 베테랑", en: "The prickly veteran who's seen it all and survives in the end." }, weights: { kishibe: 2 } },
       { id: "d", text: { ko: "‘내가 최고지!’를 외치는 허세 가득한 분위기 메이커", en: "The bravado-packed life of the party who yells 'I'm the best!'" }, weights: { power: 2 } },
     ],
@@ -393,12 +393,12 @@ export const CHAINSAW_MAN_CONFIG: AnimeTestConfig = {
   subtitle: { ko: "너는 어떤 캐릭터일까?", en: "Which character are you?" },
   description: {
     ko: "16개의 상황 선택으로 13명의 체인소맨 캐릭터 중 너와 가장 닮은 한 명을 찾아드립니다. 덴지·파워·마키마·아키·레제·갈갈이… 그리고 아주 드물게 나오는 숨은 결과까지!",
-    en: "16 quick choices match you to one of 13 Chainsaw Man characters — Denji, Power, Makima, Aki, Reze, Violence Fiend… plus an ultra-rare hidden result.",
+    en: "16 quick choices match you to one of 13 Chainsaw Man characters, Denji, Power, Makima, Aki, Reze, Violence Fiend… plus an ultra-rare hidden result.",
   },
   metaTitle: { ko: "체인소맨 캐릭터 테스트 | 나는 어떤 캐릭터?", en: "Chainsaw Man Character Test | Which Character Are You?" },
   metaDescription: {
     ko: "16문항으로 알아보는 나의 체인소맨 캐릭터. 13명 중 나와 가장 닮은 캐릭터는? 아주 드물게 나오는 히든 결과도 숨어 있어요.",
-    en: "Find your Chainsaw Man character in 16 questions — which of 13 characters are you? A rare hidden result awaits.",
+    en: "Find your Chainsaw Man character in 16 questions, which of 13 characters are you? A rare hidden result awaits.",
   },
   ogKicker: "CHAINSAW MAN CHARACTER TEST",
   coverImage: "/images/tests/chainsaw-man/cover-og.jpg",

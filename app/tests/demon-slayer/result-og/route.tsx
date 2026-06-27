@@ -6,7 +6,9 @@ export const runtime = "nodejs";
 export const revalidate = 86400;
 
 export async function GET(req: Request) {
-  const type = new URL(req.url).searchParams.get("type");
+  const sp = new URL(req.url).searchParams;
+  const type = sp.get("type");
+  const lang = sp.get("lang") === "en" ? "en" : "ko";
   const result = getAnimeResult(DEMON_SLAYER_CONFIG, type);
-  return result ? animeResultOg(DEMON_SLAYER_CONFIG, result.key) : animeDefaultOg(DEMON_SLAYER_CONFIG);
+  return result ? animeResultOg(DEMON_SLAYER_CONFIG, result.key, lang) : animeDefaultOg(DEMON_SLAYER_CONFIG, lang);
 }

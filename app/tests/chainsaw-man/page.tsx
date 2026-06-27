@@ -11,7 +11,7 @@ export async function generateMetadata({
   searchParams: SearchParams;
 }): Promise<Metadata> {
   const sp = await searchParams;
-  return buildAnimeMetadata(CHAINSAW_MAN_CONFIG, sp.s);
+  return buildAnimeMetadata(CHAINSAW_MAN_CONFIG, sp.s, sp.lang);
 }
 
 export default function ChainsawManPage() {

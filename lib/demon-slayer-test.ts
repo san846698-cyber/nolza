@@ -1,6 +1,6 @@
 import type { AnimeResult, AnimeQuestion, AnimeTestConfig } from "@/lib/anime-test";
 
-// 일반 17명. 히든 2명(요리이치=영웅 정점 / 무잔=빌런 정점)은 config.hiddens 로 분리 — results[] 에 넣지 않는다.
+// 일반 17명. 히든 2명(요리이치=영웅 정점 / 무잔=빌런 정점)은 config.hiddens 로 분리, results[] 에 넣지 않는다.
 const RESULTS: AnimeResult[] = [
   {
     key: "tanjiro",
@@ -28,7 +28,7 @@ const RESULTS: AnimeResult[] = [
     strength: { ko: "소중한 사람을 지키는 책임감이 강합니다.", en: "A powerful instinct to protect the people you love." },
     weakPoint: { ko: "마음을 잘 표현하지 않아 오해받을 수 있어요.", en: "You rarely express your feelings, which can lead to misunderstanding." },
     friendSays: { ko: "넌 말은 없어도 결정적일 때 꼭 나타나더라.", en: "You don't say much, but you always show up when it counts." },
-    shareLine: { ko: "나 귀멸 테스트에서 네즈코 나왔다. 조용한 수호자래.", en: "I got Nezuko — the quiet guardian." },
+    shareLine: { ko: "나 귀멸 테스트에서 네즈코 나왔다. 조용한 수호자래.", en: "I got Nezuko, the quiet guardian." },
     emoji: "🌸",
     color: "#E89BB0",
   },
@@ -38,27 +38,27 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "겁은 많지만 결정적 순간에 각성하는 사람", en: "Easily scared, but you awaken when it matters most." },
     description: {
       ko: "당신은 평소엔 걱정도 많고 엄살도 부리지만, 진짜 중요한 순간이 오면 누구보다 강해지는 반전의 캐릭터입니다. 무서워하면서도 결국 도망치지 않고, 한 방을 위해 모든 걸 쏟아붓습니다. 겉모습과 실력의 격차가 가장 큰 타입이에요.",
-      en: "You worry and complain in everyday moments, but when it truly counts you become stronger than anyone — a complete reversal. You're scared, yet you don't run, pouring everything into one decisive strike. The gap between how you seem and what you can do is huge.",
+      en: "You worry and complain in everyday moments, but when it truly counts you become stronger than anyone, a complete reversal. You're scared, yet you don't run, pouring everything into one decisive strike. The gap between how you seem and what you can do is huge.",
     },
     strength: { ko: "위기에서 폭발하는 집중력이 있습니다.", en: "You unleash incredible focus under pressure." },
     weakPoint: { ko: "평소엔 불안과 걱정이 많은 편이에요.", en: "In normal times, you carry a lot of anxiety and worry." },
     friendSays: { ko: "넌 평소엔 호들갑인데 진짜 중요할 땐 멋있어.", en: "You panic a lot, but you're amazing when it really matters." },
-    shareLine: { ko: "나 귀멸 테스트에서 젠이츠 나왔다. 각성형이래.", en: "I got Zenitsu — the one who awakens under pressure." },
+    shareLine: { ko: "나 귀멸 테스트에서 젠이츠 나왔다. 각성형이래.", en: "I got Zenitsu, the one who awakens under pressure." },
     emoji: "⚡",
     color: "#F4C430",
   },
   {
     key: "inosuke",
     name: { ko: "이노스케", en: "Inosuke" },
-    oneLiner: { ko: "생각보다 몸이 먼저 나가는 돌격형", en: "You charge first and think later — pure instinct." },
+    oneLiner: { ko: "생각보다 몸이 먼저 나가는 돌격형", en: "You charge first and think later, pure instinct." },
     description: {
       ko: "당신은 머리로 재기보다 몸이 먼저 움직이는 본능형입니다. 승부욕이 강하고, 어려운 일일수록 정면으로 부딪칩니다. 단순하고 직진하는 성격 덕분에 주저하지 않지만, 가끔은 한 박자 멈추고 생각할 필요도 있어요.",
-      en: "You move on instinct rather than calculation. Your competitive drive is fierce, and the harder the challenge, the more you charge straight at it. Your simple, head-on style means no hesitation — though a pause to think would sometimes help.",
+      en: "You move on instinct rather than calculation. Your competitive drive is fierce, and the harder the challenge, the more you charge straight at it. Your simple, head-on style means no hesitation, though a pause to think would sometimes help.",
     },
     strength: { ko: "겁 없이 정면 돌파하는 추진력이 있습니다.", en: "Fearless, head-on drive." },
     weakPoint: { ko: "앞만 보고 달리다 실수할 수 있어요.", en: "Charging ahead can lead to careless mistakes." },
     friendSays: { ko: "넌 일단 부딪히고 보는 스타일이잖아.", en: "You're the 'charge first, figure it out later' type." },
-    shareLine: { ko: "나 귀멸 테스트에서 이노스케 나왔다. 돌격형 인정.", en: "I got Inosuke — full charge mode confirmed." },
+    shareLine: { ko: "나 귀멸 테스트에서 이노스케 나왔다. 돌격형 인정.", en: "I got Inosuke, full charge mode confirmed." },
     emoji: "🐗",
     color: "#3A7D6E",
   },
@@ -68,12 +68,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "주변을 데우는 책임감 강한 리더", en: "A warm, responsible leader who fires everyone up." },
     description: {
       ko: "당신은 열정이 넘치고 책임감이 강한 리더형입니다. 큰 목소리로 주변을 이끌고, 자신이 맡은 일은 끝까지 지켜냅니다. 함께 있으면 든든해지는 사람이라 사람들은 자연스럽게 당신을 믿고 따릅니다. 다만 모든 걸 혼자 짊어지려 할 때가 있어요.",
-      en: "You are a passionate, deeply responsible leader. You rally people with a big presence and guard your duties to the very end. Being around you feels reassuring, so people naturally trust and follow you — though you sometimes try to carry everything alone.",
+      en: "You are a passionate, deeply responsible leader. You rally people with a big presence and guard your duties to the very end. Being around you feels reassuring, so people naturally trust and follow you, though you sometimes try to carry everything alone.",
     },
     strength: { ko: "사람을 이끄는 열정과 책임감이 큽니다.", en: "Strong leadership, passion, and sense of duty." },
     weakPoint: { ko: "혼자 다 짊어지려다 지칠 수 있어요.", en: "You may burn out trying to carry it all yourself." },
-    friendSays: { ko: "넌 같이 있으면 든든해. 근데 좀 쉬어도 돼.", en: "You make everyone feel safe — but you're allowed to rest too." },
-    shareLine: { ko: "나 귀멸 테스트에서 렌고쿠 나왔다. 열정 리더래.", en: "I got Rengoku — the passionate leader." },
+    friendSays: { ko: "넌 같이 있으면 든든해. 근데 좀 쉬어도 돼.", en: "You make everyone feel safe, but you're allowed to rest too." },
+    shareLine: { ko: "나 귀멸 테스트에서 렌고쿠 나왔다. 열정 리더래.", en: "I got Rengoku, the passionate leader." },
     emoji: "🔥",
     color: "#E8602C",
   },
@@ -88,7 +88,7 @@ const RESULTS: AnimeResult[] = [
     strength: { ko: "감정 조절과 집념, 지적인 판단이 뛰어납니다.", en: "Excellent emotional control, focus, and sharp judgment." },
     weakPoint: { ko: "속마음을 미소 뒤에 너무 숨길 수 있어요.", en: "You may hide your true feelings behind a smile too well." },
     friendSays: { ko: "넌 웃고 있는데 왜 더 무섭냐ㅋㅋ", en: "You're smiling, but somehow it's even scarier, lol." },
-    shareLine: { ko: "나 귀멸 테스트에서 시노부 나왔다. 미소 뒤 독설형ㅋㅋ", en: "I got Shinobu — sweet smile, sharp tongue." },
+    shareLine: { ko: "나 귀멸 테스트에서 시노부 나왔다. 미소 뒤 독설형ㅋㅋ", en: "I got Shinobu, sweet smile, sharp tongue." },
     emoji: "🦋",
     color: "#7B5EA7",
   },
@@ -98,27 +98,27 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "말없이 거리를 두지만 실력은 확실한 사람", en: "Quiet and a little distant, but the real deal." },
     description: {
       ko: "당신은 굳이 무리에 섞이려 애쓰지 않고, 적당한 거리를 두며 자기 페이스를 지키는 사람입니다. 말수는 적고 표현도 서툴지만, 해야 할 일 앞에서는 군더더기 없이 깔끔하게 처리합니다. 무뚝뚝해 보여도 묵묵히 제 몫을 다하는 실력파예요.",
-      en: "You don't force yourself into the crowd — you keep a comfortable distance and move at your own pace. You don't say much and you're a little awkward at expressing yourself, but when there's a job to do, you handle it cleanly with no wasted motion. Gruff on the surface, quietly excellent underneath.",
+      en: "You don't force yourself into the crowd, you keep a comfortable distance and move at your own pace. You don't say much and you're a little awkward at expressing yourself, but when there's a job to do, you handle it cleanly with no wasted motion. Gruff on the surface, quietly excellent underneath.",
     },
     strength: { ko: "흔들리지 않는 실력과 자기 페이스가 있습니다.", en: "Steady skill and an unshakable pace of your own." },
     weakPoint: { ko: "거리를 두다 보니 오해를 살 수 있어요.", en: "Keeping your distance can lead to being misread." },
     friendSays: { ko: "넌 말은 없는데 일은 제일 깔끔하게 하더라.", en: "You barely talk, yet you do the cleanest work of anyone." },
-    shareLine: { ko: "나 귀멸 테스트에서 기유 나왔다. 과묵 실력파ㄷㄷ", en: "I got Giyu — quiet, but the real deal." },
+    shareLine: { ko: "나 귀멸 테스트에서 기유 나왔다. 과묵 실력파ㄷㄷ", en: "I got Giyu, quiet, but the real deal." },
     emoji: "💧",
     color: "#2B4C7E",
   },
   {
     key: "mitsuri",
     name: { ko: "미츠리", en: "Mitsuri" },
-    oneLiner: { ko: "사랑이 넘치는데 알고 보면 엄청난 사람", en: "Bursting with love — and secretly ridiculously strong." },
+    oneLiner: { ko: "사랑이 넘치는데 알고 보면 엄청난 사람", en: "Bursting with love, and secretly ridiculously strong." },
     description: {
       ko: "당신은 사람과 세상을 향한 애정이 넘치는, 보기만 해도 기분 좋아지는 사람입니다. 솔직하게 좋아하고 아낌없이 표현하죠. 그런데 그 다정함 뒤에는 누구도 예상 못 한 단단함과 저력이 숨어 있어요. 부드러움과 강함을 동시에 가진 반전 매력의 소유자입니다.",
-      en: "You overflow with affection for people and the world — the kind of presence that just makes others feel good. You like things openly and express it without holding back. But behind that sweetness hides a strength and resilience no one sees coming. You carry softness and power at the same time.",
+      en: "You overflow with affection for people and the world, the kind of presence that just makes others feel good. You like things openly and express it without holding back. But behind that sweetness hides a strength and resilience no one sees coming. You carry softness and power at the same time.",
     },
     strength: { ko: "다정함과 숨은 저력을 동시에 가졌습니다.", en: "Warmth and hidden strength, all at once." },
     weakPoint: { ko: "마음이 여려 남의 기분에 쉽게 휘둘려요.", en: "Your tender heart is easily swayed by others' moods." },
     friendSays: { ko: "넌 완전 사랑둥이인데 가끔 깜짝 놀랄 만큼 세더라.", en: "You're such a sweetheart, but sometimes shockingly tough." },
-    shareLine: { ko: "나 귀멸 테스트에서 미츠리 나왔다. 다정한데 최강이래ㅋㅋ", en: "I got Mitsuri — sweet, but secretly the strongest, lol." },
+    shareLine: { ko: "나 귀멸 테스트에서 미츠리 나왔다. 다정한데 최강이래ㅋㅋ", en: "I got Mitsuri, sweet, but secretly the strongest, lol." },
     emoji: "💗",
     color: "#D81B8C",
   },
@@ -128,12 +128,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "구름처럼 무심하지만 번뜩이는 천재", en: "Drifting and detached, but a flash of genius." },
     description: {
       ko: "당신은 사소한 일에 크게 연연하지 않고, 늘 자기만의 생각에 잠겨 담담하게 흘러가는 사람입니다. 관심 없는 일엔 무심하지만, 한번 몰입하면 누구보다 빠르게 핵심을 꿰뚫죠. 꾸밈없고 솔직한 한마디로 주변을 놀라게 하는 타입이에요.",
-      en: "You don't fuss over small things — you drift along, often lost in your own thoughts. You can seem indifferent to whatever doesn't interest you, but once you lock in, you grasp the core faster than anyone. You tend to surprise people with one plain, unfiltered remark.",
+      en: "You don't fuss over small things, you drift along, often lost in your own thoughts. You can seem indifferent to whatever doesn't interest you, but once you lock in, you grasp the core faster than anyone. You tend to surprise people with one plain, unfiltered remark.",
     },
     strength: { ko: "몰입했을 때의 이해력과 담백함이 매력입니다.", en: "Sharp comprehension when focused, and a refreshing plainness." },
     weakPoint: { ko: "관심 밖의 일엔 너무 무심할 수 있어요.", en: "You can be too indifferent to things outside your focus." },
     friendSays: { ko: "넌 멍때리는 거 같다가도 핵심을 딱 짚더라.", en: "You look spaced out, then nail the point exactly." },
-    shareLine: { ko: "나 귀멸 테스트에서 무이치로 나왔다. 무심한 천재래.", en: "I got Muichiro — the detached genius." },
+    shareLine: { ko: "나 귀멸 테스트에서 무이치로 나왔다. 무심한 천재래.", en: "I got Muichiro, the detached genius." },
     emoji: "🌫️",
     color: "#6FB0C4",
   },
@@ -143,12 +143,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "화려하게 등장해 시선을 사로잡는 쇼맨", en: "A showman who arrives in style and owns every eye." },
     description: {
       ko: "당신은 어디서든 눈에 띄고, 그걸 즐길 줄 아는 화려한 사람입니다. 자기 매력을 당당하게 드러내고, 평범한 길보다 파격적인 한 방을 좋아하죠. 허세처럼 보여도 그만한 실력과 배짱이 받쳐주기에, 사람들은 결국 당신의 쇼에 빠져듭니다.",
-      en: "You stand out anywhere — and you know how to enjoy it. You show off your charm with confidence and prefer a bold, flashy move over the ordinary path. It might look like bravado, but real skill and nerve back it up, so people end up swept into your show.",
+      en: "You stand out anywhere, and you know how to enjoy it. You show off your charm with confidence and prefer a bold, flashy move over the ordinary path. It might look like bravado, but real skill and nerve back it up, so people end up swept into your show.",
     },
     strength: { ko: "당당한 자기표현과 무대를 휘어잡는 배짱이 있습니다.", en: "Bold self-expression and the nerve to command any stage." },
     weakPoint: { ko: "화려함에 신경 쓰다 힘을 뺄 때가 있어요.", en: "Chasing the spectacle can drain your energy." },
-    friendSays: { ko: "넌 등장부터 다르더라ㅋㅋ 완전 주인공이야.", en: "You make an entrance, lol — total main character." },
-    shareLine: { ko: "나 귀멸 테스트에서 텐겐 나왔다. 화려한 쇼맨 인정", en: "I got Tengen — flashy showman confirmed." },
+    friendSays: { ko: "넌 등장부터 다르더라ㅋㅋ 완전 주인공이야.", en: "You make an entrance, lol, total main character." },
+    shareLine: { ko: "나 귀멸 테스트에서 텐겐 나왔다. 화려한 쇼맨 인정", en: "I got Tengen, flashy showman confirmed." },
     emoji: "💎",
     color: "#19A3A0",
   },
@@ -158,27 +158,27 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "오직 강함만을 좇는 멈추지 않는 격투가", en: "A relentless fighter who chases one thing: strength." },
     description: {
       ko: "당신은 어중간함을 못 견디고, 늘 더 강해지는 것을 목표로 삼는 사람입니다. 정면 승부를 즐기고, 실력으로 인정할 만한 상대 앞에서 가장 뜨거워지죠. 자기 자신에게 가장 엄격한 만큼 성장 속도도 남다릅니다. 끝까지 물러서지 않는 그 집념이 당신의 무기예요.",
-      en: "You can't stand being halfway — your goal is always to get stronger. You relish a head-on contest and burn hottest against an opponent worth respecting. You're hardest on yourself, which is exactly why you grow faster than others. That refusal to back down is your weapon.",
+      en: "You can't stand being halfway, your goal is always to get stronger. You relish a head-on contest and burn hottest against an opponent worth respecting. You're hardest on yourself, which is exactly why you grow faster than others. That refusal to back down is your weapon.",
     },
     strength: { ko: "끝없는 성장욕과 정면 승부의 근성이 있습니다.", en: "Endless drive to grow and the grit for a head-on fight." },
     weakPoint: { ko: "강함에만 집착하다 주변을 놓칠 수 있어요.", en: "Fixating on strength alone can make you miss what's around you." },
-    friendSays: { ko: "넌 지는 걸 진짜 싫어하더라ㅋㅋ 근데 그게 멋있어.", en: "You really hate losing, lol — but honestly that's what's cool." },
-    shareLine: { ko: "나 귀멸 테스트에서 아카자 나왔다. 강함에 진심인 격투가ㄷㄷ", en: "I got Akaza — dead serious about getting stronger." },
+    friendSays: { ko: "넌 지는 걸 진짜 싫어하더라ㅋㅋ 근데 그게 멋있어.", en: "You really hate losing, lol, but honestly that's what's cool." },
+    shareLine: { ko: "나 귀멸 테스트에서 아카자 나왔다. 강함에 진심인 격투가ㄷㄷ", en: "I got Akaza, dead serious about getting stronger." },
     emoji: "🥊",
     color: "#B12A5B",
   },
   {
     key: "douma",
     name: { ko: "도우마", en: "Douma" },
-    oneLiner: { ko: "늘 웃지만 속을 알 수 없는 미스터리", en: "Always smiling, impossible to read — a pure mystery." },
+    oneLiner: { ko: "늘 웃지만 속을 알 수 없는 미스터리", en: "Always smiling, impossible to read, a pure mystery." },
     description: {
       ko: "당신은 누구에게나 부드럽게 웃으며 다가가는, 사교적이고 여유로운 사람입니다. 웬만한 일엔 동요하지 않고 늘 평온한 표정을 유지하죠. 속마음을 잘 드러내지 않아 신비롭게 느껴지고, 그 종잡을 수 없는 분위기가 묘하게 사람을 끌어당깁니다.",
-      en: "You approach everyone with a soft smile — sociable and unhurried. Almost nothing rattles you; you keep a calm expression through it all. You rarely show what you're really thinking, which makes you feel mysterious, and that unreadable aura quietly draws people in.",
+      en: "You approach everyone with a soft smile, sociable and unhurried. Almost nothing rattles you; you keep a calm expression through it all. You rarely show what you're really thinking, which makes you feel mysterious, and that unreadable aura quietly draws people in.",
     },
     strength: { ko: "어떤 상황에도 흔들리지 않는 평정심이 있습니다.", en: "Composure that holds steady in any situation." },
     weakPoint: { ko: "속을 안 보여줘 진심을 의심받을 수 있어요.", en: "Hiding your inner self can make people doubt your sincerity." },
     friendSays: { ko: "넌 늘 웃고 있는데 무슨 생각인지 모르겠어ㅋㅋ", en: "You're always smiling, but no one can tell what you're thinking, lol." },
-    shareLine: { ko: "나 귀멸 테스트에서 도우마 나왔다. 미소 뒤 미스터리래", en: "I got Douma — mystery behind the smile." },
+    shareLine: { ko: "나 귀멸 테스트에서 도우마 나왔다. 미소 뒤 미스터리래", en: "I got Douma, mystery behind the smile." },
     emoji: "❄️",
     color: "#7FD0DA",
   },
@@ -188,12 +188,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "끝없는 단련으로 정점에 선 고독한 강자", en: "A solitary master who reached the summit through endless discipline." },
     description: {
       ko: "당신은 목표를 위해서라면 누구보다 오래, 깊이 파고드는 사람입니다. 한번 정한 길은 수십 년이 걸려도 흔들림 없이 단련하고, 어설픈 타협 없이 최고의 경지를 좇죠. 그 집념이 당신을 정상에 세웠지만, 너무 멀리 온 탓에 가끔 곁이 비어 있곤 해요.",
-      en: "You dig in longer and deeper than anyone for your goal. Once you choose a path you train without wavering — even for decades — chasing mastery with no half-hearted compromise. That obsession set you at the summit, though coming so far can leave your side a little empty.",
+      en: "You dig in longer and deeper than anyone for your goal. Once you choose a path you train without wavering, even for decades, chasing mastery with no half-hearted compromise. That obsession set you at the summit, though coming so far can leave your side a little empty.",
     },
     strength: { ko: "오랜 단련을 견디는 집념과 자기 단련이 압도적입니다.", en: "Overwhelming discipline and the will to endure endless training." },
     weakPoint: { ko: "정점을 좇다 사람과의 거리를 잃을 수 있어요.", en: "Chasing the summit can cost you closeness with others." },
-    friendSays: { ko: "넌 한번 꽂히면 끝을 보더라… 가끔은 무서울 정도로.", en: "Once you commit, you see it through to the end — sometimes scarily so." },
-    shareLine: { ko: "나 귀멸 테스트에서 코쿠시보 나왔다. 정점에 선 고독한 강자ㄷㄷ", en: "I got Kokushibo — the solitary master at the summit." },
+    friendSays: { ko: "넌 한번 꽂히면 끝을 보더라… 가끔은 무서울 정도로.", en: "Once you commit, you see it through to the end, sometimes scarily so." },
+    shareLine: { ko: "나 귀멸 테스트에서 코쿠시보 나왔다. 정점에 선 고독한 강자ㄷㄷ", en: "I got Kokushibo, the solitary master at the summit." },
     emoji: "🌙",
     color: "#4E4A7E",
   },
@@ -203,12 +203,12 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "거친 말투 속에 가족을 향한 진심을 숨긴 사람", en: "Rough-spoken, but hiding deep devotion to family." },
     description: {
       ko: "당신은 말이 거칠고 다가가기 어려워 보이지만, 사실은 누구보다 소중한 사람을 위하는 사람입니다. 일부러 모질게 굴어 상대를 밀어내면서도, 정작 위험 앞에서는 자기 몸을 던져 지켜내죠. 겉의 가시와 속의 다정함이 정반대인, 츤데레의 끝판왕 같은 타입이에요.",
-      en: "You talk rough and seem hard to approach, but you care about the people who matter more than anyone. You push others away on purpose by being harsh, yet you throw yourself into danger to protect them. Your thorns and your tenderness are complete opposites — the ultimate tough-love type.",
+      en: "You talk rough and seem hard to approach, but you care about the people who matter more than anyone. You push others away on purpose by being harsh, yet you throw yourself into danger to protect them. Your thorns and your tenderness are complete opposites, the ultimate tough-love type.",
     },
     strength: { ko: "거친 겉모습 뒤에 강한 보호 본능과 헌신이 있습니다.", en: "Behind the rough exterior, a fierce instinct to protect." },
     weakPoint: { ko: "솔직하지 못해 마음과 반대로 말할 때가 많아요.", en: "You struggle to be honest and often say the opposite of what you feel." },
     friendSays: { ko: "넌 말은 못되게 하면서 결국 다 챙겨주더라ㅋㅋ", en: "You talk mean, but you end up looking after everyone, lol." },
-    shareLine: { ko: "나 귀멸 테스트에서 사네미 나왔다. 거친데 속은 다정한 츤데레래", en: "I got Sanemi — rough outside, tender inside." },
+    shareLine: { ko: "나 귀멸 테스트에서 사네미 나왔다. 거친데 속은 다정한 츤데레래", en: "I got Sanemi, rough outside, tender inside." },
     emoji: "🌪️",
     color: "#5BA84A",
   },
@@ -223,22 +223,22 @@ const RESULTS: AnimeResult[] = [
     strength: { ko: "엄격한 기준과 한결같은 헌신, 흔들리지 않는 의리가 있습니다.", en: "Strict standards, steadfast devotion, and unshakable loyalty." },
     weakPoint: { ko: "자신과 남에게 너무 엄격해 스스로를 옭아맬 수 있어요.", en: "Being so strict with yourself and others can tie you in knots." },
     friendSays: { ko: "넌 까칠한데 한번 정 주면 진짜 끝까지 가더라.", en: "You're prickly, but once you care, you go all the way." },
-    shareLine: { ko: "나 귀멸 테스트에서 오바나이 나왔다. 깐깐한데 헌신왕이래", en: "I got Obanai — exacting, but the king of devotion." },
+    shareLine: { ko: "나 귀멸 테스트에서 오바나이 나왔다. 깐깐한데 헌신왕이래", en: "I got Obanai, exacting, but the king of devotion." },
     emoji: "🐍",
     color: "#3C8C7A",
   },
   {
     key: "gyomei",
     name: { ko: "교메이", en: "Gyomei" },
-    oneLiner: { ko: "누구보다 강하면서 누구보다 따뜻한 눈물 많은 거인", en: "The strongest of all — and the warmest, most tender soul." },
+    oneLiner: { ko: "누구보다 강하면서 누구보다 따뜻한 눈물 많은 거인", en: "The strongest of all, and the warmest, most tender soul." },
     description: {
       ko: "당신은 압도적인 힘과 듬직함을 지녔지만, 그 속은 더없이 다정하고 눈물도 많은 사람입니다. 약한 사람을 진심으로 품고, 함부로 화내기보다 조용히 마음을 다스리며 옳은 길을 지키죠. 강함과 상냥함이 모순 없이 공존하는, 모두가 기대고 싶어 하는 큰 사람이에요.",
-      en: "You carry overwhelming strength and steadiness, yet inside you're deeply gentle and quick to tears. You truly embrace the weak, and rather than lashing out you calmly steady your heart and hold to what's right. Strength and tenderness coexist in you without contradiction — the big-hearted one everyone wants to lean on.",
+      en: "You carry overwhelming strength and steadiness, yet inside you're deeply gentle and quick to tears. You truly embrace the weak, and rather than lashing out you calmly steady your heart and hold to what's right. Strength and tenderness coexist in you without contradiction, the big-hearted one everyone wants to lean on.",
     },
     strength: { ko: "압도적인 힘과 깊은 다정함, 흔들리지 않는 심지를 지녔습니다.", en: "Overwhelming strength, deep warmth, and an unshakable core." },
     weakPoint: { ko: "남을 품다 자신의 짐까지 혼자 떠안을 수 있어요.", en: "Carrying others, you may shoulder your own burdens all alone." },
     friendSays: { ko: "넌 제일 든든한데 알고 보면 제일 마음 여리더라.", en: "You're the most dependable, but secretly the most tender-hearted." },
-    shareLine: { ko: "나 귀멸 테스트에서 교메이 나왔다. 최강인데 제일 다정하대", en: "I got Gyomei — the strongest, yet the kindest." },
+    shareLine: { ko: "나 귀멸 테스트에서 교메이 나왔다. 최강인데 제일 다정하대", en: "I got Gyomei, the strongest, yet the kindest." },
     emoji: "🪨",
     color: "#8A8170",
   },
@@ -248,53 +248,53 @@ const RESULTS: AnimeResult[] = [
     oneLiner: { ko: "부족함을 알기에 남보다 몇 배로 노력하는 사람", en: "Knowing your limits, you try several times harder than anyone." },
     description: {
       ko: "당신은 타고난 재능보다 노력으로 자신을 증명하는 사람입니다. 남들과 비교하며 자책할 때도 많지만, 그 마음을 연료 삼아 누구보다 악착같이 따라붙죠. 무뚝뚝하고 서툴러 보여도 속은 정 많고 여린, 끝내 성장으로 모두를 놀라게 하는 노력형 캐릭터예요.",
-      en: "You prove yourself through effort rather than natural talent. You often compare yourself to others and beat yourself up, but you turn that into fuel and claw your way forward harder than anyone. Gruff and awkward on the outside, soft and warm inside — the hardworking type who surprises everyone with how far they grow.",
+      en: "You prove yourself through effort rather than natural talent. You often compare yourself to others and beat yourself up, but you turn that into fuel and claw your way forward harder than anyone. Gruff and awkward on the outside, soft and warm inside, the hardworking type who surprises everyone with how far they grow.",
     },
-    strength: { ko: "재능을 노력으로 메우는 끈기와 성장 속도가 남다릅니다.", en: "Grit that makes up for talent — and remarkable growth." },
+    strength: { ko: "재능을 노력으로 메우는 끈기와 성장 속도가 남다릅니다.", en: "Grit that makes up for talent, and remarkable growth." },
     weakPoint: { ko: "남과 비교하며 스스로를 깎아내릴 때가 있어요.", en: "You sometimes tear yourself down by comparing to others." },
     friendSays: { ko: "넌 투덜대면서도 결국 제일 열심히 하더라.", en: "You grumble, but you end up working the hardest." },
-    shareLine: { ko: "나 귀멸 테스트에서 겐야 나왔다. 노력으로 증명하는 성장캐래", en: "I got Genya — the hardworking one who proves it with effort." },
+    shareLine: { ko: "나 귀멸 테스트에서 겐야 나왔다. 노력으로 증명하는 성장캐래", en: "I got Genya, the hardworking one who proves it with effort." },
     emoji: "💪",
     color: "#7A5E7E",
   },
 ];
 
-// 히든(레어) — 극단 선택지(완벽/최강/초연/홀로) hiddenWeight 합이 임계값 이상일 때만 등장.
+// 히든(레어),극단 선택지(완벽/최강/초연/홀로) hiddenWeight 합이 임계값 이상일 때만 등장.
 const HIDDEN: AnimeResult = {
   key: "yoriichi",
   name: { ko: "요리이치", en: "Yoriichi" },
-  oneLiner: { ko: "역대 최강, 완벽 그 자체의 고고한 존재", en: "The strongest ever — perfection itself, serene and apart." },
+  oneLiner: { ko: "역대 최강, 완벽 그 자체의 고고한 존재", en: "The strongest ever, perfection itself, serene and apart." },
   description: {
     ko: "당신은 아주 드물게 나오는 '완성형' 결과입니다. 욕심이나 과시 없이, 그저 묵묵히 모든 것을 완벽에 가깝게 해내는 사람. 소란을 떨지 않아도 존재만으로 압도하고, 어떤 상황에도 흔들리지 않는 초연함을 지녔습니다. 가장 높은 곳에서 홀로 고요한, 격이 다른 유형이에요.",
-    en: "You're an extremely rare 'complete' result. No greed, no showing off — you simply, quietly do everything to near-perfection. You overwhelm by mere presence without making noise, and you carry a serenity that nothing can shake. The kind that stands alone at the very top, calm and in a class of its own.",
+    en: "You're an extremely rare 'complete' result. No greed, no showing off, you simply, quietly do everything to near-perfection. You overwhelm by mere presence without making noise, and you carry a serenity that nothing can shake. The kind that stands alone at the very top, calm and in a class of its own.",
   },
   strength: { ko: "완벽에 가까운 실력과 흔들림 없는 초연함이 있습니다.", en: "Near-perfect skill and an unshakable serenity." },
   weakPoint: { ko: "너무 높은 곳에 있어 외로울 수 있어요.", en: "Standing so high above can get lonely." },
   friendSays: { ko: "넌 그냥… 차원이 다르다. 인정.", en: "You're just… on another level. No argument." },
-  shareLine: { ko: "나 귀멸 테스트에서 '요리이치' 나왔다. 역대 최강 히든이래 ㄷㄷㄷ", en: "I pulled 'Yoriichi' on the Demon Slayer test — the rarest hidden result. Insane." },
+  shareLine: { ko: "나 귀멸 테스트에서 '요리이치' 나왔다. 역대 최강 히든이래 ㄷㄷㄷ", en: "I pulled 'Yoriichi' on the Demon Slayer test, the rarest hidden result. Insane." },
   emoji: "☀️",
   color: "#C9A227",
 };
 
-// 히든 2 (빌런 정점) — "지배/최강/무자비" 트랙(hiddenWeights.muzan) 합이 임계값 이상일 때만 등장.
+// 히든 2 (빌런 정점),"지배/최강/무자비" 트랙(hiddenWeights.muzan) 합이 임계값 이상일 때만 등장.
 const HIDDEN_VILLAIN: AnimeResult = {
   key: "muzan",
   name: { ko: "무잔", en: "Muzan" },
   oneLiner: { ko: "정점에 군림하는, 절대 지지 않는 지배자", en: "The ruler at the apex who refuses to ever lose." },
   description: {
     ko: "당신은 아주 드물게 나오는 '지배형' 히든 결과입니다. 약함과 실패를 못 견디고, 원하는 것은 무슨 수를 써서라도 손에 넣는 사람. 목표 앞에서는 한 치의 흔들림도 없고, 자기 기준에 못 미치는 건 가차 없이 쳐냅니다. 압도적인 의지와 완벽주의로 정점에 군림하는, 격이 다른 유형이에요.",
-    en: "You're an extremely rare 'dominator' hidden result. You can't tolerate weakness or failure, and you take what you want by any means. Before a goal you don't waver an inch, cutting away anything below your standard without mercy. Ruling the summit through sheer will and perfectionism — a type in a class of its own.",
+    en: "You're an extremely rare 'dominator' hidden result. You can't tolerate weakness or failure, and you take what you want by any means. Before a goal you don't waver an inch, cutting away anything below your standard without mercy. Ruling the summit through sheer will and perfectionism, a type in a class of its own.",
   },
   strength: { ko: "압도적인 의지와 목표 달성력을 지녔습니다.", en: "Overwhelming will and the power to get what you want." },
   weakPoint: { ko: "약함을 못 견뎌 주변을 너무 몰아붙일 수 있어요.", en: "Your intolerance of weakness can push everyone around you too hard." },
   friendSays: { ko: "넌 한번 마음먹으면 진짜 다 가지더라… 무섭다 진짜ㄷㄷ", en: "Once you set your mind on it, you really take it all… honestly kind of terrifying." },
-  shareLine: { ko: "나 귀멸 테스트에서 '무잔' 나왔다. 빌런 정점 히든이래 ㄷㄷㄷ", en: "I pulled 'Muzan' on the Demon Slayer test — the villain-apex hidden. Insane." },
+  shareLine: { ko: "나 귀멸 테스트에서 '무잔' 나왔다. 빌런 정점 히든이래 ㄷㄷㄷ", en: "I pulled 'Muzan' on the Demon Slayer test, the villain-apex hidden. Insane." },
   emoji: "🩸",
   color: "#A31D34",
 };
 
 // 문항 재설계 원칙: ① 한 문항의 4답 = 서로 뚜렷이 다른 성향. ② 같은 캐릭터는 매번 다른 상황·다른 면모로.
-// 극단(완벽/최강/초연/홀로) 5선택지에만 hiddenWeight — 서로 다른 문항·다른 표현.
+// 극단(완벽/최강/초연/홀로) 5선택지에만 hiddenWeight,서로 다른 문항·다른 표현.
 const QUESTIONS: AnimeQuestion[] = [
   {
     id: "q1",
@@ -302,7 +302,7 @@ const QUESTIONS: AnimeQuestion[] = [
     choices: [
       { id: "a", text: { ko: "겁나도 동료부터 지키려 앞에 선다", en: "Scared as I am, I step forward to protect my comrades first." }, weights: { tanjiro: 2 } },
       { id: "b", text: { ko: "솔직히 도망치고 싶다… 그래도 결국 버틴다", en: "Honestly, I want to run… but I end up holding my ground." }, weights: { zenitsu: 2 } },
-      { id: "c", text: { ko: "기다릴 것 없이 먼저 달려든다", en: "No waiting — I charge in first." }, weights: { inosuke: 2 } },
+      { id: "c", text: { ko: "기다릴 것 없이 먼저 달려든다", en: "No waiting, I charge in first." }, weights: { inosuke: 2 } },
       { id: "d", text: { ko: "큰 소리로 사기를 끌어올리며 앞장선다", en: "I fire everyone up with a booming voice and lead the way." }, weights: { rengoku: 2 } },
     ],
   },
@@ -328,7 +328,7 @@ const QUESTIONS: AnimeQuestion[] = [
   },
   {
     id: "q4",
-    prompt: { ko: "한계에 부딪히는 훈련, 당신의 방식은?", en: "Pushed to your limit in training — your way through?" },
+    prompt: { ko: "한계에 부딪히는 훈련, 당신의 방식은?", en: "Pushed to your limit in training, your way through?" },
     choices: [
       { id: "a", text: { ko: "쓰러져도 될 때까지 다시 일어난다", en: "I get back up, again and again, until it works." }, weights: { tanjiro: 2 } },
       { id: "b", text: { ko: "스스로를 더 몰아붙여 끝까지 단련한다", en: "I drive myself even harder and train to the very limit." }, weights: { akaza: 2 }, hiddenWeights: { muzan: 1 } },
@@ -340,7 +340,7 @@ const QUESTIONS: AnimeQuestion[] = [
     id: "q5",
     prompt: { ko: "동료가 크게 실수했습니다.\n당신의 반응은?", en: "A teammate makes a big mistake.\nYour reaction?" },
     choices: [
-      { id: "a", text: { ko: "탓하지 않고 곁에서 조용히 챙긴다", en: "No blame — I quietly look after them." }, weights: { nezuko: 2 } },
+      { id: "a", text: { ko: "탓하지 않고 곁에서 조용히 챙긴다", en: "No blame, I quietly look after them." }, weights: { nezuko: 2 } },
       { id: "b", text: { ko: "화부터 내기보다, 마음을 다스리고 다시 일으켜 세운다", en: "Rather than getting angry, I steady my heart and gently lift them back up." }, weights: { gyomei: 2 } },
       { id: "c", text: { ko: "별일 아니라는 듯 무심하게 넘긴다", en: "I brush it off, unbothered, like it's nothing." }, weights: { muichiro: 2 } },
       { id: "d", text: { ko: "엄격한 기준으로 정확히 짚고, 끝까지 책임지게 한다", en: "By my strict standard I point out exactly what's wrong and hold them to it." }, weights: { obanai: 2 } },
@@ -353,7 +353,7 @@ const QUESTIONS: AnimeQuestion[] = [
       { id: "a", text: { ko: "평소엔 호들갑, 결정적일 땐 멋짐", en: "Dramatic day to day, but awesome when it counts." }, weights: { zenitsu: 2 } },
       { id: "b", text: { ko: "등장부터 화려해 시선을 끄는 사람", en: "Someone whose very entrance turns every head." }, weights: { tengen: 2 } },
       { id: "c", text: { ko: "늘 웃는데 속을 알 수 없는 사람", en: "Always smiling, yet impossible to read." }, weights: { douma: 2 } },
-      { id: "d", text: { ko: "거침없고 야성적인, 길들지 않은 사람", en: "Untamed and unfiltered — a wild one." }, weights: { inosuke: 2 } },
+      { id: "d", text: { ko: "거침없고 야성적인, 길들지 않은 사람", en: "Untamed and unfiltered, a wild one." }, weights: { inosuke: 2 } },
     ],
   },
   {
@@ -362,7 +362,7 @@ const QUESTIONS: AnimeQuestion[] = [
     choices: [
       { id: "a", text: { ko: "내 손으로 누군가를 못 지켰을 때", en: "When I fail to protect someone with my own hands." }, weights: { tanjiro: 2 } },
       { id: "b", text: { ko: "소중한 사람이 아파하는 모습", en: "Seeing someone dear to me in pain." }, weights: { nezuko: 2 } },
-      { id: "c", text: { ko: "어중간하게, 적당히 사는 것", en: "Living halfway — settling for mediocrity." }, weights: { akaza: 2 } },
+      { id: "c", text: { ko: "어중간하게, 적당히 사는 것", en: "Living halfway, settling for mediocrity." }, weights: { akaza: 2 } },
       { id: "d", text: { ko: "진심이 오해받고 잘못 비칠 때", en: "Having my true heart misread and taken the wrong way." }, weights: { giyu: 2 } },
     ],
   },
@@ -380,8 +380,8 @@ const QUESTIONS: AnimeQuestion[] = [
     id: "q9",
     prompt: { ko: "새로운 도전 앞에서 당신은?", en: "Facing a new challenge, you…" },
     choices: [
-      { id: "a", text: { ko: "남한테 지는 건 못 참아, 무조건 이겨버린다", en: "I can't stand losing to anyone — I'll just win, period." }, weights: { inosuke: 2 }, hiddenWeights: { muzan: 1 } },
-      { id: "b", text: { ko: "심장이 뜨거워진다! 망설임 없이 불태운다", en: "My heart catches fire — I throw myself in without hesitation." }, weights: { rengoku: 2 } },
+      { id: "a", text: { ko: "남한테 지는 건 못 참아, 무조건 이겨버린다", en: "I can't stand losing to anyone, I'll just win, period." }, weights: { inosuke: 2 }, hiddenWeights: { muzan: 1 } },
+      { id: "b", text: { ko: "심장이 뜨거워진다! 망설임 없이 불태운다", en: "My heart catches fire, I throw myself in without hesitation." }, weights: { rengoku: 2 } },
       { id: "c", text: { ko: "남들 안 하는 파격적인 방식으로 한다", en: "I do it in a bold way no one else would." }, weights: { tengen: 2 } },
       { id: "d", text: { ko: "감정에 휘둘리지 않고 담담하게, 그저 해낸다", en: "Unmoved by emotion, I just calmly get it done." }, weights: { muichiro: 2 }, hiddenWeights: { yoriichi: 1 } },
     ],
@@ -390,8 +390,8 @@ const QUESTIONS: AnimeQuestion[] = [
     id: "q10",
     prompt: { ko: "사람들과 어울릴 때 당신은?", en: "When you're with other people, you…" },
     choices: [
-      { id: "a", text: { ko: "굳이 섞이려 애쓰지 않고, 적당히 거리를 둔 채 고요히 내 페이스를 지킨다", en: "I don't force my way in — I keep a calm distance and hold my own quiet pace." }, weights: { giyu: 2 }, hiddenWeights: { yoriichi: 1 } },
-      { id: "b", text: { ko: "쉽게 곁을 주지 않고, 정한 한 사람만 곁에 둔다", en: "I don't open up easily — I keep only the one person I've chosen close." }, weights: { obanai: 2 } },
+      { id: "a", text: { ko: "굳이 섞이려 애쓰지 않고, 적당히 거리를 둔 채 고요히 내 페이스를 지킨다", en: "I don't force my way in, I keep a calm distance and hold my own quiet pace." }, weights: { giyu: 2 }, hiddenWeights: { yoriichi: 1 } },
+      { id: "b", text: { ko: "쉽게 곁을 주지 않고, 정한 한 사람만 곁에 둔다", en: "I don't open up easily, I keep only the one person I've chosen close." }, weights: { obanai: 2 } },
       { id: "c", text: { ko: "겉보기와 달리, 하나하나 의외로 세심하게 챙긴다", en: "Against first impressions, I quietly look after every little thing." }, weights: { tengen: 2 } },
       { id: "d", text: { ko: "정한 길만 묵묵히, 수십 년이 걸려도 홀로 파고든다", en: "I stick to my chosen path alone, digging in for decades if that's what it takes." }, weights: { kokushibo: 2 } },
     ],
@@ -400,10 +400,10 @@ const QUESTIONS: AnimeQuestion[] = [
     id: "q11",
     prompt: { ko: "당신이 가장 중요하게 여기는 것은?", en: "What matters most to you?" },
     choices: [
-      { id: "a", text: { ko: "무엇을 하든 빈틈 하나 없는 완벽함", en: "Flawlessness in all I do — not a single gap." }, weights: { shinobu: 2 }, hiddenWeights: { yoriichi: 1 } },
+      { id: "a", text: { ko: "무엇을 하든 빈틈 하나 없는 완벽함", en: "Flawlessness in all I do, not a single gap." }, weights: { shinobu: 2 }, hiddenWeights: { yoriichi: 1 } },
       { id: "b", text: { ko: "사랑하고 아끼는 따뜻한 마음", en: "A warm heart that loves and cherishes." }, weights: { mitsuri: 2 } },
       { id: "c", text: { ko: "맡은 책임을 끝까지 지켜내는 것", en: "Carrying my responsibilities through to the end." }, weights: { rengoku: 2 } },
-      { id: "d", text: { ko: "누구에게도 지지 않고 정상에 서는 것", en: "Losing to no one — standing at the very top." }, weights: { akaza: 2 }, hiddenWeights: { muzan: 1 } },
+      { id: "d", text: { ko: "누구에게도 지지 않고 정상에 서는 것", en: "Losing to no one, standing at the very top." }, weights: { akaza: 2 }, hiddenWeights: { muzan: 1 } },
     ],
   },
   {
@@ -422,7 +422,7 @@ const QUESTIONS: AnimeQuestion[] = [
     choices: [
       { id: "a", text: { ko: "좋아하는 마음을 숨김없이 듬뿍 표현한다", en: "I pour out my feelings, open and unreserved." }, weights: { mitsuri: 2 } },
       { id: "b", text: { ko: "상대 입장을 먼저 헤아리며 다정하게 다가간다", en: "I approach gently, putting their feelings first." }, weights: { tanjiro: 2 } },
-      { id: "c", text: { ko: "딱히 두근대지 않고 평소처럼 대한다", en: "No real flutter — I treat them just like always." }, weights: { douma: 2 } },
+      { id: "c", text: { ko: "딱히 두근대지 않고 평소처럼 대한다", en: "No real flutter, I treat them just like always." }, weights: { douma: 2 } },
       { id: "d", text: { ko: "혼자 안절부절못하다 결국 들이대고, 차이면 엉엉 운다", en: "I fret and panic, finally blurt it out, then bawl my eyes out if it goes wrong." }, weights: { zenitsu: 2 } },
     ],
   },
@@ -432,7 +432,7 @@ const QUESTIONS: AnimeQuestion[] = [
     choices: [
       { id: "a", text: { ko: "약한 사람을 그냥 못 지나치는 다정함", en: "A kindness that can't walk past anyone in need." }, weights: { tanjiro: 2 } },
       { id: "b", text: { ko: "말은 없어도 묵직하게 믿음직한 든든함", en: "Quiet, but a steady, rock-solid dependability." }, weights: { nezuko: 2 } },
-      { id: "c", text: { ko: "다정한데 알고 보면 엄청난 반전 저력", en: "So sweet — yet, surprise, shockingly strong." }, weights: { mitsuri: 2 } },
+      { id: "c", text: { ko: "다정한데 알고 보면 엄청난 반전 저력", en: "So sweet, yet, surprise, shockingly strong." }, weights: { mitsuri: 2 } },
       { id: "d", text: { ko: "꾸밈없이 핵심을 콕 찌르는 솔직함", en: "An unadorned honesty that nails the point." }, weights: { muichiro: 2 } },
     ],
   },
@@ -470,12 +470,12 @@ export const DEMON_SLAYER_CONFIG: AnimeTestConfig = {
   subtitle: { ko: "너는 어떤 귀살대원일까?", en: "Which Demon Slayer are you?" },
   description: {
     ko: "16개의 상황 선택으로 17명의 귀멸의 칼날 캐릭터 중 너와 가장 닮은 한 명을 찾아드립니다. 탄지로·렌고쿠·시노부·미츠리·사네미·오바나이·교메이·겐야… 그리고 아주 드물게 나오는 숨은 결과 2종까지!",
-    en: "16 quick choices match you to one of 17 Demon Slayer characters — Tanjiro, Rengoku, Shinobu, Mitsuri, Sanemi, Obanai, Gyomei, Genya… plus two ultra-rare hidden results.",
+    en: "16 quick choices match you to one of 17 Demon Slayer characters, Tanjiro, Rengoku, Shinobu, Mitsuri, Sanemi, Obanai, Gyomei, Genya… plus two ultra-rare hidden results.",
   },
   metaTitle: { ko: "귀멸의 칼날 캐릭터 테스트 | 나는 어떤 귀살대원?", en: "Demon Slayer Character Test | Which Slayer Are You?" },
   metaDescription: {
     ko: "16문항으로 알아보는 나의 귀멸의 칼날 캐릭터. 17명 중 나와 가장 닮은 캐릭터는? 아주 드물게 나오는 히든 결과 2종도 숨어 있어요.",
-    en: "Find your Demon Slayer character in 16 questions — which of 17 characters are you? Two rare hidden results await.",
+    en: "Find your Demon Slayer character in 16 questions, which of 17 characters are you? Two rare hidden results await.",
   },
   ogKicker: "DEMON SLAYER CHARACTER TEST",
   coverImage: "/images/tests/demon-slayer/cover-og-v4.jpg",
@@ -485,3 +485,4 @@ export const DEMON_SLAYER_CONFIG: AnimeTestConfig = {
   questions: QUESTIONS,
   recommendedIds: ["jujutsu-kaisen", "chainsaw-man", "lck-pro", "crush-type"],
 };
+

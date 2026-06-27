@@ -11,7 +11,7 @@ export async function generateMetadata({
   searchParams: SearchParams;
 }): Promise<Metadata> {
   const sp = await searchParams;
-  return buildAnimeMetadata(CYBERPUNK_CONFIG, sp.s);
+  return buildAnimeMetadata(CYBERPUNK_CONFIG, sp.s, sp.lang);
 }
 
 export default function CyberpunkPage() {
