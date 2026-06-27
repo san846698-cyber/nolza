@@ -1,12 +1,63 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 type SharePayload = {
   title: string;
   text: string;
   url?: string;
 };
+
+/** Social channels offered in the desktop fallback menu, ordered by global share volume. */
+export type ShareChannelId =
+  | "whatsapp"
+  | "facebook"
+  | "x"
+  | "telegram"
+  | "reddit"
+  | "line";
+
+const SHARE_CHANNEL_ORDER: ShareChannelId[] = [
+  "whatsapp",
+  "facebook",
+  "x",
+  "telegram",
+  "reddit",
+  "line",
+];
+
+export const SHARE_CHANNEL_META: Record<
+  ShareChannelId,
+  { label: string; color: string }
+> = {
+  whatsapp: { label: "WhatsApp", color: "#25D366" },
+  facebook: { label: "Facebook", color: "#1877F2" },
+  x: { label: "X", color: "#000000" },
+  telegram: { label: "Telegram", color: "#229ED9" },
+  reddit: { label: "Reddit", color: "#FF4500" },
+  line: { label: "LINE", color: "#06C755" },
+};
+
+function channelHref(id: ShareChannelId, payload: SharePayload, url: string): string {
+  const u = encodeURIComponent(url);
+  const text = encodeURIComponent(payload.text);
+  const title = encodeURIComponent(payload.title);
+  const textUrl = encodeURIComponent([payload.text, url].filter(Boolean).join("\n"));
+  switch (id) {
+    case "whatsapp":
+      return `https://wa.me/?text=${textUrl}`;
+    case "facebook":
+      return `https://www.facebook.com/sharer/sharer.php?u=${u}`;
+    case "x":
+      return `https://twitter.com/intent/tweet?text=${text}&url=${u}`;
+    case "telegram":
+      return `https://t.me/share/url?url=${u}&text=${text}`;
+    case "reddit":
+      return `https://www.reddit.com/submit?url=${u}&title=${title}`;
+    case "line":
+      return `https://social-plugins.line.me/lineit/share?url=${u}`;
+  }
+}
 
 function currentUrl(fallback?: string): string {
   if (typeof window === "undefined") return fallback ?? "https://nolza.fun";
@@ -51,10 +102,32 @@ export function useShareActions(payload: SharePayload) {
   const [shared, setShared] = useState(false);
   const [failed, setFailed] = useState(false);
 
+  const [supportsNativeShare, setSupportsNativeShare] = useState(false);
+
   const url = useMemo(() => currentUrl(payload.url), [payload.url]);
   const fullText = useMemo(
     () => [payload.text, url].filter(Boolean).join("\n"),
     [payload.text, url],
+  );
+
+  // 클라이언트에서만 Web Share 지원 여부 판정(SSR hydration mismatch 방지).
+  useEffect(() => {
+    setSupportsNativeShare(
+      typeof navigator !== "undefined" &&
+        typeof (navigator as Navigator & { share?: unknown }).share === "function",
+    );
+  }, []);
+
+  // 데스크탑 폴백 메뉴용 채널 링크 — 해외 공유량 많은 순.
+  const channels = useMemo(
+    () =>
+      SHARE_CHANNEL_ORDER.map((id) => ({
+        id,
+        label: SHARE_CHANNEL_META[id].label,
+        color: SHARE_CHANNEL_META[id].color,
+        href: channelHref(id, payload, url),
+      })),
+    [payload, url],
   );
 
   const flash = useCallback((setter: (value: boolean) => void) => {
@@ -119,6 +192,8 @@ export function useShareActions(payload: SharePayload) {
     shared,
     failed,
     url,
+    supportsNativeShare,
+    channels,
     copyLink,
     copyText,
     shareResult,
