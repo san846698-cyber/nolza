@@ -84,13 +84,17 @@ export function useShareActions(payload: SharePayload) {
 
   const shareResult = useCallback(async () => {
     setFailed(false);
+    const nav = typeof navigator !== "undefined" ? navigator : undefined;
+    // 모바일에서만 네이티브 공유 시트. 데스크탑(맥 등)은 Web Share 동작이 들쭉날쭉이라 링크 복사가 확실.
+    const isMobile = !!nav && /Android|iPhone|iPad|iPod|Mobile/i.test(nav.userAgent);
     try {
       if (
-        typeof navigator !== "undefined" &&
-        typeof (navigator as Navigator & { share?: unknown }).share === "function"
+        isMobile &&
+        nav &&
+        typeof (nav as Navigator & { share?: unknown }).share === "function"
       ) {
         await (
-          navigator as Navigator & {
+          nav as Navigator & {
             share: (data: SharePayload) => Promise<void>;
           }
         ).share({
@@ -101,13 +105,19 @@ export function useShareActions(payload: SharePayload) {
         flash(setShared);
         return;
       }
-      await writeClipboard(fullText);
+      await writeClipboard(url);
       flash(setCopied);
     } catch (err) {
       if ((err as { name?: string })?.name === "AbortError") return;
-      setFailed(true);
+      // 공유 실패 시에도 링크 복사로 폴백 — 항상 뭔가 되게.
+      try {
+        await writeClipboard(url);
+        flash(setCopied);
+      } catch {
+        setFailed(true);
+      }
     }
-  }, [flash, fullText, payload.text, payload.title, url]);
+  }, [flash, payload.text, payload.title, url]);
 
   return {
     copied,

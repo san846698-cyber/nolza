@@ -58,7 +58,9 @@ export default function ResultActions({
         <button type="button" className="result-actions__btn result-actions__btn--primary result-actions__btn--share btn-press" onClick={handleShare}>
           {share.shared
             ? isKo ? "\uACF5\uC720\uB428" : "Shared"
-            : isKo ? "\uCE5C\uAD6C\uC5D0\uAC8C \uACF5\uC720\uD558\uAE30" : "Share with friends"}
+            : share.copied
+              ? isKo ? "\uB9C1\uD06C \uBCF5\uC0AC\uB428!" : "Link copied!"
+              : isKo ? "\uCE5C\uAD6C\uC5D0\uAC8C \uACF5\uC720\uD558\uAE30" : "Share with friends"}
         </button>
       )}
       {onReplay && (
