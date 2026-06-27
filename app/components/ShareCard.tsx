@@ -66,14 +66,27 @@ export function ShareCard({
     setSaving(true);
     setDone(null);
     try {
+      const node = cardRef.current;
       const { toBlob } = await import("html-to-image");
-      const blob = await toBlob(cardRef.current, {
+      // 캡처 시 복제본이 원본 폭에 안 갇혀 자연 너비로 넓게 그려진 뒤 잘리는 문제 방지:
+      // 캔버스 크기 + 복제본 width 를 원본 offsetWidth 로 고정한다.
+      const capW = node.offsetWidth;
+      const capH = node.offsetHeight;
+      const blob = await toBlob(node, {
         pixelRatio,
         cacheBust: true,
         backgroundColor,
-        filter: (node: HTMLElement) => {
-          if (node.tagName === "IFRAME") return false;
-          if (node.dataset?.shareCardSkip === "true") return false;
+        width: capW,
+        height: capH,
+        style: {
+          width: `${capW}px`,
+          transform: "none",
+          transformOrigin: "top left",
+          margin: "0",
+        },
+        filter: (n: HTMLElement) => {
+          if (n.tagName === "IFRAME") return false;
+          if (n.dataset?.shareCardSkip === "true") return false;
           return true;
         },
       });
