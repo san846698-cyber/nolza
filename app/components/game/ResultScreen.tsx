@@ -108,7 +108,7 @@ export default function ResultScreen({
         locale={locale}
         backgroundColor={TONE_CAPTURE_BG[tone]}
         showButton
-        buttonLabel={{ ko: "결과 이미지 저장 · 공유", en: "Save / share result card" }}
+        buttonLabel={{ ko: "결과 이미지 저장", en: "Save result card" }}
         buttonClassName="result-screen__save-img btn-press"
         buttonStyle={{
           display: "flex",
