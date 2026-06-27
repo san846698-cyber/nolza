@@ -85,23 +85,18 @@ export function useShareActions(payload: SharePayload) {
   const shareResult = useCallback(async () => {
     setFailed(false);
     const nav = typeof navigator !== "undefined" ? navigator : undefined;
-    // 모바일에서만 네이티브 공유 시트. 데스크탑(맥 등)은 Web Share 동작이 들쭉날쭉이라 링크 복사가 확실.
-    const isMobile = !!nav && /Android|iPhone|iPad|iPod|Mobile/i.test(nav.userAgent);
+    const shareData: SharePayload = { title: payload.title, text: payload.text, url };
+    // Web Share API 를 지원하면 기기 종류와 무관하게 항상 네이티브 공유 시트를 띄운다.
+    // iOS·iPadOS(맥 UA로 보고됨)·맥 Safari/Chrome 에서 인스타·카톡·디코 등 설치된 앱이 시트에 뜬다.
+    // 미지원 브라우저(데스크탑 Firefox 등)에서만 링크 복사로 폴백.
+    const shareFn = (nav as Navigator & { share?: (d: SharePayload) => Promise<void> })?.share;
+    const canShareFn = (nav as Navigator & { canShare?: (d: ShareData) => boolean })?.canShare;
+    const canNativeShare =
+      typeof shareFn === "function" &&
+      (typeof canShareFn !== "function" || canShareFn.call(nav, shareData));
     try {
-      if (
-        isMobile &&
-        nav &&
-        typeof (nav as Navigator & { share?: unknown }).share === "function"
-      ) {
-        await (
-          nav as Navigator & {
-            share: (data: SharePayload) => Promise<void>;
-          }
-        ).share({
-          title: payload.title,
-          text: payload.text,
-          url,
-        });
+      if (canNativeShare && shareFn) {
+        await shareFn.call(nav, shareData);
         flash(setShared);
         return;
       }
