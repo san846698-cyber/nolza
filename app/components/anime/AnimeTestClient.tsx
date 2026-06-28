@@ -149,13 +149,9 @@ export default function AnimeTestClient({ config }: { config: AnimeTestConfig })
       setAnswers(next);
       setFxKey((k) => k + 1);
       if (questionIndex >= config.questions.length - 1) {
-        const r = calculateAnimeResult(config, next);
-        const url = buildShareUrl(config.path, {
-          v: 1,
-          resultId: r.key,
-          locale,
-        } satisfies AnimeSharePayload);
-        window.history.replaceState(null, "", url);
+        // URL은 clean path 유지 — ?s= 는 공유 버튼을 통해서만 전달.
+        // (replaceState로 ?s= 박으면 새로고침 시 sharedKey로 인식돼 "나도 해보기" 뜨는 버그)
+        window.history.replaceState(null, "", config.path);
         setPhase("result");
         return;
       }
@@ -335,9 +331,10 @@ export default function AnimeTestClient({ config }: { config: AnimeTestConfig })
         .anime-test[data-test="demon-slayer"]::before {
           background-image: none;
         }
-        /* 주술회전·체인소맨 — bg.webp 배경 이미지를 쓰므로 무늬 오버레이 제거 */
+        /* 주술회전·체인소맨·진격의 거인 — bg.webp 배경 이미지를 쓰므로 무늬 오버레이 제거 */
         .anime-test[data-test="jujutsu-kaisen"]::before,
-        .anime-test[data-test="chainsaw-man"]::before {
+        .anime-test[data-test="chainsaw-man"]::before,
+        .anime-test[data-test="attack-on-titan"]::before {
           background-image: none;
         }
         /* 사이버펑크 — 미세한 네온 스캔라인으로 디지털 질감 */

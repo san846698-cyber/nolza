@@ -3,6 +3,7 @@ import { DEMON_SLAYER_CONFIG } from "@/lib/demon-slayer-test";
 import { JUJUTSU_KAISEN_CONFIG } from "@/lib/jujutsu-kaisen-test";
 import { CHAINSAW_MAN_CONFIG } from "@/lib/chainsaw-man-test";
 import { CYBERPUNK_CONFIG } from "@/lib/cyberpunk-test";
+import { ATTACK_ON_TITAN_CONFIG } from "@/lib/attack-on-titan-test";
 
 // testId → config (stats API / 공용 조회용).
 export const ANIME_TESTS: Record<string, AnimeTestConfig> = {
@@ -10,6 +11,7 @@ export const ANIME_TESTS: Record<string, AnimeTestConfig> = {
   [JUJUTSU_KAISEN_CONFIG.testId]: JUJUTSU_KAISEN_CONFIG,
   [CHAINSAW_MAN_CONFIG.testId]: CHAINSAW_MAN_CONFIG,
   [CYBERPUNK_CONFIG.testId]: CYBERPUNK_CONFIG,
+  [ATTACK_ON_TITAN_CONFIG.testId]: ATTACK_ON_TITAN_CONFIG,
 };
 
 export function getAnimeConfig(testId: string | undefined): AnimeTestConfig | null {

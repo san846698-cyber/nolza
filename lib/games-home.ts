@@ -714,6 +714,15 @@ export const GAMES: Game[] = [
     skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "16문항 · 약 3분", en: "16 questions · ~3 min" },
   },
   {
+    id: "attack-on-titan", href: "/tests/attack-on-titan", cat: "world", no: "40",
+    thumb: "/images/tests/attack-on-titan/cover-card.webp",
+    ko: { title: "진격의 거인 캐릭터 테스트", sub: "20문항으로 찾는 나의 캐릭터. 에렌·미카사·아르민·리바이·한지·엘빈·장·사샤·라이너·애니 등 20명 + 히든 1명 중 나는?", kicker: "애니 캐릭터 테스트" },
+    en: { title: "Attack on Titan Character Test", sub: "Which AoT character are you? Eren, Mikasa, Armin, Levi, Hange, Erwin, Jean, Sasha, Reiner, Annie & more — 20 characters + a hidden one, in 20 questions", kicker: "Anime character test" },
+    type: "test", category: "tests",
+    palette: P.ink, font: "sans",
+    skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "20문항 · 약 4분", en: "20 questions · ~4 min" },
+  },
+  {
     id: "battle-what-if", href: "/games/battle-what-if", cat: "self", no: "24",
     ko: { title: "전쟁의 갈림길", sub: "전장의 결정을 직접 내려보세요", kicker: "지휘 성향 진단" },
     en: { title: "Crossroads of War", sub: "What would Hannibal have done?", kicker: "Command-style assessment" },
@@ -881,6 +890,7 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   featured: [
+    "attack-on-titan",
     "demon-slayer",
     "jujutsu-kaisen",
     "chainsaw-man",
@@ -889,7 +899,7 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
     "deep-fear",
     "crush-type",
   ],
-  anime: ["demon-slayer", "jujutsu-kaisen", "chainsaw-man", "cyberpunk"],
+  anime: ["attack-on-titan", "demon-slayer", "jujutsu-kaisen", "chainsaw-man", "cyberpunk"],
   tests: [
     "football-kr",
     "football-global",
