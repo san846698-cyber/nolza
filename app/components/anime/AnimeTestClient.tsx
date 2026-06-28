@@ -109,6 +109,12 @@ export default function AnimeTestClient({ config }: { config: AnimeTestConfig })
     const shared = sharedKey ? getAnimeResult(config, sharedKey) : null;
     return shared ?? calculateAnimeResult(config, answers);
   }, [answers, sharedKey, config]);
+
+  const isHidden = useMemo(() => {
+    const allHiddens = [...(config.hiddens ?? []), ...(config.hidden ? [config.hidden] : [])];
+    return allHiddens.some((h) => h.key === result.key);
+  }, [result.key, config.hiddens, config.hidden]);
+
   const progress = phase === "result" ? 100 : ((questionIndex + 1) / config.questions.length) * 100;
 
   useEffect(() => {
@@ -247,45 +253,94 @@ export default function AnimeTestClient({ config }: { config: AnimeTestConfig })
             </QuestionTransition>
           </section>
         ) : (
-          <ResultScreen
-            locale={locale}
-            currentGameId={config.testId}
-            eyebrow={tx(config.eyebrow)}
-            gameName={tx(config.gameName)}
-            emoji={result.emoji}
-            title={tx(result.name)}
-            description={tx(result.description)}
-            details={details}
-            tone={config.tone}
-            accentColor={result.color}
-            shareTitle={tx(config.title)}
-            shareText={`${tx(result.shareLine)} ${t("너는?", "What about you?")}`}
-            shareUrl={shareUrl}
-            onReplay={start}
-            replayLabel={sharedKey ? t("나도 해보기", "Try it myself") : t("다시 하기", "Retry")}
-            recommendedIds={config.recommendedIds}
-            heroMedia={
-              <CharImage
-                src={resultImageSrc(config.testId, result.key)}
-                alt={tx(result.name)}
-                emoji={result.emoji}
-                color={result.color}
-                pattern={config.testId === "demon-slayer" ? DEMON_SLAYER_PATTERNS[result.key] : undefined}
-              />
-            }
-            afterCard={
-              <ParticipantCount
-                testId={config.testId}
-                resultKey={result.key}
-                counted={!sharedKey}
-                locale={locale}
-              />
-            }
-          />
+          <>
+            {isHidden && (
+              <div className="anime-hidden-banner">
+                <span aria-hidden>✨</span>
+                <div>
+                  <strong>{t("히든 결과 등장!", "Hidden result unlocked!")}</strong>
+                  <p>{t("아주 드물게 나오는 특별한 결과예요. 자랑해요!", "An extremely rare result. Show it off!")}</p>
+                </div>
+                <span aria-hidden>✨</span>
+              </div>
+            )}
+            <ResultScreen
+              locale={locale}
+              currentGameId={config.testId}
+              eyebrow={isHidden ? t("✨ 히든 결과", "✨ Hidden Result") : tx(config.eyebrow)}
+              gameName={tx(config.gameName)}
+              emoji={result.emoji}
+              title={tx(result.name)}
+              description={tx(result.description)}
+              details={details}
+              tone={config.tone}
+              accentColor={result.color}
+              shareTitle={tx(config.title)}
+              shareText={`${tx(result.shareLine)} ${t("너는?", "What about you?")}`}
+              shareUrl={shareUrl}
+              onReplay={start}
+              replayLabel={sharedKey ? t("나도 해보기", "Try it myself") : t("다시 하기", "Retry")}
+              recommendedIds={config.recommendedIds}
+              heroMedia={
+                <CharImage
+                  src={resultImageSrc(config.testId, result.key)}
+                  alt={tx(result.name)}
+                  emoji={result.emoji}
+                  color={result.color}
+                  pattern={config.testId === "demon-slayer" ? DEMON_SLAYER_PATTERNS[result.key] : undefined}
+                />
+              }
+              afterCard={
+                <ParticipantCount
+                  testId={config.testId}
+                  resultKey={result.key}
+                  counted={!sharedKey}
+                  locale={locale}
+                />
+              }
+            />
+          </>
         )}
       </section>
 
       <style jsx>{`
+        .anime-hidden-banner {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin: 0 auto 20px;
+          max-width: 480px;
+          padding: 16px 20px;
+          border-radius: 16px;
+          background: linear-gradient(135deg, rgba(168, 139, 74, 0.18) 0%, rgba(201, 168, 76, 0.12) 100%);
+          border: 1.5px solid rgba(201, 168, 76, 0.45);
+          text-align: center;
+          animation: hidden-reveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .anime-hidden-banner span {
+          font-size: 22px;
+          flex-shrink: 0;
+        }
+        .anime-hidden-banner strong {
+          display: block;
+          font-size: 15px;
+          font-weight: 800;
+          color: #E6C878;
+          letter-spacing: 0.04em;
+          margin-bottom: 3px;
+        }
+        .anime-hidden-banner p {
+          margin: 0;
+          font-size: 13px;
+          color: rgba(230, 200, 120, 0.75);
+          line-height: 1.4;
+        }
+        @keyframes hidden-reveal {
+          from { opacity: 0; transform: translateY(-12px) scale(0.95); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .anime-test {
           --ink: #f7f8f8;
           --ink-2: #d0d6e0;

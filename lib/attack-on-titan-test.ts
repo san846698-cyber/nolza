@@ -328,8 +328,8 @@ const HIDDEN: AnimeResult = {
 };
 
 // 문항 원칙: 각 문항의 4답 = 서로 다른 4인. 각 캐릭터 정확히 4개 문항 등장(최대 점수 4).
-// 히든(유미르 프리츠) 트리거: Q3·Q8·Q11·Q17 각 1개 선택지에 hiddenWeights.ymir_fritz:1 부여.
-// 4개 전부 선택 시 threshold(4) 도달 → 유미르 프리츠 발동.
+// 히든(유미르 프리츠) 트리거: Q3·Q8·Q11·Q17·Q19 총 5개 선택지에 hiddenWeights.ymir_fritz:1 부여.
+// 5개 중 4개 이상 선택 시 threshold(4) 도달 → 유미르 프리츠 발동. (발동 확률 약 1.6%)
 const QUESTIONS: AnimeQuestion[] = [
   {
     id: "q1",
