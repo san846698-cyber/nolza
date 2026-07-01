@@ -530,7 +530,7 @@ export const GAMES: Game[] = [
     ko: { title: "정치성향 테스트", sub: "좌우 성향과 자유-질서 감각을 2축 가치 지도에서 확인해보기", kicker: "사회 가치관 테스트" },
     en: { title: "Political Orientation Test", sub: "Map your values across left-right and freedom-order axes.", kicker: "Social Values Test" },
     type: "test", category: "featured",
-    palette: P.paperBlue, font: "sans", thumb: "/thumbnails-generated/political-type-banner.png",
+    palette: P.paperBlue, font: "sans", thumb: "/images/tests/political-type/thumb.jpg",
     skin: "block", tone: 3, art: "political-type", labels: ["new", "recommended", "share"], duration: { ko: "24문항 · 약 5분", en: "24 statements · about 5 min" },
   },
   {
