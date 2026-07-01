@@ -723,6 +723,15 @@ export const GAMES: Game[] = [
     skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "20문항 · 약 4분", en: "20 questions · ~4 min" },
   },
   {
+    id: "one-piece", href: "/tests/one-piece", cat: "world", no: "41",
+    thumb: "/images/tests/one-piece/cover-card.webp",
+    ko: { title: "원피스 캐릭터 테스트", sub: "23문항으로 찾는 나의 캐릭터. 루피·롤로노아 조로·나미·상디·쵸파·로빈·에이스·샹크스·보아 핸콕·흰수염·쥬라큘 미호크 등 18명 + 히든 1명 중 나는?", kicker: "애니 캐릭터 테스트" },
+    en: { title: "One Piece Character Test", sub: "Which One Piece character are you? Luffy, Zoro, Nami, Sanji, Chopper, Robin, Ace, Shanks, Boa Hancock, Whitebeard, Mihawk & more — 18 characters + a hidden one, in 23 questions", kicker: "Anime character test" },
+    type: "test", category: "tests",
+    palette: P.deepSea, font: "sans",
+    skin: "block", tone: 4, labels: ["new", "share"], duration: { ko: "23문항 · 약 4분", en: "23 questions · ~4 min" },
+  },
+  {
     id: "battle-what-if", href: "/games/battle-what-if", cat: "self", no: "24",
     ko: { title: "전쟁의 갈림길", sub: "전장의 결정을 직접 내려보세요", kicker: "지휘 성향 진단" },
     en: { title: "Crossroads of War", sub: "What would Hannibal have done?", kicker: "Command-style assessment" },
@@ -893,6 +902,7 @@ export const HOMEPAGE_HIDDEN_GAME_IDS = new Set([
 
 export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
   featured: [
+    "one-piece",
     "attack-on-titan",
     "demon-slayer",
     "jujutsu-kaisen",
@@ -902,7 +912,7 @@ export const HOME_CATEGORY_GAME_IDS: Partial<Record<HomeCatId, string[]>> = {
     "kbti",
     "deep-fear",
   ],
-  anime: ["attack-on-titan", "demon-slayer", "jujutsu-kaisen", "chainsaw-man", "cyberpunk"],
+  anime: ["one-piece", "attack-on-titan", "demon-slayer", "jujutsu-kaisen", "chainsaw-man", "cyberpunk"],
   tests: [
     "human-test",
     "kbti",
@@ -949,4 +959,3 @@ export function gamesByIds(ids: string[]): Game[] {
     .map((id) => GAMES.find((game) => game.id === id))
     .filter((game): game is Game => Boolean(game));
 }
-  

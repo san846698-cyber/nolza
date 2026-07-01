@@ -41,11 +41,35 @@ function detect(): SimpleLocale {
   return "ko";
 }
 
+// 영어 모드를 URL(?lang=en)에 반영한다. 주소창을 복사하거나 네이티브 공유로
+// 현재 페이지를 보내도 항상 영어 OG 카드가 뜨도록 하기 위함(공유 신뢰성).
+// history.replaceState 라 새로고침/히스토리 추가 없이 조용히 갱신한다.
+function syncLangParam(locale: SimpleLocale) {
+  if (typeof window === "undefined") return;
+  try {
+    const url = new URL(window.location.href);
+    const current = url.searchParams.get("lang");
+    if (locale === "en") {
+      if (current === "en") return;
+      url.searchParams.set("lang", "en");
+    } else {
+      if (current == null) return;
+      url.searchParams.delete("lang");
+    }
+    window.history.replaceState(window.history.state, "", url.toString());
+  } catch {
+    /* ignore */
+  }
+}
+
 export function useLocale() {
   const [locale, setLocaleState] = useState<SimpleLocale>("ko");
 
   useEffect(() => {
-    setLocaleState(detect());
+    const detected = detect();
+    setLocaleState(detected);
+    // 영어로 판정되면 URL 에도 ?lang=en 을 반영해 공유 링크가 영어로 뜨게 한다.
+    if (detected === "en") syncLangParam("en");
 
     // In-tab broadcast: every useLocale instance hears the same custom event,
     // so toggling in one component updates every other consumer immediately.
@@ -82,6 +106,8 @@ export function useLocale() {
     } catch {
       /* ignore */
     }
+    // 토글로 언어를 바꾸면 URL 의 ?lang 도 맞춰 갱신(영어면 추가, 한국어면 제거).
+    syncLangParam(next);
   };
 
   const t = (ko: string, en: string): string => (locale === "ko" ? ko : en);

@@ -771,7 +771,7 @@ export const GUIDES: GuidePage[] = [
     sharing:
       "친구와 결과를 비교하면 같은 밀짚모자 크루 안에서도 얼마나 다른 사람들이 어울려 사는지가 그대로 드러납니다. 누가 더 멋진 캐릭터인지 겨루기보다, 위기 상황에서 서로 어디로 움직이는지 이야기하면 대화가 훨씬 재미있어집니다. 결과를 공유할 때는 상대의 유형을 놀리는 라벨로 쓰지 말고, 그 캐릭터가 팀에서 맡는 역할과 매력을 함께 짚어주면 좋습니다.",
     related: [
-      { href: "/tests/one-piece", title: "원피스 캐릭터 테스트", description: "루피, 조로, 나미 등 17명 중 나와 가장 닮은 캐릭터를 찾아보세요." },
+      { href: "/tests", title: "애니 캐릭터 테스트 모아보기", description: "지금 즐길 수 있는 애니 캐릭터 테스트를 한곳에서 둘러보세요." },
       { href: "/tests/cyberpunk", title: "사이버펑크: 엣지러너 캐릭터 테스트", description: "또 다른 명작의 캐릭터와 나를 비교해보고 싶다면 함께 즐겨보세요." },
       { href: "/guides/enjoy-psychology-tests-better", title: "심리테스트 더 잘 즐기기", description: "캐릭터 결과를 라벨이 아니라 대화의 시작점으로 읽는 법을 정리했습니다." },
     ],
@@ -792,8 +792,8 @@ export const GUIDES: GuidePage[] = [
           "그날의 기분과 선택에 따라 달라질 수 있습니다. 결과가 바뀌는 것도 재미의 일부이니 여러 번 가볍게 즐겨보세요.",
       },
     ],
-    ctaHref: "/tests/one-piece",
-    ctaLabel: "원피스 캐릭터 테스트하기",
+    ctaHref: "/tests",
+    ctaLabel: "애니 캐릭터 테스트 둘러보기",
     publisherLinkLabel: "원피스 캐릭터 성격 가이드",
     publisherLinkDescription: "원피스 인물들의 자유, 집념, 현실감각, 공감을 성격 유형으로 읽는 방법을 안내합니다.",
   },
@@ -823,7 +823,7 @@ export const GUIDES: GuidePage[] = [
       "친구와 결과를 비교할 때는 누가 더 강한 캐릭터인지 따지기보다, 극한 상황에서 서로 어떻게 반응하는지를 이야기해보면 좋습니다. 같은 위기에서 한 사람은 앞으로 돌진하고 다른 사람은 감정을 눌러 참는다는 차이를 확인하는 것만으로도 서로를 조금 더 이해하게 됩니다. 진격의 거인은 무거운 주제를 다루는 작품이니만큼, 결과를 놀림거리로 쓰기보다 그 인물이 짊어진 마음을 함께 헤아려주는 대화로 이어가면 훨씬 좋습니다.",
     related: [
       { href: "/tests/attack-on-titan", title: "진격의 거인 캐릭터 테스트", description: "엘런, 미카사, 리바이 등 20명 중 나와 가장 닮은 캐릭터를 찾아보세요." },
-      { href: "/tests/one-piece", title: "원피스 캐릭터 테스트", description: "또 다른 명작의 인물들과 나를 비교해보고 싶다면 함께 즐겨보세요." },
+      { href: "/tests/jujutsu-kaisen", title: "주술회전 캐릭터 테스트", description: "또 다른 명작의 인물들과 나를 비교해보고 싶다면 함께 즐겨보세요." },
       { href: "/guides/comparing-test-results-with-friends", title: "친구와 결과 비교하는 법", description: "캐릭터 결과를 낙인 없이 즐겁게 나누는 대화법을 정리했습니다." },
     ],
     faq: [

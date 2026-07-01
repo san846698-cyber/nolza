@@ -2376,6 +2376,66 @@ img {
   background: linear-gradient(135deg, #ffe0a8, #f1865d) !important;
 }
 
+/* ── 정치성향 테스트 — 애니 다크 시스템을 재사용하되 red<->blue 스펙트럼 정체성으로 조정.
+   불(flame) 계열 액센트를 중립화하고, 파랑(#1D4ED8 극)과 빨강(#DC2626/#E11D48 극)을 균형 있게 사용.
+   어느 정당 라벨도 없이 두 색은 대등한 스펙트럼 양극이며, 다크 베이스는 그대로 유지. ── */
+
+/* 배경 상단 글로우의 flame 틴트를 중립 파랑으로(불 느낌 제거) */
+.anime-test[data-test="political"] {
+  background-image:
+    radial-gradient(48% 36% at 50% -8%, rgba(37, 99, 235, 0.14), transparent 62%),
+    linear-gradient(180deg, rgba(9, 10, 12, 0.72) 0%, rgba(7, 8, 9, 0.82) 55%, rgba(5, 6, 7, 0.92) 100%),
+    #08090a;
+}
+/* 무늬 오버레이 제거(정치 테스트는 텍스처 없음) */
+.anime-test[data-test="political"]::before {
+  background-image: none;
+}
+/* 인트로 히어로 상단 글로우도 파랑 */
+.anime-test[data-test="political"] .anime-hero {
+  background:
+    radial-gradient(62% 48% at 16% 2%, rgba(37, 99, 235, 0.16), transparent 60%),
+    rgba(10, 12, 14, 0.62);
+}
+/* 인트로 eyebrow 밑줄에 파랑->빨강 스펙트럼 표시 */
+.anime-test[data-test="political"] .anime-eyebrow {
+  border-color: rgba(37, 99, 235, 0.55);
+  color: #93b4fb;
+}
+.anime-test[data-test="political"] .anime-title {
+  border-bottom: 0;
+}
+/* 시작 CTA — 파랑 -> 빨강 스펙트럼 그라디언트(중립: 양극 대등) */
+.anime-test[data-test="political"] .anime-cta {
+  color: #fff;
+  background: linear-gradient(100deg, #1d4ed8 0%, #4338ca 48%, #be123c 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 16px 34px -12px rgba(37, 99, 235, 0.5),
+    0 8px 22px -14px rgba(220, 38, 38, 0.4);
+}
+/* 진행 막대 — 파랑 -> 빨강 스펙트럼 채움 */
+.anime-test[data-test="political"] .anime-bar span {
+  background: linear-gradient(90deg, #1d4ed8 0%, #7c3aed 52%, #dc2626 100%);
+}
+.anime-test[data-test="political"] .anime-prog span {
+  color: #93b4fb;
+}
+/* 결과 화면 추천 카드 CTA도 중립 파랑 계열로(불 노랑 제거) */
+.anime-test[data-test="political"] .recommended-games__head small,
+.anime-test[data-test="political"] .recommended-games__kicker {
+  color: #93b4fb !important;
+}
+.anime-test[data-test="political"] .recommended-games__cta {
+  border-color: rgba(37, 99, 235, 0.4);
+  color: #fff !important;
+  background: linear-gradient(100deg, #2563eb, #be123c) !important;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.anime-test[data-test="political"] .recommended-games__item:hover .recommended-games__cta {
+  background: linear-gradient(100deg, #3b6ff5, #e11d48) !important;
+}
+
 /* 애니 테스트(다크 테마) — '이 테스트도 해보세요' 블록도 다크 글래스로.
    tone이 midnight/burgundy 등이라 .result-screen--dark 다크 변형이 안 먹어서
    .anime-test 스코프로 직접 오버라이드(흰 카드가 다크 배경 위에 박히는 문제 해결). */
@@ -8923,6 +8983,31 @@ a:focus-visible {
 }
 
 /* MBTI/KBTI — deep navy (default, no override needed) */
+
+/* Political type — deep navy dark card (red<->blue spectrum accents applied in-component) */
+.result-screen--navy .result-screen__card {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: linear-gradient(160deg, #14172B 0%, #0E1020 100%) !important;
+  box-shadow: 0 22px 60px -36px rgba(0, 0, 0, 0.85) !important;
+}
+.result-screen--navy { color: #f3f6fa !important; }
+.result-screen--navy .result-screen__card::after { color: rgba(147, 180, 251, 0.5) !important; }
+.result-screen--navy .result-screen__title { color: #f7f9fc !important; }
+.result-screen--navy .result-screen__eyebrow { color: rgba(147, 180, 251, 0.9) !important; }
+.result-screen--navy .result-screen__gamename,
+.result-screen--navy .result-screen__brandmark { color: rgba(243, 246, 250, 0.72) !important; }
+.result-screen--navy .result-screen__desc { color: #eef2f8 !important; }
+.result-screen--navy .result-screen__divider { background: rgba(147, 180, 251, 0.34) !important; }
+.result-screen--navy .result-screen__details li {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-left-color: var(--rs-accent, #93b4fb) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: rgba(243, 246, 250, 0.78) !important;
+}
+.result-screen--navy .result-screen__brand {
+  border-top-color: rgba(255, 255, 255, 0.12) !important;
+  color: rgba(243, 246, 250, 0.5) !important;
+}
 
 /* Attachment / relationships — purple-magenta */
 .result-screen--burgundy .result-screen__card {
