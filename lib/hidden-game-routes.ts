@@ -40,4 +40,11 @@ export const HIDDEN_GAME_ROUTES = [
   "/games/typing",
   "/games/whatgeneration",
   "/games/wordchain",
+  "/games/aqua-fishing",
+  "/games/circle",
+  "/games/password",
+  "/games/react",
+  "/games/silence",
+  "/games/timesense",
+  "/games/traffic",
 ] as const;

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { GAMES, HOMEPAGE_HIDDEN_GAME_IDS } from "@/lib/games-home";
+import { HIDDEN_GAME_ROUTES } from "@/lib/hidden-game-routes";
 import { GUIDES } from "@/lib/guides";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nolza.fun";
@@ -24,7 +25,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: path === "/" ? "daily" : "monthly",
       priority: path === "/" ? 1 : 0.7,
     }));
-  const gameRoutes: MetadataRoute.Sitemap = GAMES.filter((game) => !HOMEPAGE_HIDDEN_GAME_IDS.has(game.id)).map((game) => ({
+  const hiddenRouteSet = new Set<string>(HIDDEN_GAME_ROUTES);
+  const gameRoutes: MetadataRoute.Sitemap = GAMES.filter((game) => !HOMEPAGE_HIDDEN_GAME_IDS.has(game.id) && !hiddenRouteSet.has(game.href)).map((game) => ({
       url: `${SITE_URL}${game.href}`,
       lastModified: now,
       changeFrequency: "weekly",
