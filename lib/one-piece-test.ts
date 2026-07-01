@@ -393,7 +393,7 @@ const QUESTIONS: AnimeQuestion[] = [
       { id: "a", text: { ko: "이 사람들이랑 함께하고 싶다는 마음", en: "The feeling that I want to be with these people." }, weights: { luffy: 2, vivi: 1 } },
       { id: "b", text: { ko: "목표가 있다. 중간에 포기하는 건 없다", en: "I have a goal. There's no quitting midway." }, weights: { zoro: 2, ace: 1 } },
       { id: "c", text: { ko: "미래에 대한 계산이 맞으면 버틸 수 있다", en: "If the math on the future works out, I can hold on." }, weights: { nami: 2, law: 1 } },
-      { id: "d", text: { ko: "뭐든 웃으면서 넘기는 것. 지금도 어떻게든 되겠지", en: "Laughing through it. It'll work out somehow." }, weights: { brook: 2, luffy: 1, franky: 1 } },
+      { id: "d", text: { ko: "뭐든 웃으면서 넘기는 것. 지금도 어떻게든 되겠지", en: "Laughing through it. It'll work out somehow." }, weights: { brook: 2, luffy: 1, franky: 1, buggy: 1 } },
     ],
   },
   {
@@ -432,7 +432,7 @@ const QUESTIONS: AnimeQuestion[] = [
     choices: [
       { id: "a", text: { ko: "설렘. 새로운 것과 미지의 세계가 좋다", en: "Excitement — I love new things and the unknown." }, weights: { luffy: 2, robin: 1, nami: 1 } },
       { id: "b", text: { ko: "분노. 불의를 못 참는다", en: "Anger — I can't stand injustice." }, weights: { ace: 2, luffy: 1, sanji: 1 } },
-      { id: "c", text: { ko: "사랑. 소중한 사람이 있으면 뭐든 할 수 있다", en: "Love — I can do anything for the people I care about." }, weights: { vivi: 2, chopper: 1, sanji: 1 } },
+      { id: "c", text: { ko: "사랑. 소중한 사람이 있으면 뭐든 할 수 있다", en: "Love — I can do anything for the people I care about." }, weights: { vivi: 2, chopper: 1, sanji: 1, hancock: 1 } },
       { id: "d", text: { ko: "고요함. 마음이 편해야 제대로 움직인다", en: "Calm — I need inner peace to move at my best." }, weights: { jinbei: 2, law: 1, brook: 1 } },
     ],
   },
@@ -518,12 +518,12 @@ const QUESTIONS: AnimeQuestion[] = [
   },
   {
     id: "q23",
-    prompt: { ko: "나에게 '진짜 강한 사람'이란?", en: "To me, a truly strong person is..." },
+    prompt: { ko: "많은 사람들의 시선이 나에게 쏠릴 때, 나는?", en: "When all eyes turn to me, I..." },
     choices: [
-      { id: "a", text: { ko: "무엇도 두려워하지 않고 앞으로 나아가는 사람", en: "Someone who moves forward fearing nothing." }, weights: { luffy: 2, shanks: 2 } },
-      { id: "b", text: { ko: "소중한 것을 위해서라면 뭐든 할 수 있는 사람", en: "Someone who will do anything for what they hold dear." }, weights: { zoro: 2, ace: 1, whitebeard: 1 } },
-      { id: "c", text: { ko: "자신만의 철학과 신념을 끝까지 지키는 사람", en: "Someone who upholds their philosophy and beliefs to the very end." }, weights: { hancock: 2, sanji: 1, jinbei: 1 } },
-      { id: "d", text: { ko: "어떤 상황에서도 동료를 이끌고 나아가는 사람", en: "Someone who leads companions through any situation." }, weights: { nami: 2, vivi: 1, buggy: 1 } },
+      { id: "a", text: { ko: "오히려 신나서 더 화려하게 행동한다", en: "Get even more fired up and put on a bigger show." }, weights: { buggy: 2, usopp: 1 } },
+      { id: "b", text: { ko: "당당하게 그 시선을 즐기며 압도한다", en: "Confidently enjoy it and own the room." }, weights: { hancock: 2, shanks: 1 } },
+      { id: "c", text: { ko: "부담스러워도 책임감 있게 자리를 지킨다", en: "Uncomfortable, but I responsibly hold my position." }, weights: { whitebeard: 2, jinbei: 1 } },
+      { id: "d", text: { ko: "자랑스럽게 내가 만든 것을 보여준다", en: "Proudly show off what I've built." }, weights: { franky: 2, robin: 1 } },
     ],
   },
 ];

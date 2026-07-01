@@ -4161,6 +4161,47 @@ body {
   font-weight: 760 !important;
 }
 
+/* [정치성향 전용 오버라이드] 위 공용 flow-likert 블록이 !important 로 강제하던
+   초록/연결선/흰 도트를 무효화하고, 컴포넌트 styled-jsx 의 파랑↔빨강 스펙트럼을 살린다. */
+.political-page--quiz .political-agreement-scale::before { display: none !important; }
+.political-page--quiz .political-agreement-scale {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: clamp(6px, 1.4vw, 16px) !important;
+}
+.political-page--quiz .political-scale-dot {
+  min-height: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.political-page--quiz .political-scale-dot span {
+  width: clamp(30px, 6vw, 46px) !important;
+  height: clamp(30px, 6vw, 46px) !important;
+  border: 3px solid #ffffff !important;
+  background: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.16) !important;
+}
+.political-page--quiz .political-scale-dot:nth-child(1) span { background: #1d4ed8 !important; }
+.political-page--quiz .political-scale-dot:nth-child(2) span { background: #3b82f6 !important; }
+.political-page--quiz .political-scale-dot:nth-child(3) span { background: #93b4fb !important; }
+.political-page--quiz .political-scale-dot:nth-child(4) span { background: #cbd5e1 !important; }
+.political-page--quiz .political-scale-dot:nth-child(5) span { background: #fca5b4 !important; }
+.political-page--quiz .political-scale-dot:nth-child(6) span { background: #f43f5e !important; }
+.political-page--quiz .political-scale-dot:nth-child(7) span { background: #dc2626 !important; }
+.political-page--quiz .political-scale-dot:hover span {
+  background: #111827 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-4px) scale(1.08) !important;
+  box-shadow: 0 12px 24px rgba(16, 24, 40, 0.28) !important;
+}
+.political-page--quiz .political-scale-dot.selected span {
+  background: #0f172a !important;
+  border-color: #ffffff !important;
+  transform: scale(1.18) !important;
+  box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.16), 0 10px 20px rgba(16, 24, 40, 0.30) !important;
+}
+
 .breaking-page--quiz .choices,
 .scene-page .choices,
 .crush-test .answers,
