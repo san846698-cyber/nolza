@@ -54,3 +54,5 @@ marketing/
 # temp / scratch / filesystem cruft
 .tmp-*/
 **/.fuse_hidden*
+.next-broken-tmp/
+quicktest.txt

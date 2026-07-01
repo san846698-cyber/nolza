@@ -210,7 +210,7 @@ const RESULTS: Record<`${Tier}_${Grade}`, ResultCopy> = {
   buddha_fail: {
     verdict: { ko: "마음은 부처, 행동은 딴판.", en: "A Buddha's heart, a stranger's deeds." },
     body: {
-      ko: "이상한 결과가 나왔다. 당신의 마음은 분명 부처에 가까운데, 행동을 적어보면 영 딴사람이다. 머릿속으로는 늘 옳은 자리에 서 있다. 헌혈을 해야 한다고 믿고, 약속은 지켜야 한다고 믿고, 문은 잡아줘야 한다고 믿는다. 그런데 실제로 한 적은 거의 없다. 당신은 선의의 수집가다. 좋은 마음만 모아두고 한 번도 꺼내 쓰지 않았다. 마음은 합격인데 손발이 실격을 받았다. 다자이라면 이렇게 적었을 것이다 — 부끄럼 많은 생애를 보냈습니다, 그것도 아주 선량한 얼굴로.",
+      ko: "이상한 결과가 나왔다. 당신의 마음은 분명 부처에 가까운데, 행동을 적어보면 영 딴사람이다. 머릿속으로는 늘 옳은 자리에 서 있다. 헌혈을 해야 한다고 믿고, 약속은 지켜야 한다고 믿고, 문은 잡아줘야 한다고 믿는다. 그런데 실제로 한 적은 거의 없다. 당신은 선의의 수집가다. 좋은 마음만 모아두고 한 번도 꺼내 쓰지 않았다. 마음은 합격인데 손발이 실격을 받았다. 다자이라면 이렇게 적었을 것이다, 부끄럼 많은 생애를 보냈습니다, 그것도 아주 선량한 얼굴로.",
       en: "A strange verdict. Your heart sits close to the Buddha, yet write down your actions and it reads like a different person. In your head you always stand in the right place — you believe in donating blood, keeping promises, holding doors. You've simply almost never done it. You are a collector of good intentions: hoarding kind thoughts, never once spending them. Your heart passes; your hands and feet are disqualified. Dazai might have put it this way — I have lived a life of much shame, and with a very gentle face at that.",
     },
     tags: {
@@ -298,7 +298,7 @@ const RESULTS: Record<`${Tier}_${Grade}`, ResultCopy> = {
   demon_hold: {
     verdict: { ko: "악마 예비군. 가능성 충분.", en: "Demon-in-reserve. Plenty of potential." },
     body: {
-      ko: "당신에게는 가능성이 있다. 좋은 의미는 아니다. 아직 큰일을 저지르진 않았지만 저지를 수 있는 자질이 충분히 보인다. 당신은 죄책감의 무게를 가볍게 견딘다. 보통 사람이 며칠 잠 못 이룰 일을 당신은 하룻밤이면 털어낸다. 그 회복력이 어떤 자리에서는 무기가 되고 어떤 자리에서는 흉기가 된다. 지금 당신은 갈림길에 서 있다. 한쪽은 매력적인 리더의 길, 다른 한쪽은 모두가 등 돌리는 길. 보류는 '아직 늦지 않았다'는 마지막 경고다. 악마 예비군에서 제대하는 방법은 의외로 간단하다 — 한 번쯤, 손해 보는 선택을 해보는 것.",
+      ko: "당신에게는 가능성이 있다. 좋은 의미는 아니다. 아직 큰일을 저지르진 않았지만 저지를 수 있는 자질이 충분히 보인다. 당신은 죄책감의 무게를 가볍게 견딘다. 보통 사람이 며칠 잠 못 이룰 일을 당신은 하룻밤이면 털어낸다. 그 회복력이 어떤 자리에서는 무기가 되고 어떤 자리에서는 흉기가 된다. 지금 당신은 갈림길에 서 있다. 한쪽은 매력적인 리더의 길, 다른 한쪽은 모두가 등 돌리는 길. 보류는 '아직 늦지 않았다'는 마지막 경고다. 악마 예비군에서 제대하는 방법은 의외로 간단하다, 한 번쯤 손해 보는 선택을 해보는 것.",
       en: "You have potential — and not in the flattering sense. You haven't done anything grave yet, but the aptitude for it is plainly there. You carry the weight of guilt lightly: what keeps an ordinary person up for days, you shake off in a single night. That resilience is a weapon in some seats and a blade in others. You stand at a fork now — one path the charismatic leader's, the other the road where everyone turns their back. \"Hold\" is the last warning that it isn't too late. Discharge from the demon reserves is oddly simple: just once, make the choice that costs you something.",
     },
     tags: {
@@ -451,7 +451,7 @@ function HumanTestInner() {
     trackShareClick("human-test", "judgment", `${result.tier}_${result.grade}`);
     const url = encodeShare(scores.d, scores.c);
     const title = t(
-      `인간실격 테스트 — 나의 판정: ${stampKo}`,
+      `인간실격 테스트, 나의 판정: ${stampKo}`,
       `No Longer Human Test — My verdict: ${stampEn}`,
     );
     const desc = result.copy.verdict[locale];
@@ -611,7 +611,7 @@ function IntroView({ onStart, t }: { onStart: () => void; t: (ko: string, en: st
       </p>
       <p style={{ marginTop: 16, fontSize: 14, color: C.sub, lineHeight: 1.8, maxWidth: 420 }}>
         {t(
-          "30개의 질문 앞에서 당신은 정직해야 합니다. 끝나면 하나의 판정이 내려집니다 — 부처, 인간, 짐승, 혹은 악마.",
+          "30개의 질문 앞에서 당신은 정직해야 합니다. 끝나면 하나의 판정이 내려집니다, 부처, 인간, 짐승, 혹은 악마.",
           "Thirty questions demand your honesty. At the end, one verdict is stamped — Buddha, Human, Beast, or Demon.",
         )}
       </p>

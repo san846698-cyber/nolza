@@ -4,14 +4,13 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
 import { AdResult } from "@/app/components/Ads";
 import { homeBackLabel } from "@/app/components/BrandMark";
-import RecommendedGames from "@/app/components/game/RecommendedGames";
+import ResultScreen from "@/app/components/game/ResultScreen";
 import ReadableQuestion from "@/app/components/game/ReadableQuestion";
 import { useLocale, type SimpleLocale } from "@/hooks/useLocale";
 import {
   trackQuestionAnswered,
   trackResultView,
   trackRetryClick,
-  trackShareClick,
   trackTestStart,
 } from "@/lib/analytics";
 import { buildShareUrl, decodeSharePayload } from "@/lib/share-result";
@@ -42,7 +41,6 @@ export default function BreakingPointTestClient() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<BreakingChoice[]>([]);
   const [sharedResult, setSharedResult] = useState<BreakingResult | null>(null);
-  const [shareCopied, setShareCopied] = useState(false);
 
   useEffect(() => {
     const payload = decodeSharePayload<BreakingSharePayload>(new URLSearchParams(window.location.search).get("s"));
@@ -84,7 +82,6 @@ export default function BreakingPointTestClient() {
     setQuestionIndex(0);
     setAnswers([]);
     setSharedResult(null);
-    setShareCopied(false);
     if (window.location.search) window.history.replaceState(null, "", "/tests/breaking-point");
   }, []);
 
@@ -97,7 +94,6 @@ export default function BreakingPointTestClient() {
     trackQuestionAnswered("breaking-point", questionIndex + 1);
     const nextAnswers = [...answers, choice];
     setAnswers(nextAnswers);
-    setShareCopied(false);
 
     if (questionIndex >= BREAKING_QUESTIONS.length - 1) {
       const nextResult = calculateBreakingResult(nextAnswers).result;
@@ -113,37 +109,6 @@ export default function BreakingPointTestClient() {
 
     setQuestionIndex((value) => value + 1);
   }, [answers, locale, questionIndex]);
-
-  const share = useCallback(async () => {
-    trackShareClick("breaking-point", "test", result.id);
-    const url = buildShareUrl("/tests/breaking-point", {
-      v: 1,
-      resultId: result.id,
-      locale,
-    } satisfies BreakingSharePayload);
-    const shareText = locale === "ko"
-      ? `나는 “나를 차갑게 만드는 순간” 테스트에서 「${result.title.ko}」 나왔다.\n이거 좀 맞는 듯.`
-      : `I got "${result.title.en}" on The Moment I Turn Cold.\nThis feels pretty accurate.`;
-    const title = BREAKING_COPY.title[locale];
-
-    try {
-      if (navigator.share) {
-        await navigator.share({ title, text: shareText, url });
-        return;
-      }
-      await navigator.clipboard.writeText(`${shareText}\n${url}`);
-      setShareCopied(true);
-      window.setTimeout(() => setShareCopied(false), 1800);
-    } catch {
-      try {
-        await navigator.clipboard.writeText(`${shareText}\n${url}`);
-        setShareCopied(true);
-        window.setTimeout(() => setShareCopied(false), 1800);
-      } catch {
-        setShareCopied(false);
-      }
-    }
-  }, [locale, result]);
 
   return (
     <main className={`breaking-page breaking-page--${phase}`} lang={locale}>
@@ -170,52 +135,31 @@ export default function BreakingPointTestClient() {
             </button>
             <p className="disclaimer">{BREAKING_COPY.disclaimer[locale]}</p>
           </section>
-        ) : (
+        ) : phase === "quiz" ? (
           <section className="test-card" style={{ "--accent": result.accent } as CSSProperties}>
-            <div className={`progress-head ${phase === "quiz" ? "progress-head--active" : ""}`}>
-              {phase === "quiz" ? (
-                <Link href="/" className="test-exit-link" aria-label={homeBackLabel(locale)}>
-                  ←
-                </Link>
-              ) : (
-                <span>{BREAKING_COPY.resultLabel[locale]}</span>
-              )}
-              <strong>
-                {phase === "result"
-                  ? `${BREAKING_QUESTIONS.length} / ${BREAKING_QUESTIONS.length}`
-                  : `${questionIndex + 1} / ${BREAKING_QUESTIONS.length}`}
-              </strong>
+            <div className="progress-head progress-head--active">
+              <Link href="/" className="test-exit-link" aria-label={homeBackLabel(locale)}>
+                ←
+              </Link>
+              <strong>{`${questionIndex + 1} / ${BREAKING_QUESTIONS.length}`}</strong>
             </div>
             <div className="progress-bar" aria-hidden>
               <i style={{ width: `${progress}%` }} />
             </div>
 
-            {phase === "quiz" ? (
-              <QuestionView question={currentQuestion} locale={locale} onChoose={choose} />
-            ) : (
-              <ResultView
-                locale={locale}
-                result={result}
-                isShared={Boolean(sharedResult)}
-                onShare={share}
-                onRetry={retry}
-                shareCopied={shareCopied}
-              />
-            )}
+            <QuestionView question={currentQuestion} locale={locale} onChoose={choose} />
           </section>
+        ) : (
+          <ResultView
+            locale={locale}
+            result={result}
+            isShared={Boolean(sharedResult)}
+            onRetry={retry}
+          />
         )}
       </section>
 
-      {phase === "result" && (
-        <>
-          <AdResult placement="breaking-point-result" />
-          <RecommendedGames
-            currentId="breaking-point"
-            ids={["defense-mechanism", "scene-choice", "thinking-pattern", "value-conflict"]}
-            title={BREAKING_COPY.related}
-          />
-        </>
-      )}
+      {phase === "result" && <AdResult placement="breaking-point-result" />}
       <style jsx>{styles}</style>
     </main>
   );
@@ -252,56 +196,115 @@ function ResultView({
   locale,
   result,
   isShared,
-  onShare,
   onRetry,
-  shareCopied,
 }: {
   locale: SimpleLocale;
   result: BreakingResult;
   isShared: boolean;
-  onShare: () => void;
   onRetry: () => void;
-  shareCopied: boolean;
+}) {
+  const shareUrl = buildShareUrl("/tests/breaking-point", {
+    v: 1,
+    resultId: result.id,
+    locale,
+  } satisfies BreakingSharePayload);
+  const shareTitle = `${BREAKING_COPY.title[locale]} · ${text(locale, result.title)}`;
+  const shareText = text(locale, result.oneLiner);
+
+  return (
+    <ResultScreen
+      locale={locale}
+      currentGameId="breaking-point"
+      tone="dark"
+      accentColor={result.accent}
+      gameName={BREAKING_COPY.title[locale]}
+      eyebrow={isShared ? (locale === "ko" ? "공유된 결과" : "Shared result") : undefined}
+      title={text(locale, result.title)}
+      description={shareText}
+      shareTitle={shareTitle}
+      shareText={shareText}
+      shareUrl={shareUrl}
+      onReplay={onRetry}
+      replayLabel={BREAKING_COPY.retry[locale]}
+      onKakaoShare={() => shareKakao(shareTitle, shareText, shareUrl)}
+      kakaoLabel={locale === "ko" ? "카카오 공유" : "Share on Kakao"}
+      recommendedIds={["defense-mechanism", "scene-choice", "thinking-pattern", "value-conflict"]}
+      afterCard={
+        <div className="breaking-detail">
+          <p className="breaking-detail__desc">{text(locale, result.description)}</p>
+          <div className="breaking-detail__grid">
+            <DetailBlock label={BREAKING_COPY.howYouChange[locale]} body={text(locale, result.howYouChange)} />
+            <DetailBlock
+              label={BREAKING_COPY.sign[locale]}
+              body={text(locale, result.sign)}
+              accent={result.accent}
+              highlight
+            />
+            <DetailBlock label={BREAKING_COPY.gentleNote[locale]} body={text(locale, result.gentleNote)} />
+            <DetailBlock label={BREAKING_COPY.friendComment[locale]} body={text(locale, result.friendComment)} />
+          </div>
+        </div>
+      }
+    />
+  );
+}
+
+function DetailBlock({
+  label,
+  body,
+  accent,
+  highlight,
+}: {
+  label: string;
+  body: string;
+  accent?: string;
+  highlight?: boolean;
 }) {
   return (
-    <article className="result-view">
-      {isShared && <p className="shared-label">{locale === "ko" ? "공유된 결과" : "Shared result"}</p>}
-      <div className="result-title">
-        <span>{locale === "ko" ? result.title.en : result.title.ko}</span>
-        <h2>{text(locale, result.title)}</h2>
-        <p>{text(locale, result.oneLiner)}</p>
-      </div>
-      <p className="result-description">{text(locale, result.description)}</p>
-
-      <div className="result-grid">
-        <section>
-          <span>{BREAKING_COPY.howYouChange[locale]}</span>
-          <p>{text(locale, result.howYouChange)}</p>
-        </section>
-        <section className="signal-card">
-          <span>{BREAKING_COPY.sign[locale]}</span>
-          <p>{text(locale, result.sign)}</p>
-        </section>
-        <section>
-          <span>{BREAKING_COPY.gentleNote[locale]}</span>
-          <p>{text(locale, result.gentleNote)}</p>
-        </section>
-        <section>
-          <span>{BREAKING_COPY.friendComment[locale]}</span>
-          <p>{text(locale, result.friendComment)}</p>
-        </section>
-      </div>
-
-      <div className="actions">
-        <button type="button" className="primary" onClick={onShare}>
-          {shareCopied ? BREAKING_COPY.copied[locale] : BREAKING_COPY.share[locale]}
-        </button>
-        <button type="button" className="secondary" onClick={onRetry}>
-          {BREAKING_COPY.retry[locale]}
-        </button>
-      </div>
-    </article>
+    <section
+      className={`breaking-detail__card${highlight ? " breaking-detail__card--highlight" : ""}`}
+      style={accent ? ({ "--accent": accent } as CSSProperties) : undefined}
+    >
+      <span>{label}</span>
+      <p>{body}</p>
+    </section>
   );
+}
+
+function shareKakao(title: string, desc: string, url: string) {
+  const w =
+    typeof window !== "undefined"
+      ? (window as unknown as {
+          Kakao?: {
+            isInitialized?: () => boolean;
+            Share?: { sendDefault: (a: unknown) => void };
+          };
+        })
+      : undefined;
+  if (w?.Kakao?.Share && w.Kakao.isInitialized?.()) {
+    try {
+      w.Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: { title, description: desc, link: { webUrl: url, mobileWebUrl: url } },
+      });
+      return;
+    } catch {
+      /* fall through */
+    }
+  }
+  if (typeof navigator === "undefined") return;
+  const nav = navigator as Navigator & {
+    share?: (d: { title: string; text: string; url: string }) => Promise<void>;
+  };
+  if (typeof nav.share === "function") {
+    nav.share({ title, text: desc, url }).catch(() => {
+      /* user cancelled */
+    });
+    return;
+  }
+  nav.clipboard?.writeText(`${title}\n${desc}\n${url}`).catch(() => {
+    /* ignore */
+  });
 }
 
 const styles = `
@@ -579,50 +582,25 @@ const styles = `
     line-height: 1.48;
     word-break: keep-all;
   }
-  .result-view {
-    display: grid;
-    gap: 24px;
-    padding-top: 30px;
+  .breaking-detail {
+    width: min(100%, 620px);
+    margin: 28px auto 0;
+    text-align: left;
   }
-  .shared-label {
-    width: max-content;
-    margin: 0;
-    border: 1px solid rgba(215, 163, 111, 0.28);
-    border-radius: 999px;
-    padding: 8px 12px;
-    background: rgba(215, 163, 111, 0.09);
-  }
-  .result-title h2 {
-    margin-top: 10px;
-    color: #fff2e2;
-    font-size: clamp(2rem, 6vw, 3.35rem);
-    line-height: 1.04;
-    word-break: keep-all;
-  }
-  .result-title p {
-    max-width: 740px;
-    margin: 14px 0 0;
-    color: #d7a36f;
-    font-size: clamp(1.08rem, 2.4vw, 1.34rem);
-    font-weight: 850;
-    line-height: 1.55;
-    word-break: keep-all;
-  }
-  .result-description {
-    max-width: 840px;
-    margin: 0;
+  .breaking-detail__desc {
+    margin: 0 0 20px;
     color: rgba(244, 234, 220, 0.82);
-    font-size: 1.04rem;
-    line-height: 1.82;
+    font-size: 1.02rem;
+    line-height: 1.8;
     font-weight: 680;
     word-break: keep-all;
   }
-  .result-grid {
+  .breaking-detail__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
-  .result-grid section {
+  .breaking-detail__card {
     border: 1px solid rgba(244, 234, 220, 0.14);
     border-radius: 14px;
     background:
@@ -630,33 +608,31 @@ const styles = `
       rgba(0, 0, 0, 0.16);
     padding: 18px;
   }
-  .result-grid section p {
+  .breaking-detail__card span {
+    color: #d7a36f;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .breaking-detail__card p {
     margin: 9px 0 0;
     color: rgba(244, 234, 220, 0.84);
     line-height: 1.72;
     font-weight: 700;
     word-break: keep-all;
   }
-  .signal-card {
+  .breaking-detail__card--highlight {
     background:
       linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent), rgba(244, 234, 220, 0.045)),
-      rgba(0, 0, 0, 0.18) !important;
-    border-color: color-mix(in srgb, var(--accent) 34%, transparent) !important;
+      rgba(0, 0, 0, 0.18);
+    border-color: color-mix(in srgb, var(--accent) 34%, transparent);
   }
-  .signal-card p {
-    color: #fff2e2 !important;
+  .breaking-detail__card--highlight p {
+    color: #fff2e2;
     font-family: var(--font-noto-serif-kr), var(--font-fraunces), serif;
     font-size: clamp(1.04rem, 2.4vw, 1.24rem);
-    font-weight: 800 !important;
-  }
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 4px;
-  }
-  .actions button {
-    min-width: 172px;
+    font-weight: 800;
   }
   @media (max-width: 760px) {
     .intro,
@@ -664,15 +640,8 @@ const styles = `
       border-radius: 14px;
     }
     .choices,
-    .result-grid {
+    .breaking-detail__grid {
       grid-template-columns: 1fr;
-    }
-    .actions {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-    .actions button {
-      width: 100%;
     }
   }
   @media (max-width: 480px) {

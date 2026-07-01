@@ -38,7 +38,7 @@ export const DIMENSION_INTROS: Record<
 > = {
   EI: {
     ordinal: { ko: "첫 번째 분석", en: "First analysis" },
-    title: { ko: "외향 — 내향", en: "Extrovert — Introvert" },
+    title: { ko: "외향, 내향", en: "Extrovert — Introvert" },
     question: {
       ko: "당신은 어디서 에너지를 얻나요?",
       en: "Where do you draw your energy from?",
@@ -46,7 +46,7 @@ export const DIMENSION_INTROS: Record<
   },
   SN: {
     ordinal: { ko: "두 번째 분석", en: "Second analysis" },
-    title: { ko: "현실 — 직관", en: "Sensing — Intuition" },
+    title: { ko: "현실, 직관", en: "Sensing — Intuition" },
     question: {
       ko: "당신은 무엇을 믿나요?",
       en: "What do you trust?",
@@ -54,7 +54,7 @@ export const DIMENSION_INTROS: Record<
   },
   TF: {
     ordinal: { ko: "세 번째 분석", en: "Third analysis" },
-    title: { ko: "논리 — 감정", en: "Thinking — Feeling" },
+    title: { ko: "논리, 감정", en: "Thinking — Feeling" },
     question: {
       ko: "당신은 어떻게 결정하나요?",
       en: "How do you make decisions?",
@@ -62,7 +62,7 @@ export const DIMENSION_INTROS: Record<
   },
   JP: {
     ordinal: { ko: "네 번째 분석", en: "Fourth analysis" },
-    title: { ko: "계획 — 즉흥", en: "Planning — Improvising" },
+    title: { ko: "계획, 즉흥", en: "Planning — Improvising" },
     question: {
       ko: "당신은 어떻게 사나요?",
       en: "How do you live your life?",

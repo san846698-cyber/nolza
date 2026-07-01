@@ -14,6 +14,7 @@ import Script from "next/script";
 import "./globals.css";
 import { AdSenseScript, AdSideRails } from "./components/Ads";
 import Analytics from "./components/Analytics";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { MotionProvider } from "./components/motion/Motion";
 import LocaleToggle from "./components/LocaleToggle";
 import ServiceWorkerCleanup from "./components/ServiceWorkerCleanup";
@@ -85,7 +86,7 @@ const pretendard = localFont({
 });
 
 const siteDescription =
-  "nolza.fun is a playful viral test playground for quizzes, relationship tests, fortune readings, mini games, and quick shareable results.";
+  "nolza.fun — 심리테스트, 캐릭터 테스트, 연애 테스트, 운세, 미니 게임까지. 재미있는 테스트로 나를 알아보고 친구들과 결과를 공유해보세요.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -190,6 +191,7 @@ export default function RootLayout({
           />
         </noscript>
         <Analytics />
+        <VercelAnalytics />
         <ServiceWorkerCleanup />
         <AdSenseScript />
         <LocaleToggle />

@@ -176,6 +176,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
           paragraphs: [
             "사이트 운영, 오류 확인, 성능 개선, 트래픽 분석, 광고 제공을 위해 브라우저 정보, 기기 정보, 방문 페이지, 접속 시간, 대략적인 지역, 참조 URL 같은 기술 정보가 처리될 수 있습니다.",
             "Nolza는 광고 또는 분석 도구를 사용할 수 있으며, 사용자는 브라우저 설정을 통해 쿠키를 제한하거나 삭제할 수 있습니다. 쿠키를 제한하면 일부 기능이나 광고 표시 방식이 달라질 수 있습니다.",
+            "Nolza는 Google AdSense를 포함한 제3자 광고 공급자를 사용할 수 있습니다. Google을 비롯한 제3자 공급자는 쿠키(DoubleClick 광고 쿠키 등)를 사용해 사용자의 이 사이트 또는 다른 사이트 방문 기록을 기반으로 광고를 게재할 수 있습니다. 사용자는 Google 광고 설정(adssettings.google.com)에서 맞춤 광고를 끄거나, www.aboutads.info 에서 제3자 공급자의 쿠키 사용을 관리할 수 있습니다.",
           ],
         },
         {
@@ -211,6 +212,7 @@ const TRUST_CONTENT: Record<TrustPageId, Record<SimpleLocale, TrustContent>> = {
           paragraphs: [
             "For site operation, debugging, performance improvement, traffic analytics, and advertising, technical information such as browser type, device type, visited pages, access time, approximate region, and referring URL may be processed.",
             "Nolza may use advertising or analytics tools. Users can limit or delete cookies through browser settings, though some features or advertising behavior may change.",
+            "Nolza may use third-party advertising vendors, including Google AdSense. Third parties such as Google may use cookies (including the DoubleClick advertising cookie) to serve ads based on a user's visits to this and other websites. Users can opt out of personalized advertising in Google Ads Settings (adssettings.google.com), or manage third-party vendor cookies at www.aboutads.info.",
           ],
         },
         {
